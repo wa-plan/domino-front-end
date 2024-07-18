@@ -66,7 +66,7 @@ class _AddPage1State extends State<AddPage1> {
                 onChanged: (String? value) {
                   setState(() {
                     //selectedGoal=value!;
-                    nextStage = '????어떤 플랜과 관련됐나요?';
+                    nextStage = '어떤 플랜과 관련됐나요?';
                   });
                 },
                 isExpanded: true,
