@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:domino/apis/DP/api_model.dart';
+import 'package:domino/apis/api_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Services {
