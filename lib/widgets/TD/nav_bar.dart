@@ -2,6 +2,7 @@ import 'package:domino/main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/settings_main.dart';
 import 'package:domino/screens/DP/list_page.dart';
+import 'package:domino/screens/LR/loginregister_find_password.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -22,7 +23,8 @@ class _NavBarState extends State<NavBar> {
       case 0:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const DPlistPage()),
+          MaterialPageRoute(
+              builder: (context) => const LoginregisterFindPassword()),
         );
         break;
       case 1:
