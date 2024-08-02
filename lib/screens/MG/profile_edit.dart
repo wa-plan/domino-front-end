@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,7 +6,6 @@ class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
   @override
-  State<Example1Page> createState() => _Example1PageState();
 }
 
 class ProfileEdit extends State<Profile> {
@@ -102,8 +99,10 @@ class ProfileEdit extends State<Profile> {
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () {},
-              child: const Text('내 갤러리'),
+              onPressed: () {
+              getImage(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
+               },
+              child: Text("갤러리"),
             ),
             const SizedBox(
               height: 10,
