@@ -15,7 +15,7 @@ class AddPage1 extends StatefulWidget {
 }
 
 class _AddPage1State extends State<AddPage1> {
-  String selectedGoal = '';
+  String? selectedGoal;
   String nextStage = '';
 
   @override
@@ -59,8 +59,8 @@ class _AddPage1State extends State<AddPage1> {
                   border: Border.all(
                     color: const Color(0xff5C5C5C),
                   )),
-              child: DropdownButton(
-                //value: selectedGoal,
+              child: DropdownButton<String>(
+                value: selectedGoal,
                 items: const [
                   DropdownMenuItem(value: 'Goal.1', child: Text('환상적인 세계 여행')),
                   DropdownMenuItem(
@@ -69,8 +69,8 @@ class _AddPage1State extends State<AddPage1> {
                 ],
                 onChanged: (String? value) {
                   setState(() {
-                    //selectedGoal=value!;
-                    nextStage = '??어떤 플랜과 관련됐나요?';
+                    selectedGoal = value;
+                    nextStage = '어떤 플랜과 관련됐나요?';
                   });
                 },
                 isExpanded: true,
