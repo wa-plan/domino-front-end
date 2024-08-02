@@ -26,48 +26,57 @@ class DPcreateSelectPage extends StatelessWidget {
           ),
         ),
         body: Padding(
-            padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(38.0, 20.0, 40.0, 0.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text("어떤 목표를 이루고 싶나요?",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 19,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 1.1)),
+
                 const SizedBox(height: 20),
+
                 Container(
                   height: 43,
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(3),
                     border: Border.all(
                       color: const Color(0xff5C5C5C),
                     ),
                   ),
                   child: const MyDropdownButton(),
                 ),
+
                 const SizedBox(
                   height: 20,
                 ),
+
                 Expanded(
                   child: GridView(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
+                            crossAxisCount: 3, crossAxisSpacing: 1, mainAxisSpacing: 1),
                     children: List.generate(9, (index) {
                       if (index == 4) {
                         return SizedBox(
                             width: 100,
                             child: GridView.count(
                                 crossAxisCount: 3,
+                                crossAxisSpacing: 1,
+                                mainAxisSpacing: 1,
                                 children: List.generate(9, (index) {
                                   return Container(
-                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(3),
                                     color: index == 4
                                         ? const Color(0xffFCFF62)
-                                        : const Color(0xff929292),
+                                        : const Color(0xff929292),),
+                                    alignment: Alignment.center,
+                                    
                                     margin: const EdgeInsets.all(1.0),
                                     child: index == 4
                                         ? Consumer<SelectFinalGoalModel>(
@@ -87,28 +96,50 @@ class DPcreateSelectPage extends StatelessWidget {
                                   );
                                 })));
                       } else {
-                        return const Smallgrid();
+                        return const smallgrid();
                       }
                     }),
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DPcreate99Page(),
-                        ));
-                  },
-                  style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xff131313),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0))),
-                  child: const Text(
-                    '다음',
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                )
+                
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: const Color(0xff131313),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6.0))),
+                        child: const Text(
+                          '취소',
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DPcreate99Page(),
+                              ));
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: const Color(0xff131313),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6.0))),
+                        child: const Text(
+                          '다음',
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                        ),
+                      )
+                    ]),
+
+                    const SizedBox(
+                  height: 20,
+                ),
               ],
             )));
   }
