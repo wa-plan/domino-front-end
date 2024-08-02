@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:domino/provider/TD/date_provider.dart';
 import 'package:domino/provider/TD/event_provider.dart';
 import 'package:domino/provider/ST/password_provider.dart';
+import 'package:domino/provider/LR/UserProvider.dart';
 
 import 'package:domino/provider/DP/model.dart';
 
@@ -15,27 +16,27 @@ import 'package:domino/widgets/TD/event_calendar.dart';
 void main() async {
   await initializeDateFormatting();
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => DateProvider()),
-        ChangeNotifierProvider(create: (_) => EventProvider()),
-        ChangeNotifierProvider(create: (_) => PasswordProvider()),
-        ChangeNotifierProvider(
-          create: (_) => SelectFinalGoalModel(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => SaveInputtedDetailGoalModel(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => SaveInputtedActionPlanModel(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => SelectDetailGoal(),
-        ),
-        ChangeNotifierProvider(create: (_) => GoalColor()),
-      ],
-      child: const MyApp(),
-    ),
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => DateProvider()),
+      ChangeNotifierProvider(create: (_) => EventProvider()),
+      ChangeNotifierProvider(create: (_) => PasswordProvider()),
+      ChangeNotifierProvider(
+        create: (_) => SelectFinalGoalModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => SaveInputtedDetailGoalModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => SaveInputtedActionPlanModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => SelectDetailGoal(),
+      ),
+      ChangeNotifierProvider(create: (_) => GoalColor()),
+      ChangeNotifierProvider(
+        create: (_) => UserProvider(),
+      ),
+    ]),
   );
 }
 
