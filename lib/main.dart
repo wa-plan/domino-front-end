@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:domino/provider/TD/date_provider.dart';
 import 'package:domino/provider/TD/event_provider.dart';
 import 'package:domino/provider/ST/password_provider.dart';
-import 'package:domino/provider/LR/UserProvider.dart';
+import 'package:domino/provider/LR/user_provider.dart';
 
 import 'package:domino/provider/DP/model.dart';
 
