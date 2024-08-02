@@ -2,6 +2,10 @@ import 'package:domino/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:domino/screens/TD/add_page2.dart';
+import 'package:domino/widgets/DP/smallgridWithData.dart';
+import 'package:domino/screens/TD/add_page2.dart';
+import 'package:domino/provider/DP/model.dart';
+import 'package:provider/provider.dart';
 
 class AddPage1 extends StatefulWidget {
   const AddPage1({super.key});
@@ -79,6 +83,74 @@ class _AddPage1State extends State<AddPage1> {
             const SizedBox(
               height: 30,
             ),
+            Expanded(
+                child: GridView(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, crossAxisSpacing: 1, mainAxisSpacing: 1),
+              children: [
+                const smallgridWithData(goalId: 0),
+                const smallgridWithData(goalId: 1),
+                const smallgridWithData(goalId: 2),
+                const smallgridWithData(goalId: 3),
+                SizedBox(
+                  width: 100,
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 1,
+                    mainAxisSpacing: 1,
+                    children: List.generate(9, (index) {
+                      if (index == 4) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: const Color(0xffFCFF62),
+                          ),
+                          margin: const EdgeInsets.all(1.0),
+                          child: Center(
+                              child: Text(
+                            context
+                                .watch<SelectFinalGoalModel>()
+                                .selectedFinalGoal,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 8,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          )),
+                        );
+                      } else {
+                        final inputtedDetailGoals = context
+                            .watch<SaveInputtedDetailGoalModel>()
+                            .inputtedDetailGoal;
+                        final value =
+                            inputtedDetailGoals.containsKey(index.toString())
+                                ? inputtedDetailGoals[index.toString()]
+                                : '';
+
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            color: const Color(0xff929292),
+                          ),
+                          margin: const EdgeInsets.all(1.0),
+                          child: Center(
+                              child: Text(
+                            value,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 15),
+                          )),
+                        );
+                      }
+                    }),
+                  ),
+                ),
+                const smallgridWithData(goalId: 5),
+                const smallgridWithData(goalId: 6),
+                const smallgridWithData(goalId: 7),
+                const smallgridWithData(goalId: 8),
+              ],
+            )),
             Text(nextStage,
                 style: const TextStyle(
                     color: Colors.white,
