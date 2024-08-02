@@ -17,7 +17,7 @@ class memberRegisterPage extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const MyApp(),
+                        builder: (context) => const main(),
                       ));
                 }
               )
