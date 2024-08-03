@@ -55,7 +55,8 @@ class DialogExample extends StatelessWidget {
                     },
                     child: const Text('카메라로 찍기'),
                     onPressed: () {
-                      Navigator.push(/* 갤러리 불러오기*/);
+                      getImage(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
+                    },
                     },
                     child: const Text('내 갤러리'),
                     onPressed: () {
