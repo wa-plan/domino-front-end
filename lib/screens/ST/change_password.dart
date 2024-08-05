@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/account_management.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/ST/password_provider.dart';
+import 'package:domino/main.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -236,6 +237,30 @@ class _ChangePasswordState extends State<ChangePassword> {
                       }
                       if (checkkey.currentState!.validate()) {
                         checkkey.currentState!.save();
+                      }
+                      if (Provider.of<PasswordProvider>(context, listen: false)
+                                  .currentpw ==
+                              receivedkey &&
+                          Provider.of<PasswordProvider>(context, listen: false)
+                                  .newpw
+                                  .length >
+                              7 &&
+                          Provider.of<PasswordProvider>(context, listen: false)
+                                  .newpw
+                                  .length <
+                              17 &&
+                          Provider.of<PasswordProvider>(context, listen: false)
+                                  .checkpw ==
+                              Provider.of<PasswordProvider>(context,
+                                      listen: false)
+                                  .newpw) {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyApp(),
+                          ),
+                        );
                       }
                     },
                     style: ButtonStyle(
