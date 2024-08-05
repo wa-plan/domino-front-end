@@ -31,7 +31,8 @@ class PopupDialog extends StatelessWidget {
     if (close) {
       buttons.add(
         TextButton(
-          onPressed: onClose ?? () => Navigator.of(context).pop(),
+          onPressed: onClose,
+          // ?? () => Navigator.of(context).pop(),
           style: ButtonStyle(
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               const RoundedRectangleBorder(
