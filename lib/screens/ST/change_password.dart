@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/account_management.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/ST/password_provider.dart';
+import 'package:domino/main.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -13,19 +14,18 @@ class ChangePassword extends StatefulWidget {
 String receivedkey = 'abc';
 
 final currentkey = GlobalKey<FormState>();
-String currentPassword = '';
-TextEditingController currentkeycontroller = TextEditingController(text: null);
 final newkey = GlobalKey<FormState>();
-String newPassword = '';
-TextEditingController newkeycontroller = TextEditingController(text: null);
 final checkkey = GlobalKey<FormState>();
-String checkPassword = '';
-TextEditingController checkkeycontroller = TextEditingController(text: null);
+
+//텍스트폼필드에 기본으로 들어갈 초기 텍스트 값
+TextEditingController currentkeycontroller = TextEditingController(text: '');
+TextEditingController newkeycontroller = TextEditingController(text: '');
+TextEditingController checkkeycontroller = TextEditingController(text: '');
 
 //텍스트폼필드 함수 만들기
-currentTextFormField({
-  required FormFieldSetter onSaved,
-  required FormFieldValidator validator,
+Widget currentTextFormField({
+  required FormFieldSetter<String?> onSaved,
+  required FormFieldValidator<String?> validator,
 }) {
   return TextFormField(
     onSaved: onSaved,
@@ -33,6 +33,8 @@ currentTextFormField({
     controller: currentkeycontroller,
     style: const TextStyle(fontSize: 16, color: Colors.white),
     decoration: InputDecoration(
+      hintText: '현재 비밀번호를 입력해 주세요.',
+      hintStyle: const TextStyle(color: Colors.grey),
       border: const OutlineInputBorder(),
       suffixIcon: currentkeycontroller.text.isNotEmpty
           ? IconButton(
@@ -46,10 +48,9 @@ currentTextFormField({
   );
 }
 
-//텍스트폼필드 함수 만들기
-newTextFormField({
-  required FormFieldSetter onSaved,
-  required FormFieldValidator validator,
+Widget newTextFormField({
+  required FormFieldSetter<String?> onSaved,
+  required FormFieldValidator<String?> validator,
 }) {
   return TextFormField(
     onSaved: onSaved,
@@ -57,6 +58,8 @@ newTextFormField({
     controller: newkeycontroller,
     style: const TextStyle(fontSize: 16, color: Colors.white),
     decoration: InputDecoration(
+      hintText: '새 비밀번호를 입력해 주세요.',
+      hintStyle: const TextStyle(color: Colors.grey),
       border: const OutlineInputBorder(),
       suffixIcon: newkeycontroller.text.isNotEmpty
           ? IconButton(
@@ -70,10 +73,9 @@ newTextFormField({
   );
 }
 
-//텍스트폼필드 함수 만들기
-checkTextFormField({
-  required FormFieldSetter onSaved,
-  required FormFieldValidator validator,
+Widget checkTextFormField({
+  required FormFieldSetter<String?> onSaved,
+  required FormFieldValidator<String?> validator,
 }) {
   return TextFormField(
     onSaved: onSaved,
@@ -81,6 +83,8 @@ checkTextFormField({
     controller: checkkeycontroller,
     style: const TextStyle(fontSize: 16, color: Colors.white),
     decoration: InputDecoration(
+      hintText: '비밀번호 확인을 입력해 주세요.',
+      hintStyle: const TextStyle(color: Colors.grey),
       border: const OutlineInputBorder(),
       suffixIcon: checkkeycontroller.text.isNotEmpty
           ? IconButton(
@@ -140,65 +144,138 @@ class _ChangePasswordState extends State<ChangePassword> {
               '현재 비밀번호를 입력해 주세요.',
               style: TextStyle(color: Colors.white),
             ),
+            const SizedBox(
+              height: 15,
+            ),
             Form(
               key: currentkey,
               child: currentTextFormField(
                 onSaved: (value) {
-                  setState(() {
-                    Provider.of<PasswordProvider>(context).currentpw = value;
-                  });
+                  Provider.of<PasswordProvider>(context, listen: false)
+                      .currentpw = value ?? '';
                 },
                 validator: (value) {
                   if (value != receivedkey) {
-                    return '비밀번호를 전확히 입력해주세요';
+                    return '비밀번호를 정확하게 입력해주세요';
                   }
                   return null;
                 },
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
             const Text(
               '새 비밀번호를 입력해 주세요.',
               style: TextStyle(color: Colors.white),
+            ),
+            const SizedBox(
+              height: 15,
             ),
             Form(
               key: newkey,
               child: newTextFormField(
                 onSaved: (value) {
-                  setState(() {
-                    Provider.of<PasswordProvider>(context).newpw = value;
-                  });
+                  Provider.of<PasswordProvider>(context, listen: false).newpw =
+                      value ?? '';
                 },
                 validator: (value) {
-                  if (value.length < 1) {
+                  if (value == null || value.length < 8 || value.length > 16) {
                     return '비밀번호는 8~16자리여야 해요.';
                   }
                   return null;
                 },
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
             const Text(
               '새 비밀번호를 확인해 주세요.',
               style: TextStyle(color: Colors.white),
+            ),
+            const SizedBox(
+              height: 15,
             ),
             Form(
               key: checkkey,
               child: checkTextFormField(
                 onSaved: (value) {
-                  setState(() {
-                    Provider.of<PasswordProvider>(context).checkpw = value;
-                  });
+                  Provider.of<PasswordProvider>(context, listen: false)
+                      .checkpw = value ?? '';
                 },
                 validator: (value) {
-                  if (value.length < 1) {
+                  if (value !=
+                      Provider.of<PasswordProvider>(context, listen: false)
+                          .newpw) {
                     return '새 비밀번호와 비밀번호 확인이 일치하지 않아요.';
                   }
                   return null;
                 },
               ),
             ),
-            Text(
-              Provider.of<PasswordProvider>(context).currentpw,
-              style: const TextStyle(color: Colors.white),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              '혹시 비밀번호를 잊으셨나요?',
+              style: TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 15),
+            Center(
+              child: SizedBox(
+                width: double.infinity, // 부모의 최대 너비만큼 버튼의 너비를 설정
+                child: SizedBox(
+                  height: 50, // 버튼의 높이 설정
+                  child: TextButton(
+                    onPressed: () {
+                      if (currentkey.currentState!.validate()) {
+                        currentkey.currentState!.save();
+                      }
+                      if (newkey.currentState!.validate()) {
+                        newkey.currentState!.save();
+                      }
+                      if (checkkey.currentState!.validate()) {
+                        checkkey.currentState!.save();
+                      }
+                      if (Provider.of<PasswordProvider>(context, listen: false)
+                                  .currentpw ==
+                              receivedkey &&
+                          Provider.of<PasswordProvider>(context, listen: false)
+                                  .newpw
+                                  .length >
+                              7 &&
+                          Provider.of<PasswordProvider>(context, listen: false)
+                                  .newpw
+                                  .length <
+                              17 &&
+                          Provider.of<PasswordProvider>(context, listen: false)
+                                  .checkpw ==
+                              Provider.of<PasswordProvider>(context,
+                                      listen: false)
+                                  .newpw) {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyApp(),
+                          ),
+                        );
+                      }
+                    },
+                    style: ButtonStyle(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                        const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                        ),
+                      ),
+                      backgroundColor: WidgetStateProperty.all(Colors.black),
+                    ),
+                    child: const Text('비밀번호 변경하기',
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+              ),
             )
           ],
         ),

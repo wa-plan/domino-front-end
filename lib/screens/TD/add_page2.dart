@@ -51,6 +51,11 @@ class AddPage2State extends State<AddPage2> {
   @override
   void initState() {
     super.initState();
+    // 페이지가 로드될 때 pickedDate 초기화
+    //WidgetsBinding.instance.addPostFrameCallback((_) {
+    //  context.read<DateProvider>().clearPickedDate();
+    //});
+    context.read<DateProvider>().clearPickedDate();
   }
 
   @override
@@ -172,102 +177,84 @@ class AddPage2State extends State<AddPage2> {
                       formKey.currentState!.save();
 
                       // DateProvider에서 pickedDate를 가져옴
-                      DateTime pickedDate =
+                      DateTime? pickedDate =
                           context.read<DateProvider>().pickedDate;
 
-                      if (switchValue) {
-                        // EventProvider를 통해 루틴 추가
-                        context.read<DateProvider>().setInterval(switchValue);
-                        int interval = context.read<DateProvider>().interval;
-
-                        context.read<EventProvider>().addrepeatEvent(
-                            pickedDate,
-                            Event(
-                                title: 'Money',
-                                content: content,
-                                switchValue: switchValue,
-                                interval: interval),
-                            switchValue,
-                            interval);
+                      if (pickedDate == null) {
+                        // pickedDate가 null인 경우 오류 메시지 표시
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('날짜를 선택해 주세요.')),
+                        );
                       } else {
-                        // EventProvider를 통해 이벤트 추가
-                        context.read<EventProvider>().addEvent(
-                              pickedDate,
-                              Event(
+                        if (switchValue) {
+                          // EventProvider를 통해 루틴 추가
+                          context.read<DateProvider>().setInterval(switchValue);
+                          int interval = context.read<DateProvider>().interval;
+
+                          context.read<EventProvider>().addrepeatEvent(
+                                pickedDate,
+                                Event(
                                   title: 'Money',
                                   content: content,
                                   switchValue: switchValue,
-                                  interval: 0),
-                            );
-                      }
-                      PopupDialog.show(
-                        context,
-                        '완벽해! \n이제 실행하자:)',
-                        true, // cancel
-                        false, // close
-                        true, // delete
-                        false, // signout
-                        onCancel: () {
-                          Navigator.of(context).pop();
-                        },
-                        onClose: () {
-                          // 이벤트 추가 후 화면 이동
-                          Navigator.push(
+                                  interval: interval,
+                                ),
+                                switchValue,
+                                interval,
+                              );
+                        } else {
+                          // EventProvider를 통해 이벤트 추가
+                          context.read<EventProvider>().addEvent(
+                                pickedDate,
+                                Event(
+                                  title: 'Money',
+                                  content: content,
+                                  switchValue: switchValue,
+                                  interval: 0,
+                                ),
+                              );
+                        }
+
+                        PopupDialog.show(
+                          context,
+                          '완벽해! \n이제 실행하자:)',
+                          false, // cancel
+                          true, // close
+                          false, // delete
+                          false, // signout
+                          onCancel: () {
+                            //Navigator.of(context).pop();
+                          },
+                          onClose: () {
+                            // 이벤트 추가 후 화면 이동
+                            Navigator.of(context).pop();
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const MyApp(),
-                              ));
-                        },
-                        onDelete: () {
-                          Navigator.of(context).pop();
-                        },
-                        onSignOut: () {
-                          Navigator.of(context).pop();
-                        },
-                      );
+                              ),
+                            );
+                          },
+                          onDelete: () {
+                            //Navigator.of(context).pop();
+                          },
+                          onSignOut: () {
+                            //Navigator.of(context).pop();
+                          },
+                        );
+                      }
                     }
                   },
                   style: TextButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 57, 33, 33),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0))),
+                    backgroundColor: const Color.fromARGB(255, 57, 33, 33),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                  ),
                   child: const Text(
                     '완료',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    PopupDialog.show(
-                      context,
-                      '테스트',
-                      true, // cancel
-                      false, // close
-                      false, // delete
-                      true, // signout
-                      onCancel: () {
-                        // 취소 버튼을 눌렀을 때 실행할 코드
-                        Navigator.of(context).pop();
-                      },
-                      onClose: () {
-                        // 닫기 버튼을 눌렀을 때 실행할 코드
-                        Navigator.of(context).pop();
-                      },
-                      onDelete: () {
-                        // 삭제 버튼을 눌렀을 때 실행할 코드
-                        Navigator.of(context).pop();
-                      },
-                      onSignOut: () {
-                        // 탈퇴 버튼을 눌렀을 때 실행할 코드
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AddPage1(),
-                            ));
-                      },
-                    );
-                  },
-                  icon: const Icon(Icons.abc),
                 )
               ]),
             ],

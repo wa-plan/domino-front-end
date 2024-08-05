@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DateProvider extends ChangeNotifier {
-  DateTime _pickedDate = DateTime.now();
-  DateTime get pickedDate => _pickedDate;
+  DateTime? _pickedDate;
+  DateTime? get pickedDate => _pickedDate;
 
   bool _everyDay = false;
   bool _everyWeek = false;
@@ -18,6 +18,11 @@ class DateProvider extends ChangeNotifier {
 
   void setPickedDate(DateTime date) {
     _pickedDate = date;
+    notifyListeners(); // 상태 변경 알림
+  }
+
+  void clearPickedDate() {
+    _pickedDate = null;
     notifyListeners(); // 상태 변경 알림
   }
 
@@ -55,7 +60,8 @@ class DateProvider extends ChangeNotifier {
 
   void setInterval(bool repeat) {
     _interval = 0;
-    if (repeat) {
+    if (repeat && _pickedDate != null) {
+      // Add null check here
       if (_everyDay) {
         _interval = 1;
       }
@@ -67,12 +73,12 @@ class DateProvider extends ChangeNotifier {
       }
       if (_everyMonth) {
         // 현재 선택된 날짜의 월과 일(day)을 기억
-        int currentMonth = _pickedDate.month;
-        int currentDay = _pickedDate.day;
+        int currentMonth = _pickedDate!.month;
+        int currentDay = _pickedDate!.day;
 
         // 다음 달로 이동
         int nextMonth = currentMonth + 1;
-        int nextYear = _pickedDate.year;
+        int nextYear = _pickedDate!.year;
 
         if (nextMonth > 12) {
           nextMonth = 1;
@@ -81,7 +87,7 @@ class DateProvider extends ChangeNotifier {
 
         // 다음 달의 같은 일로 설정
         _interval = DateTime(nextYear, nextMonth, currentDay)
-            .difference(_pickedDate)
+            .difference(_pickedDate!)
             .inDays;
       }
     }
