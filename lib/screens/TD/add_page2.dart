@@ -6,8 +6,7 @@ import 'package:domino/widgets/TD/add_calendar.dart';
 import 'package:domino/widgets/TD/repeat_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/TD/event_provider.dart';
-
-//import 'package:flutter_application_1/todayDomino/widgets/event_calendar.dart';
+import 'package:domino/widgets/TD/popup.dart';
 
 class AddPage2 extends StatefulWidget {
   const AddPage2({super.key});
@@ -201,13 +200,31 @@ class AddPage2State extends State<AddPage2> {
                                   interval: 0),
                             );
                       }
-
-                      // 이벤트 추가 후 화면 이동
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MyApp(),
-                          ));
+                      PopupDialog.show(
+                        context,
+                        '완벽해! \n이제 실행하자:)',
+                        true, // cancel
+                        false, // close
+                        true, // delete
+                        false, // signout
+                        onCancel: () {
+                          Navigator.of(context).pop();
+                        },
+                        onClose: () {
+                          // 이벤트 추가 후 화면 이동
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MyApp(),
+                              ));
+                        },
+                        onDelete: () {
+                          Navigator.of(context).pop();
+                        },
+                        onSignOut: () {
+                          Navigator.of(context).pop();
+                        },
+                      );
                     }
                   },
                   style: TextButton.styleFrom(
@@ -219,6 +236,39 @@ class AddPage2State extends State<AddPage2> {
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
+                IconButton(
+                  onPressed: () {
+                    PopupDialog.show(
+                      context,
+                      '테스트',
+                      true, // cancel
+                      false, // close
+                      false, // delete
+                      true, // signout
+                      onCancel: () {
+                        // 취소 버튼을 눌렀을 때 실행할 코드
+                        Navigator.of(context).pop();
+                      },
+                      onClose: () {
+                        // 닫기 버튼을 눌렀을 때 실행할 코드
+                        Navigator.of(context).pop();
+                      },
+                      onDelete: () {
+                        // 삭제 버튼을 눌렀을 때 실행할 코드
+                        Navigator.of(context).pop();
+                      },
+                      onSignOut: () {
+                        // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AddPage1(),
+                            ));
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.abc),
+                )
               ]),
             ],
           ),

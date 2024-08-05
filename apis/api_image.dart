@@ -1,6 +1,6 @@
- import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 
-  Future<List<PiscumPhotoModel>> _fetchPost({
+/*  Future<List<PiscumPhotoModel>> _fetchPost({
     required int pageNo,
   }) async {
     try {
@@ -18,4 +18,4 @@
       logger.e(error);
       return [];
     }
-  }
+  }*/

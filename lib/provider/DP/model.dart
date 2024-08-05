@@ -159,14 +159,14 @@ class SelectDetailGoal with ChangeNotifier {
 class GoalColor with ChangeNotifier {
   final Map  _selectedGoalColor = {
     '0':const Color(0xff929292),
-    '1':'',
-    '2':'',
-    '3':'',
-    '4':'',
-    '5':'',
-    '6':'',
-    '7':'',
-    '8':''
+    '1':const Color(0xff929292),
+    '2':const Color(0xff929292),
+    '3':const Color(0xff929292),
+    '4':const Color(0xff929292),
+    '5':const Color(0xff929292),
+    '6':const Color(0xff929292),
+    '7':const Color(0xff929292),
+    '8':const Color(0xff929292)
   };
   Map get selectedGoalColor => _selectedGoalColor;
 
