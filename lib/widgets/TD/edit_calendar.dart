@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:domino/provider/TD/date_provider.dart';
 import 'package:provider/provider.dart';
-//import 'package:flutter_application_1/todayDomino/widgets/event_calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class EditCalendar extends StatefulWidget {
@@ -86,29 +85,4 @@ class EditCalendarState extends State<EditCalendar> {
       ],
     );
   }
-
-  // 외부에서 선택된 날짜 확인을 위한 메서드
-  //bool isDateSelected() {
-  //  return _selectedDay != null;
-  //}
 }
-
-/*table calendar 이벤트 load 할 때 참고하기
-class Event {
-  final DateTime date;
-  final String content;
-  Event({required this.date, required this.content});
-}
-
-final _events = LinkedHashMap<DateTime, List<Event>>(
-  equals: isSameDay,
-  hashCode: getHashCode,
-)..addAll({
-    DateTime(2024, 6, 21): [
-      Event(date: DateTime(2024, 6, 21), content: "It's event1")
-    ],
-  });
-
-List<Event> _getEventsForDay(DateTime day) {
-  return _events[day] ?? [];
-}*/
