@@ -1,21 +1,41 @@
+import 'package:domino/screens/DP/create_complete_page.dart';
+import 'package:domino/widgets/DP/colorBox.dart';
+import 'package:domino/widgets/DP/colorBox2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
-import 'package:domino/widgets/DP/confirm_box.dart';
+import 'package:domino/widgets/DP/color_option.dart';
+
 
 class DPcreateColorPage extends StatefulWidget {
   const DPcreateColorPage({super.key});
 
+
   @override
-  _DPcreateColorPageState createState() => _DPcreateColorPageState();
+  _DPcreateColorPageState createState()=>
+  _DPcreateColorPageState();
 }
 
 class _DPcreateColorPageState extends State<DPcreateColorPage> {
-  //const DPcreateColorPage({super.key});
-
+  
   int selectIndex = 0;
+  Map colorPalette = {
+    const Color(0xffFF7A7A): const Color(0xffFFC2C2),
+    const Color(0xffFFB82D): const Color(0xffFFD19B),
+    const Color(0xffFCFF62): const Color(0xffFEFFCD),
+    const Color(0xff72FF5B): const Color(0xffC1FFB7),
+    const Color(0xff5DD8FF): const Color(0xff94E5FF),
+    const Color(0xff929292): const Color(0xffC4C4C4),
+    const Color(0xffFF5794): const Color(0xffFF8EB7),
+    const Color(0xffAE7CFF): const Color(0xffD0B4FF),
+    const Color(0xffC77B7F): const Color(0xffEBB6B9),
+    const Color(0xff009255): const Color(0xff6DE1B0),
+    const Color(0xff3184FF): const Color(0xff8CBAFF),
+    const Color(0xff11D1C2): const Color(0xffAAF4EF),
+  };
 
   @override
+  
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xff262626),
@@ -34,7 +54,7 @@ class _DPcreateColorPageState extends State<DPcreateColorPage> {
           ),
         ),
         body: Padding(
-            padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(38.0, 20.0, 40.0, 0.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -42,19 +62,22 @@ class _DPcreateColorPageState extends State<DPcreateColorPage> {
                   '플랜을 꾸밀 수 있어요.',
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 17,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.1),
                 ),
+                
                 const SizedBox(
                   height: 20,
                 ),
+
                 Container(
                     height: 43,
                     width: double.infinity,
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.rectangle, color: Color(0xffFCFF62)),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                        shape: BoxShape.rectangle, color: const Color(0xffFCFF62)),
                     child: Text(
                         context.watch<SelectFinalGoalModel>().selectedFinalGoal,
                         style: const TextStyle(
@@ -62,107 +85,79 @@ class _DPcreateColorPageState extends State<DPcreateColorPage> {
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ))),
+
                 const SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
+
                 Expanded(
+                  flex:2 ,
                     child: GridView(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
+                      crossAxisCount: 3, crossAxisSpacing: 1, mainAxisSpacing: 1 ),
                   children: [
                     GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectIndex = 0;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: selectIndex == 0
-                                      ? Colors.white
-                                      : const Color(0xff262626))),
-                          child: SizedBox(
-                              width: 100,
-                              child: GridView.count(
-                                  crossAxisCount: 3,
-                                  children: List.generate(9, (index) {
-                                    final inputtedActionPlan = context
-                                        .watch<SaveInputtedActionPlanModel>()
-                                        .inputtedActionPlan[0];
-                                    final values = inputtedActionPlan
-                                            .containsKey(index.toString())
-                                        ? inputtedActionPlan[index.toString()]
-                                        : '';
-                                    final detailGoal = context
-                                        .watch<SaveInputtedDetailGoalModel>()
-                                        .inputtedDetailGoal['0'];
-                                    final color1 = context
-                                        .watch<GoalColor>()
-                                        .selectedGoalColor['0'];
-                                    final backgroundColor1 = detailGoal.isEmpty
-                                        ? const Color(0xff262626)
-                                        : color1;
+                      onTap: () {setState((){
+                        selectIndex = 0;
+                      });},
+                      child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: selectIndex == 0 ? Colors.white : const Color(0xff262626))
+                      ),
+                      child: colorBox(actionPlanid: 0, goalColorid: 0, detailGoalid: 0)
+                    )),
 
-                                    if (index == 4) {
-                                      return Container(
-                                        color: backgroundColor1,
-                                        margin: const EdgeInsets.all(1.0),
-                                        child: Text(
-                                          detailGoal,
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      );
-                                    } else {
-                                      final isValueEmpty = values.isEmpty;
-                                      final backgroundColor2 = isValueEmpty
-                                          ? const Color(0xff262626)
-                                          : const Color(0xff5C5C5C);
-
-                                      return Container(
-                                        color: backgroundColor2,
-                                        margin: const EdgeInsets.all(1.0),
-                                        child: Text(
-                                          values.toString(),
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      );
-                                    }
-                                  }))),
-                        )),
                     GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectIndex = 1;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: selectIndex == 1
-                                      ? Colors.white
-                                      : const Color(0xff262626))),
-                          child: const ConfirmBox(
-                              actionPlanid: 1, detailGoalid: 1),
-                        )),
-                    const ConfirmBox(actionPlanid: 2, detailGoalid: 2),
-                    const ConfirmBox(actionPlanid: 3, detailGoalid: 3),
+                      onTap: () {setState((){
+                        selectIndex = 1;
+                      });},
+                      child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: selectIndex == 1 ? Colors.white : const Color(0xff262626))
+                      ),
+                      child:  colorBox(actionPlanid: 1, goalColorid: 1, detailGoalid: 1)
+                    )),
+
+                    GestureDetector(
+                      onTap: () {setState((){
+                        selectIndex = 2;
+                      });},
+                      child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: selectIndex == 2 ? Colors.white : const Color(0xff262626))
+                      ),
+                      child:  colorBox(actionPlanid: 2, goalColorid: 2, detailGoalid: 2)
+                    )),
+
+                    GestureDetector(
+                      onTap: () {setState((){
+                        selectIndex = 3;
+                      });},
+                      child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: selectIndex == 3 ? Colors.white : const Color(0xff262626))
+                      ),
+                      child:  colorBox(actionPlanid: 3, goalColorid: 3, detailGoalid: 3)
+                    )),      
+                    
                     SizedBox(
                       width: 100,
                       child: GridView.count(
                         crossAxisCount: 3,
-                        children: List.generate(9, (index) {
-                          if (index == 4) {
-                            return Container(
-                              color: const Color(0xffFCFF62),
+
+                        children: [
+
+                          const colorBox2(keyNumber: 0),
+                          const colorBox2(keyNumber: 1),
+                          const colorBox2(keyNumber: 2),
+                          const colorBox2(keyNumber: 3),
+
+                          Container(
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(3),
+                              color: const Color(0xffFCFF62),),
                               margin: const EdgeInsets.all(1.0),
-                              child: Text(
+                              child: Center(
+                                child: Text(
                                 context
                                     .watch<SelectFinalGoalModel>()
                                     .selectedFinalGoal,
@@ -171,114 +166,125 @@ class _DPcreateColorPageState extends State<DPcreateColorPage> {
                                     fontSize: 8,
                                     fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
-                              ),
-                            );
-                          } else {
-                            final inputtedDetailGoals = context
-                                .watch<SaveInputtedDetailGoalModel>()
-                                .inputtedDetailGoal;
-                            final values = inputtedDetailGoals
-                                    .containsKey(index.toString())
-                                ? inputtedDetailGoals[index.toString()]
-                                : '';
-                            final isValueEmpty = values.isEmpty;
-                            final backgroundColor2 = isValueEmpty
-                                ? const Color(0xff262626)
-                                : const Color(0xff929292);
+                              )),
+                            ),
 
-                            return Container(
-                              color: backgroundColor2,
-                              margin: const EdgeInsets.all(1.0),
-                              child: Text(
-                                values,
-                                textAlign: TextAlign.center,
-                              ),
-                            );
-                          }
-                        }),
+                            const colorBox2(keyNumber: 5),
+                            const colorBox2(keyNumber: 6),
+                            const colorBox2(keyNumber: 7),
+                            const colorBox2(keyNumber: 8),
+                        ],
                       ),
                     ),
-                    const ConfirmBox(actionPlanid: 5, detailGoalid: 5),
-                    const ConfirmBox(actionPlanid: 6, detailGoalid: 6),
-                    const ConfirmBox(actionPlanid: 7, detailGoalid: 7),
-                    const ConfirmBox(actionPlanid: 8, detailGoalid: 8),
+
+                    GestureDetector(
+                      onTap: () {setState((){
+                        selectIndex = 5;
+                      });},
+                      child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: selectIndex == 5 ? Colors.white : const Color(0xff262626))
+                      ),
+                      child:  colorBox(actionPlanid: 5, goalColorid: 5, detailGoalid: 5)
+                    )),
+
+                    GestureDetector(
+                      onTap: () {setState((){
+                        selectIndex = 6;
+                      });},
+                      child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: selectIndex == 6 ? Colors.white : const Color(0xff262626))
+                      ),
+                      child:  colorBox(actionPlanid: 6, goalColorid: 6, detailGoalid: 6)
+                    )),
+
+                    GestureDetector(
+                      onTap: () {setState((){
+                        selectIndex = 7;
+                      });},
+                      child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: selectIndex == 7 ? Colors.white : const Color(0xff262626))
+                      ),
+                      child:  colorBox(actionPlanid: 7, goalColorid: 7, detailGoalid: 7)
+                    )),
+
+                    GestureDetector(
+                      onTap: () {setState((){
+                        selectIndex = 8;
+                      });},
+                      child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: selectIndex == 8 ? Colors.white : const Color(0xff262626))
+                      ),
+                      child:  colorBox(actionPlanid: 8, goalColorid: 8, detailGoalid: 8)
+                    )),
+                    
                   ],
                 )),
+                
                 const SizedBox(
                   height: 20,
                 ),
+
                 const Text(
                   '컬러 테마',
                   style: TextStyle(
                     color: Colors.white,
                   ),
                 ),
+
+                const SizedBox(
+                  height: 15,
+                ),
+
+
                 Expanded(
                     child: GridView(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 6),
-                        children: [
-                      GestureDetector(
-                          onTap: () {
-                            context.read<GoalColor>().updateGoalColor(
-                                '$selectIndex', const Color(0xffFF7A7A));
-                          },
-                          child: Container(
-                            color: const Color(0xffFF7A7A),
-                          )),
-                      Container(
-                        color: const Color(0xffFFB82D),
-                      ),
-                      Container(
-                        color: const Color(0xffFCFF62),
-                      ),
-                      Container(
-                        color: const Color(0xff72FF5B),
-                      ),
-                      Container(
-                        color: const Color(0xff5DD8FF),
-                      ),
-                      Container(
-                        color: const Color(0xff929292),
-                      ),
-                      Container(
-                        color: const Color(0xffFF5794),
-                      ),
-                      Container(
-                        color: const Color(0xffAE7CFF),
-                      ),
-                      Container(
-                        color: const Color(0xffC77B7F),
-                      ),
-                      Container(
-                        color: const Color(0xff009255),
-                      ),
-                      Container(
-                        color: const Color(0xff3184FF),
-                      ),
-                      Container(
-                        color: const Color(0xff11D1C2),
-                      ),
-                    ])),
-                TextButton(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 6, crossAxisSpacing: 11, mainAxisSpacing: 11),
+                  children: [
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xffFF7A7A)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xffFFB82D)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xffFCFF62)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xff72FF5B)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xff5DD8FF)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xff929292)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xffFF5794)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xffAE7CFF)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xffC77B7F)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xff009255)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xff3184FF)),
+                  color_option(selectIndex: selectIndex, colorCode: const Color(0xff11D1C2))
+                  ]
+                )),
+
+                Align(
+                  alignment: Alignment.centerRight,
+                  child:TextButton(
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const DPcreateColorPage(),
+                          builder: (context) => DPcreateCompletePage(),
                         ));
                   },
-                  style: TextButton.styleFrom(
+                  style: TextButton.styleFrom( //api 넣기
                       backgroundColor: const Color(0xff131313),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6.0))),
                   child: const Text(
-                    '다음',
+                    '완료',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
-                )
+                )),
+
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             )));
   }
 }
+

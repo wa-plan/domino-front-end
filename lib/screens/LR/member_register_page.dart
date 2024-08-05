@@ -28,14 +28,3 @@ class memberRegisterPage extends StatelessWidget {
 };
   }
 
-// set
-String email = _userProvider.email;
-
-// get
-_userProvider.email = _emailConroller.text;
-
-  void _submit() {
-    _userProvider.email = _emailConroller.text;
-    Navigator.push(context,
-        MaterialPageRoute(builder: ((context) => EnrollPasswordWidget())));
-  }

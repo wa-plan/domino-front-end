@@ -4,8 +4,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:domino/screens/TD/add_page1.dart';
 import 'package:domino/screens/TD/edit_page.dart';
 import 'package:provider/provider.dart';
-//import 'package:flutter_application_1/provider/date_provider.dart';
 import 'package:domino/provider/TD/event_provider.dart';
+import 'package:intl/intl.dart'; // 요일 변환을 위한 패키지
 
 class EventCalendar extends StatefulWidget {
   const EventCalendar({super.key});
@@ -209,10 +209,6 @@ class _EventCalendarState extends State<EventCalendar> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  value[index].interval.toString(),
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                Text(
                                   value[index].title,
                                   style: const TextStyle(color: Colors.white),
                                 ),
@@ -303,82 +299,111 @@ void editDialog(
   bool switchvalue,
   int interval,
 ) {
-  showDialog(
-      context: context,
-      barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
-      builder: (BuildContext context) {
-        return AlertDialog(
-          //title: const Text('팝업 메시지'),
-          backgroundColor: const Color(0xff262626),
+  String getIntervalText() {
+    if (!switchvalue) {
+      return 'X';
+    }
 
-          content: Row(
-            children: [
-              Container(
-                width: 15,
-                height: 140,
-                decoration: const BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.all(Radius.circular(3))),
+    String weekday = DateFormat('EEEE', 'ko_KR').format(date); // 요일을 한국어로 변환
+    String dayOfMonth = date.day.toString(); // 날짜 가져오기
+
+    if (interval == 1) {
+      return '매일';
+    } else if (interval == 7) {
+      return '매주 $weekday';
+    } else if (interval == 14) {
+      return '격주 $weekday';
+    } else if (interval > 14) {
+      return '매월 $dayOfMonth일';
+    }
+
+    return 'X'; // 기본값
+  }
+
+  showDialog(
+    context: context,
+    barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
+    builder: (BuildContext context) {
+      return AlertDialog(
+        //title: const Text('팝업 메시지'),
+        backgroundColor: const Color(0xff262626),
+        content: Row(
+          children: [
+            Container(
+              width: 15,
+              height: 140,
+              decoration: const BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.all(Radius.circular(3)),
               ),
-              const SizedBox(width: 20),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            '환상적인 세계여행',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            title,
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 80,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditPage(date, title,
-                                      content, switchvalue, interval),
-                                ));
-                          },
-                          icon: const Icon(Icons.edit))
-                    ],
-                  ),
-                  Text(
-                    content,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Container(
-                      height: 1,
-                      width: 200,
-                      color: Colors.grey,
+            ),
+            const SizedBox(width: 20),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          '환상적인 세계여행',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          title,
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      ],
                     ),
+                    const SizedBox(
+                      width: 80,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditPage(
+                              date,
+                              title,
+                              content,
+                              switchvalue,
+                              interval,
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
+                  ],
+                ),
+                Text(
+                  content,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Container(
+                    height: 1,
+                    width: 200,
+                    color: Colors.grey,
                   ),
-                  const Text(
-                    '반복',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  const Text(
-                    '매월 목요일',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      });
+                ),
+                const Text(
+                  '반복',
+                  style: TextStyle(color: Colors.grey),
+                ),
+                Text(
+                  getIntervalText(),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
