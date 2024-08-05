@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:domino/screens/TD/add_page2.dart';
 import 'package:domino/widgets/DP/smallgridWithData.dart';
-import 'package:domino/screens/TD/add_page2.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:provider/provider.dart';
 
@@ -156,9 +155,6 @@ class _AddPage1State extends State<AddPage1> {
                     color: Colors.white,
                     fontSize: 19,
                     fontWeight: FontWeight.bold)),
-            const SizedBox(
-              height: 480,
-            ),
             Row(children: [
               TextButton(
                 onPressed: () {
