@@ -1,6 +1,8 @@
+import 'package:domino/main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/change_password.dart';
 import 'package:domino/screens/ST/settings_main.dart';
+import 'package:domino/widgets/TD/popup.dart';
 
 class AccountManagement extends StatefulWidget {
   const AccountManagement({super.key});
@@ -75,36 +77,45 @@ class _AccountManagementState extends State<AccountManagement> {
                   ),
                   const ListTile(
                     title: Text('로그아웃', style: TextStyle(color: Colors.white)),
+                  ),
+                  ListTile(
+                    title: const Text('탈퇴하기',
+                        style: TextStyle(color: Colors.white)),
+                    onTap: () {
+                      PopupDialog.show(
+                        context,
+                        '이건 아니야.. \n정말 떠날거야...?',
+                        true, // cancel
+                        false, // close
+                        false, // delete
+                        true, // signout
+                        onCancel: () {
+                          // 취소 버튼을 눌렀을 때 실행할 코드
+                          Navigator.of(context).pop();
+                        },
+                        onClose: () {
+                          // 닫기 버튼을 눌렀을 때 실행할 코드
+                          Navigator.of(context).pop();
+                        },
+                        onDelete: () {
+                          // 삭제 버튼을 눌렀을 때 실행할 코드
+                          Navigator.of(context).pop();
+                        },
+                        onSignOut: () {
+                          // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MyApp(),
+                              ));
+                        },
+                      );
+                    },
                   )
                 ],
               ))
             ],
           ),
-          /*const Row(
-                children: [
-                  Text(
-                    '이메일',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                  SizedBox(
-                    width: 130,
-                  ),
-                  Text('new7932@naver.com',
-                      style: TextStyle(color: Colors.white, fontSize: 16))
-                ],
-              ),
-              ListView(children: const [
-                ListTile(
-                  title: Text(
-                    '휴대폰 번호',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  trailing: Text(
-                    '010 7536 0000',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              ])*/
         ));
   }
 }
