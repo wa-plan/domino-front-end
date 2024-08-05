@@ -221,7 +221,7 @@ class EditPageState extends State<EditPage> {
                       formKey.currentState!.save();
 
                       // DateProvider에서 pickedDate를 가져옴
-                      DateTime pickedDate =
+                      DateTime? pickedDate =
                           context.read<DateProvider>().pickedDate;
 
                       if (switchValue) {
@@ -245,7 +245,7 @@ class EditPageState extends State<EditPage> {
 
                         context
                             .read<EventProvider>()
-                            .editEvent(pickedDate, oldEvent, newEvent);
+                            .editEvent(pickedDate!, oldEvent, newEvent);
                       } else {
                         Event oldEvent = Event(
                           title: 'Money',
@@ -263,7 +263,7 @@ class EditPageState extends State<EditPage> {
 
                         context
                             .read<EventProvider>()
-                            .editEvent(pickedDate, oldEvent, newEvent);
+                            .editEvent(pickedDate!, oldEvent, newEvent);
                       }
 
                       // 이벤트 추가 후 화면 이동
