@@ -100,6 +100,17 @@ Widget checkTextFormField({
 
 class _ChangePasswordState extends State<ChangePassword> {
   @override
+  void initState() {
+    super.initState();
+    // Provider 값을 초기화
+    final passwordProvider =
+        Provider.of<PasswordProvider>(context, listen: false);
+    passwordProvider.currentpw = '';
+    passwordProvider.newpw = '';
+    passwordProvider.checkpw = '';
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -238,22 +249,25 @@ class _ChangePasswordState extends State<ChangePassword> {
                       if (checkkey.currentState!.validate()) {
                         checkkey.currentState!.save();
                       }
-                      if (Provider.of<PasswordProvider>(context, listen: false)
-                                  .currentpw ==
-                              receivedkey &&
+                      // 값 비교
+                      final currentPw =
                           Provider.of<PasswordProvider>(context, listen: false)
-                                  .newpw
-                                  .length >
-                              7 &&
+                              .currentpw;
+                      final newPw =
                           Provider.of<PasswordProvider>(context, listen: false)
-                                  .newpw
-                                  .length <
-                              17 &&
+                              .newpw;
+                      final checkPw =
                           Provider.of<PasswordProvider>(context, listen: false)
-                                  .checkpw ==
-                              Provider.of<PasswordProvider>(context,
-                                      listen: false)
-                                  .newpw) {
+                              .checkpw;
+
+                      if (currentPw == receivedkey &&
+                          newPw.length > 7 &&
+                          newPw.length < 17 &&
+                          checkPw == newPw) {
+                        // 초기화
+                        currentkeycontroller.clear();
+                        newkeycontroller.clear();
+                        checkkeycontroller.clear();
                         Navigator.of(context).pop();
                         Navigator.push(
                           context,
