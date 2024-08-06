@@ -194,11 +194,7 @@ class EditPageState extends State<EditPage> {
                             content: widget.content,
                             switchValue: widget.switchValue,
                             interval: widget.interval));
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MyApp(),
-                        ));
+                    deleteDialog(context);
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: const Color(0xFFFF6767),
@@ -293,4 +289,56 @@ class EditPageState extends State<EditPage> {
       ),
     );
   }
+}
+
+void deleteDialog(context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return Dialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4))),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(5, 25, 5, 25),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyApp(),
+                        ));
+                  },
+                  child: const Text(
+                    '앞으로의 도미노 모두 삭제',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  )),
+              const SizedBox(
+                height: 10,
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyApp(),
+                        ));
+                  },
+                  child: const Text(
+                    '오늘의 도미노만 삭제',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  )),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

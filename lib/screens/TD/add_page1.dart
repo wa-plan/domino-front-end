@@ -39,7 +39,6 @@ class _AddPage1State extends State<AddPage1> {
         padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
