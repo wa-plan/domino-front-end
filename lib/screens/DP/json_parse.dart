@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:domino/apis/api_model.dart';
-import 'package:domino/apis/api_function.dart';
+import 'package:domino/apis/dp_api_model.dart';
+import 'package:domino/apis/dp_api_function.dart';
 
 class JsonParse extends StatefulWidget {
   const JsonParse({super.key});
