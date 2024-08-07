@@ -7,7 +7,7 @@ class ApiService {
   Future<User?> login(String userid, String password) async {
     try {
       final response = await _dio.post(
-        'https://13.124.78.26:8080/login',
+        'https://13.124.78.26:8080/api/auth/login',
         data: {'userid': userid, 'password': password},
       );
       if (response.statusCode == 200) {
@@ -22,7 +22,7 @@ class ApiService {
   Future<User?> register(String userid, String password) async {
     try {
       final response = await _dio.post(
-        'https://13.124.78.26:8080/register',
+        'https://13.124.78.26:8080/api/user/signup',
         data: {'userid': userid, 'password': password},
       );
       if (response.statusCode == 200) {
