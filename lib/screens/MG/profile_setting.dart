@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 
 //프로필 사진 팝업
-class MyApp extends StatelessWidget {
+/*class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
 class DialogExample extends StatelessWidget {
@@ -77,4 +77,4 @@ class DialogExample extends StatelessWidget {
       ],
     );
   }
-}
+}*/
