@@ -1,3 +1,4 @@
+import 'package:domino/screens/LR/login.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -28,7 +29,10 @@ void main() async {
         ChangeNotifierProvider(create: (_) => GoalColor()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
-      child: const MyApp(),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LoginScreen(),
+      ),
     ),
   );
 }
