@@ -118,7 +118,7 @@ class AddPage2State extends State<AddPage2> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 35,
                       ),
                       const Text(
                         '언제 실행하고 싶나요?',
@@ -129,6 +129,7 @@ class AddPage2State extends State<AddPage2> {
                       ),
                       const AddCalendar(), //추가할 때 달력
                       //반복하기 기능
+                      const SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end, //오른쪽 정렬
                         children: [
@@ -158,11 +159,12 @@ class AddPage2State extends State<AddPage2> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    /*Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AddPage1(),
-                        ));
+                        ));*/
+                    Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
@@ -172,7 +174,7 @@ class AddPage2State extends State<AddPage2> {
                     '이전',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
-                ), //취소 버튼
+                ), //이전 버튼
                 TextButton(
                   onPressed: () {
                     String content =

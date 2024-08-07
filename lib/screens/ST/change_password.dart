@@ -121,11 +121,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AccountManagement(),
-                      ));
+                  Navigator.of(context).pop();
                 },
                 icon: const Icon(Icons.arrow_back_ios_new_rounded),
                 color: Colors.white,
@@ -228,16 +224,19 @@ class _ChangePasswordState extends State<ChangePassword> {
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              '혹시 비밀번호를 잊으셨나요?',
-              style: TextStyle(color: Colors.white),
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                '혹시 비밀번호를 잊으셨나요?',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 50),
             Center(
               child: SizedBox(
                 width: double.infinity, // 부모의 최대 너비만큼 버튼의 너비를 설정
                 child: SizedBox(
-                  height: 50, // 버튼의 높이 설정
+                  height: 60, // 버튼의 높이 설정
                   child: TextButton(
                     onPressed: () {
                       if (currentkey.currentState!.validate()) {
@@ -280,13 +279,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                     style: ButtonStyle(
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
                       ),
                       backgroundColor: WidgetStateProperty.all(Colors.black),
                     ),
                     child: const Text('비밀번호 변경하기',
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),

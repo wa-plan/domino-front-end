@@ -1,7 +1,6 @@
 import 'package:domino/main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/change_password.dart';
-import 'package:domino/screens/ST/settings_main.dart';
 import 'package:domino/widgets/TD/popup.dart';
 
 class AccountManagement extends StatefulWidget {
@@ -23,11 +22,7 @@ class _AccountManagementState extends State<AccountManagement> {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsMain(),
-                        ));
+                    Navigator.of(context).pop();
                   },
                   icon: const Icon(Icons.arrow_back_ios_new_rounded),
                   color: Colors.white,
@@ -86,23 +81,19 @@ class _AccountManagementState extends State<AccountManagement> {
                         context,
                         '이건 아니야.. \n정말 떠날거야...?',
                         true, // cancel
-                        false, // close
                         false, // delete
                         true, // signout
                         onCancel: () {
                           // 취소 버튼을 눌렀을 때 실행할 코드
                           Navigator.of(context).pop();
                         },
-                        onClose: () {
-                          // 닫기 버튼을 눌렀을 때 실행할 코드
-                          Navigator.of(context).pop();
-                        },
+
                         onDelete: () {
                           // 삭제 버튼을 눌렀을 때 실행할 코드
-                          Navigator.of(context).pop();
                         },
                         onSignOut: () {
                           // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                          Navigator.of(context).pop();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
