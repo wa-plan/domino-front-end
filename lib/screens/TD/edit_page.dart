@@ -210,7 +210,7 @@ class EditPageState extends State<EditPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    String content =
+                    /*String content =
                         dominoController.text; // 텍스트 필드에서 입력된 내용을 가져옴
 
                     if (formKey.currentState!.validate()) {
@@ -268,7 +268,13 @@ class EditPageState extends State<EditPage> {
                           MaterialPageRoute(
                             builder: (context) => const MyApp(),
                           ));
-                    }
+                    }*/
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyApp(),
+                        ));
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 57, 33, 33),

@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 class PopupDialog extends StatelessWidget {
   final String content;
   final bool cancel;
-  final bool close;
   final bool delete;
   final bool signout;
   final VoidCallback? onCancel;
-  final VoidCallback? onClose;
   final VoidCallback? onDelete;
   final VoidCallback? onSignOut;
 
@@ -15,11 +13,9 @@ class PopupDialog extends StatelessWidget {
     super.key,
     required this.content,
     required this.cancel,
-    required this.close,
     required this.delete,
     required this.signout,
     this.onCancel,
-    this.onClose,
     this.onDelete,
     this.onSignOut,
   });
@@ -28,26 +24,12 @@ class PopupDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // Determine which button to display based on the flags
     List<Widget> buttons = [];
-    if (close) {
-      buttons.add(
-        TextButton(
-          onPressed: onClose,
-          // ?? () => Navigator.of(context).pop(),
-          style: ButtonStyle(
-            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-              const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-              ),
-            ),
-          ),
-          child: const Text('닫기', style: TextStyle(color: Colors.white)),
-        ),
-      );
-    }
+
     if (delete) {
       buttons.add(
         TextButton(
-          onPressed: onDelete ?? () => Navigator.of(context).pop(),
+          onPressed: onDelete,
+          // ?? () => Navigator.of(context).pop(),
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(Colors.red),
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -66,7 +48,8 @@ class PopupDialog extends StatelessWidget {
     if (signout) {
       buttons.add(
         TextButton(
-          onPressed: onSignOut ?? () => Navigator.of(context).pop(),
+          onPressed: onSignOut,
+          //?? () => Navigator.of(context).pop(),
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(Colors.red),
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -121,8 +104,8 @@ class PopupDialog extends StatelessWidget {
                         children: [
                           if (cancel)
                             TextButton(
-                              onPressed:
-                                  onCancel ?? () => Navigator.of(context).pop(),
+                              onPressed: onCancel,
+                              // ?? () => Navigator.of(context).pop(),
                               style: ButtonStyle(
                                 shape: WidgetStateProperty.all<
                                     RoundedRectangleBorder>(
@@ -154,11 +137,9 @@ class PopupDialog extends StatelessWidget {
     BuildContext context,
     String content,
     bool cancel,
-    bool close,
     bool delete,
     bool signout, {
     VoidCallback? onCancel,
-    VoidCallback? onClose,
     VoidCallback? onDelete,
     VoidCallback? onSignOut,
   }) {
@@ -169,11 +150,9 @@ class PopupDialog extends StatelessWidget {
         return PopupDialog(
           content: content,
           cancel: cancel,
-          close: close,
           delete: delete,
           signout: signout,
           onCancel: onCancel,
-          onClose: onClose,
           onDelete: onDelete,
           onSignOut: onSignOut,
         );
