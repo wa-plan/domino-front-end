@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
-class Profile extends StatefulWidget {
+/*class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
   @override
@@ -158,4 +157,4 @@ _getCameraImage() async {
         print('선택 안 함');
       }
     }
-  } 
+  } */

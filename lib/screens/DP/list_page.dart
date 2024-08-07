@@ -1,5 +1,6 @@
 import 'package:domino/screens/DP/create_select_page.dart';
 import 'package:flutter/material.dart';
+import 'package:domino/widgets/TD/nav_bar.dart';
 
 class DPlistPage extends StatelessWidget {
   const DPlistPage({super.key});
@@ -22,6 +23,7 @@ class DPlistPage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: const NavBar(),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
         child: Column(
