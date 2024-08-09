@@ -24,12 +24,10 @@ class PopupDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // Determine which button to display based on the flags
     List<Widget> buttons = [];
-
     if (delete) {
       buttons.add(
         TextButton(
-          onPressed: onDelete,
-          // ?? () => Navigator.of(context).pop(),
+          onPressed: onDelete ?? () => Navigator.of(context).pop(),
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(Colors.red),
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -48,8 +46,7 @@ class PopupDialog extends StatelessWidget {
     if (signout) {
       buttons.add(
         TextButton(
-          onPressed: onSignOut,
-          //?? () => Navigator.of(context).pop(),
+          onPressed: onSignOut ?? () => Navigator.of(context).pop(),
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(Colors.red),
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -104,8 +101,8 @@ class PopupDialog extends StatelessWidget {
                         children: [
                           if (cancel)
                             TextButton(
-                              onPressed: onCancel,
-                              // ?? () => Navigator.of(context).pop(),
+                              onPressed:
+                                  onCancel ?? () => Navigator.of(context).pop(),
                               style: ButtonStyle(
                                 shape: WidgetStateProperty.all<
                                     RoundedRectangleBorder>(
