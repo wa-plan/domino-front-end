@@ -1,7 +1,6 @@
 import 'package:domino/main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/provider/TD/date_provider.dart';
-import 'package:domino/screens/TD/add_page1.dart';
 import 'package:domino/widgets/TD/add_calendar.dart';
 import 'package:domino/widgets/TD/repeat_settings.dart';
 import 'package:provider/provider.dart';

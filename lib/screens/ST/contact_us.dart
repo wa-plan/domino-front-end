@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:domino/screens/ST/settings_main.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
