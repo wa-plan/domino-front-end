@@ -1,7 +1,7 @@
 import 'package:domino/main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/change_password.dart';
-import 'package:domino/widgets/TD/popup.dart';
+import 'package:domino/widgets/popup.dart';
 
 class AccountManagement extends StatefulWidget {
   const AccountManagement({super.key});

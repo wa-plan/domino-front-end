@@ -5,7 +5,6 @@ import 'package:domino/widgets/TD/edit_repeat_settings.dart';
 
 import 'package:provider/provider.dart';
 import 'package:domino/provider/TD/event_provider.dart';
-import 'package:domino/provider/TD/date_provider.dart';
 
 class EditPage extends StatefulWidget {
   final DateTime date;

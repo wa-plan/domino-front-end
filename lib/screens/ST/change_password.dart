@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:domino/screens/ST/account_management.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/ST/password_provider.dart';
 import 'package:domino/main.dart';
@@ -277,12 +276,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                       }
                     },
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
                       ),
-                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                      backgroundColor: WidgetStateProperty.all(Colors.black),
                     ),
                     child: const Text('비밀번호 변경하기',
                         style: TextStyle(
