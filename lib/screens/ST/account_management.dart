@@ -1,7 +1,9 @@
 import 'package:domino/main.dart';
+import 'package:domino/screens/LR/login.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/change_password.dart';
 import 'package:domino/widgets/popup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountManagement extends StatefulWidget {
   const AccountManagement({super.key});
@@ -70,8 +72,18 @@ class _AccountManagementState extends State<AccountManagement> {
                           ));
                     },
                   ),
-                  const ListTile(
-                    title: Text('로그아웃', style: TextStyle(color: Colors.white)),
+                  ListTile(
+                    title: const Text('로그아웃',
+                        style: TextStyle(color: Colors.white)),
+                    onTap: () {
+                      _logout();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    },
                   ),
                   ListTile(
                     title: const Text('탈퇴하기',
@@ -131,4 +143,11 @@ class AccountInfo extends StatelessWidget {
       ),
     );
   }
+}
+
+void _logout() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('authToken');
+  print('로그아웃 성공');
+  // TODO: 로그아웃 후의 처리
 }
