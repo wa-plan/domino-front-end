@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:domino/screens/MG/mygoal_main.dart';
-//import 'package:domino/apis/mg_api_function.dart';
+import 'package:domino/widgets/profile_img_samplegallery.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
