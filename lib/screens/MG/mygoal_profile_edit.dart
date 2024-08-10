@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:domino/screens/MG/mygoal_main.dart';
+//import 'package:domino/apis/mg_api_function.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -11,17 +13,26 @@ class Profile extends StatefulWidget {
 class ProfileEdit extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    final _imageSize = MediaQuery.of(context).size.width / 4;
+    final _imageSize = MediaQuery.of(context).size.width / 4;   
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('프로필 편집하기'),
+        title: Text("프로필 편집하기"),
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+          ),
+        backgroundColor: Colors.black,
+        elevation: 0,
         ),
         body: Padding(
           children:[
             title: const Text('사진으로 자신을 표현해봐요')
           ]
+            style: TextStyle(
+            color: Colors.black,
+          ),
           children: [
             Container(
               constraints: BoxConstraints(
@@ -84,9 +95,12 @@ class ProfileEdit extends State<Profile> {
             ),
             Card(
               child: Text('어디서 사진을 가져올까요?')
+              
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+              getCameraImage(ImageSource.camera); //getImage 함수를 호출해서 카메라 호출
+              },
               child: const Text('카메라로 찍기'),
             ),
             const SizedBox(
@@ -100,7 +114,7 @@ class ProfileEdit extends State<Profile> {
             ),
             ElevatedButton(
               onPressed: () {
-              getImage(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
+              getPhotoLibraryImage(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
                },
               child: Text("갤러리"),
             ),
@@ -114,7 +128,9 @@ class ProfileEdit extends State<Profile> {
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+              getSampleImage(widgets/profile_img_samplegallery.dart); //getImage 함수를 호출해서 기본 이미지 9종 가져오기
+               },
               child: const Text('기본 이미지'),
             ),
             const SizedBox(
@@ -159,3 +175,18 @@ _getCameraImage() async {
       }
     }
   } 
+
+  _getSampleImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: widgets/profile_img_samplegallery.dart);
+    if (pickedFile != null) {
+      setState(() {
+        _pickedFile = _pickedFile;
+      });
+    } else {
+      if (kDebugMode) {
+        print('선택 안 함');
+      }
+    }
+  } 
+  }
