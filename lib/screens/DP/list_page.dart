@@ -1,6 +1,6 @@
 import 'package:domino/screens/DP/create_select_page.dart';
 import 'package:flutter/material.dart';
-import 'package:domino/widgets/TD/nav_bar.dart';
+import 'package:domino/widgets/nav_bar.dart';
 
 class DPlistPage extends StatelessWidget {
   const DPlistPage({super.key});
@@ -36,19 +36,19 @@ class DPlistPage extends StatelessWidget {
                     const PopupMenuItem(
                         value: 'edit',
                         child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                          '삭제하기',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ))),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '삭제하기',
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ))),
                     const PopupMenuItem(
                         value: 'delete',
                         child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                          '수정하기',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ))),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '수정하기',
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ))),
                   ];
                 },
                 onSelected: (value) {

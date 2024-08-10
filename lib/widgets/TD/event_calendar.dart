@@ -58,66 +58,84 @@ class _EventCalendarState extends State<EventCalendar> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TableCalendar<Event>(
-          firstDay: DateTime.utc(2014, 1, 1),
-          lastDay: DateTime.utc(2034, 12, 31),
-          focusedDay: _focusedDay,
-          eventLoader: (day) =>
-              context.watch<EventProvider>().getEventsForDay(day),
-          calendarFormat: _calendarFormat,
-          selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
-          },
-          onDaySelected: _onDaySelected,
-          onPageChanged: (focusedDay) {
-            setState(() {
-              _focusedDay = focusedDay;
-              _selectedDay = focusedDay;
-              _selectedEvents.value =
-                  context.read<EventProvider>().getEventsForDay(_selectedDay!);
-            });
-          },
-          onFormatChanged: (format) {
-            if (_calendarFormat != format) {
-              // Call `setState()` when updating calendar format
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: TableCalendar<Event>(
+            firstDay: DateTime.utc(2014, 1, 1),
+            lastDay: DateTime.utc(2034, 12, 31),
+            focusedDay: _focusedDay,
+            eventLoader: (day) =>
+                context.watch<EventProvider>().getEventsForDay(day),
+            calendarFormat: _calendarFormat,
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: _onDaySelected,
+            onPageChanged: (focusedDay) {
               setState(() {
-                _calendarFormat = format;
+                _focusedDay = focusedDay;
+                _selectedDay = focusedDay;
+                _selectedEvents.value = context
+                    .read<EventProvider>()
+                    .getEventsForDay(_selectedDay!);
               });
-            }
-          },
-          availableCalendarFormats: const {
-            CalendarFormat.month: '한달',
-            CalendarFormat.week: '1주',
-          },
-          locale: 'ko-KR',
-          calendarStyle: CalendarStyle(
-              markerSize: 0.0,
-              isTodayHighlighted: true,
-              todayDecoration: const BoxDecoration(
-                  color: Color(0xFF5B5B5B), shape: BoxShape.circle),
-              selectedDecoration: const BoxDecoration(
-                  color: Color(0xFFFF6767), shape: BoxShape.rectangle),
-              defaultTextStyle: TextStyle(
-                color: Colors.white,
-                fontSize: MediaQuery.of(context).size.width * 0.035,
-              ),
-              weekendTextStyle: TextStyle(
-                color: Colors.white,
-                fontSize: MediaQuery.of(context).size.width * 0.035,
-              )),
-          headerStyle: const HeaderStyle(
-              leftChevronMargin: EdgeInsets.only(right: 55.0),
-              //formatButtonVisible: false,
+            },
+            onFormatChanged: (format) {
+              if (_calendarFormat != format) {
+                // Call `setState()` when updating calendar format
+                setState(() {
+                  _calendarFormat = format;
+                });
+              }
+            },
+            availableCalendarFormats: const {
+              CalendarFormat.month: '한달',
+              CalendarFormat.week: '1주',
+            },
+            locale: 'ko-KR',
+            calendarStyle: CalendarStyle(
+                markerSize: 0.0,
+                isTodayHighlighted: true,
+                todayDecoration: const BoxDecoration(
+                    color: Color(0xFF5B5B5B), shape: BoxShape.circle),
+                selectedDecoration: const BoxDecoration(
+                    color: Color(0xFFFF6767), shape: BoxShape.rectangle),
+                defaultTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.width * 0.035,
+                ),
+                weekendTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.width * 0.035,
+                )),
+            headerStyle: HeaderStyle(
+              leftChevronMargin: const EdgeInsets.only(right: 55.0),
+              // formatButtonVisible: false,
               titleCentered: true,
-              titleTextStyle: TextStyle(color: Colors.white),
-              leftChevronIcon: Icon(
+              titleTextStyle:
+                  const TextStyle(color: Colors.white, fontSize: 20),
+              leftChevronIcon: const Icon(
                 Icons.arrow_back_ios,
                 color: Colors.white,
               ),
-              rightChevronIcon: Icon(
+              rightChevronIcon: const Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.white,
-              )),
+              ),
+              formatButtonVisible: true,
+              formatButtonDecoration: BoxDecoration(
+                color: Colors.transparent, // 버튼의 배경색을 투명으로 설정
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(
+                  color: Colors.white, // 윤곽선을 흰색으로 설정
+                ),
+              ),
+              formatButtonTextStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 14.0,
+              ),
+            ),
+          ),
         ),
         Row(
           children: [

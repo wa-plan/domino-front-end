@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/account_management.dart';
 import 'package:domino/screens/ST/contact_us.dart';
-import 'package:domino/widgets/TD/nav_bar.dart';
+import 'package:domino/widgets/nav_bar.dart';
 
 class SettingsMain extends StatefulWidget {
   const SettingsMain({super.key});

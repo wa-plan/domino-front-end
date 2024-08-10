@@ -1,4 +1,5 @@
 import 'package:domino/screens/LR/login.dart';
+import 'package:domino/screens/TD/td_main.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -7,12 +8,9 @@ import 'package:domino/provider/TD/date_provider.dart';
 import 'package:domino/provider/TD/event_provider.dart';
 import 'package:domino/provider/ST/password_provider.dart';
 import 'package:domino/provider/LR/user_provider.dart';
+import 'package:domino/provider/nav_provider.dart';
 
 import 'package:domino/provider/DP/model.dart';
-
-import 'package:domino/widgets/TD/nav_bar.dart';
-
-import 'package:domino/widgets/TD/event_calendar.dart';
 
 void main() async {
   await initializeDateFormatting();
@@ -28,6 +26,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SelectDetailGoal()),
         ChangeNotifierProvider(create: (_) => GoalColor()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => NavBarProvider()),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -50,36 +49,7 @@ class _MyAppState extends State<MyApp> {
     return const MaterialApp(
       title: 'domino',
       debugShowCheckedModeBanner: false,
-      home: Home(),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Text(
-            '오늘의 도미노',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.06,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        backgroundColor: const Color(0xff262626),
-      ),
-      backgroundColor: const Color(0xff262626),
-      body: const Expanded(
-        child: EventCalendar(),
-      ),
-      bottomNavigationBar: const NavBar(),
+      home: TdMain(),
     );
   }
 }
