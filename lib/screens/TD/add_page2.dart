@@ -1,12 +1,10 @@
 import 'package:domino/main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/provider/TD/date_provider.dart';
-import 'package:domino/screens/TD/add_page1.dart';
 import 'package:domino/widgets/TD/add_calendar.dart';
 import 'package:domino/widgets/TD/repeat_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/TD/event_provider.dart';
-import 'package:domino/widgets/TD/popup.dart';
 
 class AddPage2 extends StatefulWidget {
   const AddPage2({super.key});
@@ -51,10 +49,6 @@ class AddPage2State extends State<AddPage2> {
   @override
   void initState() {
     super.initState();
-    // 페이지가 로드될 때 pickedDate 초기화
-    //WidgetsBinding.instance.addPostFrameCallback((_) {
-    //  context.read<DateProvider>().clearPickedDate();
-    //});
     context.read<DateProvider>().clearPickedDate();
   }
 
@@ -78,85 +72,98 @@ class AddPage2State extends State<AddPage2> {
       backgroundColor: const Color(0xff262626),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
-        child: ListView(children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                '더 자세하게 바꿀 수 있어요.',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.1),
-              ),
-              const Text(
-                '예시) 영어 공부 > 영단어 5개 암기',
-                style: TextStyle(
-                    color: Color(0xffF6C92B),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.1),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Form(
-                key: formKey,
-                child: renderTextFormField(
-                  onSaved: (value) {
-                    setState(() {
-                      dominoValue = value;
-                    });
-                  },
-                  validator: (value) {
-                    if (value.length < 1) {
-                      return '1자 이상 써주세요';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                '언제 실행하고 싶나요?',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 19,
-                    fontWeight: FontWeight.bold),
-              ),
-              const AddCalendar(), //추가할 때 달력
-              //반복하기 기능
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end, //오른쪽 정렬
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ListView(
                 children: [
-                  const Text(
-                    '반복하기',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  const SizedBox(width: 10),
-                  Switch(
-                    value: switchValue,
-                    onChanged: (value) {
-                      setState(() {
-                        switchValue = value;
-                      });
-                    },
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '더 자세하게 바꿀 수 있어요.',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.1),
+                      ),
+                      const Text(
+                        '예시) 영어 공부 > 영단어 5개 암기',
+                        style: TextStyle(
+                            color: Color(0xffF6C92B),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.1),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Form(
+                        key: formKey,
+                        child: renderTextFormField(
+                          onSaved: (value) {
+                            setState(() {
+                              dominoValue = value!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.length < 1) {
+                              return '1자 이상 써주세요';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 35,
+                      ),
+                      const Text(
+                        '언제 실행하고 싶나요?',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const AddCalendar(), //추가할 때 달력
+                      //반복하기 기능
+                      const SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end, //오른쪽 정렬
+                        children: [
+                          const Text(
+                            '반복하기',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(width: 10),
+                          Switch(
+                            value: switchValue,
+                            onChanged: (value) {
+                              setState(() {
+                                switchValue = value;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      if (switchValue) const RepeatSettings(),
+                    ],
                   ),
                 ],
               ),
-              if (switchValue) const RepeatSettings(),
-
-              Row(children: [
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
+                    /*Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const AddPage1(),
-                        ));
+                        ));*/
+                    Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
@@ -166,8 +173,7 @@ class AddPage2State extends State<AddPage2> {
                     '이전',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
-                ), //취소 버튼
-
+                ), //이전 버튼
                 TextButton(
                   onPressed: () {
                     String content =
@@ -215,32 +221,11 @@ class AddPage2State extends State<AddPage2> {
                               );
                         }
 
-                        PopupDialog.show(
+                        Navigator.push(
                           context,
-                          '완벽해! \n이제 실행하자:)',
-                          false, // cancel
-                          true, // close
-                          false, // delete
-                          false, // signout
-                          onCancel: () {
-                            //Navigator.of(context).pop();
-                          },
-                          onClose: () {
-                            // 이벤트 추가 후 화면 이동
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MyApp(),
-                              ),
-                            );
-                          },
-                          onDelete: () {
-                            //Navigator.of(context).pop();
-                          },
-                          onSignOut: () {
-                            //Navigator.of(context).pop();
-                          },
+                          MaterialPageRoute(
+                            builder: (context) => const MyApp(),
+                          ),
                         );
                       }
                     }
@@ -256,10 +241,10 @@ class AddPage2State extends State<AddPage2> {
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 )
-              ]),
-            ],
-          ),
-        ]),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

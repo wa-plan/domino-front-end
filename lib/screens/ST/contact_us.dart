@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:domino/screens/ST/settings_main.dart';
 
 class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
@@ -20,11 +19,7 @@ class _ContactUsState extends State<ContactUs> {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsMain(),
-                        ));
+                    Navigator.of(context).pop();
                   },
                   icon: const Icon(Icons.arrow_back_ios_new_rounded),
                   color: Colors.white,

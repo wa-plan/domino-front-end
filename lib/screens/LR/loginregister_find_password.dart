@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:domino/widgets/TD/nav_bar.dart';
+import 'package:domino/widgets/nav_bar.dart';
 
 class LoginregisterFindPassword extends StatelessWidget {
   const LoginregisterFindPassword({super.key});

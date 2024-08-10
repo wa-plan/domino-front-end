@@ -1,8 +1,9 @@
 import 'package:domino/main.dart';
+import 'package:domino/screens/LR/login.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/change_password.dart';
-import 'package:domino/screens/ST/settings_main.dart';
-import 'package:domino/widgets/TD/popup.dart';
+import 'package:domino/widgets/popup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountManagement extends StatefulWidget {
   const AccountManagement({super.key});
@@ -23,11 +24,7 @@ class _AccountManagementState extends State<AccountManagement> {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsMain(),
-                        ));
+                    Navigator.of(context).pop();
                   },
                   icon: const Icon(Icons.arrow_back_ios_new_rounded),
                   color: Colors.white,
@@ -75,8 +72,18 @@ class _AccountManagementState extends State<AccountManagement> {
                           ));
                     },
                   ),
-                  const ListTile(
-                    title: Text('로그아웃', style: TextStyle(color: Colors.white)),
+                  ListTile(
+                    title: const Text('로그아웃',
+                        style: TextStyle(color: Colors.white)),
+                    onTap: () {
+                      _logout();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    },
                   ),
                   ListTile(
                     title: const Text('탈퇴하기',
@@ -86,23 +93,19 @@ class _AccountManagementState extends State<AccountManagement> {
                         context,
                         '이건 아니야.. \n정말 떠날거야...?',
                         true, // cancel
-                        false, // close
                         false, // delete
                         true, // signout
                         onCancel: () {
                           // 취소 버튼을 눌렀을 때 실행할 코드
                           Navigator.of(context).pop();
                         },
-                        onClose: () {
-                          // 닫기 버튼을 눌렀을 때 실행할 코드
-                          Navigator.of(context).pop();
-                        },
+
                         onDelete: () {
                           // 삭제 버튼을 눌렀을 때 실행할 코드
-                          Navigator.of(context).pop();
                         },
                         onSignOut: () {
                           // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                          Navigator.of(context).pop();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -140,4 +143,11 @@ class AccountInfo extends StatelessWidget {
       ),
     );
   }
+}
+
+void _logout() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('authToken');
+  print('로그아웃 성공');
+  // TODO: 로그아웃 후의 처리
 }
