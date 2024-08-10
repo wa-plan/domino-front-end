@@ -6,19 +6,18 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:provider/provider.dart';
 
-class AddPage1 extends StatefulWidget {
-  const AddPage1({super.key});
+class MygoalEdit extends StatefulWidget {
+  const MygoalEdit({super.key});
 
   @override
-  State<AddPage1> createState() => _AddPage1State();
+  State<MygoalEdit> createState() => _MygoalEditState();
 }
 
-class _AddPage1State extends State<AddPage1> {
-  String? selectedGoal;
-  String nextStage = '';
+class _MygoalEditState extends State<MygoalEdit> {
+}
 
     @override
-  Widget build(BuildContext context) {
+    Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -59,12 +58,59 @@ class _AddPage1State extends State<AddPage1> {
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       border: Border.all(
-                        color: const Color(0xff5C5C5C),
-                      )),
-                  child: TextField(
-                    ),
-                   const Text(
-                  '언제까지 목표를 이루고 싶나요?',
+                   작');
+                    Navigator.of(context).pop();
+                  }),
+                },
+                onCancel: () => Navigator.of(context).pop(),
+                showActionButtons: true,
+              ),
+            ),
+          ));
+        });
+
+  String convertDateTimeDisplay(String date, String text) {
+    final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+    final DateFormat serverFormater = DateFormat('yyyy-MM-dd');
+    final DateTime displayDate = displayFormater.parse(date);
+    if (text == '시작') {
+      _EstimatedEditingController.clear();
+      return _DataTimeEditingController.text =
+          serverFormater.format(displayDate);
+    } else
+      return _EstimatedEditingController.text =
+          serverFormater.format(displayDate);
+  }
+
+var _isChecked = false;
+
+child: Center(
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Checkbox(
+        value: _isChecked,
+        onChanged: (value) {
+          setState(() {
+            _isChecked = value!;
+          });
+        },
+      ),
+      Text("확실하지 않아요")
+    ],
+  ),
+),
+  child: Text(
+            '이 경우에는 오늘부터 날짜를 세어나갈게요/n 예시) D + 1',
+            style: TextStyle(
+                color: Colors.yellow,
+                fontSize: 10,),
+          ),
+  }
+
+                children: <Widget>[
+                const Text(
+                  '목표에 대해서 더 알고 싶어요 (선택)?',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -79,44 +125,7 @@ class _AddPage1State extends State<AddPage1> {
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       border: Border.all(
-                        color: const Color(0xff5C5C5C),
-                      )),
-                  void _selectDataCalendar_Expecteddate_visit(BuildContext context) {
-    showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return SafeArea(
-              child: Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width / 1.1,
-              height: 550,
-              child: SfDateRangePicker(
-                monthViewSettings: DateRangePickerMonthViewSettings(
-                  dayFormat: 'EEE',
-                ),
-                monthFormat: 'MMM',
-                showNavigationArrow: true,
-                headerStyle: DateRangePickerHeaderStyle(
-                  textAlign: TextAlign.center,
-                  textStyle: TextStyle(fontSize: 25, color: Colors.blueAccent),
-                ),
-                headerHeight: 80,
-                view: DateRangePickerView.month,
-                allowViewNavigation: false,
-                backgroundColor: ThemeData.light().scaffoldBackgroundColor,
-                initialSelectedDate: DateTime.now(),
-                minDate: DateTime.now(),
-                maxDate: DateTime.now().add(new Duration(days: 365)),
-                selectionMode: DateRangePickerSelectionMode.single,
-                confirmText: '완료',
-                cancelText: '취소',
-                onSubmit: (args) => {
-                  setState(() {
-                    _EstimatedEditingController.clear();
-                    //tempPickedDate = args as DateTime?;
-                    _DataTimeEditingController.text = args.toString();
-                    convertDateTimeDisplay(
-                        _DataTimeEditingController.text, '방문');
+                   작');
                     Navigator.of(context).pop();
                   }),
                 },
@@ -125,18 +134,56 @@ class _AddPage1State extends State<AddPage1> {
               ),
             ),
           ));
-        });
-  }
+        };
 
-  String convertDateTimeDisplay(String date, String text) {
-    final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
-    final DateFormat serverFormater = DateFormat('yyyy-MM-dd');
-    final DateTime displayDate = displayFormater.parse(date);
-    if (text == '방문') {
-      _EstimatedEditingController.clear();
-      return _DataTimeEditingController.text =
-          serverFormater.format(displayDate);
-    } else
-      return _EstimatedEditingController.text =
-          serverFormater.format(displayDate);
-  }
+                children: <Widget>[
+                const Text(
+                  '목표를 보여주는 사진이 있나요?,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1.1),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 20,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle
+                      radius: 40,
+                    Navigator.of(context).pop();
+                  }),
+                },
+                onPressed: () {
+                getPhotoLibraryImage(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
+              },
+              ),
+            ),
+          ));
+        };
+
+        children: <Widget>[
+                const Text(
+                  '목표를 색깔로 표현해주세요.,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 1.1),
+                ),
+
+  _getPhotoLibraryImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _pickedFile = _pickedFile;
+      });
+    } else {
+      if (kDebugMode) {
+        print('선택 안 함');
+      }
+    }
+  } 
