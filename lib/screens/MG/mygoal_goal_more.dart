@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/mygoal_main.dart';
+//import 'package:domino/mg_api_function.dart';
 
 
 //프로필 사진 팝업
