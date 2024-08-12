@@ -63,10 +63,7 @@ class Home extends StatelessWidget {
             image: AssetImage(urls[i%5]))
         ),
       );
-      images.add(image);
-      i++;
     }
-    return images;
   }
   
 }
