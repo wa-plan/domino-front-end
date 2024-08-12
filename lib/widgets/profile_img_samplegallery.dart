@@ -1,20 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:domino/screens/MG/mygoal_profile_edit.dart';
-
+/*import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
 
 class ProfileSampleGallery extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const ProfileSampleGallery({super.key});
+
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
         child: AppBar(),
-        preferredSize: Size.fromHeight(0),
             ), 
             backgroundColor: Colors.black,
             body: const Home()
@@ -28,16 +26,16 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final sizeX = MediaQuery.of(context).size.width;
     final sizeY = MediaQuery.of(context).size.height;
-    return Container(
+    return SizedBox(
       width: sizeX,
       height: sizeY,
       child: GridView.count(
         scrollDirection: Axis.vertical,
         crossAxisCount: 3,
-        children: createGallery(9),
         mainAxisSpacing: 10.0,
         crossAxisSpacing: 10.0,
         padding: const EdgeInsets.all(5.0),
+        children: createGallery(9),
       )
     );
   }
@@ -72,3 +70,4 @@ class Home extends StatelessWidget {
   }
   
 }
+}*/
