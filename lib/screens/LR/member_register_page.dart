@@ -38,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: const Color(0xff262626),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(38.0, 20.0, 38.0, 0.0),
+        padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -96,12 +96,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'Email',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 17,
+                  fontSize: 16,
                 ),
               ),
               SizedBox(
                   height: 35,
-                  width: 275,
+                  width: 295,
                   child: TextField(
                     decoration: InputDecoration(
                         labelText: '이메일을 입력해 주세요.',
@@ -121,12 +121,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'Phone',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 17,
+                  fontSize: 16,
                 ),
               ),
               SizedBox(
                   height: 35,
-                  width: 190,
+                  width: 210,
                   child: TextField(
                     decoration: InputDecoration(
                         labelText: '숫자만 입력해 주세요.',
@@ -140,6 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ))),
                     obscureText: true,
                   )),
+                  
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -157,6 +158,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               )
             ]),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text(
+                'Phone',
+                style: TextStyle(
+                  color: Color(0xff262626),
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(
+                  height: 35,
+                  width: 210,
+                  child: TextField(
+                    decoration: InputDecoration(
+                        labelText: '인증번호 4자리를 입력해 주세요.',
+                        labelStyle: const TextStyle(
+                          color: Color(0xff5C5C5C),
+                          fontSize: 13),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: const BorderSide(
+                              color: Color(0xff5C5C5C),
+                              width: 1.5,
+                            ))),
+                    obscureText: true,
+                  )),
+                   ElevatedButton(
+              onPressed: (){},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                  shape: BeveledRectangleBorder(
+                      borderRadius: BorderRadius.circular(2)),
+                      ),
+          
+              child: const Text(
+                '인증',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 13,
+                ),
+              ),
+            )
+            
+            ]),
             const SizedBox(height: 30.0),
             const Text(
               "아이디/비밀번호 생성",
@@ -172,12 +217,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'ID',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 17,
+                  fontSize: 16,
                 ),
               ),
               SizedBox(
                   height: 35,
-                  width: 275,
+                  width: 295,
                   child: TextField(
                     controller: controller,
                     decoration: InputDecoration(
@@ -198,12 +243,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'PW',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 17,
+                  fontSize: 16,
                 ),
               ),
               SizedBox(
                   height: 35,
-                  width: 275,
+                  width: 295,
                   child: TextField(
                     controller: controller2,
                     decoration: InputDecoration(
@@ -225,12 +270,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 'PW',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 17,
+                  fontSize: 16,
                 ),
               ),
               SizedBox(
                   height: 35,
-                  width: 275,
+                  width: 295,
                   child: TextField(
                     controller: controller2,
                     decoration: InputDecoration(
@@ -260,7 +305,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w300,
-                      fontSize: 15,
+                      fontSize: 13,
                     ),
                   ),
                 ))
