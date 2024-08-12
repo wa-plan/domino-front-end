@@ -73,6 +73,15 @@ flutter:
     - assets/img/vector2.png
     - assets/img/vector3.png
     - assets/img/vector4.png
+    - assets/img/profile_smp1.png
+    - assets/img/profile_smp2.png
+    - assets/img/profile_smp3.png
+    - assets/img/profile_smp4.png
+    - assets/img/profile_smp5.png
+    - assets/img/profile_smp6.png
+    - assets/img/profile_smp7.png
+    - assets/img/profile_smp8.png
+    - assets/img/profile_smp9.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
