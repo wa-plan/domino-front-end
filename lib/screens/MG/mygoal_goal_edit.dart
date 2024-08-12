@@ -1,4 +1,4 @@
-import 'package:domino/main.dart';
+/*import 'package:domino/main.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -183,4 +183,4 @@ child: Center(
         print('선택 안 함');
       }
     }
-  } 
+  } */
