@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:domino/screens/LR/member_register_page.dart';
-import 'package:domino/main.dart'; // MyApp 클래스의 경로를 맞게 수정하세요
+import 'package:domino/main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -101,61 +101,169 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: const Color(0xff262626),
-        title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Row(
-            children: [
-              Text(
-                '로그인',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.06,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterScreen(),
-                    ),
-                  );
-                },
-                child: Text(
-                  '회원가입',
+      ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(38.0, 30.0, 38.0, 0.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  '로그인',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: MediaQuery.of(context).size.width * 0.06,
+                    fontSize: MediaQuery.of(context).size.width * 0.05,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+                Container(
+                    padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        '계정생성',
+                        style: TextStyle(
+                          color: const Color(0xff5C5C5C),
+                          fontSize: MediaQuery.of(context).size.width * 0.05,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )),
+              ],
+            ),
+            const SizedBox(height: 20.0),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text(
+                'ID',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: controller,
-              decoration: const InputDecoration(labelText: '아이디를 입력해주세요.'),
-            ),
-            TextField(
-              controller: controller2,
-              decoration: const InputDecoration(labelText: '비밀번호를 입력해주세요.'),
-              obscureText: true,
-            ),
+              SizedBox(
+                  height: 40,
+                  width: 280,
+                  child: TextField(
+                    controller: controller,
+                    decoration: InputDecoration(
+                        labelText: '아이디를 입력해 주세요.',
+                        labelStyle: const TextStyle(color: Color(0xff5C5C5C)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: const BorderSide(
+                              color: Color(0xff5C5C5C),
+                              width: 1.5,
+                            ))),
+                  ))
+            ]),
+            const SizedBox(height: 20.0),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text(
+                'PW',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+              SizedBox(
+                  height: 40,
+                  width: 280,
+                  child: TextField(
+                    controller: controller2,
+                    decoration: InputDecoration(
+                        labelText: '비밀번호를 입력해 주세요.',
+                        labelStyle: const TextStyle(color: Color(0xff5C5C5C)),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(4),
+                            borderSide: const BorderSide(
+                              color: Color(0xff5C5C5C),
+                              width: 1.5,
+                            ))),
+                    obscureText: true,
+                  ))
+            ]),
             const SizedBox(height: 40.0),
-            TextButton(
-              onPressed: _login,
-              child: const Text('로그인'),
-            ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(children: [
+                
+                          Text(
+                            '자동으로 로그인되기',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                          MyCheckBox(),
+                        ]),
+                        
+                        SizedBox(height: 5.0),
+                        Text(
+                          '아이디/비밀번호 찾기',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        )
+                      ]),
+                  ElevatedButton(
+                    onPressed: _login,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xffBDBDBD),
+                        shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(2))),
+                    child: const Text(
+                      '로그인',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                  )
+                ]),
           ],
         ),
       ),
+    );
+  }
+}
+
+class MyCheckBox extends StatefulWidget {
+  const MyCheckBox({super.key});
+
+  @override
+  _MyCheckBoxState createState() => _MyCheckBoxState();
+}
+
+class _MyCheckBoxState extends State<MyCheckBox> {
+  bool _isCheck = false;
+
+  List<String> checkList = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      value: _isCheck,
+      activeColor: const Color(0xffFCFF62),
+      checkColor: Colors.black,
+      onChanged: (value) {
+        setState(() {
+          _isCheck = value!;
+        });
+      },
     );
   }
 }
