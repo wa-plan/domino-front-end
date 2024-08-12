@@ -1,4 +1,6 @@
+import 'package:domino/screens/LR/loginregister_find_password.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -117,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Container(
-                    padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                     child: TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -127,6 +129,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         );
                       },
+                      style: TextButton.styleFrom(
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
                       child: Text(
                         '계정생성',
                         style: TextStyle(
@@ -138,23 +145,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     )),
               ],
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 30.0),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               const Text(
                 'ID',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 17,
                 ),
               ),
               SizedBox(
-                  height: 40,
-                  width: 280,
+                  height: 35,
+                  width: 275,
                   child: TextField(
                     controller: controller,
                     decoration: InputDecoration(
                         labelText: '아이디를 입력해 주세요.',
-                        labelStyle: const TextStyle(color: Color(0xff5C5C5C)),
+                        labelStyle: const TextStyle(color: Color(0xff5C5C5C),fontSize: 13),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: const BorderSide(
@@ -169,17 +176,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 'PW',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 17,
                 ),
               ),
               SizedBox(
-                  height: 40,
-                  width: 280,
+                  height: 35,
+                  width: 275,
                   child: TextField(
                     controller: controller2,
                     decoration: InputDecoration(
                         labelText: '비밀번호를 입력해 주세요.',
-                        labelStyle: const TextStyle(color: Color(0xff5C5C5C)),
+                        labelStyle: const TextStyle(color: Color(0xff5C5C5C),fontSize: 13),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                             borderSide: const BorderSide(
@@ -194,11 +201,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Column(
+                  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(children: [
-                
+                        const Row(children: [
                           Text(
                             '자동으로 로그인되기',
                             style: TextStyle(
@@ -208,15 +214,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           MyCheckBox(),
                         ]),
-                        
-                        SizedBox(height: 5.0),
-                        Text(
-                          '아이디/비밀번호 찾기',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        )
+                        const SizedBox(height: 5.0),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const LoginregisterFindPassword(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              '아이디/비밀번호 찾기',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ))
                       ]),
                   ElevatedButton(
                     onPressed: _login,
