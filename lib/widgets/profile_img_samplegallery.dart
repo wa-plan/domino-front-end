@@ -43,15 +43,15 @@ class Home extends StatelessWidget {
   List<Widget> createGallery(int numImg) {
     List<Widget> images = [];
     List<String> urls = [];
-    urls.add('assets/profile_smp1.png');
-    urls.add('assets/profile_smp2.png');
-    urls.add('assets/profile_smp3.png');
-    urls.add('assets/profile_smp4.png');
-    urls.add('assets/profile_smp5.png');
-    urls.add('assets/profile_smp6.png');
-    urls.add('assets/profile_smp7.png');
-    urls.add('assets/profile_smp8.png');
-    urls.add('assets/profile_smp9.png');
+    urls.add('assets/img/profile_smp1.png');
+    urls.add('assets/img/profile_smp2.png');
+    urls.add('assets/img/profile_smp3.png');
+    urls.add('assets/img/profile_smp4.png');
+    urls.add('assets/img/profile_smp5.png');
+    urls.add('assets/img/profile_smp6.png');
+    urls.add('assets/img/profile_smp7.png');
+    urls.add('assets/img/profile_smp8.png');
+    urls.add('assets/img/profile_smp9.png');
 
     Widget image;
     int i = 0;
