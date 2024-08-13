@@ -21,17 +21,6 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
   final _pwEmailController = TextEditingController();
   final _verifyNumController = TextEditingController();
 
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    _idEmailController.dispose();
-    _userIdController.dispose();
-    _pwEmailController.dispose();
-    _verifyNumController.dispose();
-    _responseId = '';
-    super.dispose();
-  }
-
   Widget _buildTextFormField({
     required String hintText,
     required TextEditingController controller,

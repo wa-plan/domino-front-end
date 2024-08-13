@@ -1,14 +1,12 @@
-/*import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:domino/widgets/profile_img_samplegallery.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
-
-  @override
-}
+void main() async {
+  await initializeDateFormatting(); 
+  runApp(const MyApp());}
 
 class ProfileEdit extends State<Profile> {
   @override
@@ -75,9 +73,11 @@ class ProfileEdit extends State<Profile> {
         backgroundColor: const Color(0xff262626),
       ),
           ]
-    );
-  }
-
+        );
+    ),
+    ),
+  },
+},
   _showBottomSheet() {
     return showModalBottomSheet(
       context: context,
@@ -141,12 +141,55 @@ class ProfileEdit extends State<Profile> {
             ),
             const SizedBox(
               height: 10,
+              ),
           ],
         );
       },
     );
   }
-}
+Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyApp(),
+                        ));
+                  },
+                  style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xff131313),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0))),
+                  child: const Text(
+                    '취소',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ), //취소 버튼
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyApp(),
+                        ));
+                  },
+                  style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xff131313),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0))),
+                  child: const Text(
+                    '취소',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ), //완료 버튼
+              ]),
+
 
 _getCameraImage() async {
     final pickedFile =
@@ -186,8 +229,6 @@ _getCameraImage() async {
     } else {
       if (kDebugMode) {
         print('선택 안 함');
-      }
-    }
+      },
+    },
   } 
-  }
-*/
