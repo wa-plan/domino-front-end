@@ -54,8 +54,7 @@ class MygoalEdit extends StatefulWidget {
                   height: 20,
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      border: Border.all(
-                   작');
+                      border: Border.all(10);
                     Navigator.of(context).pop();
                   }),
                 },
