@@ -1,6 +1,5 @@
 import 'package:domino/screens/LR/loginregister_find_password.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,12 +15,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController controller = TextEditingController();
-  TextEditingController controller2 = TextEditingController();
+  final TextEditingController _idcontroller = TextEditingController();
+  final TextEditingController _pwcontroller = TextEditingController();
 
   void _login() async {
-    final userId = controller.text;
-    final password = controller2.text;
+    final userId = _idcontroller.text;
+    final password = _pwcontroller.text;
 
     final url = Uri.parse('http://13.124.78.26:8080/api/auth/login');
 
@@ -96,6 +95,34 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Widget _buildTextFormField({
+    required String hintText,
+    required TextEditingController controller,
+    required FormFieldValidator<String?> validator,
+    bool obscureText = false,
+    void Function()? onClear,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
+          border: const OutlineInputBorder(),
+          suffixIcon: controller.text.isNotEmpty
+              ? IconButton(
+                  onPressed: onClear ?? () {},
+                  icon: const Icon(Icons.clear_outlined),
+                )
+              : null,
+        ),
+        validator: validator,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,20 +182,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                  height: 35,
-                  width: 275,
-                  child: TextField(
-                    controller: controller,
-                    decoration: InputDecoration(
-                        labelText: '아이디를 입력해 주세요.',
-                        labelStyle: const TextStyle(color: Color(0xff5C5C5C),fontSize: 13),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: const BorderSide(
-                              color: Color(0xff5C5C5C),
-                              width: 1.5,
-                            ))),
-                  ))
+                height: 35,
+                width: 350,
+                child: _buildTextFormField(
+                  hintText: '아이디를 입력해 주세요.',
+                  controller: _idcontroller,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '아이디를 입력해 주세요.';
+                    }
+                    return null;
+                  },
+                ),
+              )
             ]),
             const SizedBox(height: 20.0),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -180,21 +206,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
-                  height: 35,
-                  width: 275,
-                  child: TextField(
-                    controller: controller2,
-                    decoration: InputDecoration(
-                        labelText: '비밀번호를 입력해 주세요.',
-                        labelStyle: const TextStyle(color: Color(0xff5C5C5C),fontSize: 13),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: const BorderSide(
-                              color: Color(0xff5C5C5C),
-                              width: 1.5,
-                            ))),
-                    obscureText: true,
-                  ))
+                height: 35,
+                width: 350,
+                child: _buildTextFormField(
+                  hintText: '비밀번호를 입력해 주세요.',
+                  controller: _pwcontroller,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '비밀번호를 입력해 주세요.';
+                    }
+                    return null;
+                  },
+                ),
+              )
             ]),
             const SizedBox(height: 40.0),
             Row(

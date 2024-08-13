@@ -13,6 +13,7 @@ import 'package:domino/provider/nav_provider.dart';
 import 'package:domino/provider/DP/model.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
   await initializeDateFormatting();
   runApp(
     MultiProvider(
