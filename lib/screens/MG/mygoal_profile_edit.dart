@@ -4,6 +4,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:domino/widgets/profile_img_samplegallery.dart';
 
+void main() async {
+  await initializeDateFormatting(); 
+  runApp(const MyApp());}
+
 class ProfileEdit extends State<Profile> {
   @override
   Widget build(BuildContext context) {
@@ -69,7 +73,9 @@ class ProfileEdit extends State<Profile> {
         backgroundColor: const Color(0xff262626),
       ),
           ]
-    );
+        );
+    ),
+    ),
   },
 },
   _showBottomSheet() {
@@ -223,7 +229,6 @@ _getCameraImage() async {
     } else {
       if (kDebugMode) {
         print('선택 안 함');
-      }
-    }
+      },
+    },
   } 
-  }
