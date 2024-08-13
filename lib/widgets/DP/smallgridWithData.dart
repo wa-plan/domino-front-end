@@ -4,9 +4,7 @@ import 'package:domino/provider/DP/model.dart';
 import 'package:domino/screens/DP/create_input2_page.dart';
 
 class smallgridWithData extends StatelessWidget {
-  
-  
-  final int goalId; 
+  final int goalId;
 
   const smallgridWithData({super.key, required this.goalId});
 
@@ -16,9 +14,10 @@ class smallgridWithData extends StatelessWidget {
       onTap: () {
         context.read<SelectDetailGoal>().selectDetailGoal('$goalId');
         Navigator.push(
-          context, 
-          MaterialPageRoute(builder: (context) => const DPcreateInput2Page(),)
-        );
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DPcreateInput2Page(),
+            ));
       },
       child: SizedBox(
         width: 100,
@@ -27,19 +26,26 @@ class smallgridWithData extends StatelessWidget {
           crossAxisSpacing: 1,
           mainAxisSpacing: 1,
           children: List.generate(9, (index) {
-            final inputtedActionPlan = context.watch<SaveInputtedActionPlanModel>().inputtedActionPlan[goalId];
-            final values = inputtedActionPlan.containsKey(index.toString()) ? inputtedActionPlan[index.toString()] : '';
+            final inputtedActionPlan = context
+                .watch<SaveInputtedActionPlanModel>()
+                .inputtedActionPlan[goalId];
+            final values = inputtedActionPlan.containsKey(index.toString())
+                ? inputtedActionPlan[index.toString()]
+                : '';
 
             if (index == 4) {
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(3),
-                  color: const Color(0xff929292),),
-                
+                  color: const Color(0xff929292),
+                ),
                 margin: const EdgeInsets.all(1.0),
                 child: Center(
-                  child:Text(
-                  context.watch<SaveInputtedDetailGoalModel>().inputtedDetailGoal['$goalId'] ?? '',
+                    child: Text(
+                  context
+                          .watch<SaveInputtedDetailGoalModel>()
+                          .inputtedDetailGoal['$goalId'] ??
+                      '',
                   style: const TextStyle(color: Colors.black, fontSize: 14),
                   textAlign: TextAlign.center,
                 )),
@@ -48,10 +54,11 @@ class smallgridWithData extends StatelessWidget {
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(3),
-                  color: const Color(0xff5C5C5C),),
+                  color: const Color(0xff5C5C5C),
+                ),
                 margin: const EdgeInsets.all(1.0),
                 child: Center(
-                  child: Text(
+                    child: Text(
                   values.toString(),
                   style: const TextStyle(color: Colors.black, fontSize: 14),
                   textAlign: TextAlign.center,
