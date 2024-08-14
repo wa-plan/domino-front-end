@@ -101,8 +101,7 @@ class PopupDialog extends StatelessWidget {
                         children: [
                           if (cancel)
                             TextButton(
-                              onPressed:
-                                  onCancel ?? () => Navigator.of(context).pop(),
+                              onPressed: () => Navigator.of(context).pop(),
                               style: ButtonStyle(
                                 shape: WidgetStateProperty.all<
                                     RoundedRectangleBorder>(

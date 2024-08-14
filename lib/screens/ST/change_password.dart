@@ -1,9 +1,8 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:domino/screens/LR/loginregister_find_password.dart';
+import 'package:domino/apis/services/lr_services.dart'; // 서비스 파일 import
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -23,121 +22,6 @@ class _ChangePasswordState extends State<ChangePassword> {
     _newkeycontroller.dispose();
     _checkkeycontroller.dispose();
     super.dispose();
-  }
-
-  Future<String?> _changePw() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('authToken');
-    print('저장된 토큰: $token');
-
-    if (token == null) {
-      Fluttertoast.showToast(
-        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-      return null;
-    }
-
-    final currentPassword = _currentkeycontroller.text;
-    final newPassword = _newkeycontroller.text;
-
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/me/password');
-
-    final body = jsonEncode({
-      'currentPassword': currentPassword,
-      'newPassword': newPassword,
-    });
-
-    try {
-      final response = await http.patch(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: body,
-      );
-
-      print('서버 응답 상태 코드: ${response.statusCode}');
-
-      if (response.statusCode == 200) {
-        try {
-          Fluttertoast.showToast(
-            msg: '비밀번호가 성공적으로 변경되었습니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-          );
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const MyApp(),
-            ),
-          );
-        } catch (e) {
-          Fluttertoast.showToast(
-            msg: '응답 데이터 처리 중 오류 발생: JSON 파싱 오류 - $e',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-          );
-          return null;
-        }
-      } else {
-        Fluttertoast.showToast(
-          msg: '비밀번호 변경 실패: ${response.body}',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
-        return null;
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: '오류 발생: $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-      return null;
-    }
-    return null;
-  }
-
-  Widget _buildTextFormField({
-    required String hintText,
-    required TextEditingController controller,
-    required FormFieldValidator<String?> validator,
-    bool obscureText = false,
-    void Function()? onClear,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
-          border: const OutlineInputBorder(),
-          suffixIcon: controller.text.isNotEmpty
-              ? IconButton(
-                  onPressed: onClear ?? () {},
-                  icon: const Icon(Icons.clear_outlined),
-                )
-              : null,
-        ),
-        validator: validator,
-      ),
-    );
   }
 
   @override
@@ -250,7 +134,13 @@ class _ChangePasswordState extends State<ChangePassword> {
               height: 20,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginregisterFindPassword(),
+                    ));
+              },
               child: const Text(
                 '혹시 비밀번호를 잊으셨나요?',
                 style: TextStyle(color: Colors.white),
@@ -276,9 +166,19 @@ class _ChangePasswordState extends State<ChangePassword> {
                       }
 
                       // 비밀번호 변경 요청
-                      final result = await _changePw();
-                      if (result != null) {
-                        // 새 토큰을 사용해 추가 작업을 처리할 수 있습니다.
+                      final success =
+                          await ChangePasswordService.changePassword(
+                        currentPassword: _currentkeycontroller.text,
+                        newPassword: _newkeycontroller.text,
+                      );
+
+                      if (success) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyApp(),
+                          ),
+                        );
                       }
                     },
                     style: ButtonStyle(
@@ -298,6 +198,34 @@ class _ChangePasswordState extends State<ChangePassword> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextFormField({
+    required String hintText,
+    required TextEditingController controller,
+    required FormFieldValidator<String?> validator,
+    bool obscureText = false,
+    void Function()? onClear,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
+          border: const OutlineInputBorder(),
+          suffixIcon: controller.text.isNotEmpty
+              ? IconButton(
+                  onPressed: onClear ?? () {},
+                  icon: const Icon(Icons.clear_outlined),
+                )
+              : null,
+        ),
+        validator: validator,
       ),
     );
   }

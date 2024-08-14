@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/change_password.dart';
 import 'package:domino/widgets/popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:domino/apis/services/lr_services.dart'; // Import the new service
 
 class AccountManagement extends StatefulWidget {
   const AccountManagement({super.key});
@@ -105,6 +106,7 @@ class _AccountManagementState extends State<AccountManagement> {
                         },
                         onSignOut: () {
                           // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                          SignOutService.signOut(context);
                           Navigator.of(context).pop();
                           Navigator.push(
                               context,
@@ -148,6 +150,4 @@ class AccountInfo extends StatelessWidget {
 void _logout() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove('authToken');
-  print('로그아웃 성공');
-  // TODO: 로그아웃 후의 처리
 }

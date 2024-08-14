@@ -1,0 +1,519 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:domino/main.dart';
+import 'package:domino/screens/LR/login.dart';
+
+class LoginService {
+  Future<void> login(
+      BuildContext context, String userId, String password) async {
+    final url = Uri.parse('http://13.124.78.26:8080/api/auth/login');
+
+    final body = jsonEncode({
+      'userId': userId,
+      'password': password,
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답: ${response.body}');
+
+      if (response.statusCode == 200) {
+        try {
+          final responseData = jsonDecode(response.body);
+
+          if (responseData != null && responseData is Map<String, dynamic>) {
+            final accessToken = responseData['accessToken'] ?? '';
+
+            if (accessToken.isNotEmpty) {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.setString('authToken', accessToken);
+
+              Fluttertoast.showToast(
+                msg: '로그인 성공!',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+              );
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MyApp(),
+                ),
+              );
+            } else {
+              Fluttertoast.showToast(
+                msg: '토큰을 받아오지 못했습니다.',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+              );
+            }
+          } else {
+            Fluttertoast.showToast(
+              msg: '서버 응답 형식이 올바르지 않습니다.',
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+            );
+          }
+        } catch (e) {
+          Fluttertoast.showToast(
+            msg: '응답 처리 중 오류 발생: $e',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+        }
+      } else {
+        Fluttertoast.showToast(
+          msg: '로그인 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
+}
+
+class ChangePasswordService {
+  static Future<bool> changePassword(
+      {required String currentPassword, required String newPassword}) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+
+    final url = Uri.parse('http://13.124.78.26:8080/api/user/me/password');
+
+    final body = jsonEncode({
+      'currentPassword': currentPassword,
+      'newPassword': newPassword,
+    });
+
+    try {
+      final response = await http.patch(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: body,
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: '비밀번호가 성공적으로 변경되었습니다.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+        return true;
+      } else {
+        Fluttertoast.showToast(
+          msg: '비밀번호 변경 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        return false;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+  }
+}
+
+class SignOutService {
+  static Future<String?> signOut(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return null;
+    }
+
+    final url = Uri.parse('http://13.124.78.26:8080/api/user/me/password');
+
+    try {
+      final response = await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: '탈퇴가 성공적으로 이루어졌습니다.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MyApp(),
+          ),
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: '탈퇴 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        return null;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return null;
+    }
+    return null;
+  }
+}
+
+class RegistrationService {
+  static Future<void> register({
+    required BuildContext context,
+    required String userId,
+    required String password,
+    required String email,
+    required String phoneNum,
+  }) async {
+    final url = Uri.parse('http://13.124.78.26:8080/api/user/signup');
+
+    final body = jsonEncode({
+      'userId': userId,
+      'password': password,
+      'email': email,
+      'phoneNum': phoneNum,
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답: ${response.body}');
+
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ),
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: '서버 오류: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
+}
+
+class IdFindService {
+  static Future<String> findUserId({
+    required String phoneNum,
+    required String email,
+  }) async {
+    final url = Uri.parse('http://13.124.78.26:8080/api/user/find_userId');
+
+    final body = jsonEncode({
+      'phoneNum': phoneNum,
+      'email': email,
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData.toString(); // Adjust based on your API response
+      } else {
+        Fluttertoast.showToast(
+          msg: '사용자 ID를 찾을 수 없습니다.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        return '';
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return '';
+    }
+  }
+}
+
+class PwFindService {
+  static Future<void> findPassword({
+    required String userId,
+    required String email,
+  }) async {
+    final url = Uri.parse('http://13.124.78.26:8080/api/user/reset_password');
+
+    final body = jsonEncode({
+      'userId': userId,
+      'email': email,
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답: ${response.body}');
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
+}
+
+class MorningAlertService {
+  static Future<String?> morningAlert(
+    BuildContext context,
+    String morningAlarm,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return null;
+    }
+
+    final url = Uri.parse('http://13.124.78.26:8080/api/user/morning_alarm');
+
+    final body = jsonEncode({
+      'alarm': morningAlarm,
+    });
+
+    try {
+      final response = await http.put(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: body
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답: ${response.body}');
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: '아침알람이 업데이트되었습니다.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: '업데이트 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        return null;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return null;
+    }
+    return null;
+  }
+class NightAlertService {
+  static Future<String?> nightAlert(
+    BuildContext context,
+    String nightAlarm,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return null;
+    }
+
+    final url = Uri.parse('http://13.124.78.26:8080/api/user/night_alarm');
+
+    final body = jsonEncode({
+      'alarm': nightAlarm,
+    });
+
+    try {
+      final response = await http.put(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: body);
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답: ${response.body}'); // 응답 내용 확인
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: '저녁알람이 업데이트되었습니다.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: '업데이트 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        return null;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return null;
+    }
+    return null;
+  }
+}
