@@ -1,3 +1,4 @@
+import 'package:domino/screens/MG/mygoal_create.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/nav_provider.dart';
@@ -54,7 +55,7 @@ class NavBar extends StatelessWidget {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const TdMain()),
+          MaterialPageRoute(builder: (context) => const MygoalCreate()),
         );
         break;
       case 1:

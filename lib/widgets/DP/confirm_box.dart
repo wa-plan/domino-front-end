@@ -27,7 +27,7 @@ class ConfirmBox extends StatelessWidget {
               final detailGoal = context
                   .watch<SaveInputtedDetailGoalModel>()
                   .inputtedDetailGoal['$detailGoalid'];
-              final backgroundColor1 = detailGoal.isEmpty
+              final backgroundColor1 = detailGoal!.isEmpty
                   ? const Color(0xff262626)
                   : const Color(0xff929292);
 
@@ -46,7 +46,7 @@ class ConfirmBox extends StatelessWidget {
                   )),
                 );
               } else {
-                final isValueEmpty = values.isEmpty;
+                final isValueEmpty = values!.isEmpty;
                 final backgroundColor2 = isValueEmpty
                     ? const Color(0xff262626)
                     : const Color(0xff5C5C5C);

@@ -164,7 +164,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         );
                         return;
                       }
-
+/*
                       // 비밀번호 변경 요청
                       final success =
                           await ChangePasswordService.changePassword(
@@ -179,7 +179,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             builder: (context) => const MyApp(),
                           ),
                         );
-                      }
+                      }*/
                     },
                     style: ButtonStyle(
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
