@@ -2,7 +2,7 @@ import 'package:domino/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:domino/screens/TD/add_page2.dart';
-import 'package:domino/widgets/DP/smallgridWithData.dart';
+import 'package:domino/widgets/DP/smallgrid_with_data.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:provider/provider.dart';
 
@@ -109,10 +109,10 @@ class _AddPage1State extends State<AddPage1> {
                         crossAxisSpacing: 1,
                         mainAxisSpacing: 1,
                         children: [
-                          const smallgridWithData(goalId: 0),
-                          const smallgridWithData(goalId: 1),
-                          const smallgridWithData(goalId: 2),
-                          const smallgridWithData(goalId: 3),
+                          const Smallgridwithdata(goalId: 0),
+                          const Smallgridwithdata(goalId: 1),
+                          const Smallgridwithdata(goalId: 2),
+                          const Smallgridwithdata(goalId: 3),
                           SizedBox(
                             width: 100,
                             child: GridView.count(
@@ -156,7 +156,7 @@ class _AddPage1State extends State<AddPage1> {
                                     margin: const EdgeInsets.all(1.0),
                                     child: Center(
                                         child: Text(
-                                      value,
+                                      value!,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                           color: Colors.black, fontSize: 15),
@@ -166,10 +166,10 @@ class _AddPage1State extends State<AddPage1> {
                               }),
                             ),
                           ),
-                          const smallgridWithData(goalId: 5),
-                          const smallgridWithData(goalId: 6),
-                          const smallgridWithData(goalId: 7),
-                          const smallgridWithData(goalId: 8),
+                          const Smallgridwithdata(goalId: 5),
+                          const Smallgridwithdata(goalId: 6),
+                          const Smallgridwithdata(goalId: 7),
+                          const Smallgridwithdata(goalId: 8),
                         ],
                       ),
                     ),

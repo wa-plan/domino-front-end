@@ -60,73 +60,56 @@ class DPcreateConfirmPage extends StatelessWidget {
                   height: 40,
                 ),
                 Expanded(
-                    child: GridView(
+                    child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 1,
                       mainAxisSpacing: 1),
-                  children: [
-                    const ConfirmBox(actionPlanid: 0, detailGoalid: 0),
-                    const ConfirmBox(actionPlanid: 1, detailGoalid: 1),
-                    const ConfirmBox(actionPlanid: 2, detailGoalid: 2),
-                    const ConfirmBox(actionPlanid: 3, detailGoalid: 3),
-                    SizedBox(
-                      width: 100,
-                      child: GridView.count(
-                        crossAxisCount: 3,
-                        children: List.generate(9, (index) {
-                          if (index == 4) {
-                            return Container(
-                              color: const Color(0xffFCFF62),
-                              margin: const EdgeInsets.all(1.0),
-                              child: Center(
-                                  child: Text(
-                                context
-                                    .watch<SelectFinalGoalModel>()
-                                    .selectedFinalGoal,
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 8,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              )),
-                            );
-                          } else {
-                            final inputtedDetailGoals = context
-                                .watch<SaveInputtedDetailGoalModel>()
-                                .inputtedDetailGoal;
-                            final values = inputtedDetailGoals
-                                    .containsKey(index.toString())
-                                ? inputtedDetailGoals[index.toString()]
-                                : '';
-                            final isValueEmpty = values.isEmpty;
-                            final backgroundColor2 = isValueEmpty
-                                ? const Color(0xff262626)
-                                : const Color(0xff929292);
+                  itemCount: 9,
+                  itemBuilder: (context, index) {
+                    if (index == 4) {
+                      return Container(
+                        color: const Color(0xffFCFF62),
+                        margin: const EdgeInsets.all(1.0),
+                        child: Center(
+                            child: Text(
+                          context
+                              .watch<SelectFinalGoalModel>()
+                              .selectedFinalGoal,
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 8,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        )),
+                      );
+                    } else {
+                      final inputtedDetailGoals = context
+                          .watch<SaveInputtedDetailGoalModel>()
+                          .inputtedDetailGoal;
+                      final values = inputtedDetailGoals[index.toString()] ??
+                          ''; // null 처리
+                      final isValueEmpty = values.isEmpty;
+                      final backgroundColor2 = isValueEmpty
+                          ? const Color(0xff262626)
+                          : const Color(0xff929292);
 
-                            return Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3),
-                                color: backgroundColor2,
-                              ),
-                              margin: const EdgeInsets.all(1.0),
-                              child: Center(
-                                  child: Text(
-                                values,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 15),
-                              )),
-                            );
-                          }
-                        }),
-                      ),
-                    ),
-                    const ConfirmBox(actionPlanid: 5, detailGoalid: 5),
-                    const ConfirmBox(actionPlanid: 6, detailGoalid: 6),
-                    const ConfirmBox(actionPlanid: 7, detailGoalid: 7),
-                    const ConfirmBox(actionPlanid: 8, detailGoalid: 8),
-                  ],
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          color: backgroundColor2,
+                        ),
+                        margin: const EdgeInsets.all(1.0),
+                        child: Center(
+                            child: Text(
+                          values,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 15),
+                        )),
+                      );
+                    }
+                  },
                 )),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

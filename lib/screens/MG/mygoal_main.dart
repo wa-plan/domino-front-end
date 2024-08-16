@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:domino/screens/MG/mygoal_profile_edit.dart';
 import 'package:domino/apis/mg_api_fucntion.dart';
 
-void main() async {
-  await initializeDateFormatting(); 
-  runApp(const MyApp());}
 
 class MyGoal extends StatefulWidget {
   const MyGoal({super.key});
@@ -149,3 +146,4 @@ class _cheering extends State<MyGoal> {
 ),
   },
 }
+*/

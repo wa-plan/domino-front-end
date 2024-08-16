@@ -1,4 +1,4 @@
-import 'package:http/http.dart' as http;
+/*import 'package:http/http.dart' as http;
 import 'package:domino/apis/dp_api_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -19,4 +19,4 @@ class Goal {
     }
     throw Error();
   }
-}
+}*/
