@@ -10,10 +10,10 @@ class DPcreateColorPage extends StatefulWidget {
   const DPcreateColorPage({super.key});
 
   @override
-  _DPcreateColorPageState createState() => _DPcreateColorPageState();
+  DPcreateColorPageState createState() => DPcreateColorPageState();
 }
 
-class _DPcreateColorPageState extends State<DPcreateColorPage> {
+class DPcreateColorPageState extends State<DPcreateColorPage> {
   int selectIndex = 0;
   Map colorPalette = {
     const Color(0xffFF7A7A): const Color(0xffFFC2C2),
@@ -275,40 +275,40 @@ class _DPcreateColorPageState extends State<DPcreateColorPage> {
                                 crossAxisSpacing: 11,
                                 mainAxisSpacing: 11),
                         children: [
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xffFF7A7A)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xffFFB82D)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xffFCFF62)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xff72FF5B)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xff5DD8FF)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xff929292)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xffFF5794)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xffAE7CFF)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xffC77B7F)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xff009255)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xff3184FF)),
-                      color_option(
+                      ColorOption(
                           selectIndex: selectIndex,
                           colorCode: const Color(0xff11D1C2))
                     ])),
