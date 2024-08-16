@@ -226,10 +226,10 @@ class MyCheckBox extends StatefulWidget {
   const MyCheckBox({super.key});
 
   @override
-  _MyCheckBoxState createState() => _MyCheckBoxState();
+  MyCheckBoxState createState() => MyCheckBoxState();
 }
 
-class _MyCheckBoxState extends State<MyCheckBox> {
+class MyCheckBoxState extends State<MyCheckBox> {
   bool _isCheck = false;
 
   List<String> checkList = [];

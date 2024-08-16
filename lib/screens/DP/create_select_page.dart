@@ -36,9 +36,7 @@ class DPcreateSelectPage extends StatelessWidget {
                         fontSize: 19,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 1.1)),
-
                 const SizedBox(height: 20),
-
                 Container(
                   height: 43,
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
@@ -51,16 +49,16 @@ class DPcreateSelectPage extends StatelessWidget {
                   ),
                   child: const MyDropdownButton(),
                 ),
-
                 const SizedBox(
                   height: 20,
                 ),
-
                 Expanded(
                   child: GridView(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, crossAxisSpacing: 1, mainAxisSpacing: 1),
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 1,
+                            mainAxisSpacing: 1),
                     children: List.generate(9, (index) {
                       if (index == 4) {
                         return SizedBox(
@@ -71,12 +69,13 @@ class DPcreateSelectPage extends StatelessWidget {
                                 mainAxisSpacing: 1,
                                 children: List.generate(9, (index) {
                                   return Container(
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(3),
-                                    color: index == 4
-                                        ? const Color(0xffFCFF62)
-                                        : const Color(0xff929292),),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(3),
+                                      color: index == 4
+                                          ? const Color(0xffFCFF62)
+                                          : const Color(0xff929292),
+                                    ),
                                     alignment: Alignment.center,
-                                    
                                     margin: const EdgeInsets.all(1.0),
                                     child: index == 4
                                         ? Consumer<SelectFinalGoalModel>(
@@ -96,12 +95,11 @@ class DPcreateSelectPage extends StatelessWidget {
                                   );
                                 })));
                       } else {
-                        return const smallgrid();
+                        return const Smallgrid();
                       }
                     }),
                   ),
                 ),
-                
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -136,8 +134,7 @@ class DPcreateSelectPage extends StatelessWidget {
                         ),
                       )
                     ]),
-
-                    const SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
               ],

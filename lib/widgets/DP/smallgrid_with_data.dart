@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/screens/DP/create_input2_page.dart';
 
-class smallgridWithData extends StatelessWidget {
+class Smallgridwithdata extends StatelessWidget {
   final int goalId;
 
-  const smallgridWithData({super.key, required this.goalId});
+  const Smallgridwithdata({super.key, required this.goalId});
 
   @override
   Widget build(BuildContext context) {

@@ -25,14 +25,7 @@ class DPdetailPage extends StatelessWidget {
       body: const Padding(
         padding: EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
         child: Column(
-          children: [
-            
-
-          
-
-            
-    
-          ],
+          children: [],
         ),
       ),
     );

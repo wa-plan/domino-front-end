@@ -14,7 +14,7 @@ class ColorBox2 extends StatelessWidget {
             borderRadius: BorderRadius.circular(3),
             color: context
                     .watch<SaveInputtedDetailGoalModel>()
-                    .inputtedDetailGoal['$keyNumber']
+                    .inputtedDetailGoal['$keyNumber']!
                     .isEmpty
                 ? const Color(0xff262626)
                 : context.watch<GoalColor>().selectedGoalColor['$keyNumber']),
@@ -23,7 +23,7 @@ class ColorBox2 extends StatelessWidget {
             child: Text(
           context
               .watch<SaveInputtedDetailGoalModel>()
-              .inputtedDetailGoal['$keyNumber'],
+              .inputtedDetailGoal['$keyNumber']!,
           textAlign: TextAlign.center,
         )));
   }
