@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:domino/screens/LR/login.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:domino/apis/services/lr_services.dart';
 
 class LoginregisterFindPassword extends StatefulWidget {
   const LoginregisterFindPassword({super.key});
@@ -19,7 +16,6 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
 
   final _userIdController = TextEditingController();
   final _pwEmailController = TextEditingController();
-  final _verifyNumController = TextEditingController();
 
   Widget _buildTextFormField({
     required String hintText,
@@ -53,81 +49,24 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
     final phoneNum = _phoneController.text;
     final email = _idEmailController.text;
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/find_userId');
+    final result = await IdFindService.findUserId(
+      phoneNum: phoneNum,
+      email: email,
+    );
 
-    final body = jsonEncode({
-      'phoneNum': phoneNum,
-      'email': email,
+    setState(() {
+      _responseId = result;
     });
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: body,
-      );
-
-      print('서버 응답 상태 코드: ${response.statusCode}');
-      print('서버 응답: ${response.body}');
-      // 서버 응답 데이터를 상태에 저장
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        setState(() {
-          _responseId = responseData.toString(); // 예시로 userId를 사용
-        });
-      } else {
-        Fluttertoast.showToast(
-          msg: '사용자 ID를 찾을 수 없습니다.',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: '오류 발생: $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-    }
   }
 
   void _pwFind() async {
     final userId = _userIdController.text;
     final email = _pwEmailController.text;
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/reset_password');
-
-    final body = jsonEncode({
-      'userId': userId,
-      'email': email,
-    });
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: body,
-      );
-
-      print('서버 응답 상태 코드: ${response.statusCode}');
-      print('서버 응답: ${response.body}');
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: '오류 발생: $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-    }
+    await PwFindService.findPassword(
+      userId: userId,
+      email: email,
+    );
   }
 
   @override
@@ -143,12 +82,7 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
               IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
-                    ),
-                  );
+                  Navigator.of(context).pop();
                 },
                 color: Colors.white,
                 padding: EdgeInsets.zero,
