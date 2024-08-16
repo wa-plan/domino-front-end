@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:domino/provider/ST/password_provider.dart';
 import 'package:domino/main.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:domino/screens/LR/loginregister_find_password.dart';
+import 'package:domino/apis/services/lr_services.dart'; // 서비스 파일 import
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -10,103 +11,17 @@ class ChangePassword extends StatefulWidget {
   State<ChangePassword> createState() => _ChangePasswordState();
 }
 
-String receivedkey = 'abc';
-
-final currentkey = GlobalKey<FormState>();
-final newkey = GlobalKey<FormState>();
-final checkkey = GlobalKey<FormState>();
-
-//텍스트폼필드에 기본으로 들어갈 초기 텍스트 값
-TextEditingController currentkeycontroller = TextEditingController(text: '');
-TextEditingController newkeycontroller = TextEditingController(text: '');
-TextEditingController checkkeycontroller = TextEditingController(text: '');
-
-//텍스트폼필드 함수 만들기
-Widget currentTextFormField({
-  required FormFieldSetter<String?> onSaved,
-  required FormFieldValidator<String?> validator,
-}) {
-  return TextFormField(
-    onSaved: onSaved,
-    validator: validator,
-    controller: currentkeycontroller,
-    style: const TextStyle(fontSize: 16, color: Colors.white),
-    decoration: InputDecoration(
-      hintText: '현재 비밀번호를 입력해 주세요.',
-      hintStyle: const TextStyle(color: Colors.grey),
-      border: const OutlineInputBorder(),
-      suffixIcon: currentkeycontroller.text.isNotEmpty
-          ? IconButton(
-              onPressed: () {
-                currentkeycontroller.clear();
-              },
-              icon: const Icon(Icons.clear_outlined),
-            )
-          : null,
-    ),
-  );
-}
-
-Widget newTextFormField({
-  required FormFieldSetter<String?> onSaved,
-  required FormFieldValidator<String?> validator,
-}) {
-  return TextFormField(
-    onSaved: onSaved,
-    validator: validator,
-    controller: newkeycontroller,
-    style: const TextStyle(fontSize: 16, color: Colors.white),
-    decoration: InputDecoration(
-      hintText: '새 비밀번호를 입력해 주세요.',
-      hintStyle: const TextStyle(color: Colors.grey),
-      border: const OutlineInputBorder(),
-      suffixIcon: newkeycontroller.text.isNotEmpty
-          ? IconButton(
-              onPressed: () {
-                newkeycontroller.clear();
-              },
-              icon: const Icon(Icons.clear_outlined),
-            )
-          : null,
-    ),
-  );
-}
-
-Widget checkTextFormField({
-  required FormFieldSetter<String?> onSaved,
-  required FormFieldValidator<String?> validator,
-}) {
-  return TextFormField(
-    onSaved: onSaved,
-    validator: validator,
-    controller: checkkeycontroller,
-    style: const TextStyle(fontSize: 16, color: Colors.white),
-    decoration: InputDecoration(
-      hintText: '비밀번호 확인을 입력해 주세요.',
-      hintStyle: const TextStyle(color: Colors.grey),
-      border: const OutlineInputBorder(),
-      suffixIcon: checkkeycontroller.text.isNotEmpty
-          ? IconButton(
-              onPressed: () {
-                checkkeycontroller.clear();
-              },
-              icon: const Icon(Icons.clear_outlined),
-            )
-          : null,
-    ),
-  );
-}
-
 class _ChangePasswordState extends State<ChangePassword> {
+  final _currentkeycontroller = TextEditingController();
+  final _newkeycontroller = TextEditingController();
+  final _checkkeycontroller = TextEditingController();
+
   @override
-  void initState() {
-    super.initState();
-    // Provider 값을 초기화
-    final passwordProvider =
-        Provider.of<PasswordProvider>(context, listen: false);
-    passwordProvider.currentpw = '';
-    passwordProvider.newpw = '';
-    passwordProvider.checkpw = '';
+  void dispose() {
+    _currentkeycontroller.dispose();
+    _newkeycontroller.dispose();
+    _checkkeycontroller.dispose();
+    super.dispose();
   }
 
   @override
@@ -153,16 +68,15 @@ class _ChangePasswordState extends State<ChangePassword> {
             const SizedBox(
               height: 15,
             ),
-            Form(
-              key: currentkey,
-              child: currentTextFormField(
-                onSaved: (value) {
-                  Provider.of<PasswordProvider>(context, listen: false)
-                      .currentpw = value ?? '';
-                },
+            SizedBox(
+              height: 35,
+              width: 350,
+              child: _buildTextFormField(
+                hintText: '비밀번호를 입력해 주세요.',
+                controller: _currentkeycontroller,
                 validator: (value) {
-                  if (value != receivedkey) {
-                    return '비밀번호를 정확하게 입력해주세요';
+                  if (value == null || value.isEmpty) {
+                    return '비밀번호를 입력해 주세요.';
                   }
                   return null;
                 },
@@ -178,13 +92,12 @@ class _ChangePasswordState extends State<ChangePassword> {
             const SizedBox(
               height: 15,
             ),
-            Form(
-              key: newkey,
-              child: newTextFormField(
-                onSaved: (value) {
-                  Provider.of<PasswordProvider>(context, listen: false).newpw =
-                      value ?? '';
-                },
+            SizedBox(
+              height: 35,
+              width: 350,
+              child: _buildTextFormField(
+                hintText: '8~16자를 입력해 주세요.',
+                controller: _newkeycontroller,
                 validator: (value) {
                   if (value == null || value.length < 8 || value.length > 16) {
                     return '비밀번호는 8~16자리여야 해요.';
@@ -203,18 +116,15 @@ class _ChangePasswordState extends State<ChangePassword> {
             const SizedBox(
               height: 15,
             ),
-            Form(
-              key: checkkey,
-              child: checkTextFormField(
-                onSaved: (value) {
-                  Provider.of<PasswordProvider>(context, listen: false)
-                      .checkpw = value ?? '';
-                },
+            SizedBox(
+              height: 35,
+              width: 350,
+              child: _buildTextFormField(
+                hintText: '비밀번호를 다시 입력해 주세요.',
+                controller: _checkkeycontroller,
                 validator: (value) {
-                  if (value !=
-                      Provider.of<PasswordProvider>(context, listen: false)
-                          .newpw) {
-                    return '새 비밀번호와 비밀번호 확인이 일치하지 않아요.';
+                  if (value != _newkeycontroller.text) {
+                    return '비밀번호가 일치하지 않습니다.';
                   }
                   return null;
                 },
@@ -224,7 +134,13 @@ class _ChangePasswordState extends State<ChangePassword> {
               height: 20,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginregisterFindPassword(),
+                    ));
+              },
               child: const Text(
                 '혹시 비밀번호를 잊으셨나요?',
                 style: TextStyle(color: Colors.white),
@@ -233,41 +149,31 @@ class _ChangePasswordState extends State<ChangePassword> {
             const SizedBox(height: 50),
             Center(
               child: SizedBox(
-                width: double.infinity, // 부모의 최대 너비만큼 버튼의 너비를 설정
+                width: double.infinity,
                 child: SizedBox(
-                  height: 60, // 버튼의 높이 설정
+                  height: 60,
                   child: TextButton(
-                    onPressed: () {
-                      if (currentkey.currentState!.validate()) {
-                        currentkey.currentState!.save();
+                    onPressed: () async {
+                      if (_newkeycontroller.text != _checkkeycontroller.text) {
+                        Fluttertoast.showToast(
+                          msg: '새 비밀번호가 일치하지 않습니다.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                        );
+                        return;
                       }
-                      if (newkey.currentState!.validate()) {
-                        newkey.currentState!.save();
-                      }
-                      if (checkkey.currentState!.validate()) {
-                        checkkey.currentState!.save();
-                      }
-                      // 값 비교
-                      final currentPw =
-                          Provider.of<PasswordProvider>(context, listen: false)
-                              .currentpw;
-                      final newPw =
-                          Provider.of<PasswordProvider>(context, listen: false)
-                              .newpw;
-                      final checkPw =
-                          Provider.of<PasswordProvider>(context, listen: false)
-                              .checkpw;
 
-                      if (currentPw == receivedkey &&
-                          newPw.length > 7 &&
-                          newPw.length < 17 &&
-                          checkPw == newPw) {
-                        // 초기화
-                        currentkeycontroller.clear();
-                        newkeycontroller.clear();
-                        checkkeycontroller.clear();
-                        Navigator.of(context).pop();
-                        Navigator.push(
+                      // 비밀번호 변경 요청
+                      final success =
+                          await ChangePasswordService.changePassword(
+                        currentPassword: _currentkeycontroller.text,
+                        newPassword: _newkeycontroller.text,
+                      );
+
+                      if (success) {
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const MyApp(),
@@ -292,6 +198,34 @@ class _ChangePasswordState extends State<ChangePassword> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextFormField({
+    required String hintText,
+    required TextEditingController controller,
+    required FormFieldValidator<String?> validator,
+    bool obscureText = false,
+    void Function()? onClear,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
+          border: const OutlineInputBorder(),
+          suffixIcon: controller.text.isNotEmpty
+              ? IconButton(
+                  onPressed: onClear ?? () {},
+                  icon: const Icon(Icons.clear_outlined),
+                )
+              : null,
+        ),
+        validator: validator,
       ),
     );
   }

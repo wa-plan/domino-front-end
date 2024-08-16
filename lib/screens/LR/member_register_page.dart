@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:domino/screens/LR/login.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:domino/apis/services/lr_services.dart'; // Import the new service
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -30,48 +28,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _register() async {
+  void _register() {
     final userId = _idController.text;
     final password = _pwController.text;
     final email = _emailController.text;
     final phoneNum = _phoneController.text;
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/signup');
-
-    final body = jsonEncode({
-      'userId': userId,
-      'password': password,
-      'email': email,
-      'phoneNum': phoneNum,
-    });
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: body,
-      );
-
-      print('서버 응답 상태 코드: ${response.statusCode}');
-      print('서버 응답: ${response.body}');
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
-      );
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: '오류 발생: $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-    }
+    RegistrationService.register(
+      context: context,
+      userId: userId,
+      password: password,
+      email: email,
+      phoneNum: phoneNum,
+    );
   }
 
   Widget _buildTextFormField({

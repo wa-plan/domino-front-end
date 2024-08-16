@@ -1,11 +1,8 @@
 import 'package:domino/screens/LR/loginregister_find_password.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:domino/screens/LR/member_register_page.dart';
-import 'package:domino/main.dart';
+import 'package:domino/apis/services/lr_services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,81 +15,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _idcontroller = TextEditingController();
   final TextEditingController _pwcontroller = TextEditingController();
 
-  void _login() async {
+  final LoginService _loginService = LoginService();
+
+  void _login() {
     final userId = _idcontroller.text;
     final password = _pwcontroller.text;
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/auth/login');
-
-    final body = jsonEncode({
-      'userId': userId,
-      'password': password,
-    });
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: body,
-      );
-
-      print('서버 응답 상태 코드: ${response.statusCode}');
-      print('서버 응답: ${response.body}');
-
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-
-        // 서버 응답에서 'accessToken'을 추출
-        final accessToken = responseData['accessToken'] ?? '';
-
-        if (accessToken.isNotEmpty) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('authToken', accessToken);
-
-          Fluttertoast.showToast(
-            msg: '로그인 성공!',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-          );
-
-          // 로그인 성공 후 MyApp 화면으로 이동
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const MyApp(),
-            ),
-          );
-        } else {
-          Fluttertoast.showToast(
-            msg: '토큰을 받아오지 못했습니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-          );
-        }
-      } else {
-        Fluttertoast.showToast(
-          msg: '로그인 실패: ${response.body}',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
-      }
-    } catch (e) {
+    if (userId.isEmpty || password.isEmpty) {
       Fluttertoast.showToast(
-        msg: '오류 발생: $e',
+        msg: '아이디와 비밀번호를 모두 입력해 주세요.',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
+      return;
     }
+
+    _loginService.login(context, userId, password);
   }
 
   Widget _buildTextFormField({
@@ -113,7 +53,10 @@ class _LoginScreenState extends State<LoginScreen> {
           border: const OutlineInputBorder(),
           suffixIcon: controller.text.isNotEmpty
               ? IconButton(
-                  onPressed: onClear ?? () {},
+                  onPressed: onClear ??
+                      () {
+                        controller.clear();
+                      },
                   icon: const Icon(Icons.clear_outlined),
                 )
               : null,
@@ -157,7 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                       style: TextButton.styleFrom(
-                        minimumSize: Size.zero,
                         padding: EdgeInsets.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
@@ -300,7 +242,7 @@ class _MyCheckBoxState extends State<MyCheckBox> {
       checkColor: Colors.black,
       onChanged: (value) {
         setState(() {
-          _isCheck = value!;
+          _isCheck = value ?? false;
         });
       },
     );
