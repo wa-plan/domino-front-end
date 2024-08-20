@@ -6,7 +6,7 @@ import 'package:domino/provider/nav_provider.dart';
 import 'package:domino/screens/DP/list_page.dart';
 import 'package:domino/screens/TD/td_main.dart';
 import 'package:domino/screens/ST/settings_main.dart';
-//import 'package:domino/screens/MG/mygoal_main.dart';
+import 'package:domino/screens/MG/mygoal_main.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -55,7 +55,7 @@ class NavBar extends StatelessWidget {
       case 0:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const MygoalCreate()),
+          MaterialPageRoute(builder: (context) => const MyGoal()),
         );
         break;
       case 1:

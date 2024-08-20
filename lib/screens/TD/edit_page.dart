@@ -276,7 +276,7 @@ class EditPageState extends State<EditPage> {
                         ));
                   },
                   style: TextButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 57, 33, 33),
+                      backgroundColor: const Color(0xff131313),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6.0))),
                   child: const Text(
