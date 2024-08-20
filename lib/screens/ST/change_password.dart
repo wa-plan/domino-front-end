@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:domino/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:domino/screens/LR/loginregister_find_password.dart';
 import 'package:domino/apis/services/lr_services.dart'; // 서비스 파일 import

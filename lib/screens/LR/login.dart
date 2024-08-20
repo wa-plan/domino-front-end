@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(
                 height: 35,
-                width: 350,
+                width: 300,
                 child: _buildTextFormField(
                   hintText: '아이디를 입력해 주세요.',
                   controller: _idcontroller,
@@ -149,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(
                 height: 35,
-                width: 350,
+                width: 300,
                 child: _buildTextFormField(
                   hintText: '비밀번호를 입력해 주세요.',
                   controller: _pwcontroller,
