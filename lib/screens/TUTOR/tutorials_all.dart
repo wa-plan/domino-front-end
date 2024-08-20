@@ -71,6 +71,17 @@ class _TutorialsState extends State<Tutorials> {
             );
           }).toList(),
         ),
+          ElevatedButton(
+            onPressed: () {},
+            child: Text(
+              "시작하기"
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                color: Colors.white,
+              )
+              )
+          )  
       ],
     );
   }
