@@ -4,14 +4,14 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 
-class MygoalEdit extends StatefulWidget {
-  const MygoalEdit({super.key});
+class MyGoalAdd extends StatefulWidget {
+  const MyGoalAdd({super.key});
 
   @override
-  State<MygoalEdit> createState() => _MygoalEditState();
+  State<MyGoalAdd> createState() => _MyGoalAddState();
 }
 
-class _MygoalEditState extends State<MygoalEdit> {
+class _MyGoalAddState extends State<MyGoalAdd> {
   bool _isChecked = false;
   XFile? _pickedFile;
   Color? _selectedColor;
@@ -61,7 +61,7 @@ class _MygoalEditState extends State<MygoalEdit> {
             color: Colors.white,
           ),
           title: Text(
-            '목표 편집하기',
+            '목표 세우기',
             style: TextStyle(
               color: Colors.white,
               fontSize: MediaQuery.of(context).size.width * 0.06,
@@ -258,54 +258,50 @@ class _MygoalEditState extends State<MygoalEdit> {
               const SizedBox(
                 height: 50,
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: TextButton.styleFrom(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0))),
-                  child: const Text(
-                    '취소',
-                    style: TextStyle(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                    ),
+                    child: const Text(
+                      '취소',
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ), //취소 버튼
-                TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xFFFF6767),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0))),
-                  child: const Text(
-                    '삭제',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: TextButton.styleFrom(
+                  TextButton(
+                    onPressed: () {
+                      // 완료 버튼 기능 구현
+                      Navigator.pop(context);
+                    },
+                    style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0))),
-                  child: const Text(
-                    '저장',
-                    style: TextStyle(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                    ),
+                    child: const Text(
+                      '완료',
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 15,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ],
           ),
         ),
