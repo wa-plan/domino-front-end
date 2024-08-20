@@ -398,7 +398,7 @@ class SignOutService {
 class MorningAlertService {
   static Future<String?> morningAlert(
     BuildContext context,
-    String morningAlarm,
+    String alarm,
   ) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
@@ -416,9 +416,8 @@ class MorningAlertService {
     }
 
     final url = Uri.parse('http://13.124.78.26:8080/api/user/morning_alarm');
-
     final body = jsonEncode({
-      'alarm': morningAlarm,
+      'alarm': alarm,
     });
 
     try {
@@ -430,9 +429,8 @@ class MorningAlertService {
           body: body);
 
       print('서버 응답 상태 코드: ${response.statusCode}');
-      print('서버 응답: ${response.body}'); // 응답 내용 확인
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         Fluttertoast.showToast(
           msg: '아침알람이 업데이트되었습니다.',
           toastLength: Toast.LENGTH_SHORT,
@@ -440,6 +438,7 @@ class MorningAlertService {
           backgroundColor: Colors.green,
           textColor: Colors.white,
         );
+        return alarm; //성공한 경우 'on' 또는 'off' 값을 반환
       } else {
         Fluttertoast.showToast(
           msg: '업데이트 실패: ${response.body}',
@@ -460,14 +459,13 @@ class MorningAlertService {
       );
       return null;
     }
-    return null;
   }
 }
 
 class NightAlertService {
   static Future<String?> nightAlert(
     BuildContext context,
-    String nightAlarm,
+    String nightAlert,
   ) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
@@ -487,7 +485,7 @@ class NightAlertService {
     final url = Uri.parse('http://13.124.78.26:8080/api/user/night_alarm');
 
     final body = jsonEncode({
-      'alarm': nightAlarm,
+      'alarm': nightAlert,
     });
 
     try {
@@ -499,9 +497,8 @@ class NightAlertService {
           body: body);
 
       print('서버 응답 상태 코드: ${response.statusCode}');
-      print('서버 응답: ${response.body}'); // 응답 내용 확인
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         Fluttertoast.showToast(
           msg: '저녁알람이 업데이트되었습니다.',
           toastLength: Toast.LENGTH_SHORT,
