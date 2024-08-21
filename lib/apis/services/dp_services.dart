@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MainGoalListService {
-  static Future<String?> mainGoalList(
+  static Future<List<String>?> mainGoalList(
     BuildContext context,
   ) async {
     final prefs = await SharedPreferences.getInstance();
@@ -38,13 +38,10 @@ class MainGoalListService {
       print('서버 응답: ${response.body}');
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(
-          msg: '만다라트 리스트 정보가 불러와졌습니다..',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );
+        final List<dynamic> jsonResponse = json.decode(response.body);
+        List<String> mainGoals =
+            jsonResponse.map((item) => item['goalName'].toString()).toList();
+        return mainGoals;
       } else {
         Fluttertoast.showToast(
           msg: '업데이트 실패: ${response.body}',
@@ -65,6 +62,5 @@ class MainGoalListService {
       );
       return null;
     }
-    return null;
   }
 }
