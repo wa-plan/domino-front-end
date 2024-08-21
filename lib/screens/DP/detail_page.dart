@@ -1,4 +1,4 @@
-import 'package:domino/screens/DP/create_select_page.dart';
+import 'package:domino/apis/services/dp_services.dart';
 import 'package:flutter/material.dart';
 
 class DPdetailPage extends StatelessWidget {
