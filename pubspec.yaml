@@ -86,7 +86,7 @@ flutter:
     - assets/img/profile_smp7.png
     - assets/img/profile_smp8.png
     - assets/img/profile_smp9.png
-    - assets/img/domino_1.mp4 #도미노 쓰러지는 영상
+    - assets/img/domino_final.mp4 #도미노 쓰러지는 영상
     - assets/img/confetti_final.mp4 #폭죽 터지는 영상
 
   # An image asset can refer to one or more resolution-specific "variants", see
