@@ -3,6 +3,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:domino/apis/services/mg_services.dart';
+import 'package:domino/screens/TD/td_main.dart';
+import 'package:image_picker/image_picker.dart' as image_picker;
 
 class MyGoalAdd extends StatefulWidget {
   const MyGoalAdd({super.key});
@@ -16,6 +19,43 @@ class _MyGoalAddState extends State<MyGoalAdd> {
   XFile? _pickedFile;
   Color? _selectedColor;
   DateTime selectedDate = DateTime.now();
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  List<image_picker.XFile?> selectedImages = [];
+
+  void _addGoal() async {
+    final name = _nameController.text;
+    final description = _descriptionController.text;
+    final color = _selectedColor.toString();
+    final date = selectedDate;
+
+    // 이미지 파일 경로 추출
+    final picturePaths = selectedImages.map((image) => image!.path).toList();
+
+// 서버에 보낼 데이터들을 출력
+    print('Name: $name');
+    print('Description: $description');
+    print('Color: $color');
+    print('Date: $date');
+    print('Picture Paths: $picturePaths');
+
+    final success = await AddGoalService.addGoal(
+      name: name,
+      description: description,
+      color: color, // 색상 문자열로 전달
+      date: date,
+      pictures: picturePaths,
+    );
+
+    if (success) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const TdMain(),
+        ),
+      );
+    }
+  }
 
   // 이미지 픽커로부터 이미지를 선택하는 메서드
   Future<void> _getPhotoLibraryImage() async {
@@ -87,8 +127,9 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                 ),
               ),
               const SizedBox(height: 20),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(
                   //hintText: '목표를 입력하세요',
                   border: OutlineInputBorder(),
                 ),
@@ -173,8 +214,9 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                 ),
               ),
               const SizedBox(height: 20),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
                   hintText: '내용을 입력하세요',
                   border: OutlineInputBorder(),
                 ),
@@ -283,6 +325,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                   TextButton(
                     onPressed: () {
                       // 완료 버튼 기능 구현
+                      _addGoal();
                       Navigator.pop(context);
                     },
                     style: TextButton.styleFrom(

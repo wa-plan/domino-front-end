@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/widgets/DP/smallgrid.dart';
+import 'package:domino/apis/services/dp_services.dart';
 
-class DPcreateSelectPage extends StatelessWidget {
+class DPcreateSelectPage extends StatefulWidget {
   const DPcreateSelectPage({super.key});
 
+  @override
+  State<DPcreateSelectPage> createState() => _DPcreateSelectPageState();
+}
+
+class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,6 +159,11 @@ class MyDropdownButton extends StatefulWidget {
 
 class _MyDropdownButtonState extends State<MyDropdownButton> {
   String dropdownValue = list.first;
+  void mainGoalList() async {
+    String? result = await MainGoalListService.mainGoalList(context);
+
+    print(result);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +174,7 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
         setState(() {
           dropdownValue = value;
         });
+        mainGoalList();
       },
       items: list.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
