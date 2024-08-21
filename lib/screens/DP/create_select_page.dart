@@ -148,8 +148,6 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   }
 }
 
-const List<String> list = <String>["선택 안됨", "환상적인 세계여행", "행복한 2024년"];
-
 class MyDropdownButton extends StatefulWidget {
   const MyDropdownButton({super.key});
 
@@ -158,11 +156,25 @@ class MyDropdownButton extends StatefulWidget {
 }
 
 class _MyDropdownButtonState extends State<MyDropdownButton> {
-  String dropdownValue = list.first;
-  void mainGoalList() async {
-    String? result = await MainGoalListService.mainGoalList(context);
+  List<String> dropdownItems = <String>["선택 안됨", "환상적인 세계여행", "행복한 2024년"];
+  String dropdownValue = "선택 안됨"; //기본값 설정
+  //String dropdownValue = list.first;
+  //List<String> dropdownItems = list;
 
-    print(result);
+  void mainGoalList() async {
+    List<String>? serverGoals = await MainGoalListService.mainGoalList(context);
+    if (serverGoals != null) {
+      setState(() {
+        dropdownItems = ["선택 안됨", ...serverGoals];
+        dropdownValue = dropdownItems.first;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    mainGoalList(); //초기화 시 서버 데이터 불러오기
   }
 
   @override
@@ -170,13 +182,12 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
     return (DropdownButton<String>(
       value: dropdownValue,
       onChanged: (String? value) {
-        context.read<SelectFinalGoalModel>().selectFinalGoal(value!);
+        //context.read<SelectFinalGoalModel>().selectFinalGoal(value!);
         setState(() {
-          dropdownValue = value;
+          dropdownValue = value!;
         });
-        mainGoalList();
       },
-      items: list.map<DropdownMenuItem<String>>((String value) {
+      items: dropdownItems.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
