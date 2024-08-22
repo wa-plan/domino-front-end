@@ -97,9 +97,8 @@ class _AddPage1State extends State<AddPage1> {
                         } else if (snapshot.hasData) {
                           return DropdownButton<String>(
                             value: selectedGoal,
-                            items: //[DropdownMenuItem(child: Text(mainGoals))],
-                                snapshot.data!
-                                    .map<DropdownMenuItem<String>>((goal) {
+                            items: snapshot.data!
+                                .map<DropdownMenuItem<String>>((goal) {
                               final goalName = goal['name'] ?? 'Unknown Goal';
                               return DropdownMenuItem<String>(
                                 value: goal['id'].toString(),
