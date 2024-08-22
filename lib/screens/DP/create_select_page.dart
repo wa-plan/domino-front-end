@@ -161,7 +161,7 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
   //String dropdownValue = list.first;
   //List<String> dropdownItems = list;
 
-  void mainGoalList() async {
+  /*void mainGoalList() async {
     List<String>? serverGoals = await MainGoalListService.mainGoalList(context);
     if (serverGoals != null) {
       setState(() {
@@ -169,12 +169,12 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
         dropdownValue = dropdownItems.first;
       });
     }
-  }
+  }*/
 
   @override
   void initState() {
     super.initState();
-    mainGoalList(); //초기화 시 서버 데이터 불러오기
+    //mainGoalList(); //초기화 시 서버 데이터 불러오기
   }
 
   @override
