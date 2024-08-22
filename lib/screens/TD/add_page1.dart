@@ -1,4 +1,5 @@
-import 'package:domino/main.dart';
+import 'package:domino/apis/services/dp_services.dart';
+import 'package:domino/screens/TD/td_main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:domino/screens/TD/add_page2.dart';
@@ -16,6 +17,23 @@ class AddPage1 extends StatefulWidget {
 class _AddPage1State extends State<AddPage1> {
   String? selectedGoal;
   String nextStage = '';
+  List<Map<String, dynamic>> mainGoals = []; // 데이터의 타입 변경
+
+  @override
+  void initState() {
+    super.initState();
+    _mainGoalList();
+  }
+
+  void _mainGoalList() async {
+    List<Map<String, dynamic>>? goals =
+        await MainGoalListService.mainGoalList(context);
+    if (goals != null) {
+      setState(() {
+        mainGoals = goals;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,40 +73,63 @@ class _AddPage1State extends State<AddPage1> {
                   height: 20,
                 ),
                 Container(
-                  height: 43,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      border: Border.all(
-                        color: const Color(0xff5C5C5C),
-                      )),
-                  child: DropdownButton<String>(
-                    value: selectedGoal,
-                    items: const [
-                      DropdownMenuItem(
-                          value: 'Goal.1',
-                          child: Text('환상적인 세계 여행',
-                              style: TextStyle(color: Colors.white))),
-                      DropdownMenuItem(
-                          value: 'Goal.2',
-                          child: Text('2023년 1학기 올A',
-                              style: TextStyle(color: Colors.white))),
-                      DropdownMenuItem(
-                          value: 'Goal.3',
-                          child: Text('10kg 감량하기',
-                              style: TextStyle(color: Colors.white))),
-                    ],
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedGoal = value;
-                      });
-                    },
-                    isExpanded: true,
-                    dropdownColor: const Color(0xff262626),
-                    style: const TextStyle(color: Colors.white),
-                    iconEnabledColor: Colors.white,
-                    underline: Container(),
-                  ),
-                ),
+                    height: 43,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        border: Border.all(
+                          color: const Color(0xff5C5C5C),
+                        )),
+                    child: FutureBuilder(
+                      future: MainGoalListService.mainGoalList(context),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return const Center(
+                            child: Text(
+                              '목표를 불러오는 데 실패했습니다.',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                        } else if (snapshot.hasData) {
+                          return DropdownButton<String>(
+                            value: selectedGoal,
+                            items: //[DropdownMenuItem(child: Text(mainGoals))],
+                                snapshot.data!
+                                    .map<DropdownMenuItem<String>>((goal) {
+                              final goalName = goal['name'] ?? 'Unknown Goal';
+                              return DropdownMenuItem<String>(
+                                value: goal['id'].toString(),
+                                child: Text(
+                                  goalName,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedGoal = value ?? ''; // null 체크 및 기본값 설정
+                              });
+                            },
+                            isExpanded: true,
+                            dropdownColor: const Color(0xff262626),
+                            style: const TextStyle(color: Colors.white),
+                            iconEnabledColor: Colors.white,
+                            underline: Container(),
+                          );
+                        } else {
+                          return const Center(
+                            child: Text(
+                              '목표가 없습니다.',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          );
+                        }
+                      },
+                    )),
               ],
             ),
             if (selectedGoal != null) ...[
@@ -185,7 +226,7 @@ class _AddPage1State extends State<AddPage1> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MyApp(),
+                          builder: (context) => const TdMain(),
                         ));
                   },
                   style: TextButton.styleFrom(

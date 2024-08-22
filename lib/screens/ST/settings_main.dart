@@ -79,7 +79,7 @@ class _SettingsMainState extends State<SettingsMain> {
 
     final result = await NightAlertService.nightAlert(
       context,
-      value ? 'ON' : 'OFF',
+      nightAlert ? 'ON' : 'OFF',
     );
 
     if (result == 'ON' || result == 'OFF') {
@@ -92,7 +92,9 @@ class _SettingsMainState extends State<SettingsMain> {
         nightAlert = !value; // 상태를 원래대로 되돌림
       });
     }
+
     if (result == null) {
+      // 오류 발생 시 상태를 원래대로 되돌림
       setState(() {
         nightAlert = !value;
       });

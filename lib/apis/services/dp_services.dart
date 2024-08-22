@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MainGoalListService {
-  static Future<List<String>?> mainGoalList(
+  static Future<List<Map<String, dynamic>>?> mainGoalList(
     BuildContext context,
   ) async {
     final prefs = await SharedPreferences.getInstance();
@@ -39,8 +39,13 @@ class MainGoalListService {
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(response.body);
-        List<String> mainGoals =
-            jsonResponse.map((item) => item['goalName'].toString()).toList();
+        List<Map<String, dynamic>> mainGoals = jsonResponse
+            .map((item) => {
+                  'id': item['id'],
+                  'name': item['name'],
+                })
+            .toList();
+        print('mainGoals: $mainGoals');
         return mainGoals;
       } else {
         Fluttertoast.showToast(

@@ -465,13 +465,13 @@ class MorningAlertService {
 class NightAlertService {
   static Future<String?> nightAlert(
     BuildContext context,
-    String nightAlert,
+    String alarm,
   ) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
     print('저장된 토큰: $token');
 
-    if (token == null) {
+    if (token == null || token.isEmpty) {
       Fluttertoast.showToast(
         msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
         toastLength: Toast.LENGTH_SHORT,
@@ -483,9 +483,8 @@ class NightAlertService {
     }
 
     final url = Uri.parse('http://13.124.78.26:8080/api/user/night_alarm');
-
     final body = jsonEncode({
-      'alarm': nightAlert,
+      'alarm': alarm,
     });
 
     try {
@@ -506,6 +505,7 @@ class NightAlertService {
           backgroundColor: Colors.green,
           textColor: Colors.white,
         );
+        return alarm; //성공한 경우 'on' 또는 'off' 값을 반환
       } else {
         Fluttertoast.showToast(
           msg: '업데이트 실패: ${response.body}',
@@ -526,6 +526,5 @@ class NightAlertService {
       );
       return null;
     }
-    return null;
   }
 }
