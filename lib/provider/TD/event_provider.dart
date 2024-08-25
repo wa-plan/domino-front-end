@@ -36,9 +36,7 @@ class EventProvider with ChangeNotifier {
       LinkedHashMap<DateTime, List<Event>>(
     equals: isSameDay,
     hashCode: getHashCode,
-  ); /*..addAll({
-          DateTime(2024, 6, 29): [Event(title: "money", content: "저금하기")],
-        });*/
+  );
 
   List<Event> getEventsForDay(DateTime day) {
     return _events[day] ?? [];
