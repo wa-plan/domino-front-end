@@ -1,3 +1,4 @@
+import 'package:domino/apis/services/td_services.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 //import 'dart:collection'; //LinkedHashMap 객체 사용하기 위한 라이브러리
@@ -19,6 +20,8 @@ class _EventCalendarState extends State<EventCalendar> {
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
   late final ValueNotifier<List<Event>> _selectedEvents;
+  int goalId = 0;
+  DateTime date = DateTime.now();
 
   @override
   void initState() {
@@ -26,6 +29,42 @@ class _EventCalendarState extends State<EventCalendar> {
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier([]);
+    dominoInfo(context, date);
+  }
+
+  void dominoStatus(int goalId, String attainment) async {
+    final success = await DominoStatusService.dominoStatus(
+      goalId: goalId,
+      attainment: attainment,
+    );
+
+    if (success) {
+      // 성공적으로 서버에 전송된 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('상태가 $attainment(으)로 업데이트 되었습니다.')),
+      );
+    } else {
+      // 실패한 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('업데이트에 실패했습니다.')),
+      );
+    }
+  }
+
+  void dominoInfo(context, DateTime date) async {
+    final success = await DominoInfoService.dominoInfo(date: date);
+
+    if (success) {
+      // 성공적으로 서버에 전송된 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('정보조회에 성공했습니다.')),
+      );
+    } else {
+      // 실패한 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('정보조회에 실패했습니다.')),
+      );
+    }
   }
 
   @override
@@ -41,10 +80,13 @@ class _EventCalendarState extends State<EventCalendar> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
+        date = selectedDay;
       });
 
       _selectedEvents.value =
           context.read<EventProvider>().getEventsForDay(selectedDay);
+
+      dominoInfo(context, date);
     }
   }
 
@@ -249,6 +291,7 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didHalf = false;
                                         value[index].didAll = false;
                                       });
+                                      dominoStatus(0, "NOT_START");
                                     },
                                     icon: Icon(
                                       Icons.clear_outlined,
@@ -266,6 +309,7 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didZero = false;
                                         value[index].didAll = false;
                                       });
+                                      dominoStatus(0, "IN_PROGRESS");
                                     },
                                     icon: Icon(
                                       Icons.change_history_outlined,
@@ -283,6 +327,7 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didZero = false;
                                         value[index].didHalf = false;
                                       });
+                                      dominoStatus(0, "DONE");
                                     },
                                     icon: Icon(
                                       Icons.circle_outlined,

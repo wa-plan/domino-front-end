@@ -1,4 +1,6 @@
+import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/main.dart';
+import 'package:domino/screens/TD/td_main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/widgets/TD/edit_calendar.dart';
 import 'package:domino/widgets/TD/edit_repeat_settings.dart';
@@ -29,6 +31,29 @@ class EditPageState extends State<EditPage> {
   final formKey = GlobalKey<FormState>();
   String dominoValue = '';
   late TextEditingController dominoController; //텍스트폼필드에 기본으로 들어갈 초기 텍스트 값
+
+  void editDomino(int goalId, String newGoal) async {
+    final success =
+        await EditDominoService.editDomino(goalId: goalId, newGoal: newGoal);
+
+    if (success) {
+      // 성공적으로 서버에 전송된 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노가 삭제되었습니다.')),
+      );
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TdMain(),
+          ));
+    } else {
+      // 실패한 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노 삭제에 실패했습니다.')),
+      );
+    }
+  }
 
   //텍스트폼필드 함수 만들기
   renderTextFormField({
@@ -209,70 +234,10 @@ class EditPageState extends State<EditPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    /*String content =
-                        dominoController.text; // 텍스트 필드에서 입력된 내용을 가져옴
-
-                    if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
-
-                      // DateProvider에서 pickedDate를 가져옴
-                      DateTime? pickedDate =
-                          context.read<DateProvider>().pickedDate;
-
-                      if (switchValue) {
-                        // EventProvider를 통해 루틴 추가
-                        context.read<DateProvider>().setInterval(switchValue);
-                        int interval = context.read<DateProvider>().interval;
-
-                        Event oldEvent = Event(
-                          title: 'Money',
-                          content: widget.content,
-                          switchValue: switchValue,
-                          interval: widget.interval,
-                        );
-
-                        Event newEvent = Event(
-                          title: 'Money',
-                          content: content,
-                          switchValue: switchValue,
-                          interval: interval,
-                        );
-
-                        context
-                            .read<EventProvider>()
-                            .editEvent(pickedDate!, oldEvent, newEvent);
-                      } else {
-                        Event oldEvent = Event(
-                          title: 'Money',
-                          content: widget.content,
-                          switchValue: switchValue,
-                          interval: widget.interval,
-                        );
-
-                        Event newEvent = Event(
-                          title: 'Money',
-                          content: content,
-                          switchValue: switchValue,
-                          interval: 0,
-                        );
-
-                        context
-                            .read<EventProvider>()
-                            .editEvent(pickedDate!, oldEvent, newEvent);
-                      }
-
-                      // 이벤트 추가 후 화면 이동
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MyApp(),
-                          ));
-                    }*/
-
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MyApp(),
+                          builder: (context) => const TdMain(),
                         ));
                   },
                   style: TextButton.styleFrom(
@@ -297,6 +262,29 @@ class EditPageState extends State<EditPage> {
 }
 
 void deleteDialog(context) {
+  const int goalId = 0;
+  void deleteDomino(int goalId) async {
+    final success = await DeleteDominoService.deleteDomino(goalId: goalId);
+
+    if (success) {
+      // 성공적으로 서버에 전송된 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노가 삭제되었습니다.')),
+      );
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TdMain(),
+          ));
+    } else {
+      // 실패한 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노 삭제에 실패했습니다.')),
+      );
+    }
+  }
+
   showDialog(
     context: context,
     builder: (context) {
@@ -311,6 +299,7 @@ void deleteDialog(context) {
             children: [
               TextButton(
                   onPressed: () {
+                    deleteDomino(goalId);
                     Navigator.of(context).pop();
                     Navigator.push(
                         context,
@@ -332,7 +321,7 @@ void deleteDialog(context) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MyApp(),
+                          builder: (context) => const TdMain(),
                         ));
                   },
                   child: const Text(
