@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:domino/provider/TD/date_provider.dart';
+import 'package:domino/provider/TD/datelist_provider.dart';
 
 class RepeatSettings extends StatefulWidget {
   const RepeatSettings({super.key});
@@ -37,7 +37,7 @@ class RepeatSettingsState extends State<RepeatSettings> {
                   everyTwoWeek = false;
                   everyMonth = false;
                 });
-                context.read<DateProvider>().setEveryday(everyDay);
+                context.read<DateListProvider>().setEveryday(everyDay);
               },
             ),
             const Text(
@@ -58,7 +58,7 @@ class RepeatSettingsState extends State<RepeatSettings> {
                   everyTwoWeek = false;
                   everyMonth = false;
                 });
-                context.read<DateProvider>().setEveryweek(everyWeek);
+                context.read<DateListProvider>().setEveryweek(everyWeek);
               },
             ),
             const Text(
@@ -79,7 +79,7 @@ class RepeatSettingsState extends State<RepeatSettings> {
                   everyWeek = false;
                   everyMonth = false;
                 });
-                context.read<DateProvider>().setEverytwoweek(everyTwoWeek);
+                context.read<DateListProvider>().setEverytwoweek(everyTwoWeek);
               },
             ),
             const Text(
@@ -100,7 +100,7 @@ class RepeatSettingsState extends State<RepeatSettings> {
                   everyWeek = false;
                   everyTwoWeek = false;
                 });
-                context.read<DateProvider>().setEverymonth(everyMonth);
+                context.read<DateListProvider>().setEverymonth(everyMonth);
               },
             ),
             const Text(

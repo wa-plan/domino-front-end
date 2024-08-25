@@ -1,10 +1,13 @@
-import 'package:domino/main.dart';
+import 'package:domino/provider/TD/datelist_provider.dart';
+import 'package:domino/screens/TD/td_main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/provider/TD/date_provider.dart';
 import 'package:domino/widgets/TD/add_calendar.dart';
 import 'package:domino/widgets/TD/repeat_settings.dart';
 import 'package:provider/provider.dart';
+import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/provider/TD/event_provider.dart';
+import 'package:domino/provider/TD/datelist_provider.dart';
 
 class AddPage2 extends StatefulWidget {
   const AddPage2({super.key});
@@ -18,9 +21,29 @@ class AddPage2State extends State<AddPage2> {
   TextEditingController dominoController =
       TextEditingController(text: "저금"); //텍스트폼필드에 기본으로 들어갈 초기 텍스트 값
   bool switchValue = false;
+  int thirdGoalId = 0;
 
   RepeatSettingsState repeatSettings =
       RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
+
+  void addDomino(int thirdGoalId, String name, List<DateTime> dateList) async {
+    final success = await AddDominoService.addDomino(
+      thirdGoalId: thirdGoalId,
+      name: name,
+      dates: dateList,
+    );
+    print(thirdGoalId);
+    print(name);
+
+    /*if (success) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const TdMain(),
+        ),
+      );
+    }*/
+  }
 
   //텍스트폼필드 함수 만들기
   renderTextFormField({
@@ -158,11 +181,6 @@ class AddPage2State extends State<AddPage2> {
               children: [
                 TextButton(
                   onPressed: () {
-                    /*Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddPage1(),
-                        ));*/
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
@@ -176,32 +194,30 @@ class AddPage2State extends State<AddPage2> {
                 ), //이전 버튼
                 TextButton(
                   onPressed: () {
-                    String content =
-                        dominoController.text; // 텍스트 필드에서 입력된 내용을 가져옴
-
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
 
-                      // DateProvider에서 pickedDate를 가져옴
                       DateTime? pickedDate =
                           context.read<DateProvider>().pickedDate;
 
                       if (pickedDate == null) {
-                        // pickedDate가 null인 경우 오류 메시지 표시
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('날짜를 선택해 주세요.')),
                         );
                       } else {
                         if (switchValue) {
                           // EventProvider를 통해 루틴 추가
-                          context.read<DateProvider>().setInterval(switchValue);
-                          int interval = context.read<DateProvider>().interval;
+                          context
+                              .read<DateListProvider>()
+                              .setInterval(switchValue, pickedDate);
+                          int interval =
+                              context.read<DateListProvider>().interval;
 
                           context.read<EventProvider>().addrepeatEvent(
                                 pickedDate,
                                 Event(
                                   title: 'Money',
-                                  content: content,
+                                  content: dominoController.text,
                                   switchValue: switchValue,
                                   interval: interval,
                                 ),
@@ -214,17 +230,24 @@ class AddPage2State extends State<AddPage2> {
                                 pickedDate,
                                 Event(
                                   title: 'Money',
-                                  content: content,
+                                  content: dominoController.text,
                                   switchValue: switchValue,
                                   interval: 0,
                                 ),
                               );
                         }
 
+                        context
+                            .read<DateListProvider>()
+                            .setInterval(switchValue, pickedDate);
+                        List<DateTime> dateList =
+                            context.read<DateListProvider>().dateList;
+                        addDomino(thirdGoalId, dominoController.text.toString(),
+                            dateList);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const MyApp(),
+                            builder: (context) => const TdMain(),
                           ),
                         );
                       }
