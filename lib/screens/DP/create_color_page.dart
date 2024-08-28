@@ -1,4 +1,5 @@
-import 'package:domino/screens/DP/create_complete_page.dart';
+import 'package:domino/apis/services/dp_services.dart';
+import 'package:domino/screens/DP/list_page.dart';
 import 'package:domino/widgets/DP/color_box.dart';
 import 'package:domino/widgets/DP/color_box2.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,104 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
     const Color(0xff3184FF): const Color(0xff8CBAFF),
     const Color(0xff11D1C2): const Color(0xffAAF4EF),
   };
+
+  Future<bool> _addSecondGoal() async {
+    final mandalartId = Provider.of<SelectFinalGoalId>(context, listen: false)
+        .selectedFinalGoalId;
+    List<String> name =
+        Provider.of<SaveInputtedDetailGoalModel>(context, listen: false)
+            .inputtedDetailGoal
+            .values
+            .toList();
+    final List<String> color = Provider.of<GoalColor>(context, listen: false)
+        .selectedGoalColor
+        .values
+        .map((color) => color.toString())
+        .toList();
+
+    final success = await AddSecondGoalService.addSecondGoal(
+      mandalartId: mandalartId,
+      name: name,
+      color: color,
+    );
+
+    return success; // Return success to indicate whether the operation was successful
+  }
+
+  Future<bool> _addThirdGoal() async {
+    List<int> secondGoalId = [];
+    final mandalartId = Provider.of<SelectFinalGoalId>(context, listen: false)
+        .selectedFinalGoalId;
+
+    final response =
+        await SecondGoalListService.secondGoalList(context, mandalartId);
+    if (response != null) {
+      for (var secondGoal in response.first["secondGoals"]) {
+        secondGoalId.add(secondGoal["id"]);
+      }
+    }
+
+    final third0 =
+        Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
+            .inputtedActionPlan[0]
+            .values
+            .toList();
+    final third1 =
+        Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
+            .inputtedActionPlan[1]
+            .values
+            .toList();
+    final third2 =
+        Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
+            .inputtedActionPlan[2]
+            .values
+            .toList();
+    final third3 =
+        Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
+            .inputtedActionPlan[3]
+            .values
+            .toList();
+    final third4 =
+        Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
+            .inputtedActionPlan[4]
+            .values
+            .toList();
+    final third5 =
+        Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
+            .inputtedActionPlan[5]
+            .values
+            .toList();
+    final third6 =
+        Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
+            .inputtedActionPlan[6]
+            .values
+            .toList();
+    final third7 =
+        Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
+            .inputtedActionPlan[7]
+            .values
+            .toList();
+    final third8 =
+        Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
+            .inputtedActionPlan[8]
+            .values
+            .toList();
+
+    final success = await AddThirdGoalService.addThirdGoal(
+      secondGoalId: secondGoalId,
+      third0: third0,
+      third1: third1,
+      third2: third2,
+      third3: third3,
+      third4: third4,
+      third5: third5,
+      third6: third6,
+      third7: third7,
+      third8: third8,
+    );
+
+    return success; // Return success to indicate whether the operation was successful
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -313,25 +412,37 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                           colorCode: const Color(0xff11D1C2))
                     ])),
                 Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () async {
+                      // Execute _addSecondGoal and wait for the result
+                      final secondGoalSuccess = await _addSecondGoal();
+
+                      // If _addSecondGoal was successful, proceed to _addThirdGoal
+                      if (secondGoalSuccess) {
+                        final thirdGoalSuccess = await _addThirdGoal();
+
+                        // If both are successful, navigate to DPlistPage
+                        if (thirdGoalSuccess) {
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DPcreateCompletePage(),
-                            ));
-                      },
-                      style: TextButton.styleFrom(
-                          //api 넣기
-                          backgroundColor: const Color(0xff131313),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0))),
-                      child: const Text(
-                        '완료',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                    )),
+                                builder: (context) => const DPlistPage()),
+                          );
+                        }
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xff131313),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0)),
+                    ),
+                    child: const Text(
+                      '완료',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
