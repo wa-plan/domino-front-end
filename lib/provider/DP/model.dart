@@ -10,6 +10,16 @@ class SelectFinalGoalModel with ChangeNotifier {
   }
 }
 
+class SelectFinalGoalId with ChangeNotifier {
+  String _selectedFinalGoalId = "선택 안됨!"; // 초기값 설정
+  String get selectedFinalGoalId => _selectedFinalGoalId;
+
+  void selectFinalGoalId(String value) {
+    _selectedFinalGoalId = value;
+    notifyListeners();
+  }
+}
+
 class SaveInputtedDetailGoalModel with ChangeNotifier {
   final Map<String, String> _inputtedDetailGoal = {
     '0': '',
