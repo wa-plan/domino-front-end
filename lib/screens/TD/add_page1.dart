@@ -1,4 +1,5 @@
 import 'package:domino/apis/services/dp_services.dart';
+import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/TD/td_main.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +19,34 @@ class _AddPage1State extends State<AddPage1> {
   String? selectedGoal;
   String nextStage = '';
   List<Map<String, dynamic>> mainGoals = []; // 데이터의 타입 변경
+  int mandalartId = 1;
 
   @override
   void initState() {
     super.initState();
     _mainGoalList();
+  }
+
+  void mandalartInfo(context, int mandalartId) async {
+    final success = await MandalartInfoService.mandalartInfo(context,
+        mandalartId: mandalartId);
+    if (success) {
+      // 성공적으로 서버에 전송된 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노가 조회되었습니다.')),
+      );
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TdMain(),
+          ));
+    } else {
+      // 실패한 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노 조회에 실패했습니다.')),
+      );
+    }
   }
 
   void _mainGoalList() async {
@@ -255,6 +279,11 @@ class _AddPage1State extends State<AddPage1> {
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                   ), //다음 버튼
+                TextButton(
+                    onPressed: () {
+                      mandalartInfo(context, mandalartId);
+                    },
+                    child: const Text('test'))
               ],
             ),
           ],

@@ -52,7 +52,7 @@ class _EventCalendarState extends State<EventCalendar> {
   }
 
   void dominoInfo(context, DateTime date) async {
-    final success = await DominoInfoService.dominoInfo(date: date);
+    final success = await DominoInfoService.dominoInfo(date: date.toString());
 
     if (success) {
       // 성공적으로 서버에 전송된 경우에 처리할 코드
