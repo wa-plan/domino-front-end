@@ -8,7 +8,6 @@ import 'package:domino/provider/LR/user_provider.dart';
 import 'package:domino/provider/nav_provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/screens/LR/login.dart';
-import 'package:domino/provider/TD/datelist_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
@@ -17,10 +16,10 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DateProvider()),
-        ChangeNotifierProvider(create: (_) => DateListProvider()),
         ChangeNotifierProvider(create: (_) => EventProvider()),
         ChangeNotifierProvider(create: (_) => PasswordProvider()),
         ChangeNotifierProvider(create: (_) => SelectFinalGoalModel()),
+        ChangeNotifierProvider(create: (_) => SelectFinalGoalId()),
         ChangeNotifierProvider(create: (_) => SaveInputtedDetailGoalModel()),
         ChangeNotifierProvider(create: (_) => SaveInputtedActionPlanModel()),
         ChangeNotifierProvider(create: (_) => SelectDetailGoal()),
