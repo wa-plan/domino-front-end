@@ -7,6 +7,7 @@ import 'package:domino/provider/ST/password_provider.dart';
 import 'package:domino/provider/LR/user_provider.dart';
 import 'package:domino/provider/nav_provider.dart';
 import 'package:domino/provider/DP/model.dart';
+import 'package:domino/provider/TD/datelist_provider.dart';
 import 'package:domino/screens/LR/login.dart';
 
 void main() async {
@@ -17,6 +18,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => DateProvider()),
         ChangeNotifierProvider(create: (_) => EventProvider()),
+        ChangeNotifierProvider(create: (_) => DateListProvider()),
         ChangeNotifierProvider(create: (_) => PasswordProvider()),
         ChangeNotifierProvider(create: (_) => SelectFinalGoalModel()),
         ChangeNotifierProvider(create: (_) => SelectFinalGoalId()),
