@@ -7,7 +7,6 @@ import 'package:domino/widgets/TD/repeat_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/provider/TD/event_provider.dart';
-import 'package:domino/provider/TD/datelist_provider.dart';
 
 class AddPage2 extends StatefulWidget {
   const AddPage2({super.key});
@@ -35,14 +34,14 @@ class AddPage2State extends State<AddPage2> {
     print(thirdGoalId);
     print(name);
 
-    /*if (success) {
+    if (success) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const TdMain(),
         ),
       );
-    }*/
+    }
   }
 
   //텍스트폼필드 함수 만들기
