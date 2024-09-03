@@ -6,7 +6,7 @@ import 'package:domino/widgets/TD/add_calendar.dart';
 import 'package:domino/widgets/TD/repeat_settings.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/apis/services/td_services.dart';
-import 'package:domino/provider/TD/event_provider.dart';
+//import 'package:domino/provider/TD/event_provider';
 
 class AddPage2 extends StatefulWidget {
   const AddPage2({super.key});
@@ -20,7 +20,7 @@ class AddPage2State extends State<AddPage2> {
   TextEditingController dominoController =
       TextEditingController(text: "저금"); //텍스트폼필드에 기본으로 들어갈 초기 텍스트 값
   bool switchValue = false;
-  int thirdGoalId = 0;
+  int thirdGoalId = 82;
 
   RepeatSettingsState repeatSettings =
       RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
@@ -31,8 +31,6 @@ class AddPage2State extends State<AddPage2> {
       name: name,
       dates: dateList,
     );
-    print(thirdGoalId);
-    print(name);
 
     if (success) {
       Navigator.push(
@@ -204,38 +202,6 @@ class AddPage2State extends State<AddPage2> {
                           const SnackBar(content: Text('날짜를 선택해 주세요.')),
                         );
                       } else {
-                        if (switchValue) {
-                          // EventProvider를 통해 루틴 추가
-                          context
-                              .read<DateListProvider>()
-                              .setInterval(switchValue, pickedDate);
-                          int interval =
-                              context.read<DateListProvider>().interval;
-
-                          context.read<EventProvider>().addrepeatEvent(
-                                pickedDate,
-                                Event(
-                                  title: 'Money',
-                                  content: dominoController.text,
-                                  switchValue: switchValue,
-                                  interval: interval,
-                                ),
-                                switchValue,
-                                interval,
-                              );
-                        } else {
-                          // EventProvider를 통해 이벤트 추가
-                          context.read<EventProvider>().addEvent(
-                                pickedDate,
-                                Event(
-                                  title: 'Money',
-                                  content: dominoController.text,
-                                  switchValue: switchValue,
-                                  interval: 0,
-                                ),
-                              );
-                        }
-
                         context
                             .read<DateListProvider>()
                             .setInterval(switchValue, pickedDate);

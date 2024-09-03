@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:domino/widgets/TD/edit_calendar.dart';
 import 'package:domino/widgets/TD/edit_repeat_settings.dart';
 
-import 'package:provider/provider.dart';
-import 'package:domino/provider/TD/event_provider.dart';
+//import 'package:provider/provider.dart';
+//import 'package:domino/provider/TD/event_provider';
 
 class EditPage extends StatefulWidget {
   final DateTime date;
@@ -85,12 +85,12 @@ class EditPageState extends State<EditPage> {
     dominoController = TextEditingController(text: widget.content);
     switchValue = widget.switchValue; // 전달받은 switchValue로 초기화
     // howmany 함수를 사용하여 bool 변수들을 초기화합니다.
-    Map<String, bool> intervalValues =
+    /*Map<String, bool> intervalValues =
         context.read<EventProvider>().howmany(widget.interval);
     everyDay = intervalValues['everyDay'] ?? false;
     everyWeek = intervalValues['everyWeek'] ?? false;
     everyTwoWeek = intervalValues['everyTwoWeek'] ?? false;
-    everyMonth = intervalValues['everyMonth'] ?? false;
+    everyMonth = intervalValues['everyMonth'] ?? false;*/
   }
 
   @override
@@ -211,13 +211,13 @@ class EditPageState extends State<EditPage> {
                 ), //취소 버튼
                 TextButton(
                   onPressed: () {
-                    context.read<EventProvider>().removeEvent(
+                    /*context.read<EventProvider>().removeEvent(
                         widget.date,
                         Event(
                             title: 'Money',
                             content: widget.content,
                             switchValue: widget.switchValue,
-                            interval: widget.interval));
+                            interval: widget.interval));*/
                     deleteDialog(context);
                   },
                   style: TextButton.styleFrom(
