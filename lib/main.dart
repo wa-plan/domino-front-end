@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/TD/date_provider.dart';
-import 'package:domino/provider/TD/event_provider.dart';
+//import 'package:domino/provider/TD/event_provider';
 import 'package:domino/provider/ST/password_provider.dart';
 import 'package:domino/provider/LR/user_provider.dart';
 import 'package:domino/provider/nav_provider.dart';
@@ -17,7 +17,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DateProvider()),
-        ChangeNotifierProvider(create: (_) => EventProvider()),
+        //ChangeNotifierProvider(create: (_) => EventProvider()),
         ChangeNotifierProvider(create: (_) => DateListProvider()),
         ChangeNotifierProvider(create: (_) => PasswordProvider()),
         ChangeNotifierProvider(create: (_) => SelectFinalGoalModel()),
