@@ -1,4 +1,4 @@
-# domino_front
+# 갓생을 위한 도미노 플랜
 
 A new Flutter project.
 
