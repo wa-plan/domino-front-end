@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+String? baseUrl = dotenv.env['BASE_URL'];
 
 class AddGoalService {
   static Future<bool> addGoal({
@@ -27,7 +30,7 @@ class AddGoalService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/mandalart/add');
+    final url = Uri.parse('$baseUrl/api/mandalart/add');
 
     final body = jsonEncode({
       'name': name,
