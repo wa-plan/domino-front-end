@@ -6,11 +6,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:domino/main.dart';
 import 'package:domino/screens/LR/login.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+String? baseUrl = dotenv.env['BASE_URL'];
 
 class LoginService {
   Future<void> login(
       BuildContext context, String userId, String password) async {
-    final url = Uri.parse('http://13.124.78.26:8080/api/auth/login');
+    final url = Uri.parse('$baseUrl/api/auth/login');
 
     final body = jsonEncode({
       'userId': userId,
@@ -117,7 +120,7 @@ class ChangePasswordService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/me/password');
+    final url = Uri.parse('$baseUrl/api/user/me/password');
 
     final body = jsonEncode({
       'currentPassword': currentPassword,
@@ -178,7 +181,7 @@ class RegistrationService {
     required String email,
     required String phoneNum,
   }) async {
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/signup');
+    final url = Uri.parse('$baseUrl/api/user/signup');
 
     final body = jsonEncode({
       'userId': userId,
@@ -238,7 +241,7 @@ class IdFindService {
     required String phoneNum,
     required String email,
   }) async {
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/find_userId');
+    final url = Uri.parse('$baseUrl/api/user/find_userId');
 
     final body = jsonEncode({
       'phoneNum': phoneNum,
@@ -288,7 +291,7 @@ class PwFindService {
     required String userId,
     required String email,
   }) async {
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/reset_password');
+    final url = Uri.parse('$baseUrl/api/user/reset_password');
 
     final body = jsonEncode({
       'userId': userId,
@@ -337,7 +340,7 @@ class SignOutService {
       return null;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/me/password');
+    final url = Uri.parse('$baseUrl/api/user/me/password');
 
     try {
       final response = await http.delete(
@@ -415,7 +418,7 @@ class MorningAlertService {
       return null;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/morning_alarm');
+    final url = Uri.parse('$baseUrl/api/user/morning_alarm');
     final body = jsonEncode({
       'alarm': alarm,
     });
@@ -482,7 +485,7 @@ class NightAlertService {
       return null;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/user/night_alarm');
+    final url = Uri.parse('$baseUrl/api/user/night_alarm');
     final body = jsonEncode({
       'alarm': alarm,
     });
