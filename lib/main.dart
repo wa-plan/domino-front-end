@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/TD/date_provider.dart';
-//import 'package:domino/provider/TD/event_provider';
 import 'package:domino/provider/ST/password_provider.dart';
 import 'package:domino/provider/LR/user_provider.dart';
 import 'package:domino/provider/nav_provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/provider/TD/datelist_provider.dart';
 import 'package:domino/screens/LR/login.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화
   await initializeDateFormatting();
+  await dotenv.load(fileName: 'assets/config/.env');
   runApp(
     MultiProvider(
       providers: [

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+String? baseUrl = dotenv.env['BASE_URL'];
 
 class Event {
   final int id;
@@ -65,7 +68,7 @@ class DominoInfoService {
     }
     print(date);
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/goal?date=$date');
+    final url = Uri.parse('$baseUrl/api/goal?date=$date');
     print(url);
 
     try {
@@ -147,7 +150,7 @@ class AddDominoService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/goal/add');
+    final url = Uri.parse('$baseUrl/api/goal/add');
 
     // DateTime을 ISO 8601 string으로 변환
     final dateStrings = dates.map((date) => date.toIso8601String()).toList();
@@ -232,7 +235,7 @@ class DominoStatusService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/goal/status');
+    final url = Uri.parse('$baseUrl/api/goal/status');
 
     final body =
         jsonEncode({'goalId': goalId, 'attainment': attainment, 'date': date});
@@ -310,7 +313,7 @@ class EditDominoService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/goal');
+    final url = Uri.parse('$baseUrl/api/goal');
 
     final body = jsonEncode({
       'goalId': goalId,
@@ -387,7 +390,7 @@ class DeleteDominoService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/goal/$goalId');
+    final url = Uri.parse('$baseUrl/api/goal/$goalId');
 
     final body = jsonEncode({
       'goalId': goalId,
@@ -464,7 +467,7 @@ class DeleteTodayDominoService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/goal');
+    final url = Uri.parse('$baseUrl/api/goal');
 
     final body = jsonEncode({'goalId': goalId, 'goalDate': goalDate});
 
@@ -538,8 +541,7 @@ class MandalartInfoService {
       return false;
     }
 
-    final url =
-        Uri.parse('http://13.124.78.26:8080/api/mandalart/all/$mandalartId');
+    final url = Uri.parse('$baseUrl/api/mandalart/all/$mandalartId');
 
     try {
       final response = await http.get(
