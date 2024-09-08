@@ -87,51 +87,51 @@ class DominoInfoService {
           return Event.fromJson(item);
         }).toList();
 
-        Fluttertoast.showToast(
+        /*Fluttertoast.showToast(
           msg: '해당 날짜의 도미노 조회에 성공하였습니다.',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.green,
           textColor: Colors.white,
-        );
+        );*/
         return events;
       } else if (response.statusCode >= 400) {
-        Fluttertoast.showToast(
+        /*Fluttertoast.showToast(
           msg: '도미노 조회 실패: ${response.body}',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,
           textColor: Colors.white,
-        );
+        );*/
       } else {
-        Fluttertoast.showToast(
+        /*Fluttertoast.showToast(
           msg: '도미노 조회 실패: ${response.body}',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,
           textColor: Colors.white,
-        );
+        );*/
       }
       return null;
     } catch (e) {
-      Fluttertoast.showToast(
+      /*Fluttertoast.showToast(
         msg: '도미노 조회 오류 발생: $e',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
         textColor: Colors.white,
-      );
+      );*/
       return null;
     }
   }
 }
 
 class AddDominoService {
-  static Future<bool> addDomino({
-    required int thirdGoalId,
-    required String name,
-    required List<DateTime> dates,
-  }) async {
+  static Future<bool> addDomino(
+      {required int thirdGoalId,
+      required String name,
+      required List<DateTime> dates,
+      required String repetition}) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
     print('저장된 토큰: $token');
@@ -156,6 +156,7 @@ class AddDominoService {
       'thirdGoalId': thirdGoalId,
       'name': name,
       'dates': dateStrings,
+      'repetition': repetition
     });
 
     try {
@@ -212,10 +213,10 @@ class AddDominoService {
 }
 
 class DominoStatusService {
-  static Future<bool> dominoStatus({
-    required int goalId,
-    required String attainment,
-  }) async {
+  static Future<bool> dominoStatus(
+      {required int goalId,
+      required String attainment,
+      required String date}) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
     print('저장된 토큰: $token');
@@ -233,10 +234,8 @@ class DominoStatusService {
 
     final url = Uri.parse('http://13.124.78.26:8080/api/goal/status');
 
-    final body = jsonEncode({
-      'goalId': goalId,
-      'attainment': attainment,
-    });
+    final body =
+        jsonEncode({'goalId': goalId, 'attainment': attainment, 'date': date});
 
     try {
       final response = await http.put(
@@ -388,7 +387,7 @@ class DeleteDominoService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/goal/{goalId}');
+    final url = Uri.parse('http://13.124.78.26:8080/api/goal/$goalId');
 
     final body = jsonEncode({
       'goalId': goalId,
@@ -427,6 +426,81 @@ class DeleteDominoService {
       } else {
         Fluttertoast.showToast(
           msg: '도미노 삭제 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+      return false;
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+  }
+}
+
+class DeleteTodayDominoService {
+  static Future<bool> deleteTodayDomino(
+      {required int goalId, required String goalDate}) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+
+    final url = Uri.parse('http://13.124.78.26:8080/api/goal');
+
+    final body = jsonEncode({'goalId': goalId, 'goalDate': goalDate});
+
+    try {
+      final response = await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: body,
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답 본문: ${response.body}');
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Fluttertoast.showToast(
+          msg: '오늘의 도미노가 성공적으로 삭제되었습니다.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+        return true;
+      } else if (response.statusCode >= 400) {
+        Fluttertoast.showToast(
+          msg: '오늘의 도미노 삭제 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: '오늘의 도미노 삭제 실패: ${response.body}',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,

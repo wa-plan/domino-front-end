@@ -38,25 +38,23 @@ class _EventCalendarState extends State<EventCalendar> {
         _selectedEvents.value = events;
       });
       // 성공적으로 서버에 전송된 경우에 처리할 코드
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('정보조회에 성공했습니다.')),
-      );
+      //ScaffoldMessenger.of(context).showSnackBar(
+      //  const SnackBar(content: Text('정보조회에 성공했습니다.')),
+      //);
     } else {
       setState(() {
         _selectedEvents.value = [];
       });
       // 실패한 경우에 처리할 코드
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('정보조회에 실패했습니다.')),
-      );
+      //ScaffoldMessenger.of(context).showSnackBar(
+      //  const SnackBar(content: Text('정보조회에 실패했습니다.')),
+      //);
     }
   }
 
-  void dominoStatus(int goalId, String attainment) async {
+  void dominoStatus(int goalId, String attainment, String date) async {
     final success = await DominoStatusService.dominoStatus(
-      goalId: goalId,
-      attainment: attainment,
-    );
+        goalId: goalId, attainment: attainment, date: date);
 
     if (success) {
       // 성공적으로 서버에 전송된 경우에 처리할 코드
@@ -230,13 +228,13 @@ class _EventCalendarState extends State<EventCalendar> {
                       onLongPress: () {
                         // 롱 프레스 이벤트 처리
                         editDialog(
-                          context,
-                          _focusedDay,
-                          value[index].title,
-                          value[index].content,
-                          value[index].switchValue,
-                          value[index].interval,
-                        );
+                            context,
+                            _focusedDay,
+                            value[index].title,
+                            value[index].content,
+                            value[index].switchValue,
+                            value[index].interval,
+                            value[index].id);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -262,12 +260,12 @@ class _EventCalendarState extends State<EventCalendar> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  value[index].title,
+                                  value[index].content,
                                   style: const TextStyle(color: Colors.white),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  value[index].content,
+                                  value[index].title,
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ],
@@ -284,7 +282,12 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didHalf = false;
                                         value[index].didAll = false;
                                       });
-                                      dominoStatus(value[index].id, "FAIL");
+                                      //_selectedDay
+                                      String formattedDate =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(_selectedDay!);
+                                      dominoStatus(value[index].id, "FAIL",
+                                          formattedDate);
                                     },
                                     icon: Icon(
                                       Icons.clear_outlined,
@@ -302,8 +305,11 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didZero = false;
                                         value[index].didAll = false;
                                       });
-                                      dominoStatus(
-                                          value[index].id, "IN_PROGRESS");
+                                      String formattedDate =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(_selectedDay!);
+                                      dominoStatus(value[index].id,
+                                          "IN_PROGRESS", formattedDate);
                                     },
                                     icon: Icon(
                                       Icons.change_history_outlined,
@@ -321,7 +327,11 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didZero = false;
                                         value[index].didHalf = false;
                                       });
-                                      dominoStatus(value[index].id, "SUCCESS");
+                                      String formattedDate =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(_selectedDay!);
+                                      dominoStatus(value[index].id, "SUCCESS",
+                                          formattedDate);
                                     },
                                     icon: Icon(
                                       Icons.circle_outlined,
@@ -348,14 +358,8 @@ class _EventCalendarState extends State<EventCalendar> {
   }
 }
 
-void editDialog(
-  BuildContext context,
-  DateTime date,
-  String title,
-  String content,
-  bool switchvalue,
-  int interval,
-) {
+void editDialog(BuildContext context, DateTime date, String title,
+    String content, bool switchvalue, int interval, int goalId) {
   String getIntervalText() {
     if (!switchvalue) {
       return 'X';
@@ -409,8 +413,9 @@ void editDialog(
                           style: TextStyle(color: Colors.white),
                         ),
                         Text(
-                          title,
-                          style: const TextStyle(color: Colors.grey),
+                          content,
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 13),
                         ),
                       ],
                     ),
@@ -422,13 +427,8 @@ void editDialog(
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EditPage(
-                              date,
-                              title,
-                              content,
-                              switchvalue,
-                              interval,
-                            ),
+                            builder: (context) => EditPage(date, content, title,
+                                switchvalue, interval, goalId),
                           ),
                         );
                       },
@@ -437,7 +437,7 @@ void editDialog(
                   ],
                 ),
                 Text(
-                  content,
+                  title,
                   style: const TextStyle(color: Colors.white),
                 ),
                 Padding(

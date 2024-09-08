@@ -16,20 +16,21 @@ class DateListProvider extends ChangeNotifier {
   final List<DateTime> _dateList = [];
   List<DateTime> get dateList => _dateList;
 
-/*void addDomino() async {
-    const thirdGoalId = 1;
-    const name = 'domino.1';
-    final dates = List<DateTime>.from(_pickedDates);
-    print('_pickedDate: $_pickedDate');
-    print('dates:$dates');
-
-    await AddDominoService.addDomino(
-      thirdGoalId: thirdGoalId,
-      name: name,
-      dates: dates,
-    );
-    print(dates);
-  }*/
+  String repeatInfo() {
+    if (_everyDay) {
+      return "EVERYDAY";
+    }
+    if (_everyWeek) {
+      return "EVERYWEEK";
+    }
+    if (_everyTwoWeek) {
+      return "BIWEEKLY";
+    }
+    if (_everyMonth) {
+      return "EVERYMONTH";
+    }
+    return "NONE";
+  }
 
   void setEveryday(bool everyDay) {
     _everyDay = everyDay;
