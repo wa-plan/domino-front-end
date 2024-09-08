@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+String? baseUrl = dotenv.env['BASE_URL'];
 
 class MainGoalListService {
   static Future<List<Map<String, dynamic>>?> mainGoalList(
@@ -23,7 +26,7 @@ class MainGoalListService {
       return null;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/mandalart');
+    final url = Uri.parse('$baseUrl/api/mandalart');
 
     try {
       final response = await http.get(
@@ -93,7 +96,7 @@ class AddSecondGoalService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/secondgoal/add');
+    final url = Uri.parse('$baseUrl/api/secondgoal/add');
 
     if (name.length != color.length) {
       throw Exception("Mismatch in the number of names and colors");
@@ -173,7 +176,7 @@ class SecondGoalListService {
     }
 
     final url = Uri.parse(
-        'http://13.124.78.26:8080/api/mandalart/all/$mandalartId'); // Insert mandalartId here
+        '$baseUrl/api/mandalart/all/$mandalartId'); // Insert mandalartId here
 
     try {
       final response = await http.get(
@@ -262,7 +265,7 @@ class AddThirdGoalService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/thirdgoal/add');
+    final url = Uri.parse('$baseUrl/api/thirdgoal/add');
 
     bool allSuccess = true;
 
@@ -364,8 +367,7 @@ class DeleteMandalartService {
       return false;
     }
 
-    final url =
-        Uri.parse('http://13.124.78.26:8080/api/mandalart/$mandalartId');
+    final url = Uri.parse('$baseUrl/api/mandalart/$mandalartId');
 
     try {
       final response = await http.delete(
