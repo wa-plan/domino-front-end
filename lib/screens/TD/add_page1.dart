@@ -281,7 +281,7 @@ class _AddPage1State extends State<AddPage1> {
                   ), //다음 버튼
                 TextButton(
                     onPressed: () {
-                      mandalartInfo(context, mandalartId);
+                      mandalartInfo(context, 1);
                     },
                     child: const Text('test'))
               ],

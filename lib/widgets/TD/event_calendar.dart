@@ -1,11 +1,8 @@
 import 'package:domino/apis/services/td_services.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-//import 'dart:collection'; //LinkedHashMap 객체 사용하기 위한 라이브러리
 import 'package:domino/screens/TD/add_page1.dart';
 import 'package:domino/screens/TD/edit_page.dart';
-import 'package:provider/provider.dart';
-import 'package:domino/provider/TD/event_provider.dart';
 import 'package:intl/intl.dart'; // 요일 변환을 위한 패키지
 
 class EventCalendar extends StatefulWidget {
@@ -20,8 +17,6 @@ class _EventCalendarState extends State<EventCalendar> {
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
   late final ValueNotifier<List<Event>> _selectedEvents;
-  int goalId = 0;
-  DateTime date = DateTime.now();
 
   @override
   void initState() {
@@ -29,14 +24,37 @@ class _EventCalendarState extends State<EventCalendar> {
 
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier([]);
-    dominoInfo(context, date);
+    dominoInfo(_selectedDay!);
   }
 
-  void dominoStatus(int goalId, String attainment) async {
+  Future<void> dominoInfo(DateTime date) async {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    //"${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+    final events =
+        await DominoInfoService.dominoInfo(context, date: formattedDate);
+
+    if (events != null) {
+      setState(() {
+        _selectedEvents.value = events;
+      });
+      // 성공적으로 서버에 전송된 경우에 처리할 코드
+      //ScaffoldMessenger.of(context).showSnackBar(
+      //  const SnackBar(content: Text('정보조회에 성공했습니다.')),
+      //);
+    } else {
+      setState(() {
+        _selectedEvents.value = [];
+      });
+      // 실패한 경우에 처리할 코드
+      //ScaffoldMessenger.of(context).showSnackBar(
+      //  const SnackBar(content: Text('정보조회에 실패했습니다.')),
+      //);
+    }
+  }
+
+  void dominoStatus(int goalId, String attainment, String date) async {
     final success = await DominoStatusService.dominoStatus(
-      goalId: goalId,
-      attainment: attainment,
-    );
+        goalId: goalId, attainment: attainment, date: date);
 
     if (success) {
       // 성공적으로 서버에 전송된 경우에 처리할 코드
@@ -51,42 +69,14 @@ class _EventCalendarState extends State<EventCalendar> {
     }
   }
 
-  void dominoInfo(context, DateTime date) async {
-    final success = await DominoInfoService.dominoInfo(date: date.toString());
-
-    if (success) {
-      // 성공적으로 서버에 전송된 경우에 처리할 코드
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('정보조회에 성공했습니다.')),
-      );
-    } else {
-      // 실패한 경우에 처리할 코드
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('정보조회에 실패했습니다.')),
-      );
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // EventProvider의 변경사항을 감지하여 _selectedEvents를 업데이트
-    _selectedEvents.value =
-        context.watch<EventProvider>().getEventsForDay(_selectedDay!);
-  }
-
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        date = selectedDay;
       });
 
-      _selectedEvents.value =
-          context.read<EventProvider>().getEventsForDay(selectedDay);
-
-      dominoInfo(context, date);
+      dominoInfo(selectedDay);
     }
   }
 
@@ -106,8 +96,12 @@ class _EventCalendarState extends State<EventCalendar> {
             firstDay: DateTime.utc(2014, 1, 1),
             lastDay: DateTime.utc(2034, 12, 31),
             focusedDay: _focusedDay,
-            eventLoader: (day) =>
-                context.watch<EventProvider>().getEventsForDay(day),
+            eventLoader: (day) {
+              if (isSameDay(day, _selectedDay)) {
+                return _selectedEvents.value;
+              }
+              return [];
+            },
             calendarFormat: _calendarFormat,
             selectedDayPredicate: (day) {
               return isSameDay(_selectedDay, day);
@@ -117,14 +111,11 @@ class _EventCalendarState extends State<EventCalendar> {
               setState(() {
                 _focusedDay = focusedDay;
                 _selectedDay = focusedDay;
-                _selectedEvents.value = context
-                    .read<EventProvider>()
-                    .getEventsForDay(_selectedDay!);
               });
+              dominoInfo(focusedDay);
             },
             onFormatChanged: (format) {
               if (_calendarFormat != format) {
-                // Call `setState()` when updating calendar format
                 setState(() {
                   _calendarFormat = format;
                 });
@@ -237,13 +228,13 @@ class _EventCalendarState extends State<EventCalendar> {
                       onLongPress: () {
                         // 롱 프레스 이벤트 처리
                         editDialog(
-                          context,
-                          _focusedDay,
-                          value[index].title,
-                          value[index].content,
-                          value[index].switchValue,
-                          value[index].interval,
-                        );
+                            context,
+                            _focusedDay,
+                            value[index].title,
+                            value[index].content,
+                            value[index].switchValue,
+                            value[index].interval,
+                            value[index].id);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -269,12 +260,12 @@ class _EventCalendarState extends State<EventCalendar> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  value[index].title,
+                                  value[index].content,
                                   style: const TextStyle(color: Colors.white),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  value[index].content,
+                                  value[index].title,
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ],
@@ -291,7 +282,12 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didHalf = false;
                                         value[index].didAll = false;
                                       });
-                                      dominoStatus(0, "NOT_START");
+                                      //_selectedDay
+                                      String formattedDate =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(_selectedDay!);
+                                      dominoStatus(value[index].id, "FAIL",
+                                          formattedDate);
                                     },
                                     icon: Icon(
                                       Icons.clear_outlined,
@@ -309,7 +305,11 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didZero = false;
                                         value[index].didAll = false;
                                       });
-                                      dominoStatus(0, "IN_PROGRESS");
+                                      String formattedDate =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(_selectedDay!);
+                                      dominoStatus(value[index].id,
+                                          "IN_PROGRESS", formattedDate);
                                     },
                                     icon: Icon(
                                       Icons.change_history_outlined,
@@ -327,7 +327,11 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didZero = false;
                                         value[index].didHalf = false;
                                       });
-                                      dominoStatus(0, "DONE");
+                                      String formattedDate =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(_selectedDay!);
+                                      dominoStatus(value[index].id, "SUCCESS",
+                                          formattedDate);
                                     },
                                     icon: Icon(
                                       Icons.circle_outlined,
@@ -354,14 +358,8 @@ class _EventCalendarState extends State<EventCalendar> {
   }
 }
 
-void editDialog(
-  BuildContext context,
-  DateTime date,
-  String title,
-  String content,
-  bool switchvalue,
-  int interval,
-) {
+void editDialog(BuildContext context, DateTime date, String title,
+    String content, bool switchvalue, int interval, int goalId) {
   String getIntervalText() {
     if (!switchvalue) {
       return 'X';
@@ -415,8 +413,9 @@ void editDialog(
                           style: TextStyle(color: Colors.white),
                         ),
                         Text(
-                          title,
-                          style: const TextStyle(color: Colors.grey),
+                          content,
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 13),
                         ),
                       ],
                     ),
@@ -428,13 +427,8 @@ void editDialog(
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EditPage(
-                              date,
-                              title,
-                              content,
-                              switchvalue,
-                              interval,
-                            ),
+                            builder: (context) => EditPage(date, content, title,
+                                switchvalue, interval, goalId),
                           ),
                         );
                       },
@@ -443,7 +437,7 @@ void editDialog(
                   ],
                 ),
                 Text(
-                  content,
+                  title,
                   style: const TextStyle(color: Colors.white),
                 ),
                 Padding(
