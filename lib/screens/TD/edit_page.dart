@@ -1,12 +1,9 @@
 import 'package:domino/apis/services/td_services.dart';
-import 'package:domino/main.dart';
 import 'package:domino/screens/TD/td_main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/widgets/TD/edit_calendar.dart';
 import 'package:domino/widgets/TD/edit_repeat_settings.dart';
-
-import 'package:provider/provider.dart';
-import 'package:domino/provider/TD/event_provider.dart';
+import 'package:intl/intl.dart';
 
 class EditPage extends StatefulWidget {
   final DateTime date;
@@ -14,9 +11,10 @@ class EditPage extends StatefulWidget {
   final String content;
   final bool switchValue;
   final int interval;
+  final int goalId;
 
-  const EditPage(
-      this.date, this.title, this.content, this.switchValue, this.interval,
+  const EditPage(this.date, this.title, this.content, this.switchValue,
+      this.interval, this.goalId,
       {super.key});
   @override
   State<EditPage> createState() => EditPageState();
@@ -85,12 +83,12 @@ class EditPageState extends State<EditPage> {
     dominoController = TextEditingController(text: widget.content);
     switchValue = widget.switchValue; // 전달받은 switchValue로 초기화
     // howmany 함수를 사용하여 bool 변수들을 초기화합니다.
-    Map<String, bool> intervalValues =
+    /*Map<String, bool> intervalValues =
         context.read<EventProvider>().howmany(widget.interval);
     everyDay = intervalValues['everyDay'] ?? false;
     everyWeek = intervalValues['everyWeek'] ?? false;
     everyTwoWeek = intervalValues['everyTwoWeek'] ?? false;
-    everyMonth = intervalValues['everyMonth'] ?? false;
+    everyMonth = intervalValues['everyMonth'] ?? false;*/
   }
 
   @override
@@ -191,11 +189,7 @@ class EditPageState extends State<EditPage> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MyApp(),
-                        ));
+                    Navigator.pop(context);
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
@@ -211,14 +205,14 @@ class EditPageState extends State<EditPage> {
                 ), //취소 버튼
                 TextButton(
                   onPressed: () {
-                    context.read<EventProvider>().removeEvent(
+                    /*context.read<EventProvider>().removeEvent(
                         widget.date,
                         Event(
                             title: 'Money',
                             content: widget.content,
                             switchValue: widget.switchValue,
-                            interval: widget.interval));
-                    deleteDialog(context);
+                            interval: widget.interval));*/
+                    deleteDialog(context, widget.goalId, widget.date);
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: const Color(0xFFFF6767),
@@ -234,6 +228,7 @@ class EditPageState extends State<EditPage> {
                 ),
                 TextButton(
                   onPressed: () {
+                    editDomino(widget.goalId, dominoValue);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -261,10 +256,32 @@ class EditPageState extends State<EditPage> {
   }
 }
 
-void deleteDialog(context) {
-  const int goalId = 0;
+void deleteDialog(BuildContext context, int goalId, DateTime date) {
   void deleteDomino(int goalId) async {
     final success = await DeleteDominoService.deleteDomino(goalId: goalId);
+
+    if (success) {
+      // 성공적으로 서버에 전송된 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노가 삭제되었습니다.')),
+      );
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TdMain(),
+          ));
+    } else {
+      // 실패한 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노 삭제에 실패했습니다.')),
+      );
+    }
+  }
+
+  void deleteTodayDomino(int goalId, String goalDate) async {
+    final success = await DeleteTodayDominoService.deleteTodayDomino(
+        goalId: goalId, goalDate: goalDate);
 
     if (success) {
       // 성공적으로 서버에 전송된 경우에 처리할 코드
@@ -300,11 +317,10 @@ void deleteDialog(context) {
               TextButton(
                   onPressed: () {
                     deleteDomino(goalId);
-                    Navigator.of(context).pop();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MyApp(),
+                          builder: (context) => const TdMain(),
                         ));
                   },
                   child: const Text(
@@ -317,7 +333,11 @@ void deleteDialog(context) {
               ),
               TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    String formattedDate =
+                        DateFormat('yyyy-MM-dd').format(date);
+                    print(formattedDate);
+                    //date.toIso8601String()
+                    deleteTodayDomino(goalId, formattedDate);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
