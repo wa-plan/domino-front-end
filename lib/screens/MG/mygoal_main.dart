@@ -1,4 +1,3 @@
-import 'package:domino/screens/MG/mygoal_goal_edit.dart';
 import 'package:domino/screens/MG/mygoal_goal_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/MG/mygoal_profile_edit.dart';
