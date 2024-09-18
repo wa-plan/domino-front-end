@@ -5,141 +5,303 @@ class MandalartGrid extends StatelessWidget {
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
 
-  // 필요한 데이터를 인자로 받아 위젯 생성
   const MandalartGrid({
     super.key,
     required this.mandalart,
     required this.secondGoals,
   });
 
-  // 각 그리드 아이템을 생성하는 함수
-  Widget buildGrid(int secondGoalIndex, String type) {
-    return SizedBox(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 1,
-          crossAxisSpacing: 3,
-          mainAxisSpacing: 3,
-        ),
-        itemCount: 9,
-        itemBuilder: (context, gridIndex) {
-          if (gridIndex == 4) {
-            // Center of the grid
-            return Container(
-              decoration: BoxDecoration(
-                color: type == 'mandalart'
-                    ? Colors.yellow
-                    : const Color(0xff929292),
-                borderRadius: BorderRadius.circular(3),
-              ),
-              child: Center(
-                child: Text(
-                  type == 'mandalart'
-                      ? mandalart
-                      : secondGoals[secondGoalIndex]['secondGoal'],
-                  style: const TextStyle(color: Colors.black),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
-          } else {
-            final adjustedIndex = gridIndex < 4 ? gridIndex : gridIndex - 1;
-            if (adjustedIndex < secondGoals.length) {
-              final secondGoalData = secondGoals[secondGoalIndex];
-              final thirdGoals = (secondGoalData['thirdGoals'] as List?) ?? [];
-
-              if (type == 'mandalart') {
-                if (adjustedIndex < secondGoals.length) {
-                  final secondGoal =
-                      secondGoals[adjustedIndex]['secondGoal'];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xff929292),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: Center(
-                      child: Text(
-                        secondGoal,
-                        style: const TextStyle(color: Colors.black),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  );
-                } else {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xff929292),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  );
-                }
-              } else {
-                // Filter out empty third goals
-                final validThirdGoals = thirdGoals
-                    .where((goal) =>
-                        goal['thirdGoal'] != null &&
-                        goal['thirdGoal'].isNotEmpty)
-                    .toList();
-
-                if (adjustedIndex < validThirdGoals.length) {
-                  final thirdGoal =
-                      validThirdGoals[adjustedIndex]['thirdGoal'];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xff5C5C5C),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: Center(
-                      child: Text(
-                        thirdGoal,
-                        style: const TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  );
-                } else {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xff262626),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  );
-                }
-              }
-            } else {
-              return Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xff262626),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              );
-            }
-          }
-        },
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return GridView(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 3,
-        mainAxisSpacing: 3,
-      ),
-      children: [
-        buildGrid(0, 'secondGoal'),
-        buildGrid(1, 'secondGoal'),
-        buildGrid(2, 'secondGoal'),
-        buildGrid(3, 'secondGoal'),
-        buildGrid(4, 'mandalart'),
-        buildGrid(5, 'secondGoal'),
-        buildGrid(6, 'secondGoal'),
-        buildGrid(7, 'secondGoal'),
-        buildGrid(8, 'secondGoal'),
-      ],
+    return Expanded(
+      child: GridView(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3),
+        children: [
+
+          SizedBox(
+            width:100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+              children: [
+                MandalartBox2(hintNum2: 0, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 0, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 0, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 0, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 0, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 0, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 0, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 0, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+              ]
+            )
+          ),
+
+          SizedBox(
+            width:100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+              children: [
+                MandalartBox2(hintNum2: 1, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 1, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 1, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 1, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 1, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 1, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 1, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 1, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+              ]
+            )
+          ),
+
+          SizedBox(
+            width:100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+              children: [
+                MandalartBox2(hintNum2: 2, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 2, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 2, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 2, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 2, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 2, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 2, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 2, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+              ]
+            )
+          ),
+
+          SizedBox(
+            width:100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+              children: [
+                MandalartBox2(hintNum2: 3, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 3, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 3, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 3, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 3, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 3, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 3, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 3, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 3, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+              ]
+            )
+          ),
+
+          SizedBox(
+            width:100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              children: [           
+                MandalartBox1(hintNum: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 3, mandalart: mandalart, secondGoals: secondGoals),
+
+                Container(
+                  margin: const EdgeInsets.all(1.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: Colors.yellow,
+                  ),
+                  child: Center(
+                    child: Text(
+                      mandalart,
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                ),
+
+                MandalartBox1(hintNum: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 8, mandalart: mandalart, secondGoals: secondGoals),
+              ],
+            ),
+          ),
+
+          SizedBox(
+            width:100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+              children: [
+                MandalartBox2(hintNum2: 5, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 5, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 5, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 5, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 5, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 5, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 5, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 5, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+              ]
+            )
+          ),
+
+          SizedBox(
+            width:100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+              children: [
+                MandalartBox2(hintNum2: 6, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 6, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 6, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 6, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 6, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 6, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 6, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 6, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+              ]
+            )
+          ),
+
+          SizedBox(
+            width:100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+              children: [
+                MandalartBox2(hintNum2: 7, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 7, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 7, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 7, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 7, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 7, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 7, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 7, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+              ]
+            )
+          ),
+
+          SizedBox(
+            width:100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+              children: [
+                MandalartBox2(hintNum2: 8, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 8, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 8, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 8, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox1(hintNum: 8, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 8, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 8, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 8, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 8, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+              ]
+            )
+          ),
+
+
+        ],              
+        ),
     );
+  }
+
+}
+
+class MandalartBox1 extends StatelessWidget {
+  final int hintNum;
+  final String mandalart;
+  final List<Map<String, dynamic>> secondGoals;
+
+  const MandalartBox1({
+    super.key, 
+    required this.hintNum,
+    required this. mandalart,
+    required this. secondGoals});
+
+  @override
+  Widget build(BuildContext context){
+    return Container(
+                  margin: const EdgeInsets.all(1.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: secondGoals.isNotEmpty 
+                    && secondGoals[hintNum]['secondGoal'] != ""
+                    ? Color(int.parse(secondGoals[hintNum]['color'].replaceAll('Color(', '').replaceAll(')',''))) 
+                    : Colors.transparent,
+                  ),
+                  child: Center(
+                    child: Text(
+                      secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != "" ? secondGoals[hintNum]['secondGoal'] : "",
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                );
+  }
+}
+
+class MandalartBox2 extends StatelessWidget {
+  final int hintNum2;
+  final int hintNum3;
+  final String mandalart;
+  final List<Map<String, dynamic>> secondGoals;
+  final Map<Color, Color> colorPalette = {
+    const Color(0xffFF7A7A): const Color(0xffFFC2C2),
+    const Color(0xffFFB82D): const Color(0xffFFD19B),
+    const Color(0xffFCFF62): const Color(0xffFEFFCD),
+    const Color(0xff72FF5B): const Color(0xffC1FFB7),
+    const Color(0xff5DD8FF): const Color(0xff94E5FF),
+    const Color(0xff929292): Colors.transparent,
+    const Color(0xffFF5794): const Color(0xffFF8EB7),
+    const Color(0xffAE7CFF): const Color(0xffD0B4FF),
+    const Color(0xffC77B7F): const Color(0xffEBB6B9),
+    const Color(0xff009255): const Color(0xff6DE1B0),
+    const Color(0xff3184FF): const Color(0xff8CBAFF),
+    const Color(0xff11D1C2): const Color(0xffAAF4EF),
+  };
+
+  MandalartBox2({
+    super.key, 
+    required this.hintNum2,
+    required this.hintNum3,
+    required this. mandalart,
+    required this. secondGoals});
+
+  @override
+  Widget build(BuildContext context){
+    final color = secondGoals.isNotEmpty
+    &&  secondGoals[hintNum2]['thirdGoals'].asMap().containsKey(hintNum3) 
+    ? Color(int.parse(secondGoals[hintNum2]['color'].replaceAll('Color(', '').replaceAll(')',''))) 
+    : Colors.transparent;
+
+    return Container(
+                  margin: const EdgeInsets.all(1.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: colorPalette[color]
+                  ),
+                  child: Center(
+                    child: Text(
+                      secondGoals.isNotEmpty &&
+                      secondGoals[hintNum2]['thirdGoals'].isNotEmpty 
+                      && secondGoals[hintNum2]['thirdGoals'].asMap().containsKey(hintNum3)  
+                      ? secondGoals[hintNum2]['thirdGoals'][hintNum3]['thirdGoal']
+                      : "",
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                );
   }
 }
