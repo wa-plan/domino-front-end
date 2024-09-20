@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:domino/screens/MG/profile_img_samplegallery.dart';
+import 'package:domino/apis/services/mg_services.dart';
+import 'package:domino/screens/TD/td_main.dart';
 
 class ProfileEdit extends StatefulWidget {
   const ProfileEdit({super.key});
@@ -15,6 +17,23 @@ class _ProfileEditState extends State<ProfileEdit> {
   final _nicknamecontroller = TextEditingController();
   final _explaincontroller = TextEditingController();
   XFile? _pickedFile;
+
+  void _editProfile(String nickname, String profile, String description) async {
+    final success = await EditProfileService.editProfile(
+      nickname: nickname,
+      profile: profile,
+      description: description,
+    );
+
+    if (success) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const TdMain(),
+        ),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -163,6 +182,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                     onPressed: () {
                       // 완료 버튼 기능 구현
                       Navigator.pop(context);
+                      _editProfile(_nicknamecontroller.text, imagefile,
+                          _explaincontroller.text);
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
@@ -187,6 +208,8 @@ class _ProfileEditState extends State<ProfileEdit> {
       ),
     );
   }
+
+  String imagefile = '';
 
   void _showBottomSheet() {
     showModalBottomSheet(
@@ -251,9 +274,13 @@ class _ProfileEditState extends State<ProfileEdit> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       setState(() {
-        _pickedFile = pickedFile;
+        imagefile = pickedFile.path;
+        //_pickedFile = pickedFile;
       });
     } else {
+      setState(() {
+        imagefile = '';
+      });
       if (kDebugMode) {
         print('카메라 사진 선택 안 함');
       }
@@ -265,7 +292,8 @@ class _ProfileEditState extends State<ProfileEdit> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _pickedFile = pickedFile;
+        imagefile = pickedFile.path;
+        //_pickedFile = pickedFile;
       });
     } else {
       if (kDebugMode) {
