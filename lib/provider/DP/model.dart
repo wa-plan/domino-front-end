@@ -20,6 +20,19 @@ class SelectFinalGoalId with ChangeNotifier {
   }
 }
 
+class SelectAPModel with ChangeNotifier {
+  String _selectedAPName = "선택안됨"; // 초기값 설정
+  String get selectedAPName => _selectedAPName;
+  int? _selectedAPID; // 초기값 설정
+  int? get selectedAPID => _selectedAPID;
+
+  void selectAP(String name, int? ID) {
+    _selectedAPName = name;
+    _selectedAPID = ID;
+    notifyListeners();
+  }
+}
+
 class SaveInputtedDetailGoalModel with ChangeNotifier {
   final Map<String, String> _inputtedDetailGoal = {
     '0': '',
