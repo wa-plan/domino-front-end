@@ -2,11 +2,8 @@ import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/TD/td_main.dart';
 import 'package:flutter/material.dart';
-
 import 'package:domino/screens/TD/add_page2.dart';
-import 'package:domino/widgets/DP/smallgrid_with_data.dart';
-import 'package:domino/provider/DP/model.dart';
-import 'package:provider/provider.dart';
+import 'package:domino/widgets/DP/mandalart.dart';
 
 class AddPage1 extends StatefulWidget {
   const AddPage1({super.key});
@@ -16,10 +13,12 @@ class AddPage1 extends StatefulWidget {
 }
 
 class _AddPage1State extends State<AddPage1> {
-  String? selectedGoal;
+  String selectedGoalName = "";
   String nextStage = '';
+  List<Map<String, dynamic>> secondGoals = [];
   List<Map<String, dynamic>> mainGoals = []; // 데이터의 타입 변경
   int mandalartId = 1;
+  String selectedGoalId = "";
 
   @override
   void initState() {
@@ -55,6 +54,18 @@ class _AddPage1State extends State<AddPage1> {
     if (goals != null) {
       setState(() {
         mainGoals = goals;
+      });
+    }
+  }
+
+  void _fetchSecondGoals(String mandalartId) async {
+    // Fetch second goals based on the selected mandalartId
+    List<Map<String, dynamic>>? result =
+        await SecondGoalListService.secondGoalList(context, mandalartId);
+
+    if (result != null && result.isNotEmpty) {
+      setState(() {
+        secondGoals = result[0]['secondGoals']; // 제2목표 정보
       });
     }
   }
@@ -97,65 +108,90 @@ class _AddPage1State extends State<AddPage1> {
                   height: 20,
                 ),
                 Container(
-                    height: 43,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(
-                          color: const Color(0xff5C5C5C),
-                        )),
-                    child: FutureBuilder(
-                      future: MainGoalListService.mainGoalList(context),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return const Center(
-                            child: Text(
-                              '목표를 불러오는 데 실패했습니다.',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        } else if (snapshot.hasData) {
-                          return DropdownButton<String>(
-                            value: selectedGoal,
-                            items: snapshot.data!
-                                .map<DropdownMenuItem<String>>((goal) {
-                              final goalName = goal['name'] ?? 'Unknown Goal';
-                              return DropdownMenuItem<String>(
-                                value: goal['id'].toString(),
-                                child: Text(
-                                  goalName,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (String? value) {
-                              setState(() {
-                                selectedGoal = value ?? ''; // null 체크 및 기본값 설정
-                              });
-                            },
-                            isExpanded: true,
-                            dropdownColor: const Color(0xff262626),
-                            style: const TextStyle(color: Colors.white),
-                            iconEnabledColor: Colors.white,
-                            underline: Container(),
-                          );
-                        } else {
-                          return const Center(
-                            child: Text(
-                              '목표가 없습니다.',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }
-                      },
-                    )),
+                  height: 43,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    border: Border.all(
+                      color: const Color(0xff5C5C5C),
+                    ),
+                  ),
+                  child: FutureBuilder(
+                    future: MainGoalListService.mainGoalList(context),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                          child: Text(
+                            '목표를 불러오는 데 실패했습니다.',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      } else if (snapshot.hasData) {
+                        List<Map<String, dynamic>> goals = snapshot.data!;
+
+                        // Add a default option at the start
+                        List<Map<String, dynamic>> options = [
+                          {'id': '0', 'name': '선택 안됨'},
+                          ...goals
+                        ]; // Add goals after the default option
+
+                        return DropdownButton<String>(
+                          value: selectedGoalId.isNotEmpty
+                              ? selectedGoalId
+                              : '0', // Default to '선택 안됨'
+                          items: options.map<DropdownMenuItem<String>>((goal) {
+                            final goalName = goal['name'] ?? 'Unknown Goal';
+                            return DropdownMenuItem<String>(
+                              value: goal['id']
+                                  .toString(), // Ensure the value is the id (string)
+                              child: Text(
+                                goalName,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              if (value == '0') {
+                                setState(() {
+                                  selectedGoalName =
+                                      ''; // Clear if '선택 안됨' is selected
+                                  selectedGoalId = '';
+                                });
+                              } else {
+                                final selectedGoal = options.firstWhere(
+                                    (goal) => goal['id'].toString() == value);
+                                setState(() {
+                                  selectedGoalName = selectedGoal['name'] ?? '';
+                                  selectedGoalId = value;
+                                });
+                                _fetchSecondGoals(selectedGoalId);
+                              }
+                            }
+                          },
+                          isExpanded: true,
+                          dropdownColor: const Color(0xff262626),
+                          style: const TextStyle(color: Colors.white),
+                          iconEnabledColor: Colors.white,
+                          underline: Container(),
+                        );
+                      } else {
+                        return const Center(
+                          child: Text(
+                            '목표가 없습니다.',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                )
               ],
             ),
-            if (selectedGoal != null) ...[
+            if (selectedGoalName != "") ...[
               const SizedBox(height: 30),
               Expanded(
                 child: Column(
@@ -168,73 +204,11 @@ class _AddPage1State extends State<AddPage1> {
                             fontWeight: FontWeight.bold)),
                     const SizedBox(height: 10),
                     Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 1,
-                        mainAxisSpacing: 1,
-                        children: [
-                          const Smallgridwithdata(goalId: 0),
-                          const Smallgridwithdata(goalId: 1),
-                          const Smallgridwithdata(goalId: 2),
-                          const Smallgridwithdata(goalId: 3),
-                          SizedBox(
-                            width: 100,
-                            child: GridView.count(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 1,
-                              mainAxisSpacing: 1,
-                              children: List.generate(9, (index) {
-                                if (index == 4) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      color: const Color(0xffFCFF62),
-                                    ),
-                                    margin: const EdgeInsets.all(1.0),
-                                    child: Center(
-                                        child: Text(
-                                      context
-                                          .watch<SelectFinalGoalModel>()
-                                          .selectedFinalGoal,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 8,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    )),
-                                  );
-                                } else {
-                                  final inputtedDetailGoals = context
-                                      .watch<SaveInputtedDetailGoalModel>()
-                                      .inputtedDetailGoal;
-                                  final value = inputtedDetailGoals
-                                          .containsKey(index.toString())
-                                      ? inputtedDetailGoals[index.toString()]
-                                      : '';
-
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      color: const Color(0xff929292),
-                                    ),
-                                    margin: const EdgeInsets.all(1.0),
-                                    child: Center(
-                                        child: Text(
-                                      value!,
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                          color: Colors.black, fontSize: 15),
-                                    )),
-                                  );
-                                }
-                              }),
-                            ),
-                          ),
-                          const Smallgridwithdata(goalId: 5),
-                          const Smallgridwithdata(goalId: 6),
-                          const Smallgridwithdata(goalId: 7),
-                          const Smallgridwithdata(goalId: 8),
-                        ],
+                      child: Center(
+                        child: MandalartGrid(
+                          mandalart: selectedGoalName,
+                          secondGoals: secondGoals,
+                        ),
                       ),
                     ),
                   ],
@@ -261,7 +235,7 @@ class _AddPage1State extends State<AddPage1> {
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ), //취소 버튼
-                if (selectedGoal != null)
+                if (selectedGoalName != "")
                   TextButton(
                     onPressed: () {
                       Navigator.push(
@@ -281,7 +255,7 @@ class _AddPage1State extends State<AddPage1> {
                   ), //다음 버튼
                 TextButton(
                     onPressed: () {
-                      mandalartInfo(context, 1);
+                      mandalartInfo(context, 3);
                     },
                     child: const Text('test'))
               ],

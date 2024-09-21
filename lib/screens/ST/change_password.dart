@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:domino/screens/LR/loginregister_find_password.dart';
-import 'package:domino/apis/services/lr_services.dart'; // 서비스 파일 import
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -181,12 +180,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                       }*/
                     },
                     style: ButtonStyle(
-                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                         ),
                       ),
-                      backgroundColor: WidgetStateProperty.all(Colors.black),
+                      backgroundColor: MaterialStateProperty.all(Colors.black),
                     ),
                     child: const Text('비밀번호 변경하기',
                         style: TextStyle(

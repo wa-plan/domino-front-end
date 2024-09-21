@@ -100,7 +100,9 @@ class _DPlistPageState extends State<DPlistPage> {
                         final data = snapshot.data!;
                         final mandalart = data[0]['mandalart'];
                         final secondGoals = data[0]['secondGoals']
-                            as List<Map<String, dynamic>>;
+                        
+                        as List<Map<String, dynamic>>;
+                          
 
                         return GestureDetector(
                           onTap: () {
