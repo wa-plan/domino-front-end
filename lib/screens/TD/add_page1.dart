@@ -3,7 +3,9 @@ import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/TD/td_main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/TD/add_page2.dart';
-import 'package:domino/widgets/DP/mandalart.dart';
+import 'package:domino/widgets/DP/mandalart2.dart';
+import 'package:provider/provider.dart';
+import 'package:domino/provider/DP/model.dart';
 
 class AddPage1 extends StatefulWidget {
   const AddPage1({super.key});
@@ -60,7 +62,8 @@ class _AddPage1State extends State<AddPage1> {
 
   void _fetchSecondGoals(String mandalartId) async {
     // Fetch second goals based on the selected mandalartId
-    List<Map<String, dynamic>>? result = await SecondGoalListService.secondGoalList(context, mandalartId);
+    List<Map<String, dynamic>>? result =
+        await SecondGoalListService.secondGoalList(context, mandalartId);
 
     if (result != null && result.isNotEmpty) {
       setState(() {
@@ -107,83 +110,87 @@ class _AddPage1State extends State<AddPage1> {
                   height: 20,
                 ),
                 Container(
-                    height: 43,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      border: Border.all(
-                        color: const Color(0xff5C5C5C),
-                      ),
+                  height: 43,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    border: Border.all(
+                      color: const Color(0xff5C5C5C),
                     ),
-                    child: FutureBuilder(
-                      future: MainGoalListService.mainGoalList(context),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return const Center(
-                            child: Text(
-                              '목표를 불러오는 데 실패했습니다.',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        } else if (snapshot.hasData) {
-                          List<Map<String, dynamic>> goals = snapshot.data!;
-                          
-                          // Add a default option at the start
-                          List<Map<String, dynamic>> options = [
-                            {'id': '0', 'name': '선택 안됨'}, ...goals
-                          ]; // Add goals after the default option
+                  ),
+                  child: FutureBuilder(
+                    future: MainGoalListService.mainGoalList(context),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                          child: Text(
+                            '목표를 불러오는 데 실패했습니다.',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      } else if (snapshot.hasData) {
+                        List<Map<String, dynamic>> goals = snapshot.data!;
 
-                          return DropdownButton<String>(
-                            value: selectedGoalId.isNotEmpty ? selectedGoalId : '0', // Default to '선택 안됨'
-                            items: options.map<DropdownMenuItem<String>>((goal) {
-                              final goalName = goal['name'] ?? 'Unknown Goal';
-                              return DropdownMenuItem<String>(
-                                value: goal['id'].toString(), // Ensure the value is the id (string)
-                                child: Text(
-                                  goalName,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (String? value) {
-                              if (value != null) {
-                                if (value == '0') {
-                                  setState(() {
-                                    selectedGoalName = ''; // Clear if '선택 안됨' is selected
-                                    selectedGoalId = '';
-                                  });
-                                } else {
-                                  final selectedGoal = options.firstWhere((goal) => goal['id'].toString() == value);
-                                  setState(() {
-                                    selectedGoalName = selectedGoal['name'] ?? '';
-                                    selectedGoalId = value;
-                                  });
-                                  _fetchSecondGoals(selectedGoalId);
-                                }
+                        // Add a default option at the start
+                        List<Map<String, dynamic>> options = [
+                          {'id': '0', 'name': '선택 안됨'},
+                          ...goals
+                        ]; // Add goals after the default option
+
+                        return DropdownButton<String>(
+                          value: selectedGoalId.isNotEmpty
+                              ? selectedGoalId
+                              : '0', // Default to '선택 안됨'
+                          items: options.map<DropdownMenuItem<String>>((goal) {
+                            final goalName = goal['name'] ?? 'Unknown Goal';
+                            return DropdownMenuItem<String>(
+                              value: goal['id']
+                                  .toString(), // Ensure the value is the id (string)
+                              child: Text(
+                                goalName,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              if (value == '0') {
+                                setState(() {
+                                  selectedGoalName =
+                                      ''; // Clear if '선택 안됨' is selected
+                                  selectedGoalId = '';
+                                });
+                              } else {
+                                final selectedGoal = options.firstWhere(
+                                    (goal) => goal['id'].toString() == value);
+                                setState(() {
+                                  selectedGoalName = selectedGoal['name'] ?? '';
+                                  selectedGoalId = value;
+                                });
+                                _fetchSecondGoals(selectedGoalId);
                               }
-                            },
-                            isExpanded: true,
-                            dropdownColor: const Color(0xff262626),
-                            style: const TextStyle(color: Colors.white),
-                            iconEnabledColor: Colors.white,
-                            underline: Container(),
-                          );
-                        } else {
-                          return const Center(
-                            child: Text(
-                              '목표가 없습니다.',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  )
-
-
+                            }
+                          },
+                          isExpanded: true,
+                          dropdownColor: const Color(0xff262626),
+                          style: const TextStyle(color: Colors.white),
+                          iconEnabledColor: Colors.white,
+                          underline: Container(),
+                        );
+                      } else {
+                        return const Center(
+                          child: Text(
+                            '목표가 없습니다.',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                )
               ],
             ),
             if (selectedGoalName != "") ...[
@@ -199,16 +206,23 @@ class _AddPage1State extends State<AddPage1> {
                             fontWeight: FontWeight.bold)),
                     const SizedBox(height: 10),
                     Expanded(
-              child: Center(
-                child: MandalartGrid(
-                  mandalart: selectedGoalName,
-                  secondGoals: secondGoals,
-                ),
-              ),
-            ),
+                      child: Center(
+                        child: MandalartGrid2(
+                          mandalart: selectedGoalName,
+                          secondGoals: secondGoals,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
+
+              const SizedBox(height: 10),
+
+              Text(
+                context.watch<SelectAPModel>().selectedAPID.toString(),
+                style: const TextStyle(color: Colors.white),
+              )
             ],
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
