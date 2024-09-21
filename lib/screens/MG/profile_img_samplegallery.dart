@@ -21,6 +21,8 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
     'assets/img/profile_smp9.png',
   ];
 
+  String _selectedImage = 'assets/img/profile_smp4.png'; // 초기 이미지를 설정
+
   @override
   Widget build(BuildContext context) {
     final imageSize = MediaQuery.of(context).size.width / 3.5;
@@ -66,10 +68,10 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
               child: Container(
                 width: imageSize,
                 height: imageSize,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: AssetImage('assets/img/profile_smp4.png'),
+                    image: AssetImage(_selectedImage), // 선택된 이미지를 표시
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -94,13 +96,15 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.pop(context);
-                              /*Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ProfileEdit(),
-                                ),
-                              );*/
+                              Navigator.pop(context, _selectedImage);
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => ProfileEdit(
+                              //       selectedImage: _selectedImage,
+                              //     ),
+                              //   ),
+                              // );
                             },
                             style: TextButton.styleFrom(
                                 backgroundColor: Colors.grey,
@@ -129,11 +133,19 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                               padding: const EdgeInsets.all(5.0),
                               itemCount: _imageUrls.length,
                               itemBuilder: (context, index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(_imageUrls[index]),
+                                return GestureDetector(
+                                  onTap: () {
+                                    // 이미지를 클릭했을 때 _selectedImage 업데이트
+                                    setState(() {
+                                      _selectedImage = _imageUrls[index];
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(_imageUrls[index]),
+                                      ),
                                     ),
                                   ),
                                 );
