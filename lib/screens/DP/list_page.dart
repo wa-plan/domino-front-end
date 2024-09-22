@@ -1,5 +1,6 @@
 // DPlistPage.dart
 import 'package:domino/widgets/DP/mandalart.dart';
+import 'package:domino/widgets/DP/mandalart3.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/DP/create_select_page.dart';
 import 'package:domino/widgets/nav_bar.dart';
@@ -120,6 +121,7 @@ class _DPlistPageState extends State<DPlistPage> {
                           child: MandalartGrid(
                             mandalart: mandalart,
                             secondGoals: secondGoals,
+                            mandalartId: int.parse(mandalartId),
                           ),
                         );
                       }
