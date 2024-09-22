@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class MandalartGrid extends StatelessWidget {
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
+  final int mandalartId;
 
   const MandalartGrid({
     super.key,
     required this.mandalart,
     required this.secondGoals,
+    required this.mandalartId,
   });
 
 

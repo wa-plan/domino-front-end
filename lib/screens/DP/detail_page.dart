@@ -1,5 +1,6 @@
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/screens/DP/list_page.dart';
+import 'package:domino/widgets/DP/mandalart3.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/widgets/DP/mandalart.dart';
 
@@ -100,9 +101,10 @@ class DPdetailPage extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: Center(
-                child: MandalartGrid(
+                child: MandalartGrid3(
                   mandalart: mandalart,
                   secondGoals: secondGoals,
+                  mandalartId: mandalartId,
                 ),
               ),
             ),
