@@ -88,4 +88,11 @@ class AddGoalService {
       return false;
     }
   }
+ /*static Future<bool> addBookmark({
+    required {
+  "id": 0,
+  "bookmark": "BOOKMARK"
 }
+  })*/
+}
+
