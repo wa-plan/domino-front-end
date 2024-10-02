@@ -119,3 +119,29 @@ class GoalColor with ChangeNotifier {
     }
   }
 }
+
+
+class SaveEditedDetailGoalIdModel with ChangeNotifier {
+  final Map<String, int> _editedDetailGoalId = {
+    '0': 0,
+    '1': 0,
+    '2': 0,
+    '3': 0,
+    '4': 0,
+    '5': 0,
+    '6': 0,
+    '7': 0,
+    '8': 0
+  };
+
+  Map<String, int> get editedDetailGoalId => _editedDetailGoalId;
+
+  void editDetailGoalId(String key, int value) {
+    if (_editedDetailGoalId.containsKey(key)) {
+      // 키가 존재하는지 확인
+      _editedDetailGoalId[key] = value;
+      notifyListeners();
+    }
+  }
+}
+
