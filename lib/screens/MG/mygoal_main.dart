@@ -21,7 +21,7 @@ class _MyGoalState extends State<MyGoal> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 20.0, 20.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -39,7 +39,8 @@ class _MyGoalState extends State<MyGoal> {
         backgroundColor: const Color(0xff262626),
       ),
       bottomNavigationBar: const NavBar(),
-      body: Padding(
+      body: SingleChildScrollView(
+          child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
@@ -140,14 +141,73 @@ class _MyGoalState extends State<MyGoal> {
                   ],
                 ),
                 const SizedBox(height: 10.0),
-                Center(
-                  child: Text(
-                    '새로운 목표를 시작해볼까요?',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: MediaQuery.of(context).size.width * 0.05,
-                      fontWeight: FontWeight.bold,
-                    ),
+                SizedBox(
+                  height: 170,
+                  child: PageView(
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Row(
+                                      children: [
+                                        Icon(Icons.star, color: Colors.yellow),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          '환상적인 세계여행',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color.fromARGB(
+                                            255, 53, 53, 53),
+                                        borderRadius: BorderRadius.circular(3.0),     
+                                      ),
+                                        width: 300,
+                                        height: 80,
+                                        
+                                        child: const Center(
+                                            child: Text(
+                                          '이미지를 추가해 주세요',
+                                          style: TextStyle(color: Colors.white),
+                                        ))),
+                                    const SizedBox(height: 10),
+                                    
+                                    const Text(
+                                      '나의 도미노',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700),
+                                    ),
+                                    const Text(
+                                      '80개',
+                                      style: TextStyle(
+                                        color: Color(0xffFCFF62),
+                                        fontWeight: FontWeight.w700),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                    
+                                    decoration: BoxDecoration(
+                                        color: const Color(0xffFCFF62),
+                                        borderRadius: BorderRadius.circular(3.0),     
+                                      ),
+                                    width: 15,
+                                    height: 170),
+                              ]))
+                    ],
                   ),
                 ),
                 const SizedBox(height: 20.0),
@@ -230,7 +290,7 @@ class _MyGoalState extends State<MyGoal> {
             ),
           ],
         ),
-      ),
+      )),
       backgroundColor: const Color(0xff262626),
     );
   }

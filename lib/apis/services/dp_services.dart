@@ -403,3 +403,166 @@ class DeleteMandalartService {
     }
   }
 }
+
+class EditSecondGoalService {
+  static Future<bool> editSecondGoal({
+    required List<int> secondGoalId,
+    required List<String> newSecondGoal,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+
+    final url = Uri.parse('http://13.124.78.26:8080/api/secondgoal');
+
+    if (secondGoalId.length != newSecondGoal.length) {
+      throw Exception("Mismatch in the number of secondGoalId and newSecondGoal");
+    }
+
+    bool allSuccess = true;
+
+    for (int i = 0; i < secondGoalId.length; i++) {
+      final body = json.encode({
+        "secondGoalId": secondGoalId[i],
+        "newSecondGoal": newSecondGoal[i],
+      });
+
+      try {
+        final response = await http.put(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: body,
+        );
+
+        print('서버 응답 상태 코드: ${response.statusCode}');
+        print('서버 응답 본문: ${response.body}');
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          Fluttertoast.showToast(
+            msg: '목표가 성공적으로 수정되었습니다.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: '목표 수정 실패: ${response.body}',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+          allSuccess = false;
+        }
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: '오류 발생: $e',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        allSuccess = false;
+      }
+    }
+
+    return allSuccess;
+  }
+}
+
+
+class EditGoalColorService {
+  static Future<bool> editGoalColor({
+    required List<int> secondGoalId,
+    required List<String> color,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+
+    final url = Uri.parse('http://13.124.78.26:8080/api/secondgoal');
+
+    if (secondGoalId.length != color.length) {
+      throw Exception("Mismatch in the number of secondGoalId and color");
+    }
+
+    bool allSuccess = true;
+
+    for (int i = 0; i < secondGoalId.length; i++) {
+      final body = json.encode({
+        "secondGoalId": secondGoalId[i],
+        "color": color[i],
+      });
+
+      try {
+        final response = await http.put(
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: body,
+        );
+
+        print('서버 응답 상태 코드: ${response.statusCode}');
+        print('서버 응답 본문: ${response.body}');
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          Fluttertoast.showToast(
+            msg: '목표가 성공적으로 수정되었습니다.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: '목표 수정 실패: ${response.body}',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+          allSuccess = false;
+        }
+      } catch (e) {
+        Fluttertoast.showToast(
+          msg: '오류 발생: $e',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        allSuccess = false;
+      }
+    }
+
+    return allSuccess;
+  }
+}
