@@ -1,3 +1,4 @@
+import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/screens/MG/mygoal_goal_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/MG/mygoal_profile_edit.dart';
@@ -13,6 +14,33 @@ class MyGoal extends StatefulWidget {
 
 class _MyGoalState extends State<MyGoal> {
   final String message = "응원 메시지";
+  String nickname = '당신은 어떤 사람인가요?';
+  String description = '프로필 편집을 통해 \n자신을 표현해주세요.';
+
+  void userInfo() async {
+    final data = await UserInfoService.userInfo();
+    if (data.isNotEmpty) {
+      setState(() {
+        nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
+        description = data['description'] ?? '프로필 편집을 통해 \n자신을 표현해주세요.';
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userInfo();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    userInfo(); // 화면에 다시 돌아올 때마다 사용자 정보 갱신
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,21 +86,21 @@ class _MyGoalState extends State<MyGoal> {
                             image: AssetImage('assets/img/profile_smp4.png'),
                             fit: BoxFit.cover)),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(15.0),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '당신은 어떤 사람인가요?',
-                          style: TextStyle(color: Colors.grey),
+                          nickname,
+                          style: const TextStyle(color: Colors.grey),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
-                          '프로필 편집을 통해 \n자신을 표현해주세요.',
-                          style: TextStyle(color: Colors.grey),
+                          description,
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       ],
                     ),

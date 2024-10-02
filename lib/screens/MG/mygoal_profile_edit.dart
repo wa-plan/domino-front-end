@@ -1,20 +1,61 @@
-import 'package:flutter/foundation.dart';
+//import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:domino/screens/MG/profile_img_samplegallery.dart';
+import 'package:domino/apis/services/mg_services.dart';
 
 class ProfileEdit extends StatefulWidget {
-  const ProfileEdit({super.key});
+  final String? selectedImage;
+  const ProfileEdit({super.key, this.selectedImage});
 
   @override
   State<ProfileEdit> createState() => _ProfileEditState();
 }
 
 class _ProfileEditState extends State<ProfileEdit> {
-  final _nicknamecontroller = TextEditingController();
-  final _explaincontroller = TextEditingController();
+  final TextEditingController _nicknamecontroller = TextEditingController();
+  final TextEditingController _explaincontroller = TextEditingController();
   XFile? _pickedFile;
+  final String _selectedProfileImage =
+      'assets/img/profile_smp4.png'; // 기본 이미지 경로
+  String? nickname;
+  String? description;
+
+  @override
+  void initState() {
+    super.initState();
+    userInfo();
+  }
+
+  void _editProfile(String nickname, String profile, String description) async {
+    print('프로필 수정 요청 시작');
+    print('닉네임: $nickname, 프로필 경로: $profile, 설명: $description');
+    final success = await EditProfileService.editProfile(
+      nickname: nickname,
+      profile: profile,
+      description: description,
+    );
+
+    if (success) {
+      Navigator.pop(context, true); // 성공적으로 프로필을 수정한 후, true를 반환
+    }
+  }
+
+  void userInfo() async {
+    final data = await UserInfoService.userInfo();
+    if (data.isNotEmpty) {
+      setState(() {
+        nickname = data['nickname'];
+        description = data['description'];
+        _nicknamecontroller.text = nickname ?? '';
+        _explaincontroller.text = description ?? '';
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -37,19 +78,12 @@ class _ProfileEditState extends State<ProfileEdit> {
             icon: const Icon(Icons.arrow_back_ios_new_rounded),
             color: Colors.white,
           ),
-          title: const Row(
-            children: [
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                "프로필 편집하기",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+          title: const Text(
+            "프로필 편집하기",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           backgroundColor: const Color(0xff262626),
         ),
@@ -69,32 +103,19 @@ class _ProfileEditState extends State<ProfileEdit> {
               ),
               const SizedBox(height: 20),
               Center(
-                child: Container(
-                  width: imageSize,
-                  height: imageSize,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xff262626),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      _showBottomSheet();
-                    },
-                    child: _pickedFile != null
-                        ? Image.file(
-                            File(_pickedFile!.path),
-                            fit: BoxFit.cover,
-                          )
-                        : Container(
-                            width: imageSize,
-                            height: imageSize,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/img/profile_smp4.png'),
-                                    fit: BoxFit.cover)),
-                          ),
+                child: GestureDetector(
+                  onTap: () {
+                    _showBottomSheet();
+                  },
+                  child: CircleAvatar(
+                    radius: imageSize / 2,
+                    backgroundImage: _pickedFile != null
+                        ? FileImage(File(_pickedFile!.path))
+                        : (widget.selectedImage != null
+                                ? FileImage(File(widget.selectedImage!))
+                                : AssetImage(_selectedProfileImage))
+                            as ImageProvider,
+                    backgroundColor: Colors.grey,
                   ),
                 ),
               ),
@@ -110,8 +131,10 @@ class _ProfileEditState extends State<ProfileEdit> {
               const SizedBox(height: 10),
               TextField(
                 controller: _nicknamecontroller,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: 'ex) 일탈을 원하는 마이크',
+                  //labelStyle: const TextStyle(color: Colors.white70),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -129,6 +152,7 @@ class _ProfileEditState extends State<ProfileEdit> {
               const SizedBox(height: 10),
               TextField(
                 controller: _explaincontroller,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: 'ex) 세상이 궁금한 소심하고 당당한 마이크',
                   border: OutlineInputBorder(
@@ -162,7 +186,30 @@ class _ProfileEditState extends State<ProfileEdit> {
                   TextButton(
                     onPressed: () {
                       // 완료 버튼 기능 구현
-                      Navigator.pop(context);
+
+                      if (_pickedFile != null) {
+                        // 파일이 선택되었을 때만 프로필 수정 요청
+                        _editProfile(
+                          _nicknamecontroller.text,
+                          _pickedFile!.path, // 여기서 null 확인이 이미 되었으므로 ! 사용
+                          _explaincontroller.text,
+                        );
+                      } else {
+                        // 파일이 선택되지 않은 경우 기본 이미지로 처리하거나 오류 메시지 처리
+                        _editProfile(
+                          _nicknamecontroller.text,
+                          _selectedProfileImage, // 기본 이미지 경로 사용
+                          _explaincontroller.text,
+                        );
+                      }
+                      //Navigator.pop(context);
+
+                      //Navigator.push(
+                      //  context,
+                      //  MaterialPageRoute(
+                      //    builder: (context) => const MyGoal(),
+                      //  ),
+                      //);
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
@@ -228,7 +275,6 @@ class _ProfileEditState extends State<ProfileEdit> {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
-                  //_getSampleImage();ProfileSampleGallery
                   Navigator.pop(context);
                   Navigator.push(
                     context,
@@ -253,10 +299,6 @@ class _ProfileEditState extends State<ProfileEdit> {
       setState(() {
         _pickedFile = pickedFile;
       });
-    } else {
-      if (kDebugMode) {
-        print('카메라 사진 선택 안 함');
-      }
     }
   }
 
@@ -267,17 +309,6 @@ class _ProfileEditState extends State<ProfileEdit> {
       setState(() {
         _pickedFile = pickedFile;
       });
-    } else {
-      if (kDebugMode) {
-        print('갤러리 사진 선택 안 함');
-      }
-    }
-  }
-
-  Future<void> _getSampleImage() async {
-    // 기본 이미지 선택 로직 구현
-    if (kDebugMode) {
-      print('기본 이미지 선택');
     }
   }
 }
