@@ -13,55 +13,24 @@ class MyGoal extends StatefulWidget {
 }
 
 class _MyGoalState extends State<MyGoal> {
-  final String message = "응원 메시지";
-  String nickname = '당신은 어떤 사람인가요?';
-  String description = '프로필 편집을 통해 \n자신을 표현해주세요.';
 
-  void userInfo() async {
-    final data = await UserInfoService.userInfo();
-    if (data.isNotEmpty) {
-      setState(() {
-        nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
-        description = data['description'] ?? '프로필 편집을 통해 \n자신을 표현해주세요.';
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
-      );
-    }
-  }
+  final String message = "실패하는 것이 두려운 게 아니라\n노력하지 않는 것이 두렵다.";
 
-  @override
-  void initState() {
-    super.initState();
-    userInfo();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    userInfo(); // 화면에 다시 돌아올 때마다 사용자 정보 갱신
-  }
 
   @override
   Widget build(BuildContext context) {
-    final imageSize = MediaQuery.of(context).size.width / 4;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Padding(
           padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '나의 목표',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.06,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+          child: Text(
+            '나의 목표',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: MediaQuery.of(context).size.width * 0.06,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         backgroundColor: const Color(0xff262626),
@@ -69,62 +38,61 @@ class _MyGoalState extends State<MyGoal> {
       bottomNavigationBar: const NavBar(),
       body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.fromLTRB(35.0, 20, 35.0, 25.0),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: imageSize,
-                    height: imageSize,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: AssetImage('assets/img/profile_smp4.png'),
-                            fit: BoxFit.cover)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    border:
+                        Border.all(color: const Color(0xff5C5C5C), width: 1),
+                    shape: BoxShape.circle,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          nickname,
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          description,
-                          style: const TextStyle(color: Colors.grey),
-                        ),
-                      ],
+
+                ),
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '당신은 어떤 사람인가요?',
+                      style: TextStyle(color: Color(0xff5C5C5C)),
+
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProfileEdit(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.edit),
-                    color: Colors.white,
-                  ),
-                ],
-              ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      '프로필 편집을 통해 \n자신을 표현해주세요.',
+                      style: TextStyle(color: Color(0xff5C5C5C)),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileEdit(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.edit),
+                  color: const Color(0xff5C5C5C),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Divider(color: Colors.grey, thickness: 1),
+                const Divider(color: Color(0xff5C5C5C), thickness: 1),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -136,22 +104,20 @@ class _MyGoalState extends State<MyGoal> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MyGoalAdd(),
-                              ),
-                            );
-                            // 나의 목표 추가 기능
-                          },
-                          icon: const Icon(Icons.add),
-                          color: Colors.white,
-                        ),
-                        IconButton(
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyGoalAdd(),
+                          ),
+                        );
+                        // 나의 목표 추가 기능
+                      },
+                      icon: const Icon(Icons.add),
+                      color: Colors.white,
+                    ),
+                    /*IconButton(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -163,9 +129,7 @@ class _MyGoalState extends State<MyGoal> {
                           },
                           icon: const Icon(Icons.add),
                           color: Colors.white,
-                        ),
-                      ],
-                    ),
+                        ),*/
                   ],
                 ),
                 const SizedBox(height: 10.0),
@@ -193,52 +157,70 @@ class _MyGoalState extends State<MyGoal> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          'D-200',
+                                          style: TextStyle(
+                                            color: Color(0xff5C5C5C),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     const SizedBox(height: 10),
                                     Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 53, 53, 53),
-                                        borderRadius: BorderRadius.circular(3.0),     
-                                      ),
-                                        width: 300,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 53, 53, 53),
+                                          borderRadius:
+                                              BorderRadius.circular(3.0),
+                                        ),
+                                        width: 250,
                                         height: 80,
-                                        
                                         child: const Center(
                                             child: Text(
                                           '이미지를 추가해 주세요',
                                           style: TextStyle(color: Colors.white),
                                         ))),
                                     const SizedBox(height: 10),
-                                    
-                                    const Text(
-                                      '나의 도미노',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700),
-                                    ),
-                                    const Text(
-                                      '80개',
-                                      style: TextStyle(
-                                        color: Color(0xffFCFF62),
-                                        fontWeight: FontWeight.w700),
-                                    ),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Column(children: [
+                                            Text(
+                                              '나의 도미노',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              '80개',
+                                              style: TextStyle(
+                                                  color: Color(0xffFCFF62),
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ]),
+                                          const SizedBox(width: 15),
+                                          SizedBox(
+                                              child: Image.asset(
+                                                  'assets/img/MG_domino.png')),
+                                        ])
                                   ],
                                 ),
                                 Container(
-                                    
                                     decoration: BoxDecoration(
-                                        color: const Color(0xffFCFF62),
-                                        borderRadius: BorderRadius.circular(3.0),     
-                                      ),
+                                      color: const Color(0xffFCFF62),
+                                      borderRadius: BorderRadius.circular(3.0),
+                                    ),
                                     width: 15,
                                     height: 170),
                               ]))
                     ],
                   ),
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 30.0),
                 Text(
                   '오늘의 응원',
                   style: TextStyle(
@@ -247,28 +229,28 @@ class _MyGoalState extends State<MyGoal> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(color: Colors.grey, width: 1),
-                      ),
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        message,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                const SizedBox(height: 15.0),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    shape: BoxShape.rectangle,
+                    border: Border.all(
+                      color: const Color(0xff5C5C5C),
+                      width: 1,
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    message,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 30.0),
                 Text(
                   '쓰러트린 목표',
                   style: TextStyle(
@@ -277,21 +259,9 @@ class _MyGoalState extends State<MyGoal> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10.0),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: Text(
-                      '함께 목표를 쓰러트려봐요',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: MediaQuery.of(context).size.width * 0.05,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 15.0),
+                SizedBox(child: Image.asset('assets/img/MG_domino2.png')),
+                const SizedBox(height: 30.0),
                 Text(
                   '쓰러트리지 못한 목표',
                   style: TextStyle(
@@ -300,20 +270,8 @@ class _MyGoalState extends State<MyGoal> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10.0),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Center(
-                    child: Text(
-                      '쓰러트리지 못한 목표가 없어요',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: MediaQuery.of(context).size.width * 0.05,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+                const SizedBox(height: 15.0),
+                SizedBox(child: Image.asset('assets/img/MG_domino3.png')),
               ],
             ),
           ],
