@@ -3,7 +3,9 @@ import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/TD/td_main.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/TD/add_page2.dart';
-import 'package:domino/widgets/DP/mandalart.dart';
+import 'package:domino/widgets/DP/mandalart2.dart';
+import 'package:provider/provider.dart';
+import 'package:domino/provider/DP/model.dart';
 
 class AddPage1 extends StatefulWidget {
   const AddPage1({super.key});
@@ -19,10 +21,12 @@ class _AddPage1State extends State<AddPage1> {
   List<Map<String, dynamic>> mainGoals = []; // 데이터의 타입 변경
   int mandalartId = 1;
   String selectedGoalId = "";
+  int secondGoalId = 0;
 
   @override
   void initState() {
     super.initState();
+    secondGoalId = 0;
     _mainGoalList();
   }
 
@@ -72,6 +76,10 @@ class _AddPage1State extends State<AddPage1> {
 
   @override
   Widget build(BuildContext context) {
+    int secondGoalId =
+        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ??
+            0;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -205,7 +213,7 @@ class _AddPage1State extends State<AddPage1> {
                     const SizedBox(height: 10),
                     Expanded(
                       child: Center(
-                        child: MandalartGrid(
+                        child: MandalartGrid2(
                           mandalart: selectedGoalName,
                           secondGoals: secondGoals,
                         ),
@@ -214,6 +222,15 @@ class _AddPage1State extends State<AddPage1> {
                   ],
                 ),
               ),
+              const SizedBox(height: 10),
+              /*Text(
+                context.watch<SelectAPModel>().selectedAPID.toString(),
+                style: const TextStyle(color: Colors.white),
+              ),*/
+              Text(
+                secondGoalId.toString(),
+                style: const TextStyle(color: Colors.white),
+              )
             ],
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -255,7 +272,7 @@ class _AddPage1State extends State<AddPage1> {
                   ), //다음 버튼
                 TextButton(
                     onPressed: () {
-                      mandalartInfo(context, 3);
+                      mandalartInfo(context, 1);
                     },
                     child: const Text('test'))
               ],
