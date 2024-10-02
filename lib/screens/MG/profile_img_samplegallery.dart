@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:domino/screens/MG/mygoal_profile_edit.dart';
 
 class ProfileSampleGallery extends StatefulWidget {
   const ProfileSampleGallery({super.key});
