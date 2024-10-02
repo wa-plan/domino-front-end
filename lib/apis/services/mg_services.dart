@@ -91,6 +91,7 @@ class AddGoalService {
       return false;
     }
   }
+
 }
 
 class EditProfileService {
