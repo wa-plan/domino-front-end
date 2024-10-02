@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+String? baseUrl = dotenv.env['BASE_URL'];
 
 class MainGoalListService {
   static Future<List<Map<String, dynamic>>?> mainGoalList(
@@ -23,7 +26,7 @@ class MainGoalListService {
       return null;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/mandalart');
+    final url = Uri.parse('$baseUrl/api/mandalart');
 
     try {
       final response = await http.get(
@@ -91,7 +94,7 @@ class AddSecondGoalService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/secondgoal/add');
+    final url = Uri.parse('$baseUrl/api/secondgoal/add');
 
     if (name.length != color.length) {
       throw Exception("Mismatch in the number of names and colors");
@@ -100,11 +103,8 @@ class AddSecondGoalService {
     bool allSuccess = true;
 
     for (int i = 0; i < name.length; i++) {
-      final body = json.encode({
-        "mandalartId": mandalartId,
-        "name": name[i],
-        "color": color[i]
-      });
+      final body = json.encode(
+          {"mandalartId": mandalartId, "name": name[i], "color": color[i]});
 
       try {
         final response = await http.post(
@@ -153,8 +153,6 @@ class AddSecondGoalService {
   }
 }
 
-
-
 class SecondGoalListService {
   static Future<List<Map<String, dynamic>>?> secondGoalList(
     BuildContext context,
@@ -175,8 +173,8 @@ class SecondGoalListService {
       return null;
     }
 
-    final url =
-        Uri.parse('http://13.124.78.26:8080/api/mandalart/all/$mandalartId'); // Insert mandalartId here
+    final url = Uri.parse(
+        '$baseUrl/api/mandalart/all/$mandalartId'); // Insert mandalartId here
 
     try {
       final response = await http.get(
@@ -192,7 +190,7 @@ class SecondGoalListService {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
-        
+
         // Parsing the response to match the desired structure
         final List<Map<String, dynamic>> mainGoals = [
           {
@@ -238,7 +236,6 @@ class SecondGoalListService {
   }
 }
 
-
 class AddThirdGoalService {
   static Future<bool> addThirdGoal({
     required List<int> secondGoalId,
@@ -267,13 +264,21 @@ class AddThirdGoalService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/thirdgoal/add');
+    final url = Uri.parse('$baseUrl/api/thirdgoal/add');
 
     bool allSuccess = true;
 
     // List of all thirdGoals
     List<List<String>> allThirdGoals = [
-      third0, third1, third2, third3, third4, third5, third6, third7, third8
+      third0,
+      third1,
+      third2,
+      third3,
+      third4,
+      third5,
+      third6,
+      third7,
+      third8
     ];
 
     for (int i = 0; i < secondGoalId.length; i++) {
@@ -281,10 +286,10 @@ class AddThirdGoalService {
       if (i >= allThirdGoals.length) break;
 
       List<String> currentThirdGoals = allThirdGoals[i];
-      
+
       for (int j = 0; j < currentThirdGoals.length; j++) {
         final thirdGoalName = currentThirdGoals[j];
-        
+
         // Skip empty strings
         if (thirdGoalName.isEmpty) continue;
 
@@ -341,10 +346,7 @@ class AddThirdGoalService {
   }
 }
 
-
-
 class DeleteMandalartService {
-  
   static Future<bool> deleteMandalart(
     BuildContext context,
     int mandalartId,
@@ -364,7 +366,7 @@ class DeleteMandalartService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/mandalart/$mandalartId');
+    final url = Uri.parse('$baseUrl/api/mandalart/$mandalartId');
 
     try {
       final response = await http.delete(
