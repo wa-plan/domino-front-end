@@ -1,4 +1,4 @@
-// mandalart.dart
+// 3X3 만다라트 세부 화면
 import 'package:domino/screens/DP/detail2_page.dart';
 import 'package:flutter/material.dart';
 

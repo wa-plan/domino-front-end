@@ -1,6 +1,5 @@
-// DPlistPage.dart
+//DP 메인 페이지 (사용자의 만다라트 리스트)
 import 'package:domino/widgets/DP/mandalart.dart';
-import 'package:domino/widgets/DP/mandalart3.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/DP/create_select_page.dart';
 import 'package:domino/widgets/nav_bar.dart';

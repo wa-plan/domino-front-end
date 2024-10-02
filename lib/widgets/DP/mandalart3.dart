@@ -1,4 +1,4 @@
-// mandalart.dart
+// 9x9 만다라트 세부 화면 (3x3 만다라트 선택 가능)
 import 'package:domino/screens/DP/detail2_page.dart';
 import 'package:flutter/material.dart';
 

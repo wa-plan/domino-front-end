@@ -1,18 +1,21 @@
+//DP 만다라트 9X9 상세 페이지
 import 'package:domino/apis/services/dp_services.dart';
+import 'package:domino/provider/DP/model.dart';
+import 'package:domino/screens/DP/create99_page.dart';
 import 'package:domino/screens/DP/list_page.dart';
 import 'package:domino/widgets/DP/mandalart3.dart';
 import 'package:flutter/material.dart';
-import 'package:domino/widgets/DP/mandalart.dart';
+import 'package:provider/provider.dart';
 
 class DPdetailPage extends StatelessWidget {
   final String mandalart;
-  final int mandalartId; // Add mandalartId to handle deletion
+  final int mandalartId;
   final List<Map<String, dynamic>> secondGoals;
 
   const DPdetailPage({
     super.key,
     required this.mandalart,
-    required this.mandalartId, // Receive mandalartId from previous screen
+    required this.mandalartId,
     required this.secondGoals,
   });
 
@@ -68,23 +71,60 @@ class DPdetailPage extends StatelessWidget {
               onSelected: (value) async {
                 switch (value) {
                   case 'delete':
-                    // Call the delete function
-                    bool isDeleted = await DeleteMandalartService.deleteMandalart(
+                    bool isDeleted =
+                        await DeleteMandalartService.deleteMandalart(
                       context,
                       mandalartId,
                     );
                     if (isDeleted) {
-                      // If delete is successful, navigate back or refresh the UI
                       Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const DPlistPage(),
-                              ),
-                            ); // Navigate back after deletion
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DPlistPage(),
+                        ),
+                      );
                     }
                     break;
                   case 'edit':
-                    print('수정하기'); // Implement edit functionality here
+                    for (int i = 0; i < 9; i++) {
+                      context
+                          .read<SaveInputtedDetailGoalModel>()
+                          .updateDetailGoal(
+                              i.toString(),
+                              secondGoals.isNotEmpty &&
+                                      secondGoals[i]['secondGoal'] != ""
+                                  ? secondGoals[i]['secondGoal']
+                                  : "");
+                    }
+
+                    for (int i = 0; i < 9; i++) {
+                      context
+                          .read<SaveEditedDetailGoalIdModel>()
+                          .editDetailGoalId(
+                              i.toString(),
+                              secondGoals.isNotEmpty &&
+                                      secondGoals[i]['secondGoal'] != ""
+                                  ? secondGoals[i]['id']
+                                  : 0);
+                    }
+
+                    for (int i = 0; i < 9; i++) {
+                      context.read<GoalColor>().updateGoalColor(
+                          i.toString(),
+                          secondGoals.isNotEmpty &&
+                                  secondGoals[i]['secondGoal'] != ""
+                              ? Color(int.parse(secondGoals[i]['color']
+                                  .replaceAll('Color(', '')
+                                  .replaceAll(')', '')))
+                              : Colors.transparent);
+                    }
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DPcreate99Page(),
+                      ),
+                    );
                     break;
                 }
               },
