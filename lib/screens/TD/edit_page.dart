@@ -1,9 +1,13 @@
+import 'package:domino/provider/TD/datelist_provider.dart';
+import 'package:domino/provider/TD/date_provider.dart';
 import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/TD/td_main.dart';
+import 'package:domino/widgets/DP/mandalart2.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/widgets/TD/edit_calendar.dart';
 import 'package:domino/widgets/TD/edit_repeat_settings.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class EditPage extends StatefulWidget {
   final DateTime date;
@@ -81,20 +85,11 @@ class EditPageState extends State<EditPage> {
   void initState() {
     super.initState();
     dominoController = TextEditingController(text: widget.content);
-    switchValue = widget.switchValue; // 전달받은 switchValue로 초기화
-    // howmany 함수를 사용하여 bool 변수들을 초기화합니다.
-    /*Map<String, bool> intervalValues =
-        context.read<EventProvider>().howmany(widget.interval);
-    everyDay = intervalValues['everyDay'] ?? false;
-    everyWeek = intervalValues['everyWeek'] ?? false;
-    everyTwoWeek = intervalValues['everyTwoWeek'] ?? false;
-    everyMonth = intervalValues['everyMonth'] ?? false;*/
+    switchValue = widget.switchValue;
   }
 
   @override
   Widget build(BuildContext context) {
-    bool switchValue = widget.switchValue;
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -205,14 +200,7 @@ class EditPageState extends State<EditPage> {
                 ), //취소 버튼
                 TextButton(
                   onPressed: () {
-                    /*context.read<EventProvider>().removeEvent(
-                        widget.date,
-                        Event(
-                            title: 'Money',
-                            content: widget.content,
-                            switchValue: widget.switchValue,
-                            interval: widget.interval));*/
-                    deleteDialog(context, widget.goalId, widget.date);
+                    howDeleteDialog(context, widget.goalId, widget.date);
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: const Color(0xFFFF6767),
@@ -228,12 +216,30 @@ class EditPageState extends State<EditPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    editDomino(widget.goalId, dominoValue);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TdMain(),
-                        ));
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+
+                      DateTime? pickedDate =
+                          context.read<DateProvider>().pickedDate;
+
+                      print(pickedDate);
+
+                      if (pickedDate == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('날짜를 선택해 주세요.')),
+                        );
+                      } else {
+                        context
+                            .read<DateListProvider>()
+                            .setInterval(switchValue, pickedDate);
+                        List<DateTime> dateList =
+                            context.read<DateListProvider>().dateList;
+                        String repeatInfo =
+                            context.read<DateListProvider>().repeatInfo();
+                        print(repeatInfo);
+                        howEditDialog(context, widget.goalId, widget.date);
+                      }
+                    }
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
@@ -256,7 +262,7 @@ class EditPageState extends State<EditPage> {
   }
 }
 
-void deleteDialog(BuildContext context, int goalId, DateTime date) {
+void howDeleteDialog(BuildContext context, int goalId, DateTime date) {
   void deleteDomino(int goalId) async {
     final success = await DeleteDominoService.deleteDomino(goalId: goalId);
 
@@ -346,6 +352,108 @@ void deleteDialog(BuildContext context, int goalId, DateTime date) {
                   },
                   child: const Text(
                     '오늘의 도미노만 삭제',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  )),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void howEditDialog(BuildContext context, int goalId, DateTime date) {
+  void editAllDomino(int goalId) async {
+    final success =
+        await EditDominoService.editDomino(goalId: goalId, newGoal: "");
+
+    if (success) {
+      // 성공적으로 서버에 전송된 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노가 수정되었습니다.')),
+      );
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TdMain(),
+          ));
+    } else {
+      // 실패한 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노 수정에 실패했습니다.')),
+      );
+    }
+  }
+
+  void editTodayDomino(int goalId, String goalDate) async {
+    final success = await DeleteTodayDominoService.deleteTodayDomino(
+        goalId: goalId, goalDate: goalDate);
+
+    if (success) {
+      // 성공적으로 서버에 전송된 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노가 수정되었습니다.')),
+      );
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const TdMain(),
+          ));
+    } else {
+      // 실패한 경우에 처리할 코드
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('도미노 수정에 실패했습니다.')),
+      );
+    }
+  }
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return Dialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(4))),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(5, 25, 5, 25),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                  onPressed: () {
+                    editAllDomino(goalId);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TdMain(),
+                        ));
+                  },
+                  child: const Text(
+                    '앞으로의 도미노 모두 수정',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  )),
+              const SizedBox(
+                height: 10,
+              ),
+              TextButton(
+                  onPressed: () {
+                    String formattedDate =
+                        DateFormat('yyyy-MM-dd').format(date);
+                    print(formattedDate);
+                    //date.toIso8601String()
+                    editTodayDomino(goalId, formattedDate);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TdMain(),
+                        ));
+                  },
+                  child: const Text(
+                    '오늘의 도미노만 수정',
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   )),
