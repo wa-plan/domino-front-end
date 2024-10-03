@@ -22,6 +22,7 @@ class EditCalendarState extends State<EditCalendar> {
     _focusedDay = widget.date;
     _selectedDay = widget.date;
     pickedDate = widget.date; // 초기에는 전달된 날짜로 설정
+    Provider.of<DateProvider>(context, listen: false).setPickedDate(pickedDate);
   }
 
   @override
@@ -45,7 +46,7 @@ class EditCalendarState extends State<EditCalendar> {
               });
               // DateProvider를 통해 상태 업데이트
               Provider.of<DateProvider>(context, listen: false)
-                  .setPickedDate(selectedDay);
+                  .setPickedDate(pickedDate);
             }
           },
           onPageChanged: (focusedDay) {
