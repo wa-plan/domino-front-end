@@ -1,14 +1,15 @@
 //DP 디테일 페이지에서 이동한 3x3 만다라트 페이지 
 import 'package:domino/widgets/DP/mandalart4.dart';
+import 'package:domino/widgets/DP/mandalart5.dart';
 import 'package:flutter/material.dart';
 
-class DPdetail2Page extends StatelessWidget {
+class DPdetail3Page extends StatelessWidget {
   final String mandalart;
   final int mandalartId; 
   final List<Map<String, dynamic>> secondGoals;
   final int selectedSecondGoal;
 
-  const DPdetail2Page({
+  const DPdetail3Page({
     super.key,
     required this.mandalart,
     required this.mandalartId, 
@@ -68,7 +69,7 @@ class DPdetail2Page extends StatelessWidget {
             const SizedBox(height: 40),
             Expanded(
               child: Center(
-                child: MandalartGrid4(
+                child: MandalartGrid5(
                   mandalart: mandalart,
                   secondGoals: secondGoals,
                   selectedSecondGoal: selectedSecondGoal,

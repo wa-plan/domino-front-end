@@ -1,13 +1,13 @@
 // 3X3 만다라트 세부 화면
 import 'package:flutter/material.dart';
 
-class MandalartGrid4 extends StatefulWidget {
+class MandalartGrid5 extends StatefulWidget {
   
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
   final int selectedSecondGoal;
 
-  const MandalartGrid4({
+  const MandalartGrid5({
     super.key,
     required this.mandalart,
     required this.secondGoals,
@@ -15,10 +15,10 @@ class MandalartGrid4 extends StatefulWidget {
   });
 
   @override
-  State<MandalartGrid4> createState() => _MandalartGrid4();
+  State<MandalartGrid5> createState() => _MandalartGrid5();
 }
 
-  class _MandalartGrid4 extends State<MandalartGrid4> {
+  class _MandalartGrid5 extends State<MandalartGrid5> {
 
 
   @override
@@ -32,12 +32,12 @@ class MandalartGrid4 extends StatefulWidget {
                       mainAxisSpacing: 5),
         children: [
             for (int i = 0; i < 4; i++)
-              MandalartBox2(hintNum2: widget.selectedSecondGoal, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
+              MandalartBox1(hintNum: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
 
-            MandalartBox1(hintNum: widget.selectedSecondGoal, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
+            MandalartBox2(mandalart: widget.mandalart),
 
             for (int i = 4; i < 8; i++)
-              MandalartBox2(hintNum2: widget.selectedSecondGoal, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
+              MandalartBox1(hintNum: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
         ],              
         ),
     );
@@ -81,10 +81,9 @@ class MandalartBox1 extends StatelessWidget {
 }
 
 class MandalartBox2 extends StatelessWidget {
-  final int hintNum2;
-  final int hintNum3;
+
   final String mandalart;
-  final List<Map<String, dynamic>> secondGoals;
+
   final Map<Color, Color> colorPalette = {
     const Color(0xffFF7A7A): const Color(0xffFFC2C2),
     const Color(0xffFFB82D): const Color(0xffFFD19B),
@@ -102,33 +101,23 @@ class MandalartBox2 extends StatelessWidget {
 
   MandalartBox2({
     super.key, 
-    required this.hintNum2,
-    required this.hintNum3,
+
     required this. mandalart,
-    required this. secondGoals});
+});
 
   @override
   Widget build(BuildContext context){
-    final color = secondGoals.isNotEmpty
-    &&  secondGoals[hintNum2]['thirdGoals'].asMap().containsKey(hintNum3) 
-    ? Color(int.parse(secondGoals[hintNum2]['color'].replaceAll('Color(', '').replaceAll(')',''))) 
-    : Colors.transparent;
+
 
     return Container(
                   margin: const EdgeInsets.all(1.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: secondGoals.isNotEmpty &&
-                      secondGoals[hintNum2]['thirdGoals'].isNotEmpty 
-                      && secondGoals[hintNum2]['thirdGoals'].asMap().containsKey(hintNum3) && secondGoals[hintNum2]['thirdGoals'][hintNum3]['thirdGoal'] == "" ? Colors.transparent : colorPalette[color]
+                    color: const Color(0xffFCFF62)
                   ),
                   child: Center(
                     child: Text(
-                      secondGoals.isNotEmpty &&
-                      secondGoals[hintNum2]['thirdGoals'].isNotEmpty 
-                      && secondGoals[hintNum2]['thirdGoals'].asMap().containsKey(hintNum3)  
-                      ? secondGoals[hintNum2]['thirdGoals'][hintNum3]['thirdGoal']
-                      : "",
+                      mandalart,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
