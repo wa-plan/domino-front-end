@@ -25,6 +25,10 @@ class ColorBox2 extends StatelessWidget {
               .watch<SaveInputtedDetailGoalModel>()
               .inputtedDetailGoal['$keyNumber']!,
           textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+                        fontSize: 11
+          ),
         )));
   }
 }

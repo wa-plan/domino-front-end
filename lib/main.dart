@@ -31,6 +31,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => NavBarProvider()),
         ChangeNotifierProvider(create: (_) => SelectAPModel()),
         ChangeNotifierProvider(create: (_) => SaveEditedDetailGoalIdModel()),
+        ChangeNotifierProvider(create: (_) => SaveEditedActionPlanIdModel()),
       ],
       child: const MyApp(), // MyApp 클래스를 사용
     ),
