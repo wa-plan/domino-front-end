@@ -1,10 +1,12 @@
 //DP 메인 페이지 (사용자의 만다라트 리스트)
+import 'package:domino/provider/DP/model.dart';
 import 'package:domino/widgets/DP/mandalart.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/DP/create_select_page.dart';
 import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/screens/DP/detail_page.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'; // 추가
 
 
@@ -76,6 +78,22 @@ class _DPlistPageState extends State<DPlistPage> {
                   constraints: const BoxConstraints(),
                   visualDensity: VisualDensity.compact,
                   onPressed: () {
+                    //여기에 Provider 초기화 코드 삽입
+                    //먼저 secondGoal 초기화 코드
+                    for(int i=0; i<9; i++){
+                    context.read<SaveInputtedDetailGoalModel>().updateDetailGoal("$i", "");}
+                    //다음 color 초기화 코드
+                    for(int i=0; i<9; i++){
+                    context.read<GoalColor>().updateGoalColor("$i", const Color(0xff929292));}
+                    //마지막으로 thirdGoal 초기화 코드
+                    for(int i=0; i<9; i++){
+                      for(int j=0; j<9; j++){
+                    context.read<SaveInputtedActionPlanModel>().updateActionPlan(i, "$j", "");}}
+
+                    //테스트 후 삭제 예정
+                    
+
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -68,70 +68,94 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
             ),
             const SizedBox(height: 20),
             Container(
-              height: 43,
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(3),
-                border: Border.all(
-                  color: const Color(0xff5C5C5C),
+                height: 43,
+                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(3),
+                  border: Border.all(
+                    color: const Color(0xff5C5C5C),
+                  ),
                 ),
-              ),
-              child: FutureBuilder(
-                future: MainGoalListService.mainGoalList(context),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                      child: Text(
-                        '목표를 불러오는 데 실패했습니다.',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                  } else if (snapshot.hasData) {
-                    return DropdownButton<String>(
-                      value: selectedGoalId,
-                      items: snapshot.data!
-                          .map<DropdownMenuItem<String>>((goal) {
-                        final goalName = goal['name'] ?? 'Unknown Goal';
-                        return DropdownMenuItem<String>(
-                          value: goal['id'].toString(),
+                child: FutureBuilder(
+                  future: MainGoalListService.mainGoalList(context),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return const Center(
+                        child: Text(
+                          '목표를 불러오는 데 실패했습니다.',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    } else if (snapshot.hasData) {
+                      // List of goal IDs that you want to filter by
+                      List<String> desiredGoalIds = context
+                          .watch<SaveMandalartCreatedGoal>()
+                          .mandalartCreatedGoal; // Example goal IDs to compare
+
+                      // Filter the goals by checking if the id exists in the desiredGoalIds list
+                      List<dynamic> filteredGoals =
+                          snapshot.data!.where((goal) {
+                        // Negate the condition to filter goals that are not in desiredGoalIds
+                        return !desiredGoalIds.contains(goal['id'].toString());
+                      }).toList();
+
+                      if (filteredGoals.isEmpty) {
+                        return const Center(
                           child: Text(
-                            goalName,
-                            style: const TextStyle(color: Colors.white),
+                            '만다라트를 생성할 목표가 없습니다.', // Message when no goal matches
+                            style: TextStyle(color: Colors.white),
                           ),
                         );
-                      }).toList(),
-                      onChanged: (String? value) {
-                        final selectedGoal = snapshot.data!.firstWhere(
-                            (goal) => goal['id'].toString() == value);
-                        setState(() {
-                          selectedGoalId = value ?? '';
-                          selectedGoalName = selectedGoal['name'] ?? '';
-                        });
-                        context.read<SelectFinalGoalModel>().selectFinalGoal(selectedGoalName);
-                        context.read<SelectFinalGoalId>().selectFinalGoalId(selectedGoalId!);
-                      },
-                      isExpanded: true,
-                      dropdownColor: const Color(0xff262626),
-                      style: const TextStyle(color: Colors.white),
-                      iconEnabledColor: Colors.white,
-                      underline: Container(),
-                    );
-                  } else {
-                    return const Center(
-                      child: Text(
-                        '목표가 없습니다.',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
+                      }
+
+                      return DropdownButton<String>(
+                        value: selectedGoalId,
+                        items:
+                            filteredGoals.map<DropdownMenuItem<String>>((goal) {
+                          final goalName = goal['name'] ?? 'Unknown Goal';
+                          return DropdownMenuItem<String>(
+                            value: goal['id'].toString(),
+                            child: Text(
+                              goalName,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          final selectedGoal = snapshot.data!.firstWhere(
+                              (goal) => goal['id'].toString() == value);
+                          setState(() {
+                            selectedGoalId = value ?? '';
+                            selectedGoalName = selectedGoal['name'] ?? '';
+                          });
+                          context
+                              .read<SelectFinalGoalModel>()
+                              .selectFinalGoal(selectedGoalName);
+                          context
+                              .read<SelectFinalGoalId>()
+                              .selectFinalGoalId(selectedGoalId!);
+                        },
+                        isExpanded: true,
+                        dropdownColor: const Color(0xff262626),
+                        style: const TextStyle(color: Colors.white),
+                        iconEnabledColor: Colors.white,
+                        underline: Container(),
+                      );
+                    } else {
+                      return const Center(
+                        child: Text(
+                          '목표가 없습니다.',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }
+                  },
+                )),
             const SizedBox(height: 20),
             Expanded(
               child: GridView(
@@ -202,7 +226,9 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const DPcreate99Page(),
+                        builder: (context) => DPcreate99Page(
+                          mainGoalId: selectedGoalId
+                        ),
                       ),
                     );
                   },
