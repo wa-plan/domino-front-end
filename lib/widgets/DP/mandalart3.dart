@@ -1,5 +1,6 @@
-// 9x9 만다라트 세부 화면 (3x3 만다라트 선택 가능)
+// DP 디테일 페이지에 들어가는 9x9 만다라트 (3x3 만다라트 선택 가능)
 import 'package:domino/screens/DP/detail2_page.dart';
+import 'package:domino/screens/DP/detail3_page.dart';
 import 'package:flutter/material.dart';
 
 class MandalartGrid3 extends StatefulWidget {
@@ -53,8 +54,8 @@ class MandalartGrid3 extends StatefulWidget {
             width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 for (int i = 0; i < 4; i++)
                   MandalartBox2(hintNum2: 0, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
@@ -88,8 +89,8 @@ class MandalartGrid3 extends StatefulWidget {
             width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 for (int i = 0; i < 4; i++)
                   MandalartBox2(hintNum2: 1, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
@@ -124,8 +125,8 @@ class MandalartGrid3 extends StatefulWidget {
             width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 for (int i = 0; i < 4; i++)
                   MandalartBox2(hintNum2: 2, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
@@ -159,8 +160,8 @@ class MandalartGrid3 extends StatefulWidget {
             width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
 
                 for (int i = 0; i < 4; i++)
@@ -175,7 +176,22 @@ class MandalartGrid3 extends StatefulWidget {
             )
           )),
 
-          SizedBox(
+          GestureDetector(
+            onTap: (){
+              
+              Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DPdetail3Page(
+                                  mandalart: widget.mandalart,
+                                  secondGoals: widget.secondGoals,
+                                  mandalartId: widget.mandalartId,
+                                  selectedSecondGoal: selectedSecondGoal,
+                                ),
+                              ),
+                            );
+            },
+            child: SizedBox(
             width:100,
             child: GridView.count(
               crossAxisCount: 3,
@@ -194,6 +210,9 @@ class MandalartGrid3 extends StatefulWidget {
                     child: Text(
                       widget.mandalart,
                       textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,)
                     ),
                   )
                 ),
@@ -203,14 +222,14 @@ class MandalartGrid3 extends StatefulWidget {
           
               ],
             ),
-          ),
+          )),
 
           SizedBox(
             width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 for (int i = 0; i < 4; i++)
                   MandalartBox2(hintNum2: 5, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
@@ -227,8 +246,8 @@ class MandalartGrid3 extends StatefulWidget {
             width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 for (int i = 0; i < 4; i++)
                   MandalartBox2(hintNum2: 6, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
@@ -245,8 +264,8 @@ class MandalartGrid3 extends StatefulWidget {
             width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 for (int i = 0; i < 4; i++)
                   MandalartBox2(hintNum2: 7, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
@@ -263,8 +282,8 @@ class MandalartGrid3 extends StatefulWidget {
             width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 for (int i = 0; i < 4; i++)
                   MandalartBox2(hintNum2: 8, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
@@ -311,6 +330,9 @@ class MandalartBox1 extends StatelessWidget {
                     child: Text(
                       secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != "" ? secondGoals[hintNum]['secondGoal'] : "",
                       textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11,)
                     ),
                   )
                 );
@@ -355,7 +377,9 @@ class MandalartBox2 extends StatelessWidget {
                   margin: const EdgeInsets.all(1.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
-                    color: colorPalette[color]
+                    color: secondGoals.isNotEmpty &&
+                      secondGoals[hintNum2]['thirdGoals'].isNotEmpty 
+                      && secondGoals[hintNum2]['thirdGoals'].asMap().containsKey(hintNum3) && secondGoals[hintNum2]['thirdGoals'][hintNum3]['thirdGoal'] == "" ? Colors.transparent : colorPalette[color]
                   ),
                   child: Center(
                     child: Text(
@@ -365,6 +389,9 @@ class MandalartBox2 extends StatelessWidget {
                       ? secondGoals[hintNum2]['thirdGoals'][hintNum3]['thirdGoal']
                       : "",
                       textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11,)
                     ),
                   )
                 );

@@ -1,10 +1,14 @@
 //DP 메인 페이지 (사용자의 만다라트 리스트)
+import 'package:domino/provider/DP/model.dart';
 import 'package:domino/widgets/DP/mandalart.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/DP/create_select_page.dart';
 import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/screens/DP/detail_page.dart';
+import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart'; // 추가
+
 
 class DPlistPage extends StatefulWidget {
   const DPlistPage({super.key});
@@ -15,6 +19,7 @@ class DPlistPage extends StatefulWidget {
 
 class _DPlistPageState extends State<DPlistPage> {
   List<Map<String, dynamic>> mainGoals = [];
+  final PageController _pageController = PageController(); // PageController 추가
 
   @override
   void initState() {
@@ -30,6 +35,12 @@ class _DPlistPageState extends State<DPlistPage> {
         mainGoals = goals;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose(); // PageController 해제
+    super.dispose();
   }
 
   @override
@@ -53,25 +64,50 @@ class _DPlistPageState extends State<DPlistPage> {
       ),
       bottomNavigationBar: const NavBar(),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
+        padding: const EdgeInsets.fromLTRB(40.0, 30.0, 40.0, 30.0),
         child: Column(
           children: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              color: const Color(0xff5C5C5C),
-              iconSize: 35.0,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DPcreateSelectPage(),
-                  ),
-                );
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  color: const Color(0xff5C5C5C),
+                  iconSize: 35.0,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  visualDensity: VisualDensity.compact,
+                  onPressed: () {
+                    //여기에 Provider 초기화 코드 삽입
+                    //먼저 secondGoal 초기화 코드
+                    for(int i=0; i<9; i++){
+                    context.read<SaveInputtedDetailGoalModel>().updateDetailGoal("$i", "");}
+                    //다음 color 초기화 코드
+                    for(int i=0; i<9; i++){
+                    context.read<GoalColor>().updateGoalColor("$i", const Color(0xff929292));}
+                    //마지막으로 thirdGoal 초기화 코드
+                    for(int i=0; i<9; i++){
+                      for(int j=0; j<9; j++){
+                    context.read<SaveInputtedActionPlanModel>().updateActionPlan(i, "$j", "");}}
+
+                    //테스트 후 삭제 예정
+                    
+
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DPcreateSelectPage(),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             Expanded(
               child: PageView.builder(
+                controller: _pageController, // PageController 연결
                 itemCount: mainGoals.length,
                 itemBuilder: (context, index) {
                   final goal = mainGoals[index];
@@ -102,7 +138,6 @@ class _DPlistPageState extends State<DPlistPage> {
                         final secondGoals = data[0]['secondGoals']
                         
                         as List<Map<String, dynamic>>;
-                          
 
                         return GestureDetector(
                           onTap: () {
@@ -117,10 +152,23 @@ class _DPlistPageState extends State<DPlistPage> {
                               ),
                             );
                           },
-                          child: MandalartGrid(
-                            mandalart: mandalart,
-                            secondGoals: secondGoals,
-                            mandalartId: int.parse(mandalartId),
+                          child: Column(
+                            children: [
+                              Text(
+                                mandalart,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              MandalartGrid(
+                                mandalart: mandalart,
+                                secondGoals: secondGoals,
+                                mandalartId: int.parse(mandalartId),
+                              ),
+                            ],
                           ),
                         );
                       }
@@ -129,6 +177,18 @@ class _DPlistPageState extends State<DPlistPage> {
                 },
               ),
             ),
+            const SizedBox(height: 20),
+            SmoothPageIndicator(  // PageIndicator 추가
+              controller: _pageController,  // PageController 연결
+              count: mainGoals.length,  // 총 페이지 수
+              effect: const ColorTransitionEffect(  // 스타일 설정
+                dotHeight: 10.0,
+                dotWidth: 10.0,
+                activeDotColor: Color(0xffFF6767),
+                dotColor: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 20), // 간격 조절
           ],
         ),
       ),

@@ -7,15 +7,16 @@ import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/widgets/DP/color_option.dart';
 
-class DPcreateColorPage extends StatefulWidget {
-  final String? mainGoalId;
-   const DPcreateColorPage({super.key, required this.mainGoalId});
+class EditColorPage extends StatefulWidget {
+  final String mandalart;
+
+  const EditColorPage({super.key, required this.mandalart});
 
   @override
-  DPcreateColorPageState createState() => DPcreateColorPageState();
+  EditColorPageState createState() => EditColorPageState();
 }
 
-class DPcreateColorPageState extends State<DPcreateColorPage> {
+class EditColorPageState extends State<EditColorPage> {
   int selectIndex = 0;
   Map colorPalette = {
     const Color(0xffFF7A7A): const Color(0xffFFC2C2),
@@ -32,41 +33,105 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
     const Color(0xff11D1C2): const Color(0xffAAF4EF),
   };
 
-  Future<bool> _addSecondGoal() async {
-    final mandalartId = Provider.of<SelectFinalGoalId>(context, listen: false)
-        .selectedFinalGoalId;
-    List<String> name =
+  Future<bool> _editSecondGoal() async {
+    List<int> secondGoalId =
+        Provider.of<SaveEditedDetailGoalIdModel>(context, listen: false)
+            .editedDetailGoalId
+            .values
+            .toList();
+    List<String> newSecondGoal =
         Provider.of<SaveInputtedDetailGoalModel>(context, listen: false)
             .inputtedDetailGoal
             .values
             .toList();
+
+    final success = await EditSecondGoalService.editSecondGoal(
+      secondGoalId: secondGoalId,
+      newSecondGoal: newSecondGoal,
+    );
+
+    return success; // Return success to indicate whether the operation was successful
+  }
+
+  Future<bool> _editColor() async {
     final List<String> color = Provider.of<GoalColor>(context, listen: false)
         .selectedGoalColor
         .values
         .map((color) => color.toString())
         .toList();
 
-    final success = await AddSecondGoalService.addSecondGoal(
-      mandalartId: mandalartId,
-      name: name,
+    List<int> secondGoalId =
+        Provider.of<SaveEditedDetailGoalIdModel>(context, listen: false)
+            .editedDetailGoalId
+            .values
+            .toList();
+
+    final success = await EditGoalColorService.editGoalColor(
+      secondGoalId: secondGoalId,
       color: color,
     );
 
     return success; // Return success to indicate whether the operation was successful
   }
 
-  Future<bool> _addThirdGoal() async {
-    List<int> secondGoalId = [];
-    final mandalartId = Provider.of<SelectFinalGoalId>(context, listen: false)
-        .selectedFinalGoalId;
+  Future<bool> _editThirdGoal() async {
+    //제3목표 id 가져오기
 
-    final response =
-        await SecondGoalListService.secondGoalList(context, mandalartId);
-    if (response != null) {
-      for (var secondGoal in response.first["secondGoals"]) {
-        secondGoalId.add(secondGoal["id"]);
-      }
-    }
+    final third0id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[0]
+            .values
+            .toList();
+
+    final third1id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[1]
+            .values
+            .toList();
+
+    final third2id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[2]
+            .values
+            .toList();
+
+    final third3id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[3]
+            .values
+            .toList();
+
+    final third4id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[4]
+            .values
+            .toList();
+
+    final third5id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[5]
+            .values
+            .toList();
+
+    final third6id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[6]
+            .values
+            .toList();
+
+    final third7id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[7]
+            .values
+            .toList();
+
+    final third8id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[8]
+            .values
+            .toList();
+
+    //제3목표 가져오기
 
     final third0 =
         Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
@@ -114,8 +179,16 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
             .values
             .toList();
 
-    final success = await AddThirdGoalService.addThirdGoal(
-      secondGoalId: secondGoalId,
+    final success = await EditThirdGoalService.editThirdGoal(
+      third0id: third0id,
+      third1id: third1id,
+      third2id: third2id,
+      third3id: third3id,
+      third4id: third4id,
+      third5id: third5id,
+      third6id: third6id,
+      third7id: third7id,
+      third8id: third8id,
       third0: third0,
       third1: third1,
       third2: third2,
@@ -140,7 +213,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
           title: Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
             child: Text(
-              '플랜 만들기',
+              '플랜 수정하기',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: MediaQuery.of(context).size.width * 0.06,
@@ -149,7 +222,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
           ),
         ),
         body: Padding(
-            padding: const EdgeInsets.fromLTRB(38.0, 20.0, 40.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(38.0, 10.0, 38.0, 0.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -158,7 +231,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 17,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       letterSpacing: 1.1),
                 ),
                 const SizedBox(
@@ -172,8 +245,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                         borderRadius: BorderRadius.circular(3),
                         shape: BoxShape.rectangle,
                         color: const Color(0xffFCFF62)),
-                    child: Text(
-                        context.watch<SelectFinalGoalModel>().selectedFinalGoal,
+                    child: Text(widget.mandalart,
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 13,
@@ -199,9 +271,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                             },
                             child: Container(
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
                                     border: Border.all(
                                         color: selectIndex == 0
-                                            ? Colors.white
+                                            ? const Color.fromARGB(255, 182, 182, 182)
                                             : const Color(0xff262626))),
                                 child: ColorBox(
                                     actionPlanId: 0,
@@ -215,9 +288,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                             },
                             child: Container(
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
                                     border: Border.all(
                                         color: selectIndex == 1
-                                            ? Colors.white
+                                            ? const Color.fromARGB(255, 182, 182, 182)
                                             : const Color(0xff262626))),
                                 child: ColorBox(
                                     actionPlanId: 1,
@@ -231,9 +305,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                             },
                             child: Container(
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
                                     border: Border.all(
                                         color: selectIndex == 2
-                                            ? Colors.white
+                                            ? const Color.fromARGB(255, 182, 182, 182)
                                             : const Color(0xff262626))),
                                 child: ColorBox(
                                     actionPlanId: 2,
@@ -247,9 +322,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                             },
                             child: Container(
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
                                     border: Border.all(
                                         color: selectIndex == 3
-                                            ? Colors.white
+                                            ? const Color.fromARGB(255, 182, 182, 182)
                                             : const Color(0xff262626))),
                                 child: ColorBox(
                                     actionPlanId: 3,
@@ -259,6 +335,8 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                           width: 100,
                           child: GridView.count(
                             crossAxisCount: 3,
+                            crossAxisSpacing: 0.5,
+                            mainAxisSpacing: 0.5,
                             children: [
                               const ColorBox2(keyNumber: 0),
                               const ColorBox2(keyNumber: 1),
@@ -272,13 +350,11 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                 margin: const EdgeInsets.all(1.0),
                                 child: Center(
                                     child: Text(
-                                  context
-                                      .watch<SelectFinalGoalModel>()
-                                      .selectedFinalGoal,
+                                  widget.mandalart,
                                   style: const TextStyle(
                                       color: Colors.black,
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.w500,
+                                    fontSize: 12,),
                                   textAlign: TextAlign.center,
                                 )),
                               ),
@@ -297,9 +373,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                             },
                             child: Container(
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
                                     border: Border.all(
                                         color: selectIndex == 5
-                                            ? Colors.white
+                                            ? const Color.fromARGB(255, 182, 182, 182)
                                             : const Color(0xff262626))),
                                 child: ColorBox(
                                     actionPlanId: 5,
@@ -313,9 +390,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                             },
                             child: Container(
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
                                     border: Border.all(
                                         color: selectIndex == 6
-                                            ? Colors.white
+                                            ? const Color.fromARGB(255, 182, 182, 182)
                                             : const Color(0xff262626))),
                                 child: ColorBox(
                                     actionPlanId: 6,
@@ -329,9 +407,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                             },
                             child: Container(
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
                                     border: Border.all(
                                         color: selectIndex == 7
-                                            ? Colors.white
+                                            ? const Color.fromARGB(255, 182, 182, 182)
                                             : const Color(0xff262626))),
                                 child: ColorBox(
                                     actionPlanId: 7,
@@ -345,9 +424,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                             },
                             child: Container(
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
                                     border: Border.all(
                                         color: selectIndex == 8
-                                            ? Colors.white
+                                            ? const Color.fromARGB(255, 182, 182, 182)
                                             : const Color(0xff262626))),
                                 child: ColorBox(
                                     actionPlanId: 8,
@@ -417,21 +497,26 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                   child: TextButton(
                     onPressed: () async {
                       // Execute _addSecondGoal and wait for the result
-                      final secondGoalSuccess = await _addSecondGoal();
-                      context.read<SaveMandalartCreatedGoal>().updateMandalartCreatedGoal("${widget.mainGoalId}");
-                      
+                      final secondGoalSuccess = await _editSecondGoal();
 
                       // If _addSecondGoal was successful, proceed to _addThirdGoal
-                      if (secondGoalSuccess) {
-                        final thirdGoalSuccess = await _addThirdGoal();
+                      /*if (secondGoalSuccess) {
+                        final thirdGoalSuccess = await _editThirdGoal();*/
 
-                        // If both are successful, navigate to DPlistPage
-                        if (thirdGoalSuccess) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const DPlistPage()),
-                          );
+                      if (secondGoalSuccess) {
+                        final goalColorSuccess = await _editColor();
+
+                        if (goalColorSuccess) {
+                          final thirdGoalSuccess = await _editThirdGoal();
+
+                          // If both are successful, navigate to DPlistPage
+                          if (thirdGoalSuccess) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DPlistPage()),
+                            );
+                          }
                         }
                       }
                     },
