@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 
 class DPcreateConfirmPage extends StatelessWidget {
-  const DPcreateConfirmPage({super.key});
+  final String? mainGoalId;
+   const DPcreateConfirmPage({super.key, required this.mainGoalId});
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +67,10 @@ class DPcreateConfirmPage extends StatelessWidget {
                       crossAxisSpacing: 1,
                       mainAxisSpacing: 1),
                   children: [
-                    const ConfirmBox(actionPlanid: 0, detailGoalid: 0),
-                    const ConfirmBox(actionPlanid: 1, detailGoalid: 1),
-                    const ConfirmBox(actionPlanid: 2, detailGoalid: 2),
-                    const ConfirmBox(actionPlanid: 3, detailGoalid: 3),
+                     ConfirmBox(actionPlanid: 0, detailGoalid: 0),
+                     ConfirmBox(actionPlanid: 1, detailGoalid: 1),
+                     ConfirmBox(actionPlanid: 2, detailGoalid: 2),
+                     ConfirmBox(actionPlanid: 3, detailGoalid: 3),
                     SizedBox(
                       width: 100,
                       child: GridView.count(
@@ -122,10 +123,10 @@ class DPcreateConfirmPage extends StatelessWidget {
                         }),
                       ),
                     ),
-                    const ConfirmBox(actionPlanid: 5, detailGoalid: 5),
-                    const ConfirmBox(actionPlanid: 6, detailGoalid: 6),
-                    const ConfirmBox(actionPlanid: 7, detailGoalid: 7),
-                    const ConfirmBox(actionPlanid: 8, detailGoalid: 8),
+                     ConfirmBox(actionPlanid: 5, detailGoalid: 5),
+                     ConfirmBox(actionPlanid: 6, detailGoalid: 6),
+                     ConfirmBox(actionPlanid: 7, detailGoalid: 7),
+                     ConfirmBox(actionPlanid: 8, detailGoalid: 8),
                   ],
                 )),
                 Row(
@@ -149,7 +150,9 @@ class DPcreateConfirmPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const DPcreateColorPage(),
+                                builder: (context) =>  DPcreateColorPage(
+                                  mainGoalId: mainGoalId,
+                                ),
                               ));
                         },
                         style: TextButton.styleFrom(

@@ -1,10 +1,12 @@
 import 'package:domino/widgets/DP/input1.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:domino/provider/DP/model.dart';
 
-class DPcreateInput1Page extends StatelessWidget {
-  const DPcreateInput1Page({super.key});
+class EditInput1Page extends StatelessWidget {
+  final String mandalart;
+
+  const EditInput1Page({
+    super.key,
+    required this.mandalart});
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +28,15 @@ class DPcreateInput1Page extends StatelessWidget {
         ),
         body: SingleChildScrollView(
             child: Padding(
-                padding: const EdgeInsets.fromLTRB(38.0, 20.0, 40.0, 0.0),
+                padding: const EdgeInsets.fromLTRB(38.0, 10.0, 38.0, 0.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("목표를 이루기 위한 \n작은 계획들을 세워봐요.",
+                    const Text("플랜을 수정할 수 있어요.",
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.w600,
+                           fontSize: 17,
+                      fontWeight: FontWeight.w500,
                             letterSpacing: 1.1)),
                     const SizedBox(
                       height: 20,
@@ -48,9 +50,7 @@ class DPcreateInput1Page extends StatelessWidget {
                             borderRadius: BorderRadius.all(Radius.circular(3)),
                             color: Color(0xffFCFF62)),
                         child: Text(
-                            context
-                                .watch<SelectFinalGoalModel>()
-                                .selectedFinalGoal,
+                            mandalart,
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 13,
@@ -70,10 +70,10 @@ class DPcreateInput1Page extends StatelessWidget {
                                         crossAxisSpacing: 5,
                                         mainAxisSpacing: 5),
                                 children: [
-                                   Input1(selectedDetailGoalId: 0),
-                                   Input1(selectedDetailGoalId: 1),
-                                   Input1(selectedDetailGoalId: 2),
-                                   Input1(selectedDetailGoalId: 3),
+                                   const Input1(selectedDetailGoalId: 0),
+                                   const Input1(selectedDetailGoalId: 1),
+                                   const Input1(selectedDetailGoalId: 2),
+                                   const Input1(selectedDetailGoalId: 3),
                                   Container(
                                     width: 80,
                                     margin: const EdgeInsets.all(1.0),
@@ -84,9 +84,7 @@ class DPcreateInput1Page extends StatelessWidget {
                                     ),
                                     child: Center(
                                         child: Text(
-                                      context
-                                          .watch<SelectFinalGoalModel>()
-                                          .selectedFinalGoal,
+                                      mandalart,
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontSize: 15,
@@ -94,17 +92,17 @@ class DPcreateInput1Page extends StatelessWidget {
                                       textAlign: TextAlign.center,
                                     )),
                                   ),
-                                   Input1(selectedDetailGoalId: 5),
-                                   Input1(selectedDetailGoalId: 6),
-                                   Input1(selectedDetailGoalId: 7),
-                                   Input1(selectedDetailGoalId: 8),
+                                   const Input1(selectedDetailGoalId: 5),
+                                   const Input1(selectedDetailGoalId: 6),
+                                   const Input1(selectedDetailGoalId: 7),
+                                   const Input1(selectedDetailGoalId: 8),
                                 ]))),
                     const SizedBox(
-                      height: 18,
+                      height: 15,
                     ),
                     const Center(
                         child: Text(
-                      '모든 칸을 다 채우지 않아도 괜찮아요:)',
+                      '모든 칸을 다 채우지 않아도 괜찮아요 :)',
                       style: TextStyle(color: Color(0xff5c5c5c)),
                     )),
                     const SizedBox(
@@ -121,7 +119,7 @@ class DPcreateInput1Page extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(6.0))),
                           child: const Text(
-                            '저장',
+                            '완료',
                             style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
                         ))
