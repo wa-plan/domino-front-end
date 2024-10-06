@@ -8,7 +8,8 @@ import 'package:domino/provider/DP/model.dart';
 import 'package:domino/widgets/DP/color_option.dart';
 
 class DPcreateColorPage extends StatefulWidget {
-  const DPcreateColorPage({super.key});
+  final String? mainGoalId;
+   const DPcreateColorPage({super.key, required this.mainGoalId});
 
   @override
   DPcreateColorPageState createState() => DPcreateColorPageState();
@@ -417,6 +418,8 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                     onPressed: () async {
                       // Execute _addSecondGoal and wait for the result
                       final secondGoalSuccess = await _addSecondGoal();
+                      context.read<SaveMandalartCreatedGoal>().updateMandalartCreatedGoal("${widget.mainGoalId}");
+                      
 
                       // If _addSecondGoal was successful, proceed to _addThirdGoal
                       if (secondGoalSuccess) {

@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 
 class DPcreateConfirmPage extends StatelessWidget {
-  const DPcreateConfirmPage({super.key});
+  final String? mainGoalId;
+   const DPcreateConfirmPage({super.key, required this.mainGoalId});
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +150,9 @@ class DPcreateConfirmPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const DPcreateColorPage(),
+                                builder: (context) =>  DPcreateColorPage(
+                                  mainGoalId: mainGoalId,
+                                ),
                               ));
                         },
                         style: TextButton.styleFrom(
