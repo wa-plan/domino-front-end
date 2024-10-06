@@ -45,7 +45,7 @@ dependencies:
   table_calendar: ^3.0.9
   provider: ^6.1.2
   http: ^1.2.2
-  fluttertoast: ^8.2.6
+  fluttertoast: ^8.2.8
   percent_indicator: ^4.2.3
   smooth_page_indicator: ^1.2.0+3
 

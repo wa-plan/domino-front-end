@@ -13,9 +13,12 @@ class MyGoalDetail extends StatefulWidget {
 class MyGoalDetailState extends State<MyGoalDetail> {
   final _status = ['진행 중', '달성 완료', '달성 실패'];
   String? _selectedStatus;
-
   // 선택된 파일 리스트를 관리할 변수 추가
   List<Uint8List> selectedFiles = [];
+  bool bookmark = false;
+  String o = '60';
+  String v = '30';
+  String x = '10';
 
   @override
   void initState() {
@@ -39,18 +42,24 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff262626),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff262626),
-        title: const Text(
-          "목표 제목",
+        title: Text(
+          '환상적인 세계여행',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontSize: MediaQuery.of(context).size.width * 0.06,
+            fontWeight: FontWeight.w600,
           ),
         ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          color: Colors.white,
+        ),
+        backgroundColor: const Color(0xff262626),
         actions: [
           IconButton(
             onPressed: () {
@@ -62,56 +71,129 @@ class MyGoalDetailState extends State<MyGoalDetail> {
           ),
         ],
       ), // Icon Theme 지정
-      body: Center(
+      backgroundColor: const Color(0xff262626),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                children: [
-                  Text(
-                    "D-100",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: MediaQuery.of(context).size.width * 0.06,
-                      fontWeight: FontWeight.bold,
-                    ),
+            Row(
+              children: [
+                Text(
+                  "D-100",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: MediaQuery.of(context).size.width * 0.06,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Text(
+                      "이 목표는   ",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 40,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Colors.white, width: 0.5), // White border
+                        borderRadius: BorderRadius.circular(
+                            5), // Optional: rounded corners
+                      ),
+                      child: DropdownButton<String>(
+                        underline: const SizedBox.shrink(),
+                        dropdownColor: const Color(0xff262626),
+                        iconEnabledColor: Colors.white,
+                        value: _selectedStatus,
+                        items: _status
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Center(
+                                  child: Text(e),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 16),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedStatus = value!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  onPressed: () {
+                    setState(() {
+                      bookmark = !bookmark;
+                    });
+                  },
+                  icon: const Icon(Icons.star),
+                  color: bookmark ? Colors.yellow : Colors.grey,
+                  iconSize: 35,
+                )
+              ],
+            ),
+            const Flexible(
+              child: Text(
+                "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!",
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                children: [
-                  const Text(
-                    "이 목표는 ",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                  DropdownButton<String>(
-                    value: _selectedStatus,
-                    items: _status
-                        .map(
-                          (e) => DropdownMenuItem<String>(
-                            value: e,
-                            child: Text(e),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedStatus = value!;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ), // 목표 진행상황 변경
+            const Text('할 일 달성 통계',
+                style: TextStyle(color: Colors.white, fontSize: 16)),
             Row(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(color: Colors.grey),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.circle_outlined),
+                          Text(
+                            '=$o개',
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.change_history_outlined),
+                          Text(
+                            '=$v개',
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.clear_outlined),
+                          Text(
+                            '=$x개',
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )
+
+            /*Row(
               children: [
                 IconButton(
                   icon: const Icon(Icons.add_a_photo, color: Colors.white),
@@ -128,21 +210,23 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                             itemBuilder: (context, i) {
                               final imageBytes = selectedFiles[i];
                               return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 4.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4.0),
                                 child: Stack(
                                   children: [
                                     Container(
                                       width: 80,
                                       height: 80,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
+                                        borderRadius:
+                                            BorderRadius.circular(5),
                                         border: Border.all(
                                             width: 1, color: Colors.grey),
                                         color: Colors.white,
                                       ),
                                       child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
+                                        borderRadius:
+                                            BorderRadius.circular(4),
                                         child: Image.memory(
                                           imageBytes,
                                           fit: BoxFit.cover,
@@ -195,7 +279,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                 barRadius: const Radius.circular(10),
                 progressColor: Colors.red,
               ),
-            ), // Percentage 표시
+            ), // Percentage 표시  */
           ],
         ),
       ),
