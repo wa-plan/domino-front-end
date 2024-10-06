@@ -1,3 +1,4 @@
+import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/screens/MG/mygoal_goal_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/MG/mygoal_profile_edit.dart';
@@ -12,7 +13,9 @@ class MyGoal extends StatefulWidget {
 }
 
 class _MyGoalState extends State<MyGoal> {
+
   final String message = "실패하는 것이 두려운 게 아니라\n노력하지 않는 것이 두렵다.";
+
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +53,7 @@ class _MyGoalState extends State<MyGoal> {
                         Border.all(color: const Color(0xff5C5C5C), width: 1),
                     shape: BoxShape.circle,
                   ),
+
                 ),
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,6 +61,7 @@ class _MyGoalState extends State<MyGoal> {
                     Text(
                       '당신은 어떤 사람인가요?',
                       style: TextStyle(color: Color(0xff5C5C5C)),
+
                     ),
                     SizedBox(
                       height: 10,

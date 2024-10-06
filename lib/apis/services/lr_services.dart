@@ -29,7 +29,7 @@ class LoginService {
         body: body,
       );
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = jsonDecode(response.body);
 
         if (responseData != null && responseData is Map<String, dynamic>) {
@@ -139,9 +139,7 @@ class ChangePasswordService {
 
       print('서버 응답 상태 코드: ${response.statusCode}');
 
-      if (response.statusCode == 200 ||
-          response.statusCode == 201 ||
-          response.statusCode == 201) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         Fluttertoast.showToast(
           msg: '비밀번호가 성공적으로 변경되었습니다.',
           toastLength: Toast.LENGTH_SHORT,
@@ -202,7 +200,7 @@ class RegistrationService {
       print('서버 응답 상태 코드: ${response.statusCode}');
       print('서버 응답: ${response.body}');
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         if (context.mounted) {
           Navigator.pushReplacement(
             context,
@@ -260,7 +258,7 @@ class IdFindService {
       print('서버 응답 상태 코드: ${response.statusCode}');
       print('서버 응답: ${response.body}');
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         final responseData = jsonDecode(response.body);
         return responseData.toString(); // Adjust based on your API response
       } else {
@@ -353,7 +351,7 @@ class SignOutService {
 
       print('서버 응답 상태 코드: ${response.statusCode}');
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
         if (context.mounted) {
           Fluttertoast.showToast(
             msg: '탈퇴가 성공적으로 이루어졌습니다.',

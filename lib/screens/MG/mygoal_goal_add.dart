@@ -93,13 +93,6 @@ class _MyGoalAddState extends State<MyGoalAdd> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_ios_new_rounded),
-            color: Colors.white,
-          ),
           title: Text(
             '목표 세우기',
             style: TextStyle(
@@ -113,242 +106,242 @@ class _MyGoalAddState extends State<MyGoalAdd> {
         backgroundColor: const Color(0xff262626),
         body: SingleChildScrollView(
           child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 40.0, 0.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 목표 설명
-              const Text(
-                '어떤 목표인가요?',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1,
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  //hintText: '목표를 입력하세요',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              const Text(
-                '언제까지 목표를 이루고 싶나요?',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1,
-                ),
-              ),
-              DatePicker(
-                initialDay: selectedDate,
-                onDateChanged: (newDate) {
-                  setState(() {
-                    selectedDate = newDate;
-                  });
-                },
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    value: _isChecked,
-                    onChanged: (value) {
-                      setState(() {
-                        _isChecked = value!;
-                      });
-                    },
+            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 40.0, 0.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 목표 설명
+                const Text(
+                  '어떤 목표인가요?',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.1,
                   ),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "확실하지 않아요",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        '이 경우에는 오늘부터 날짜를 세어나갈게요\n예시) D + 1',
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    //hintText: '목표를 입력하세요',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                const Text(
+                  '언제까지 목표를 이루고 싶나요?',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.1,
+                  ),
+                ),
+                DatePicker(
+                  initialDay: selectedDate,
+                  onDateChanged: (newDate) {
+                    setState(() {
+                      selectedDate = newDate;
+                    });
+                  },
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: _isChecked,
+                      onChanged: (value) {
+                        setState(() {
+                          _isChecked = value!;
+                        });
+                      },
+                    ),
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "확실하지 않아요",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          '이 경우에는 오늘부터 날짜를 세어나갈게요\n예시) D + 1',
+                          style: TextStyle(
+                            color: Colors.yellow,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                const Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '목표에 대해서 더 알고 싶어요. ',
                         style: TextStyle(
-                          color: Colors.yellow,
-                          fontSize: 10,
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.1,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '(선택)',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.1,
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(
+                    hintText: '내용을 입력하세요',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 20),
 
-              const SizedBox(height: 20),
+                // 목표 사진 선택
+                const Text(
+                  '목표를 보여주는 사진이 있나요?',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: _getPhotoLibraryImage,
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.grey[300],
+                    backgroundImage: _pickedFile != null
+                        ? FileImage(File(_pickedFile!.path))
+                        : null,
+                    child: _pickedFile == null
+                        ? const Icon(Icons.add_a_photo, color: Colors.white)
+                        : null,
+                  ),
+                ),
+                const SizedBox(height: 20),
 
-              const Text.rich(
-                TextSpan(
+                // 목표 색상 선택
+                const Text(
+                  '목표를 색깔로 표현해주세요.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.1,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextSpan(
-                      text: '목표에 대해서 더 알고 싶어요. ',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.1,
+                    ColorOption(
+                      colorCode: const Color(0xffFF7A7A),
+                      isSelected: _selectedColor == const Color(0xffFF7A7A),
+                      onTap: () => _onColorSelected(const Color(0xffFF7A7A)),
+                    ),
+                    ColorOption(
+                      colorCode: const Color(0xffFFB82D),
+                      isSelected: _selectedColor == const Color(0xffFFB82D),
+                      onTap: () => _onColorSelected(const Color(0xffFFB82D)),
+                    ),
+                    ColorOption(
+                      colorCode: const Color(0xffFCFF62),
+                      isSelected: _selectedColor == const Color(0xffFCFF62),
+                      onTap: () => _onColorSelected(const Color(0xffFCFF62)),
+                    ),
+                    ColorOption(
+                      colorCode: const Color(0xff72FF5B),
+                      isSelected: _selectedColor == const Color(0xff72FF5B),
+                      onTap: () => _onColorSelected(const Color(0xff72FF5B)),
+                    ),
+                    ColorOption(
+                      colorCode: const Color(0xff5DD8FF),
+                      isSelected: _selectedColor == const Color(0xff5DD8FF),
+                      onTap: () => _onColorSelected(const Color(0xff5DD8FF)),
+                    ),
+                    ColorOption(
+                      colorCode: const Color(0xffffffff),
+                      isSelected: _selectedColor == const Color(0xffffffff),
+                      onTap: () => _onColorSelected(const Color(0xffffffff)),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: const Color(0xff131313),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                      ),
+                      child: const Text(
+                        '취소',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    TextSpan(
-                      text: '(선택)',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.1,
+                    TextButton(
+                      onPressed: () {
+                        // 완료 버튼 기능 구현
+                        _addGoal();
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: const Color(0xff131313),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                      ),
+                      child: const Text(
+                        '완료',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(
-                  hintText: '내용을 입력하세요',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // 목표 사진 선택
-              const Text(
-                '목표를 보여주는 사진이 있나요?',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1,
-                ),
-              ),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: _getPhotoLibraryImage,
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.grey[300],
-                  backgroundImage: _pickedFile != null
-                      ? FileImage(File(_pickedFile!.path))
-                      : null,
-                  child: _pickedFile == null
-                      ? const Icon(Icons.add_a_photo, color: Colors.white)
-                      : null,
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // 목표 색상 선택
-              const Text(
-                '목표를 색깔로 표현해주세요.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1,
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ColorOption(
-                    colorCode: const Color(0xffFF7A7A),
-                    isSelected: _selectedColor == const Color(0xffFF7A7A),
-                    onTap: () => _onColorSelected(const Color(0xffFF7A7A)),
-                  ),
-                  ColorOption(
-                    colorCode: const Color(0xffFFB82D),
-                    isSelected: _selectedColor == const Color(0xffFFB82D),
-                    onTap: () => _onColorSelected(const Color(0xffFFB82D)),
-                  ),
-                  ColorOption(
-                    colorCode: const Color(0xffFCFF62),
-                    isSelected: _selectedColor == const Color(0xffFCFF62),
-                    onTap: () => _onColorSelected(const Color(0xffFCFF62)),
-                  ),
-                  ColorOption(
-                    colorCode: const Color(0xff72FF5B),
-                    isSelected: _selectedColor == const Color(0xff72FF5B),
-                    onTap: () => _onColorSelected(const Color(0xff72FF5B)),
-                  ),
-                  ColorOption(
-                    colorCode: const Color(0xff5DD8FF),
-                    isSelected: _selectedColor == const Color(0xff5DD8FF),
-                    onTap: () => _onColorSelected(const Color(0xff5DD8FF)),
-                  ),
-                  ColorOption(
-                    colorCode: const Color(0xffffffff),
-                    isSelected: _selectedColor == const Color(0xffffffff),
-                    onTap: () => _onColorSelected(const Color(0xffffffff)),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xff131313),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                    ),
-                    child: const Text(
-                      '취소',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // 완료 버튼 기능 구현
-                      _addGoal();
-                      Navigator.pop(context);
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xff131313),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                    ),
-                    child: const Text(
-                      '완료',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
         ),
       ),
     );
