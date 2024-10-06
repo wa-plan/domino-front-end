@@ -120,7 +120,6 @@ class GoalColor with ChangeNotifier {
   }
 }
 
-
 class SaveEditedDetailGoalIdModel with ChangeNotifier {
   final Map<String, int> _editedDetailGoalId = {
     '0': 0,
@@ -145,3 +144,31 @@ class SaveEditedDetailGoalIdModel with ChangeNotifier {
   }
 }
 
+class SaveEditedActionPlanIdModel with ChangeNotifier {
+  final List<Map<String, int>> _editedActionPlanId = List.generate(9, (_) {
+    return {
+      '0': 0,
+      '1': 0,
+      '2': 0,
+      '3': 0,
+      '4': 0,
+      '5': 0,
+      '6': 0,
+      '7': 0,
+      '8': 0
+    };
+  });
+
+  List<Map<String, int>> get editedActionPlanId => _editedActionPlanId;
+
+  void editActionPlanId(int goalId, String key, int value) {
+    if (goalId >= 0 && goalId < _editedActionPlanId.length) {
+      // 유효한 인덱스인지 확인
+      if (_editedActionPlanId[goalId].containsKey(key)) {
+        // 키가 존재하는지 확인
+        _editedActionPlanId[goalId][key] = value;
+        notifyListeners();
+      }
+    }
+  }
+}

@@ -33,6 +33,8 @@ class Smallgridwithdata extends StatelessWidget {
                 ? inputtedActionPlan[index.toString()]
                 : '';
 
+                 print('Index: $index, Values: $values');
+
             if (index == 4) {
               return Container(
                 decoration: BoxDecoration(
