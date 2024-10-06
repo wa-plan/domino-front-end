@@ -18,6 +18,7 @@ class MandalartGrid2 extends StatefulWidget {
 }
 
 class _MandalartGrid2 extends State<MandalartGrid2> {
+
   int? _selectedBoxHintNum2; // Track selected box's hintNum2
   int? _selectedBoxHintNum3; // Track selected box's hintNum3
 
@@ -29,10 +30,12 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: GridView(
+
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
         children: [
           // First Grid
@@ -176,6 +179,7 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
           ),
 
           // Fifth Grid
+
           SizedBox(
             width: 100,
             child: GridView.count(
@@ -183,22 +187,20 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
               children: [
                 for (int i = 0; i < 4; i++)
                   MandalartBox1(
+
                     hintNum: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
                   ),
 
+
                 Container(
-                  margin: const EdgeInsets.all(1.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    color: Colors.yellow,
-                  ),
-                  child: Center(
-                    child: Text(
-                      widget.mandalart,
-                      textAlign: TextAlign.center,
+                    margin: const EdgeInsets.all(1.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      color: Colors.yellow,
                     ),
+
                   ),
                 ),
 
@@ -288,9 +290,11 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
 }
 
 class MandalartBox1 extends StatelessWidget {
+
   final int hintNum;
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
+
 
   const MandalartBox1({
     super.key,
@@ -325,6 +329,7 @@ class MandalartBox1 extends StatelessWidget {
   }
 }
 
+
 class MandalartBox2 extends StatefulWidget {
   final int hintNum2;
   final int hintNum3;
@@ -347,6 +352,7 @@ class MandalartBox2 extends StatefulWidget {
     const Color(0xff11D1C2): const Color(0xffAAF4EF),
   };
 
+
    MandalartBox2({
     super.key,
     required this.hintNum2,
@@ -357,6 +363,7 @@ class MandalartBox2 extends StatefulWidget {
     required this.onSelect, // Accept onSelect callback
   });
 
+
   @override
   State<MandalartBox2> createState() => _MandalartBox2State();
 }
@@ -364,6 +371,7 @@ class MandalartBox2 extends StatefulWidget {
 class _MandalartBox2State extends State<MandalartBox2> {
   @override
   Widget build(BuildContext context) {
+
     final color = widget.secondGoals.isNotEmpty
     &&  widget.secondGoals[widget.hintNum2]['thirdGoals'].asMap().containsKey(widget.hintNum3) 
     ? Color(int.parse(widget.secondGoals[widget.hintNum2]['color'].replaceAll('Color(', '').replaceAll(')',''))) 
@@ -373,6 +381,7 @@ class _MandalartBox2State extends State<MandalartBox2> {
       onTap: () {
         widget.onSelect();
         widget.secondGoals[widget.hintNum2]['thirdGoals'].isNotEmpty &&
+
                     widget.secondGoals[widget.hintNum2]['thirdGoals']
                         .asMap()
                         .containsKey(widget.hintNum3) &&
@@ -385,6 +394,7 @@ class _MandalartBox2State extends State<MandalartBox2> {
                     widget.secondGoals[widget.hintNum2]['thirdGoals']
                         [widget.hintNum3]['id'])
                 : context.read<SelectAPModel>().selectAP("NA Name", null);
+
          // Call the onSelect callback
       },
       child: Container(
@@ -410,5 +420,6 @@ class _MandalartBox2State extends State<MandalartBox2> {
         ),
       ),
     );
+
   }
 }
