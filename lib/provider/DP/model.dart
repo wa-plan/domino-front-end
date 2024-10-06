@@ -172,3 +172,16 @@ class SaveEditedActionPlanIdModel with ChangeNotifier {
     }
   }
 }
+
+
+class SaveMandalartCreatedGoal with ChangeNotifier {
+  final List<String> _mandalartCreatedGoal = [];
+
+  List<String> get mandalartCreatedGoal => _mandalartCreatedGoal;
+
+  void updateMandalartCreatedGoal(String goalId) {
+    _mandalartCreatedGoal.add(goalId);  
+    notifyListeners();  
+  }
+}
+
