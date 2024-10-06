@@ -13,9 +13,7 @@ class MyGoal extends StatefulWidget {
 }
 
 class _MyGoalState extends State<MyGoal> {
-
   final String message = "실패하는 것이 두려운 게 아니라\n노력하지 않는 것이 두렵다.";
-
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +51,6 @@ class _MyGoalState extends State<MyGoal> {
                         Border.all(color: const Color(0xff5C5C5C), width: 1),
                     shape: BoxShape.circle,
                   ),
-
                 ),
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +58,6 @@ class _MyGoalState extends State<MyGoal> {
                     Text(
                       '당신은 어떤 사람인가요?',
                       style: TextStyle(color: Color(0xff5C5C5C)),
-
                     ),
                     SizedBox(
                       height: 10,
@@ -260,7 +256,7 @@ class _MyGoalState extends State<MyGoal> {
                   ),
                 ),
                 const SizedBox(height: 15.0),
-                SizedBox(child: Image.asset('assets/img/MG_domino2.png')),
+                SizedBox(child: Image.asset('assets/img/completed_goals.png')),
                 const SizedBox(height: 30.0),
                 Text(
                   '쓰러트리지 못한 목표',
@@ -271,7 +267,7 @@ class _MyGoalState extends State<MyGoal> {
                   ),
                 ),
                 const SizedBox(height: 15.0),
-                SizedBox(child: Image.asset('assets/img/MG_domino3.png')),
+                SizedBox(child: Image.asset('assets/img/failed_goals.png')),
               ],
             ),
           ],
