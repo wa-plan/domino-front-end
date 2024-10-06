@@ -19,7 +19,7 @@ class AddPage2State extends State<AddPage2> {
   TextEditingController dominoController =
       TextEditingController(text: "저금"); //텍스트폼필드에 기본으로 들어갈 초기 텍스트 값
   bool switchValue = false;
-  int thirdGoalId = 1;
+  int thirdGoalId = 11;
 
   RepeatSettingsState repeatSettings =
       RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성

@@ -21,10 +21,12 @@ class _AddPage1State extends State<AddPage1> {
   List<Map<String, dynamic>> mainGoals = []; // 데이터의 타입 변경
   int mandalartId = 1;
   String selectedGoalId = "";
+  int secondGoalId = 0;
 
   @override
   void initState() {
     super.initState();
+    secondGoalId = 0;
     _mainGoalList();
   }
 
@@ -74,6 +76,10 @@ class _AddPage1State extends State<AddPage1> {
 
   @override
   Widget build(BuildContext context) {
+    int secondGoalId =
+        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ??
+            0;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -216,11 +222,13 @@ class _AddPage1State extends State<AddPage1> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 10),
-
-              Text(
+              /*Text(
                 context.watch<SelectAPModel>().selectedAPID.toString(),
+                style: const TextStyle(color: Colors.white),
+              ),*/
+              Text(
+                secondGoalId.toString(),
                 style: const TextStyle(color: Colors.white),
               )
             ],
