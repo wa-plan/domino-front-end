@@ -1,4 +1,4 @@
-// mandalart.dart
+// DP 메인 페이지에 들어가는 만다라트
 import 'package:flutter/material.dart';
 
 class MandalartGrid extends StatelessWidget {
@@ -23,11 +23,10 @@ class MandalartGrid extends StatelessWidget {
         children: [
 
           SizedBox(
-            width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 MandalartBox2(hintNum2: 0, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 0, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
@@ -43,11 +42,10 @@ class MandalartGrid extends StatelessWidget {
           ),
 
           SizedBox(
-            width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 MandalartBox2(hintNum2: 1, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 1, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
@@ -63,11 +61,10 @@ class MandalartGrid extends StatelessWidget {
           ),
 
           SizedBox(
-            width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 MandalartBox2(hintNum2: 2, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 2, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
@@ -83,11 +80,10 @@ class MandalartGrid extends StatelessWidget {
           ),
 
           SizedBox(
-            width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 MandalartBox2(hintNum2: 3, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 3, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
@@ -103,9 +99,10 @@ class MandalartGrid extends StatelessWidget {
           ),
 
           SizedBox(
-            width:100,
             child: GridView.count(
               crossAxisCount: 3,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [           
                 MandalartBox1(hintNum: 0, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox1(hintNum: 1, mandalart: mandalart, secondGoals: secondGoals),
@@ -122,6 +119,10 @@ class MandalartGrid extends StatelessWidget {
                     child: Text(
                       mandalart,
                       textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                      ),
                     ),
                   )
                 ),
@@ -135,11 +136,10 @@ class MandalartGrid extends StatelessWidget {
           ),
 
           SizedBox(
-            width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 MandalartBox2(hintNum2: 5, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 5, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
@@ -155,11 +155,10 @@ class MandalartGrid extends StatelessWidget {
           ),
 
           SizedBox(
-            width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 MandalartBox2(hintNum2: 6, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 6, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
@@ -175,11 +174,10 @@ class MandalartGrid extends StatelessWidget {
           ),
 
           SizedBox(
-            width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 MandalartBox2(hintNum2: 7, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 7, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
@@ -195,11 +193,10 @@ class MandalartGrid extends StatelessWidget {
           ),
 
           SizedBox(
-            width:100,
             child: GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 1,
-              mainAxisSpacing: 1,
+              crossAxisSpacing: 0.5,
+              mainAxisSpacing: 0.5,
               children: [
                 MandalartBox2(hintNum2: 8, hintNum3: 0, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 8, hintNum3: 1, mandalart: mandalart, secondGoals: secondGoals),
@@ -248,6 +245,10 @@ class MandalartBox1 extends StatelessWidget {
                     child: Text(
                       secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != "" ? secondGoals[hintNum]['secondGoal'] : "",
                       textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11,
+                      ),
                     ),
                   )
                 );
@@ -292,7 +293,9 @@ class MandalartBox2 extends StatelessWidget {
                   margin: const EdgeInsets.all(1.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
-                    color: colorPalette[color]
+                    color: secondGoals.isNotEmpty &&
+                      secondGoals[hintNum2]['thirdGoals'].isNotEmpty 
+                      && secondGoals[hintNum2]['thirdGoals'].asMap().containsKey(hintNum3) && secondGoals[hintNum2]['thirdGoals'][hintNum3]['thirdGoal'] == "" ? Colors.transparent : colorPalette[color]
                   ),
                   child: Center(
                     child: Text(
@@ -302,6 +305,10 @@ class MandalartBox2 extends StatelessWidget {
                       ? secondGoals[hintNum2]['thirdGoals'][hintNum3]['thirdGoal']
                       : "",
                       textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 11,
+                      ),
                     ),
                   )
                 );

@@ -46,9 +46,9 @@ class ColorBox extends StatelessWidget {
                   .watch<SaveInputtedDetailGoalModel>()
                   .inputtedDetailGoal['$detailGoalId'] ??
               '';
-          final color1 =
-              context.watch<GoalColor>().selectedGoalColor['$goalColorId'] ??
-                  const Color(0xff262626);
+          final color1 = detailGoal == "" ? Colors.transparent : detailGoal != "" && 
+              context.watch<GoalColor>().selectedGoalColor['$goalColorId'] == Colors.transparent ? const Color(0xff929292) : context.watch<GoalColor>().selectedGoalColor['$goalColorId'];
+                  
 
           final backgroundColor = index == 4
               ? color1
