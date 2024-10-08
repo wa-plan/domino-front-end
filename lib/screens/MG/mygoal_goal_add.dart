@@ -106,7 +106,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
         backgroundColor: const Color(0xff262626),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 10.0, 40.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
