@@ -1,5 +1,4 @@
 import 'package:domino/apis/services/mg_services.dart';
-import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/MG/mygoal_goal_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/MG/mygoal_profile_edit.dart';
@@ -19,8 +18,14 @@ class _MyGoalState extends State<MyGoal> {
   String nickname = '당신은 어떤 사람인가요?';
   String description = '프로필 편집을 통해 \n자신을 표현해주세요.';
   List<Map<String, String>> mandalarts = [];
+  List<int> ddayList = [];
 
   late PageController _pageController; // PageController 추가
+  int successNum = 0; // 추가: 성공한 목표 수
+  int inProgressNum = 0; // 추가: 진행 중인 목표 수
+  int failedNum = 0; // 추가: 실패한 목표 수
+  int dday = 0; // 추가: D-day
+  String ddayString = '0';
 
   void userInfo() async {
     final data = await UserInfoService.userInfo();
@@ -41,7 +46,14 @@ class _MyGoalState extends State<MyGoal> {
     if (data.isNotEmpty) {
       setState(() {
         mandalarts = data;
+        ddayList = List.filled(mandalarts.length, 0); // dday 리스트 초기화
       });
+
+      // mandalarts가 로드된 후에 userMandaInfo 호출
+      for (int i = 0; i < mandalarts.length; i++) {
+        final int mandalartId = int.tryParse(mandalarts[i]['id'] ?? '0') ?? 0;
+        userMandaInfo(context, mandalartId, i);
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
@@ -49,19 +61,22 @@ class _MyGoalState extends State<MyGoal> {
     }
   }
 
-  void userMandaInfo(context, int mandalartId) async {
+  void userMandaInfo(context, int mandalartId, int pageIndex) async {
     final data = await UserMandaInfoService.userMandaInfo(context,
         mandalartId: mandalartId);
     if (data != null) {
-      String name = data['name'] ?? '';
-      String status = data['status'] ?? '';
-      List<dynamic> photoList = data['photoList'] ?? [];
-
-      print('목표 이름: $name');
-      print('상태: $status');
-      print('사진 리스트: $photoList');
-
-      // 데이터를 UI에 반영하는 로직 추가
+      setState(() {
+        if (pageIndex < ddayList.length) {
+          // 페이지 인덱스 범위 체크
+          ddayList[pageIndex] = data['dday'] ?? 0; // dday를 페이지 인덱스에 맞게 저장
+        }
+        successNum = data['statusNum']['successNum'] ?? 0;
+        inProgressNum = data['statusNum']['inProgressNum'] ?? 0;
+        failedNum = data['statusNum']['failed'] ?? 0;
+        dday = data['dday'] ?? 0;
+        ddayString = dday.toString();
+        print('ddayString: $ddayString');
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
@@ -83,9 +98,10 @@ class _MyGoalState extends State<MyGoal> {
     super.dispose();
   }
 
-  Widget _buildGoalCard(Map<String, String> mandalart) {
-    final String name = mandalart['name'] ?? '목표 이름 없음';
+  Widget _buildGoalCard(Map<String, String> mandalart, int mandalartId) {
+    final String name = mandalart['name'] ?? 'Goal';
     final String id = mandalart['id'] ?? '';
+    //final int dday = ddayList[mandalartId];
 
     return GestureDetector(
       onTap: () {
@@ -93,8 +109,7 @@ class _MyGoalState extends State<MyGoal> {
           context,
           MaterialPageRoute(builder: (context) => MyGoalDetail(id: id)),
         );
-        final int parsedId = int.tryParse(id) ?? 0; // 문자열을 정수로 변환, 실패 시 0으로 설정
-        userMandaInfo(context, parsedId);
+        //final int parsedId = int.tryParse(id) ?? 0; // 문자열을 정수로 변환, 실패 시 0으로 설정
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
@@ -118,9 +133,9 @@ class _MyGoalState extends State<MyGoal> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Text(
-                      'D-200',
-                      style: TextStyle(
+                    Text(
+                      dday.toString(),
+                      style: const TextStyle(
                         color: Color(0xff5C5C5C),
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -291,7 +306,7 @@ class _MyGoalState extends State<MyGoal> {
                       itemCount: mandalarts.length,
                       itemBuilder: (context, index) {
                         final mandalart = mandalarts[index];
-                        return _buildGoalCard(mandalart);
+                        return _buildGoalCard(mandalart, index);
                       },
                     ),
                   ),
