@@ -86,6 +86,11 @@ flutter:
     - assets/img/profile_smp6.png
     - assets/img/profile_smp7.png
     - assets/img/profile_smp8.png
+    - assets\img\completed_goals.png   #쓰러뜨린 목표
+    - assets\img\failed_goals.png    #쓰러뜨리지 못한 목표
+    - assets\img\if_no_img.png 
+    - assets\img\domino_calculate.png 
+    
     - assets\img\MG_domino3.png
     - assets\img\MG_domino2.png
     - assets\img\MG_domino.png

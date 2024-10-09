@@ -1,4 +1,3 @@
-// mandalart.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -18,7 +17,6 @@ class MandalartGrid2 extends StatefulWidget {
 }
 
 class _MandalartGrid2 extends State<MandalartGrid2> {
-
   int? _selectedBoxHintNum2; // Track selected box's hintNum2
   int? _selectedBoxHintNum3; // Track selected box's hintNum3
 
@@ -30,13 +28,12 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: GridView(
-
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
         children: [
           // First Grid
           SizedBox(
@@ -52,7 +49,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 0 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 0 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(0, i), // Pass selection callback
                   ),
                 MandalartBox1(
@@ -66,7 +64,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 0 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 0 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(0, i), // Pass selection callback
                   ),
               ],
@@ -87,7 +86,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 1 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 1 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(1, i), // Pass selection callback
                   ),
                 MandalartBox1(
@@ -101,7 +101,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 1 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 1 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(1, i), // Pass selection callback
                   ),
               ],
@@ -122,7 +123,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 2 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 2 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(2, i), // Pass selection callback
                   ),
                 MandalartBox1(
@@ -136,7 +138,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 2 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 2 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(2, i), // Pass selection callback
                   ),
               ],
@@ -157,7 +160,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 3 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 3 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(3, i), // Pass selection callback
                   ),
                 MandalartBox1(
@@ -171,7 +175,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 3 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 3 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(3, i), // Pass selection callback
                   ),
               ],
@@ -179,7 +184,6 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
           ),
 
           // Fifth Grid
-
           SizedBox(
             width: 100,
             child: GridView.count(
@@ -187,23 +191,23 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
               children: [
                 for (int i = 0; i < 4; i++)
                   MandalartBox1(
-
                     hintNum: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
                   ),
-
-
                 Container(
-                    margin: const EdgeInsets.all(1.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3),
-                      color: Colors.yellow,
+                  margin: const EdgeInsets.all(1.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: Colors.yellow,
+                  ),
+                  child: Center(
+                    child: Text(
+                      widget.mandalart,
+                      textAlign: TextAlign.center,
                     ),
-
                   ),
                 ),
-
                 for (int i = 5; i < 9; i++)
                   MandalartBox1(
                     hintNum: i,
@@ -228,7 +232,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 5 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 5 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(5, i), // Pass selection callback
                   ),
                 MandalartBox1(
@@ -242,7 +247,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 5 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 5 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(5, i), // Pass selection callback
                   ),
               ],
@@ -263,7 +269,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 6 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 6 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(6, i), // Pass selection callback
                   ),
                 MandalartBox1(
@@ -277,7 +284,8 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     hintNum3: i,
                     mandalart: widget.mandalart,
                     secondGoals: widget.secondGoals,
-                    isSelected: _selectedBoxHintNum2 == 6 && _selectedBoxHintNum3 == i,
+                    isSelected:
+                        _selectedBoxHintNum2 == 6 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(6, i), // Pass selection callback
                   ),
               ],
@@ -290,11 +298,9 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
 }
 
 class MandalartBox1 extends StatelessWidget {
-
   final int hintNum;
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
-
 
   const MandalartBox1({
     super.key,
@@ -309,26 +315,24 @@ class MandalartBox1 extends StatelessWidget {
       margin: const EdgeInsets.all(1.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(3),
-        color: secondGoals.isNotEmpty &&
-                  secondGoals[hintNum]['secondGoal'] != ""
-              ? Color(int.parse(secondGoals[hintNum]['color']
-                  .replaceAll('Color(', '')
-                  .replaceAll(')', '')))
-              : Colors.transparent,
+        color:
+            secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != ""
+                ? Color(int.parse(secondGoals[hintNum]['color']
+                    .replaceAll('Color(', '')
+                    .replaceAll(')', '')))
+                : Colors.transparent,
       ),
       child: Center(
         child: Text(
-          secondGoals.isNotEmpty &&
-                    secondGoals[hintNum]['secondGoal'] != ""
-                ? secondGoals[hintNum]['secondGoal']
-                : "",
+          secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != ""
+              ? secondGoals[hintNum]['secondGoal']
+              : "",
           textAlign: TextAlign.center,
         ),
       ),
     );
   }
 }
-
 
 class MandalartBox2 extends StatefulWidget {
   final int hintNum2;
@@ -352,8 +356,7 @@ class MandalartBox2 extends StatefulWidget {
     const Color(0xff11D1C2): const Color(0xffAAF4EF),
   };
 
-
-   MandalartBox2({
+  MandalartBox2({
     super.key,
     required this.hintNum2,
     required this.hintNum3,
@@ -363,7 +366,6 @@ class MandalartBox2 extends StatefulWidget {
     required this.onSelect, // Accept onSelect callback
   });
 
-
   @override
   State<MandalartBox2> createState() => _MandalartBox2State();
 }
@@ -371,39 +373,48 @@ class MandalartBox2 extends StatefulWidget {
 class _MandalartBox2State extends State<MandalartBox2> {
   @override
   Widget build(BuildContext context) {
-
-    final color = widget.secondGoals.isNotEmpty
-    &&  widget.secondGoals[widget.hintNum2]['thirdGoals'].asMap().containsKey(widget.hintNum3) 
-    ? Color(int.parse(widget.secondGoals[widget.hintNum2]['color'].replaceAll('Color(', '').replaceAll(')',''))) 
-    : Colors.transparent;
+    final color = widget.secondGoals.isNotEmpty &&
+            widget.secondGoals[widget.hintNum2]['thirdGoals']
+                .asMap()
+                .containsKey(widget.hintNum3)
+        ? Color(int.parse(widget.secondGoals[widget.hintNum2]['color']
+            .replaceAll('Color(', '')
+            .replaceAll(')', '')))
+        : Colors.transparent;
 
     return GestureDetector(
       onTap: () {
         widget.onSelect();
         widget.secondGoals[widget.hintNum2]['thirdGoals'].isNotEmpty &&
-
-                    widget.secondGoals[widget.hintNum2]['thirdGoals']
-                        .asMap()
-                        .containsKey(widget.hintNum3) &&
-                    widget.secondGoals[widget.hintNum2]['thirdGoals']
-                            [widget.hintNum3]['thirdGoal'] !=
-                        ""
-                ? context.read<SelectAPModel>().selectAP(
-                    widget.secondGoals[widget.hintNum2]['thirdGoals']
-                        [widget.hintNum3]['thirdGoal'],
-                    widget.secondGoals[widget.hintNum2]['thirdGoals']
-                        [widget.hintNum3]['id'])
-                : context.read<SelectAPModel>().selectAP("NA Name", null);
-
-         // Call the onSelect callback
+                widget.secondGoals[widget.hintNum2]['thirdGoals']
+                    .asMap()
+                    .containsKey(widget.hintNum3) &&
+                widget.secondGoals[widget.hintNum2]['thirdGoals']
+                        [widget.hintNum3]['thirdGoal'] !=
+                    ""
+            ? context.read<SelectAPModel>().selectAP(
+                widget.secondGoals[widget.hintNum2]['thirdGoals']
+                    [widget.hintNum3]['thirdGoal'],
+                widget.secondGoals[widget.hintNum2]['thirdGoals']
+                    [widget.hintNum3]['id'])
+            : context.read<SelectAPModel>().selectAP("NA Name", null);
+        // Call the onSelect callback
       },
       child: Container(
         margin: const EdgeInsets.all(1.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3),
           color: widget.secondGoals.isNotEmpty &&
-                      widget.secondGoals[widget.hintNum2]['thirdGoals'].isNotEmpty 
-                      && widget.secondGoals[widget.hintNum2]['thirdGoals'].asMap().containsKey(widget.hintNum3) && widget.secondGoals[widget.hintNum2]['thirdGoals'][widget.hintNum3]['thirdGoal'] == "" ? Colors.transparent : widget.colorPalette[color],
+                  widget
+                      .secondGoals[widget.hintNum2]['thirdGoals'].isNotEmpty &&
+                  widget.secondGoals[widget.hintNum2]['thirdGoals']
+                      .asMap()
+                      .containsKey(widget.hintNum3) &&
+                  widget.secondGoals[widget.hintNum2]['thirdGoals']
+                          [widget.hintNum3]['thirdGoal'] ==
+                      ""
+              ? Colors.transparent
+              : widget.colorPalette[color],
           border: widget.isSelected // Use the passed isSelected
               ? Border.all(color: Colors.blue, width: 2)
               : null,
@@ -411,15 +422,18 @@ class _MandalartBox2State extends State<MandalartBox2> {
         child: Center(
           child: Text(
             widget.secondGoals.isNotEmpty &&
-                    widget.secondGoals[widget.hintNum2]['thirdGoals'].isNotEmpty &&
-                    widget.secondGoals[widget.hintNum2]['thirdGoals'].asMap().containsKey(widget.hintNum3)
-                ? widget.secondGoals[widget.hintNum2]['thirdGoals'][widget.hintNum3]['thirdGoal']
+                    widget.secondGoals[widget.hintNum2]['thirdGoals']
+                        .isNotEmpty &&
+                    widget.secondGoals[widget.hintNum2]['thirdGoals']
+                        .asMap()
+                        .containsKey(widget.hintNum3)
+                ? widget.secondGoals[widget.hintNum2]['thirdGoals']
+                    [widget.hintNum3]['thirdGoal']
                 : "",
             textAlign: TextAlign.center,
           ),
         ),
       ),
     );
-
   }
 }

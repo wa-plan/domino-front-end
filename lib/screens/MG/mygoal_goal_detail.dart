@@ -1,10 +1,13 @@
+import 'package:domino/screens/MG/piechart.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:typed_data'; // Uint8List 사용을 위한 라이브러리 임포트
 import 'package:domino/screens/MG/mygoal_goal_edit.dart';
+import 'package:domino/apis/services/mg_services.dart';
 
 class MyGoalDetail extends StatefulWidget {
-  const MyGoalDetail({super.key});
+  final String id;
+
+  const MyGoalDetail({super.key, required this.id});
 
   @override
   MyGoalDetailState createState() => MyGoalDetailState();
@@ -19,11 +22,85 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   String o = '60';
   String v = '30';
   String x = '10';
+  String name = '';
+  int dday = 0; // 추가: D-day
+  String ddayString = '0';
+  int parsedId = 0;
+  bool hasNoImages = false;
+
+  // GoalImage 리스트 정의
+  List<GoalImage> goalImage = [
+    GoalImage(image: 'assets/img/profile_smp1.png', name: 'Image 1'),
+    GoalImage(image: 'assets/img/profile_smp2.png', name: 'Image 2'),
+    GoalImage(image: 'assets/img/profile_smp3.png', name: 'Image 3'),
+    GoalImage(image: 'assets/img/profile_smp4.png', name: 'Image 4'),
+    GoalImage(image: 'assets/img/profile_smp5.png', name: 'Image 5'),
+    GoalImage(image: 'assets/img/profile_smp6.png', name: 'Image 6'),
+    GoalImage(image: 'assets/img/profile_smp7.png', name: 'Image 7'),
+    GoalImage(image: 'assets/img/profile_smp8.png', name: 'Image 8'),
+    // 추가 이미지...
+  ];
+
+  void userMandaInfo(context, int mandalartId) async {
+    final data = await UserMandaInfoService.userMandaInfo(context,
+        mandalartId: mandalartId);
+    if (data != null) {
+      // 클래스 변수에 데이터를 저장
+      setState(() {
+        name = data['name'] ?? ''; // 이제 name이 클래스 변수에 저장됨
+        String status = data['status'] ?? '';
+        List<dynamic> photoList = data['photoList'] ?? [];
+        int dday = 0; // 추가: D-day
+        String ddayString = '0';
+
+        if (photoList.isNotEmpty) {
+          goalImage = photoList.map((photo) {
+            return GoalImage(image: photo['url'], name: photo['name']);
+          }).toList();
+          hasNoImages = false;
+        } else {
+          goalImage.clear(); // photoList가 비어있으면 goalImage를 비움
+          hasNoImages = true;
+        }
+
+        print('목표 이름: $name');
+        print('상태: $status');
+        print('사진 리스트: $photoList');
+        print('디데이: $dday');
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
+      );
+    }
+  }
+
+  void _mandaBookmark(int id, String bookmark) async {
+    final success = await MandaBookmarkService.MandaBookmark(
+      id: id,
+      bookmark: bookmark,
+    );
+    if (success) {
+      print('성공');
+    }
+  }
+
+  void _mandaProgress(int id, String status) async {
+    final success = await MandaProgressService.MandaProgress(
+      id: id,
+      status: status,
+    );
+    if (success) {
+      print('성공');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _selectedStatus = _status[0];
+    int parsedId = int.parse(widget.id);
+    userMandaInfo(context, parsedId);
   } // 목표 진행 상황 드랍다운 리스트 초기화
 
   void _onFileSelected() {
@@ -45,7 +122,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          '환상적인 세계여행',
+          name,
           style: TextStyle(
             color: Colors.white,
             fontSize: MediaQuery.of(context).size.width * 0.06,
@@ -72,217 +149,272 @@ class MyGoalDetailState extends State<MyGoalDetail> {
         ],
       ), // Icon Theme 지정
       backgroundColor: const Color(0xff262626),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: [
-                Text(
-                  "D-100",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: MediaQuery.of(context).size.width * 0.06,
-                    fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(38.0, 5.0, 40.0, 0.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: [
+                  Text(
+                    ddayString,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: MediaQuery.of(context).size.width * 0.06,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        "이 목표는   ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        height: 30,
+                        width: 90,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.white, width: 0.7), // White border
+                          borderRadius: BorderRadius.circular(
+                              5), // Optional: rounded corners
+                        ),
+                        child: DropdownButton<String>(
+                          underline: const SizedBox.shrink(),
+                          dropdownColor: const Color(0xff262626),
+                          iconEnabledColor: Colors.white,
+                          value: _selectedStatus,
+                          items: _status
+                              .map(
+                                (e) => DropdownMenuItem<String>(
+                                  value: e,
+                                  child: Center(
+                                    child: Text(e),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedStatus = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        bookmark = !bookmark;
+                        String bookmarkAction =
+                            bookmark ? "BOOKMARK" : "UNBOOKMARK";
+                        _mandaBookmark(parsedId, bookmarkAction);
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.star,
+                      size: 30,
+                    ),
+                    color: bookmark ? Colors.yellow : Colors.grey,
+                    iconSize: 35,
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              if (goalImage.isEmpty) ...[
+                Image.asset('assets/img/if_no_img.png'),
+              ] else ...[
+                AspectRatio(
+                  aspectRatio: 1 / 1, // 1:1 비율 유지
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    childAspectRatio: 1 / 1,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    children: List.generate(goalImage.length, (index) {
+                      return Image.asset(
+                        goalImage[index].image,
+                        fit: BoxFit.cover,
+                      );
+                    }),
                   ),
                 ),
               ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Text(
-                      "이 목표는   ",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      height: 40,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Colors.white, width: 0.5), // White border
-                        borderRadius: BorderRadius.circular(
-                            5), // Optional: rounded corners
-                      ),
-                      child: DropdownButton<String>(
-                        underline: const SizedBox.shrink(),
-                        dropdownColor: const Color(0xff262626),
-                        iconEnabledColor: Colors.white,
-                        value: _selectedStatus,
-                        items: _status
-                            .map(
-                              (e) => DropdownMenuItem<String>(
-                                value: e,
-                                child: Center(
-                                  child: Text(e),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 16),
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedStatus = value!;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      bookmark = !bookmark;
-                    });
-                  },
-                  icon: const Icon(Icons.star),
-                  color: bookmark ? Colors.yellow : Colors.grey,
-                  iconSize: 35,
-                )
-              ],
-            ),
-            const Flexible(
-              child: Text(
+
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
                 "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!",
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
-            ),
-            const Text('할 일 달성 통계',
-                style: TextStyle(color: Colors.white, fontSize: 16)),
-            Row(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(color: Colors.grey),
+              const SizedBox(
+                height: 40,
+              ),
+              const Text('할 일 달성 통계',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600)),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Color(0xff313131),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    width: MediaQuery.of(context).size.width / 3,
+                    height: MediaQuery.of(context).size.width / 3,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.circle_outlined,
+                              color: Colors.yellow,
+                              size: 20,
+                            ),
+                            Text(
+                              ' = $o개',
+                              style: const TextStyle(
+                                  color: Colors.yellow, fontSize: 18),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.change_history_outlined,
+                              color: Color(0xff888888),
+                              size: 20,
+                            ),
+                            Text(
+                              ' = $v개',
+                              style: const TextStyle(
+                                  color: Color(0xff888888), fontSize: 18),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.clear_outlined,
+                              color: Color(0xff626161),
+                              size: 23,
+                            ),
+                            Text(
+                              ' = $x개',
+                              style: const TextStyle(
+                                  color: Color(0xff626161), fontSize: 18),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  CustomPaint(
+                    size: Size(
+                        MediaQuery.of(context).size.width / 5,
+                        MediaQuery.of(context).size.width /
+                            5), // CustomPaint의 크기
+                    painter: PieChart(
+                      yellowPercentage: 60,
+                      grayPercentage: 30,
+                      blackPercentage: 10,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30), // 아이콘과 다른 콘텐츠 사이의 간격 조정
+              Center(
                   child: Column(
+                children: [
+                  const Icon(
+                    Icons.arrow_downward,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    '전체 도미노',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.circle_outlined),
-                          Text(
-                            '=$o개',
-                          ),
-                        ],
+                      Container(
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(2)),
+                            color: Colors.yellow),
+                        width: 18, // 원하는 너비 설정
+                        height: 45, // 원하는 높이 설정
                       ),
-                      Row(
-                        children: [
-                          const Icon(Icons.change_history_outlined),
-                          Text(
-                            '=$v개',
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.clear_outlined),
-                          Text(
-                            '=$x개',
-                          ),
-                        ],
+                      const Text(
+                        '   x 75',
+                        style: TextStyle(
+                            color: Colors.yellow,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
                       )
                     ],
                   ),
-                )
-              ],
-            )
-
-            /*Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.add_a_photo, color: Colors.white),
-                  onPressed: _onFileSelected, // 파일 선택 로직 추가
-                ),
-                const SizedBox(width: 16),
-                selectedFiles.isNotEmpty
-                    ? Expanded(
-                        child: SizedBox(
-                          height: 80,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: selectedFiles.length,
-                            itemBuilder: (context, i) {
-                              final imageBytes = selectedFiles[i];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 4.0),
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      width: 80,
-                                      height: 80,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(5),
-                                        border: Border.all(
-                                            width: 1, color: Colors.grey),
-                                        color: Colors.white,
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(4),
-                                        child: Image.memory(
-                                          imageBytes,
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return Container(
-                                              color: Colors.grey,
-                                              alignment: Alignment.center,
-                                              child: const Text('not found'),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 4,
-                                      right: 4,
-                                      child: GestureDetector(
-                                        onTap: () => _removeFile(i),
-                                        child: Container(
-                                          decoration: const BoxDecoration(
-                                            color: Colors.red,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: const Icon(
-                                            Icons.close,
-                                            color: Colors.white,
-                                            size: 16,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      )
-                    : const SizedBox(width: 80, height: 80),
-              ],
-            ), // Goal 업로드한 이미지 불러오기
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: LinearPercentIndicator(
-                width: MediaQuery.of(context).size.width - 50,
-                animation: true,
-                lineHeight: 20.0,
-                percent: 0.67, // 목표 진행률
-                barRadius: const Radius.circular(10),
-                progressColor: Colors.red,
-              ),
-            ), // Percentage 표시  */
-          ],
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Image.asset('assets/img/domino_calculate.png'),
+                ],
+              )),
+              const SizedBox(
+                height: 30,
+              )
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+class GoalImage {
+  final String image; // 이미지 경로
+  final String name; // 이미지 이름 (필요시 추가)
+
+  GoalImage({required this.image, required this.name});
 }
