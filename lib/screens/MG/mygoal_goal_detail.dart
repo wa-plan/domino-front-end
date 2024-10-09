@@ -23,8 +23,10 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   String v = '30';
   String x = '10';
   String name = '';
-  String dday = '0';
+  int dday = 0; // 추가: D-day
+  String ddayString = '0';
   int parsedId = 0;
+  bool hasNoImages = false;
 
   // GoalImage 리스트 정의
   List<GoalImage> goalImage = [
@@ -48,14 +50,17 @@ class MyGoalDetailState extends State<MyGoalDetail> {
         name = data['name'] ?? ''; // 이제 name이 클래스 변수에 저장됨
         String status = data['status'] ?? '';
         List<dynamic> photoList = data['photoList'] ?? [];
-        String dday = (data['dday'] ?? 0).toString();
+        int dday = 0; // 추가: D-day
+        String ddayString = '0';
 
         if (photoList.isNotEmpty) {
           goalImage = photoList.map((photo) {
             return GoalImage(image: photo['url'], name: photo['name']);
           }).toList();
+          hasNoImages = false;
         } else {
           goalImage.clear(); // photoList가 비어있으면 goalImage를 비움
+          hasNoImages = true;
         }
 
         print('목표 이름: $name');
@@ -74,6 +79,16 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     final success = await MandaBookmarkService.MandaBookmark(
       id: id,
       bookmark: bookmark,
+    );
+    if (success) {
+      print('성공');
+    }
+  }
+
+  void _mandaProgress(int id, String status) async {
+    final success = await MandaProgressService.MandaProgress(
+      id: id,
+      status: status,
     );
     if (success) {
       print('성공');
@@ -144,7 +159,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               Row(
                 children: [
                   Text(
-                    dday,
+                    ddayString,
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: MediaQuery.of(context).size.width * 0.06,
@@ -222,7 +237,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               const SizedBox(
                 height: 20,
               ),
-              if (goalImage.isNotEmpty) ...[
+              if (goalImage.isEmpty) ...[
+                Image.asset('assets/img/if_no_img.png'),
+              ] else ...[
                 AspectRatio(
                   aspectRatio: 1 / 1, // 1:1 비율 유지
                   child: GridView.count(
@@ -240,8 +257,6 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                     }),
                   ),
                 ),
-              ] else ...[
-                Image.asset('assets/img/if_no_img.png'),
               ],
 
               const SizedBox(
