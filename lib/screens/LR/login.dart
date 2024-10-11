@@ -50,7 +50,11 @@ class _LoginScreenState extends State<LoginScreen> {
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.grey, fontSize: 13),
+          contentPadding: const EdgeInsets.symmetric(vertical: 11),
+          hintStyle: const TextStyle(
+            color: Colors.grey, 
+            fontSize: 13,
+            ),
           border: const OutlineInputBorder(),
           suffixIcon: controller.text.isNotEmpty
               ? IconButton(

@@ -8,29 +8,46 @@ import 'package:provider/provider.dart';
 import 'package:domino/apis/services/td_services.dart';
 
 class AddPage2 extends StatefulWidget {
-  const AddPage2({super.key});
+  final int thirdGoalId;
+  final String thirdGoalName;
+
+  const AddPage2({
+    super.key,
+    required this.thirdGoalId,
+    required this.thirdGoalName,
+  });
+
   @override
   State<AddPage2> createState() => AddPage2State();
 }
 
 class AddPage2State extends State<AddPage2> {
   final formKey = GlobalKey<FormState>();
-  String dominoValue = '';
-  TextEditingController dominoController =
-      TextEditingController(text: "저금"); //텍스트폼필드에 기본으로 들어갈 초기 텍스트 값
+  late TextEditingController dominoController; // 'late'로 나중에 초기화될 것을 명시
   bool switchValue = false;
+  String dominoValue = '';
   int thirdGoalId = 99;
 
-  RepeatSettingsState repeatSettings =
-      RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
+  RepeatSettingsState repeatSettings = RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
 
+  @override
+  void initState() {
+    super.initState();
+    dominoController = TextEditingController(text: widget.thirdGoalName); // initState에서 widget에 접근하여 초기화
+    context.read<DateProvider>().clearPickedDate(); // DateProvider 초기화
+  }
+
+  @override
+  void dispose() {
+    dominoController.dispose(); // 컨트롤러는 사용이 끝난 후 dispose로 메모리 정리
+    super.dispose();
+  }
+
+  // 도미노 추가 함수
   void addDomino(int thirdGoalId, String name, List<DateTime> dateList,
       String repetition) async {
     final success = await AddDominoService.addDomino(
-        thirdGoalId: thirdGoalId,
-        name: name,
-        dates: dateList,
-        repetition: repetition);
+        thirdGoalId: thirdGoalId, name: name, dates: dateList, repetition: repetition);
 
     if (success) {
       Navigator.push(
@@ -42,8 +59,8 @@ class AddPage2State extends State<AddPage2> {
     }
   }
 
-  //텍스트폼필드 함수 만들기
-  renderTextFormField({
+  // 텍스트폼필드 함수
+  Widget renderTextFormField({
     required FormFieldSetter onSaved,
     required FormFieldValidator validator,
   }) {
@@ -64,12 +81,6 @@ class AddPage2State extends State<AddPage2> {
             : null,
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    context.read<DateProvider>().clearPickedDate();
   }
 
   @override
@@ -117,9 +128,7 @@ class AddPage2State extends State<AddPage2> {
                             fontWeight: FontWeight.w600,
                             letterSpacing: 1.1),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       Form(
                         key: formKey,
                         child: renderTextFormField(
@@ -136,9 +145,7 @@ class AddPage2State extends State<AddPage2> {
                           },
                         ),
                       ),
-                      const SizedBox(
-                        height: 35,
-                      ),
+                      const SizedBox(height: 35),
                       const Text(
                         '언제 실행하고 싶나요?',
                         style: TextStyle(
@@ -146,11 +153,10 @@ class AddPage2State extends State<AddPage2> {
                             fontSize: 19,
                             fontWeight: FontWeight.bold),
                       ),
-                      const AddCalendar(), //추가할 때 달력
-                      //반복하기 기능
+                      const AddCalendar(), // 달력 위젯 추가
                       const SizedBox(height: 30),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end, //오른쪽 정렬
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           const Text(
                             '반복하기',
@@ -167,7 +173,7 @@ class AddPage2State extends State<AddPage2> {
                           ),
                         ],
                       ),
-                      if (switchValue) const RepeatSettings(),
+                      if (switchValue) const RepeatSettings(), // 반복 설정 위젯 추가
                     ],
                   ),
                 ],
@@ -181,21 +187,22 @@ class AddPage2State extends State<AddPage2> {
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xff131313),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0))),
+                    backgroundColor: const Color(0xff131313),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                  ),
                   child: const Text(
                     '이전',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
-                ), //이전 버튼
+                ),
                 TextButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
 
-                      DateTime? pickedDate =
-                          context.read<DateProvider>().pickedDate;
+                      DateTime? pickedDate = context.read<DateProvider>().pickedDate;
 
                       if (pickedDate == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -205,19 +212,10 @@ class AddPage2State extends State<AddPage2> {
                         context
                             .read<DateListProvider>()
                             .setInterval(switchValue, pickedDate);
-                        List<DateTime> dateList =
-                            context.read<DateListProvider>().dateList;
-                        String repeatInfo =
-                            context.read<DateListProvider>().repeatInfo();
-                        print(repeatInfo);
-                        addDomino(thirdGoalId, dominoController.text.toString(),
-                            dateList, repeatInfo);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TdMain(),
-                          ),
-                        );
+                        List<DateTime> dateList = context.read<DateListProvider>().dateList;
+                        String repeatInfo = context.read<DateListProvider>().repeatInfo();
+
+                        addDomino(widget.thirdGoalId, dominoController.text, dateList, repeatInfo);
                       }
                     }
                   },
