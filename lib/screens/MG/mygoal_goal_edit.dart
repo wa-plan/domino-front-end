@@ -5,7 +5,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 class MygoalEdit extends StatefulWidget {
-  const MygoalEdit({super.key});
+  final String name;
+  final String dday;
+
+  const MygoalEdit({
+    super.key,
+    required this.name,
+    required this.dday
+    });
 
   @override
   State<MygoalEdit> createState() => _MygoalEditState();
@@ -16,6 +23,7 @@ class _MygoalEditState extends State<MygoalEdit> {
   XFile? _pickedFile;
   Color? _selectedColor;
   DateTime selectedDate = DateTime.now();
+  
 
   // 이미지 픽커로부터 이미지를 선택하는 메서드
   Future<void> _getPhotoLibraryImage() async {
@@ -71,7 +79,8 @@ class _MygoalEditState extends State<MygoalEdit> {
           backgroundColor: const Color(0xff262626),
         ),
         backgroundColor: const Color(0xff262626),
-        body: Padding(
+        body: SingleChildScrollView(
+          child: Padding(
           padding: const EdgeInsets.fromLTRB(20.0, 10.0, 40.0, 0.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,6 +89,7 @@ class _MygoalEditState extends State<MygoalEdit> {
               const Text(
                 '어떤 목표인가요?',
                 style: TextStyle(
+                  
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
@@ -87,10 +97,10 @@ class _MygoalEditState extends State<MygoalEdit> {
                 ),
               ),
               const SizedBox(height: 20),
-              const TextField(
+               TextFormField(
                 decoration: InputDecoration(
-                  //hintText: '목표를 입력하세요',
-                  border: OutlineInputBorder(),
+                  hintText: widget.name,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 20),
@@ -308,7 +318,7 @@ class _MygoalEditState extends State<MygoalEdit> {
               ]),
             ],
           ),
-        ),
+        ),),
       ),
     );
   }

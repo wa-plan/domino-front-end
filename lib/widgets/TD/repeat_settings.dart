@@ -24,7 +24,7 @@ class RepeatSettingsState extends State<RepeatSettings> {
         Row(
           children: <Widget>[
             Checkbox(
-              side: WidgetStateBorderSide.resolveWith((states) =>
+              side: MaterialStateBorderSide.resolveWith((states) =>
                   const BorderSide(
                       width: 1.5, color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
               activeColor: const Color(0xff262626),
@@ -45,7 +45,7 @@ class RepeatSettingsState extends State<RepeatSettings> {
               style: TextStyle(color: Colors.white),
             ),
             Checkbox(
-              side: WidgetStateBorderSide.resolveWith((states) =>
+              side: MaterialStateBorderSide.resolveWith((states) =>
                   const BorderSide(
                       width: 1.5, color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
               activeColor: const Color(0xff262626),
@@ -66,7 +66,7 @@ class RepeatSettingsState extends State<RepeatSettings> {
               style: TextStyle(color: Colors.white),
             ),
             Checkbox(
-              side: WidgetStateBorderSide.resolveWith((states) =>
+              side: MaterialStateBorderSide.resolveWith((states) =>
                   const BorderSide(
                       width: 1.5, color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
               activeColor: const Color(0xff262626),
@@ -87,7 +87,7 @@ class RepeatSettingsState extends State<RepeatSettings> {
               style: TextStyle(color: Colors.white),
             ),
             Checkbox(
-              side: WidgetStateBorderSide.resolveWith((states) =>
+              side: MaterialStateBorderSide.resolveWith((states) =>
                   const BorderSide(
                       width: 1.5, color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
               activeColor: const Color(0xff262626),

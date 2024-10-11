@@ -141,7 +141,10 @@ class MyGoalDetailState extends State<MyGoalDetail> {
           IconButton(
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MygoalEdit()));
+                  MaterialPageRoute(builder: (context) => MygoalEdit(
+                    dday: ddayString,
+                    name: name,
+                  )));
             },
             icon: const Icon(Icons.edit),
             color: Colors.grey,

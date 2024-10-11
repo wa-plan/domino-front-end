@@ -21,12 +21,12 @@ class _AddPage1State extends State<AddPage1> {
   List<Map<String, dynamic>> mainGoals = []; // 데이터의 타입 변경
   int mandalartId = 1;
   String selectedGoalId = "";
-  int secondGoalId = 0;
+  int thirdGoalId = 0;
 
   @override
   void initState() {
     super.initState();
-    secondGoalId = 0;
+    thirdGoalId = 0;
     _mainGoalList();
   }
 
@@ -76,9 +76,11 @@ class _AddPage1State extends State<AddPage1> {
 
   @override
   Widget build(BuildContext context) {
-    int secondGoalId =
-        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ??
-            0;
+    int thirdGoalId =
+        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ?? 0;
+    
+    String thirdGoalName =
+        context.watch<SelectAPModel>().selectedAPName.toString() ?? "";
 
     return Scaffold(
       appBar: AppBar(
@@ -228,7 +230,7 @@ class _AddPage1State extends State<AddPage1> {
                 style: const TextStyle(color: Colors.white),
               ),*/
               Text(
-                secondGoalId.toString(),
+                thirdGoalId.toString(),
                 style: const TextStyle(color: Colors.white),
               )
             ],
@@ -258,8 +260,10 @@ class _AddPage1State extends State<AddPage1> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const AddPage2(),
-                          ));
+                              builder: (context) => AddPage2(
+                                    thirdGoalId: thirdGoalId,
+                                    thirdGoalName: thirdGoalName,
+                                  )));
                     },
                     style: TextButton.styleFrom(
                         backgroundColor: const Color(0xff131313),
@@ -272,7 +276,7 @@ class _AddPage1State extends State<AddPage1> {
                   ), //다음 버튼
                 TextButton(
                     onPressed: () {
-                      mandalartInfo(context, 1);
+                      
                     },
                     child: const Text('test'))
               ],
