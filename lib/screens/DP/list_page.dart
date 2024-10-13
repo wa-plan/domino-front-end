@@ -18,6 +18,7 @@ class DPlistPage extends StatefulWidget {
 
 class _DPlistPageState extends State<DPlistPage> {
   List<Map<String, dynamic>> mainGoals = [];
+  List<Map<String, dynamic>> emptyMainGoals = [];
   final PageController _pageController = PageController(); // PageController 추가
 
   @override
@@ -27,33 +28,48 @@ class _DPlistPageState extends State<DPlistPage> {
   }
 
   void _mainGoalList() async {
-    List<Map<String, dynamic>>? goals =
-        await MainGoalListService.mainGoalList(context);
-    if (goals != null) {
-      List<Map<String, dynamic>> filteredGoals = [];
-      for (var goal in goals) {
-        final mandalartId = goal['id'].toString();
-        
-        // Fetch second goals to check their content
-        final data = await _fetchSecondGoals(mandalartId);
-        if (data != null) {
-          final secondGoals = data[0]['secondGoals'] as List<Map<String, dynamic>>?;
-          
-          // Only add the goal if secondGoals is not null and not empty
-          if (secondGoals != null && secondGoals.isNotEmpty) {
-            filteredGoals.add(goal);
-          }
+  List<Map<String, dynamic>>? goals = await MainGoalListService.mainGoalList(context);
+  if (goals != null) {
+    List<Map<String, dynamic>> filteredGoals = [];
+    List<Map<String, dynamic>> emptySecondGoals = []; // 비어 있는 secondGoals를 위한 리스트 추가
+
+    for (var goal in goals) {
+      final mandalartId = goal['id'].toString();
+      final name = goal['name']; // 목표의 이름 가져오기
+
+      // Fetch second goals to check their content
+      final data = await _fetchSecondGoals(mandalartId);
+      if (data != null) {
+        final secondGoals = data[0]['secondGoals'] as List<Map<String, dynamic>>?;
+
+        // Only add the goal if secondGoals is not null and not empty
+        if (secondGoals != null && secondGoals.isNotEmpty) {
+          filteredGoals.add(goal);
+        } else {
+          // secondGoals가 비어있을 경우 mandalartId와 name을 emptySecondGoals 리스트에 추가
+          emptySecondGoals.add({
+            'mandalartId': mandalartId,
+            'name': name,
+          });
+          print('empty = $emptySecondGoals');
         }
       }
-      setState(() {
-        mainGoals = filteredGoals; // Update state with filtered goals
-      });
     }
-  }
 
-  Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async {
-    return await SecondGoalListService.secondGoalList(context, mandalartId);
+    setState(() {
+      mainGoals = filteredGoals;
+      emptyMainGoals = emptySecondGoals; // Update state with filtered goals
+      // 필요에 따라 emptySecondGoals 리스트를 다른 상태 변수에 저장할 수 있습니다.
+      // 예를 들어:
+      // this.emptyGoals = emptySecondGoals;
+    });
   }
+}
+
+Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async {
+  return await SecondGoalListService.secondGoalList(context, mandalartId);
+}
+
 
   @override
   void dispose() {
@@ -121,7 +137,9 @@ class _DPlistPageState extends State<DPlistPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const DPcreateSelectPage(),
+                        builder: (context) =>  DPcreateSelectPage(
+                          emptyMainGoals: emptyMainGoals,
+                        ),
                       ),
                     );
                   },
