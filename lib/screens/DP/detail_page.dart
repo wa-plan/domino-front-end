@@ -16,7 +16,7 @@ class DPdetailPage extends StatelessWidget {
     super.key,
     required this.mandalart,
     required this.mandalartId,
-    required this.secondGoals,
+    required this.secondGoals, 
   });
 
   @override
