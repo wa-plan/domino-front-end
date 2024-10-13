@@ -32,6 +32,9 @@ class _MyGoalState extends State<MyGoal> {
   List<String> inProgressNamesList = [];
   List<String> successNamesList = [];
   List<String> photoList = [];
+  String mandaDescription = '';
+  bool bookmark = false;
+  int parsedId = 0;
 
   void userInfo() async {
     final data = await UserInfoService.userInfo();
@@ -68,6 +71,16 @@ class _MyGoalState extends State<MyGoal> {
     }
   }
 
+  void _mandaBookmark(int id, String bookmark) async {
+    final success = await MandaBookmarkService.MandaBookmark(
+      id: id,
+      bookmark: bookmark,
+    );
+    if (success) {
+      print('성공');
+    }
+  }
+
   void userMandaInfo(context, int mandalartId, int pageIndex) async {
     final data = await UserMandaInfoService.userMandaInfo(context,
         mandalartId: mandalartId);
@@ -92,10 +105,10 @@ class _MyGoalState extends State<MyGoal> {
         } else {
           photoList = []; // 빈 리스트로 초기화
         }
-        //successNum = data['statusNum']['successNum'] ?? 0;
-        //inProgressNum = data['statusNum']['inProgressNum'] ?? 0;
-        //failedNum = data['statusNum']['failed'] ?? 0;
-        print("photolist=$photoList");
+        successNum = data['statusNum']['successNum'] ?? 0;
+        inProgressNum = data['statusNum']['inProgressNum'] ?? 0;
+        failedNum = data['statusNum']['failed'] ?? 0;
+        mandaDescription = data['description'];
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -122,13 +135,24 @@ class _MyGoalState extends State<MyGoal> {
       int dday, int successNum) {
     final String name = mandalart['name'] ?? 'Goal';
     final String id = mandalart['id'] ?? '';
-    //final int dday = ddayList[mandalartId];
+    int parsedId = int.parse(id);
 
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyGoalDetail(id: id)),
+          MaterialPageRoute(
+              builder: (context) => MyGoalDetail(
+                    id: id,
+                    name: name,
+                    dday: dday,
+                    status: status,
+                    photoList: photoList,
+                    mandaDescription: mandaDescription,
+                    failedNum: failedNum,
+                    inProgressNum: inProgressNum,
+                    successNum: successNum,
+                  )),
         );
         //final int parsedId = int.tryParse(id) ?? 0; // 문자열을 정수로 변환, 실패 시 0으로 설정
       },
@@ -143,7 +167,23 @@ class _MyGoalState extends State<MyGoal> {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.star, color: Colors.yellow),
+                    //const Icon(Icons.star, color: Colors.yellow),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          bookmark = !bookmark;
+                          String bookmarkAction =
+                              bookmark ? "BOOKMARK" : "UNBOOKMARK";
+                          _mandaBookmark(parsedId, bookmarkAction);
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.star,
+                        //size: 30,
+                      ),
+                      color: bookmark ? Colors.yellow : Colors.grey,
+                      iconSize: 30,
+                    ),
                     const SizedBox(width: 10),
                     Text(
                       name,
@@ -164,7 +204,7 @@ class _MyGoalState extends State<MyGoal> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                //const SizedBox(height: 10),
                 if (photoList.isEmpty)
                   Container(
                     decoration: BoxDecoration(
@@ -206,7 +246,7 @@ class _MyGoalState extends State<MyGoal> {
                       ),
                     ),
                   ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -222,9 +262,9 @@ class _MyGoalState extends State<MyGoal> {
                         Text(
                           '${successNumList[mandalartId]}개',
                           style: const TextStyle(
-                            color: Color(0xffFCFF62),
-                            fontWeight: FontWeight.w700,
-                          ),
+                              color: Color(0xffFCFF62),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
                         ),
                       ],
                     ),
@@ -348,7 +388,7 @@ class _MyGoalState extends State<MyGoal> {
               Column(
                 children: [
                   SizedBox(
-                    height: 170,
+                    height: 200,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: inProgressNamesList.length,

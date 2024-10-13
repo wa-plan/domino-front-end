@@ -6,8 +6,26 @@ import 'package:domino/apis/services/mg_services.dart';
 
 class MyGoalDetail extends StatefulWidget {
   final String id;
+  final String name;
+  final int dday;
+  final String mandaDescription;
+  final String status;
+  final List<String> photoList;
+  final int successNum;
+  final int inProgressNum;
+  final int failedNum;
 
-  const MyGoalDetail({super.key, required this.id});
+  const MyGoalDetail(
+      {super.key,
+      required this.id,
+      required this.name,
+      required this.dday,
+      required this.status,
+      required this.photoList,
+      required this.mandaDescription,
+      required this.failedNum,
+      required this.inProgressNum,
+      required this.successNum});
 
   @override
   MyGoalDetailState createState() => MyGoalDetailState();
@@ -27,7 +45,8 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   int parsedId = 0;
   bool hasNoImages = false;
   Color color = const Color(0xffFCFF62);
-  String description = "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!";
+  String description =
+      "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!";
 
   // GoalImage 리스트 정의
   List<GoalImage> goalImage = [
@@ -58,7 +77,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
         String status = data['status'] ?? '';
         List<dynamic> photoList = data['photoList'] ?? [];
         int dday = -8; // 추가: D-day
-        String ddayString = '-8';
+        //String ddayString = '-8';
 
         if (photoList.isNotEmpty) {
           goalImage = photoList.map((photo) {
@@ -147,14 +166,16 @@ class MyGoalDetailState extends State<MyGoalDetail> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MygoalEdit(
-                    dday: dday,
-                    name: name,
-                    description: description,
-                    color: color,
-                    goalImage: goalImage2,
-                  )));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MygoalEdit(
+                            dday: dday,
+                            name: name,
+                            description: description,
+                            color: color,
+                            goalImage: goalImage2,
+                          )));
             },
             icon: const Icon(Icons.edit),
             color: Colors.grey,
@@ -275,7 +296,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               const SizedBox(
                 height: 20,
               ),
-               Text(
+              Text(
                 description,
                 style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
@@ -431,5 +452,3 @@ class GoalImage {
 
   GoalImage({required this.image, required this.name});
 }
-
-
