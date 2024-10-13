@@ -260,10 +260,12 @@ class _AddPage1State extends State<AddPage1> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
+
                               builder: (context) => AddPage2(
                                     thirdGoalId: thirdGoalId,
                                     thirdGoalName: thirdGoalName,
                                   )));
+
                     },
                     style: TextButton.styleFrom(
                         backgroundColor: const Color(0xff131313),
