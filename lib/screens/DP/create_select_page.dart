@@ -6,7 +6,9 @@ import 'package:domino/widgets/DP/smallgrid.dart';
 import 'package:domino/apis/services/dp_services.dart';
 
 class DPcreateSelectPage extends StatefulWidget {
-  const DPcreateSelectPage({super.key});
+  List<Map<String, dynamic>> emptyMainGoals = [];
+   DPcreateSelectPage({super.key,
+  required this.emptyMainGoals});
 
   @override
   State<DPcreateSelectPage> createState() => _DPcreateSelectPageState();
@@ -34,129 +36,132 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: const Color(0xff262626),
+    appBar: AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: const Color(0xff262626),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff262626),
-        title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Text(
-            '플랜 만들기',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.06,
-              fontWeight: FontWeight.w600,
-            ),
+      title: Padding(
+        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+        child: Text(
+          '플랜 만들기',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: MediaQuery.of(context).size.width * 0.06,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(38.0, 20.0, 40.0, 0.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "어떤 목표를 이루고 싶나요?",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 19,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1.1,
+    ),
+    body: Padding(
+      padding: const EdgeInsets.fromLTRB(38.0, 20.0, 40.0, 0.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "어떤 목표를 이루고 싶나요?",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 19,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.1,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            height: 43,
+            padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(3),
+              border: Border.all(
+                color: const Color(0xff5C5C5C),
               ),
             ),
-            const SizedBox(height: 20),
-            Container(
-                height: 43,
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(3),
-                  border: Border.all(
-                    color: const Color(0xff5C5C5C),
-                  ),
-                ),
-                child: FutureBuilder(
-                  future: MainGoalListService.mainGoalList(context),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return const Center(
+            child: FutureBuilder(
+              future: MainGoalListService.mainGoalList(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Text(
+                      '목표를 불러오는 데 실패했습니다.',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  // emptyMainGoals를 사용하여 필터링
+                  List<Map<String, dynamic>> emptyGoals = widget.emptyMainGoals;
+                  // filteredGoals에서 emptyGoals에 있는 목표 ID를 포함하는 목표만 필터링
+                  List<dynamic> filteredGoals = snapshot.data!.where((goal) {
+  bool match = emptyGoals.any((emptyGoal) {
+    bool isMatch = emptyGoal['mandalartId'].toString() == goal['id'].toString();
+    print('Comparing mandalartId: ${emptyGoal['mandalartId']} with id: ${goal['id']} - Match: $isMatch');
+    return isMatch;
+  });
+  return match;
+}).toList();
+
+print('Filtered Goals: $filteredGoals');
+
+
+                  if (filteredGoals.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        '만다라트를 생성할 목표가 없습니다.', // Message when no goal matches
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+
+                  return DropdownButton<String>(
+                    value: selectedGoalId,
+                    items: filteredGoals.map<DropdownMenuItem<String>>((goal) {
+                      final goalName = goal['name'] ?? 'Unknown Goal';
+                      return DropdownMenuItem<String>(
+                        value: goal['id'].toString(),
                         child: Text(
-                          '목표를 불러오는 데 실패했습니다.',
-                          style: TextStyle(color: Colors.white),
+                          goalName,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       );
-                    } else if (snapshot.hasData) {
-                      // List of goal IDs that you want to filter by
-                      List<String> desiredGoalIds = context
-                          .watch<SaveMandalartCreatedGoal>()
-                          .mandalartCreatedGoal; // Example goal IDs to compare
-
-                      // Filter the goals by checking if the id exists in the desiredGoalIds list
-                      List<dynamic> filteredGoals =
-                          snapshot.data!.where((goal) {
-                        // Negate the condition to filter goals that are not in desiredGoalIds
-                        return !desiredGoalIds.contains(goal['id'].toString());
-                      }).toList();
-
-                      if (filteredGoals.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            '만다라트를 생성할 목표가 없습니다.', // Message when no goal matches
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        );
-                      }
-
-                      return DropdownButton<String>(
-                        value: selectedGoalId,
-                        items:
-                            filteredGoals.map<DropdownMenuItem<String>>((goal) {
-                          final goalName = goal['name'] ?? 'Unknown Goal';
-                          return DropdownMenuItem<String>(
-                            value: goal['id'].toString(),
-                            child: Text(
-                              goalName,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          final selectedGoal = snapshot.data!.firstWhere(
-                              (goal) => goal['id'].toString() == value);
-                          setState(() {
-                            selectedGoalId = value ?? '';
-                            selectedGoalName = selectedGoal['name'] ?? '';
-                          });
-                          context
-                              .read<SelectFinalGoalModel>()
-                              .selectFinalGoal(selectedGoalName);
-                          context
-                              .read<SelectFinalGoalId>()
-                              .selectFinalGoalId(selectedGoalId!);
-                        },
-                        isExpanded: true,
-                        dropdownColor: const Color(0xff262626),
-                        style: const TextStyle(color: Colors.white),
-                        iconEnabledColor: Colors.white,
-                        underline: Container(),
-                      );
-                    } else {
-                      return const Center(
-                        child: Text(
-                          '목표가 없습니다.',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }
-                  },
-                )),
-            const SizedBox(height: 20),
+                    }).toList(),
+                    onChanged: (String? value) {
+                      final selectedGoal = snapshot.data!.firstWhere(
+                          (goal) => goal['id'].toString() == value);
+                      setState(() {
+                        selectedGoalId = value ?? '';
+                        selectedGoalName = selectedGoal['name'] ?? '';
+                      });
+                      context
+                          .read<SelectFinalGoalModel>()
+                          .selectFinalGoal(selectedGoalName);
+                      context
+                          .read<SelectFinalGoalId>()
+                          .selectFinalGoalId(selectedGoalId!);
+                    },
+                    isExpanded: true,
+                    dropdownColor: const Color(0xff262626),
+                    style: const TextStyle(color: Colors.white),
+                    iconEnabledColor: Colors.white,
+                    underline: Container(),
+                  );
+                } else {
+                  return const Center(
+                    child: Text(
+                      '목표가 없습니다.',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+          const SizedBox(height: 20),
             Expanded(
               child: GridView(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -238,8 +243,8 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                       borderRadius: BorderRadius.circular(6.0),
                     ),
                   ),
-                  child: const Text(
-                    '다음',
+                  child:   const Text(
+                    "다음",
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
