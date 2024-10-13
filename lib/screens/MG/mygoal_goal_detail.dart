@@ -23,10 +23,11 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   String v = '30';
   String x = '10';
   String name = '';
-  int dday = 0; // 추가: D-day
-  String ddayString = '0';
+  int dday = -8; // 추가: D-day
   int parsedId = 0;
   bool hasNoImages = false;
+  Color color = const Color(0xffFCFF62);
+  String description = "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!";
 
   // GoalImage 리스트 정의
   List<GoalImage> goalImage = [
@@ -41,6 +42,12 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     // 추가 이미지...
   ];
 
+  List<String> goalImage2 = [
+    'assets/img/profile_smp1.png',
+    'assets/img/profile_smp2.png',
+    // 추가 이미지...
+  ];
+
   void userMandaInfo(context, int mandalartId) async {
     final data = await UserMandaInfoService.userMandaInfo(context,
         mandalartId: mandalartId);
@@ -50,8 +57,8 @@ class MyGoalDetailState extends State<MyGoalDetail> {
         name = data['name'] ?? ''; // 이제 name이 클래스 변수에 저장됨
         String status = data['status'] ?? '';
         List<dynamic> photoList = data['photoList'] ?? [];
-        int dday = 0; // 추가: D-day
-        String ddayString = '0';
+        int dday = -8; // 추가: D-day
+        String ddayString = '-8';
 
         if (photoList.isNotEmpty) {
           goalImage = photoList.map((photo) {
@@ -142,8 +149,11 @@ class MyGoalDetailState extends State<MyGoalDetail> {
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MygoalEdit(
-                    dday: ddayString,
+                    dday: dday,
                     name: name,
+                    description: description,
+                    color: color,
+                    goalImage: goalImage2,
                   )));
             },
             icon: const Icon(Icons.edit),
@@ -162,7 +172,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               Row(
                 children: [
                   Text(
-                    ddayString,
+                    dday.toString(),
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: MediaQuery.of(context).size.width * 0.06,
@@ -265,9 +275,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               const SizedBox(
                 height: 20,
               ),
-              const Text(
-                "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!",
-                style: TextStyle(color: Colors.white, fontSize: 16),
+               Text(
+                description,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
               const SizedBox(
                 height: 40,
@@ -421,3 +431,5 @@ class GoalImage {
 
   GoalImage({required this.image, required this.name});
 }
+
+
