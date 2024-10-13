@@ -31,46 +31,178 @@ class ColorBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final inputtedActionPlan = context
+        .watch<SaveInputtedActionPlanModel>()
+        .inputtedActionPlan[actionPlanId];
+
+    final detailGoal = context
+        .watch<SaveInputtedDetailGoalModel>()
+        .inputtedDetailGoal['$detailGoalId'] ?? '';
+
+    // Determine color
+    Color color1 = detailGoal == ""
+        ? Colors.transparent
+        : (context.watch<GoalColor>().selectedGoalColor['$goalColorId'] ?? const Color(0xff929292)); // Default color
+
     return SizedBox(
       width: 100,
       child: GridView.count(
         crossAxisCount: 3,
         crossAxisSpacing: 1,
         mainAxisSpacing: 1,
-        children: List.generate(9, (index) {
-          final inputtedActionPlan = context
-              .watch<SaveInputtedActionPlanModel>()
-              .inputtedActionPlan[actionPlanId];
-          final values = inputtedActionPlan[index.toString()] ?? '';
-          final detailGoal = context
-                  .watch<SaveInputtedDetailGoalModel>()
-                  .inputtedDetailGoal['$detailGoalId'] ??
-              '';
-          final color1 = detailGoal == "" ? Colors.transparent : detailGoal != "" && 
-              context.watch<GoalColor>().selectedGoalColor['$goalColorId'] == Colors.transparent ? const Color(0xff929292) : context.watch<GoalColor>().selectedGoalColor['$goalColorId'];
-                  
-
-          final backgroundColor = index == 4
-              ? color1
-              : (values.isEmpty
-                  ? const Color(0xff262626)
-                  : colorPalette[color1] ?? Colors.transparent);
-
-          return Container(
+        children: [
+          // Grid item 0
+          Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
-              color: backgroundColor,
+              color: inputtedActionPlan['0']?.isEmpty == true
+                  ? const Color(0xff262626)
+                  : colorPalette[color1] ?? Colors.transparent,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
               child: Text(
-                index == 4 ? detailGoal : values.toString(),
+                inputtedActionPlan['0'] ?? '',
                 style: const TextStyle(color: Colors.black, fontSize: 15),
                 textAlign: TextAlign.center,
               ),
             ),
-          );
-        }),
+          ),
+          // Grid item 1
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: inputtedActionPlan['1']?.isEmpty == true
+                  ? const Color(0xff262626)
+                  : colorPalette[color1] ?? Colors.transparent,
+            ),
+            margin: const EdgeInsets.all(1.0),
+            child: Center(
+              child: Text(
+                inputtedActionPlan['1'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          // Grid item 2
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: inputtedActionPlan['2']?.isEmpty == true
+                  ? const Color(0xff262626)
+                  : colorPalette[color1] ?? Colors.transparent,
+            ),
+            margin: const EdgeInsets.all(1.0),
+            child: Center(
+              child: Text(
+                inputtedActionPlan['2'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          // Grid item 3
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: inputtedActionPlan['3']?.isEmpty == true
+                  ? const Color(0xff262626)
+                  : colorPalette[color1] ?? Colors.transparent,
+            ),
+            margin: const EdgeInsets.all(1.0),
+            child: Center(
+              child: Text(
+                inputtedActionPlan['3'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          // Grid item 4 (center item)
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: color1,
+            ),
+            margin: const EdgeInsets.all(1.0),
+            child: Center(
+              child: Text(
+                detailGoal,
+                style: const TextStyle(color: Colors.black, fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          // Grid item 5
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: inputtedActionPlan['4']?.isEmpty == true
+                  ? const Color(0xff262626)
+                  : colorPalette[color1] ?? Colors.transparent,
+            ),
+            margin: const EdgeInsets.all(1.0),
+            child: Center(
+              child: Text(
+                inputtedActionPlan['4'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          // Grid item 6
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: inputtedActionPlan['5']?.isEmpty == true
+                  ? const Color(0xff262626)
+                  : colorPalette[color1] ?? Colors.transparent,
+            ),
+            margin: const EdgeInsets.all(1.0),
+            child: Center(
+              child: Text(
+                inputtedActionPlan['5'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          // Grid item 7
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: inputtedActionPlan['6']?.isEmpty == true
+                  ? const Color(0xff262626)
+                  : colorPalette[color1] ?? Colors.transparent,
+            ),
+            margin: const EdgeInsets.all(1.0),
+            child: Center(
+              child: Text(
+                inputtedActionPlan['6'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          // Grid item 8
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: inputtedActionPlan['7']?.isEmpty == true
+                  ? const Color(0xff262626)
+                  : colorPalette[color1] ?? Colors.transparent,
+            ),
+            margin: const EdgeInsets.all(1.0),
+            child: Center(
+              child: Text(
+                inputtedActionPlan['7'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 15),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
