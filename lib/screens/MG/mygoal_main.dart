@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:domino/screens/MG/mygoal_profile_edit.dart';
 import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/screens/MG/mygoal_goal_add.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart'; // 추가
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class MyGoal extends StatefulWidget {
   const MyGoal({super.key});
@@ -19,13 +20,18 @@ class _MyGoalState extends State<MyGoal> {
   String description = '프로필 편집을 통해 \n자신을 표현해주세요.';
   List<Map<String, String>> mandalarts = [];
   List<int> ddayList = [];
-
+  List<int> successNumList = [];
+  String status = '';
   late PageController _pageController; // PageController 추가
   int successNum = 0; // 추가: 성공한 목표 수
   int inProgressNum = 0; // 추가: 진행 중인 목표 수
   int failedNum = 0; // 추가: 실패한 목표 수
   int dday = 0; // 추가: D-day
   String ddayString = '0';
+  List<String> failedNamesList = [];
+  List<String> inProgressNamesList = [];
+  List<String> successNamesList = [];
+  List<String> photoList = [];
 
   void userInfo() async {
     final data = await UserInfoService.userInfo();
@@ -47,6 +53,7 @@ class _MyGoalState extends State<MyGoal> {
       setState(() {
         mandalarts = data;
         ddayList = List.filled(mandalarts.length, 0); // dday 리스트 초기화
+        successNumList = List.filled(mandalarts.length, 0);
       });
 
       // mandalarts가 로드된 후에 userMandaInfo 호출
@@ -69,13 +76,26 @@ class _MyGoalState extends State<MyGoal> {
         if (pageIndex < ddayList.length) {
           // 페이지 인덱스 범위 체크
           ddayList[pageIndex] = data['dday'] ?? 0; // dday를 페이지 인덱스에 맞게 저장
+          successNumList[pageIndex] = data['statusNum']['successNum'] ?? 0;
+          status = data['status'];
         }
-        successNum = data['statusNum']['successNum'] ?? 0;
-        inProgressNum = data['statusNum']['inProgressNum'] ?? 0;
-        failedNum = data['statusNum']['failed'] ?? 0;
-        dday = data['dday'] ?? 0;
-        ddayString = dday.toString();
-        print('ddayString: $ddayString');
+        String name = data['name']; // name을 가져오기
+        if (status == "FAIL") {
+          failedNamesList.add(name); // "FAIL" 상태의 name을 추가
+        } else if (status == "IN_PROGRESS") {
+          inProgressNamesList.add(name); // "IN_PROGRESS" 상태의 name을 추가
+        } else if (status == "SUCCESS") {
+          successNamesList.add(name); // "SUCCESS" 상태의 name을 추가
+        }
+        if (data['photolist'] is List) {
+          photoList = List<String>.from(data['photolist']); // List<String>으로 변환
+        } else {
+          photoList = []; // 빈 리스트로 초기화
+        }
+        //successNum = data['statusNum']['successNum'] ?? 0;
+        //inProgressNum = data['statusNum']['inProgressNum'] ?? 0;
+        //failedNum = data['statusNum']['failed'] ?? 0;
+        print("photolist=$photoList");
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -98,7 +118,8 @@ class _MyGoalState extends State<MyGoal> {
     super.dispose();
   }
 
-  Widget _buildGoalCard(Map<String, String> mandalart, int mandalartId) {
+  Widget _buildGoalCard(Map<String, String> mandalart, int mandalartId,
+      int dday, int successNum) {
     final String name = mandalart['name'] ?? 'Goal';
     final String id = mandalart['id'] ?? '';
     //final int dday = ddayList[mandalartId];
@@ -144,27 +165,54 @@ class _MyGoalState extends State<MyGoal> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 53, 53, 53),
-                    borderRadius: BorderRadius.circular(3.0),
-                  ),
-                  width: 250,
-                  height: 80,
-                  child: const Center(
-                    child: Text(
-                      '이미지를 추가해 주세요',
-                      style: TextStyle(color: Colors.white),
+                if (photoList.isEmpty)
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 53, 53, 53),
+                      borderRadius: BorderRadius.circular(3.0),
+                    ),
+                    width: 250,
+                    height: 80,
+                    child: const Center(
+                      child: Text(
+                        '이미지를 추가해 주세요',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                else
+                  SizedBox(
+                    width: 250, // 컨테이너의 너비를 지정
+                    height: 80, // 컨테이너의 높이를 지정
+                    child: CarouselSlider.builder(
+                      itemCount: photoList.length,
+                      itemBuilder: (context, index, realIndex) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(photoList[index]),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        );
+                      },
+                      options: CarouselOptions(
+                        height: 80, // 슬라이더의 높이
+                        autoPlay: true, // 자동 재생
+                        viewportFraction: 0.9, // 뷰포트 비율
+                        enlargeCenterPage: true, // 중심 페이지 확대
+                      ),
                     ),
                   ),
-                ),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Column(
+                    Column(
                       children: [
-                        Text(
+                        const Text(
                           '나의 도미노',
                           style: TextStyle(
                             color: Colors.white,
@@ -172,8 +220,8 @@ class _MyGoalState extends State<MyGoal> {
                           ),
                         ),
                         Text(
-                          '80개',
-                          style: TextStyle(
+                          '${successNumList[mandalartId]}개',
+                          style: const TextStyle(
                             color: Color(0xffFCFF62),
                             fontWeight: FontWeight.w700,
                           ),
@@ -303,10 +351,12 @@ class _MyGoalState extends State<MyGoal> {
                     height: 170,
                     child: PageView.builder(
                       controller: _pageController,
-                      itemCount: mandalarts.length,
+                      itemCount: inProgressNamesList.length,
                       itemBuilder: (context, index) {
                         final mandalart = mandalarts[index];
-                        return _buildGoalCard(mandalart, index);
+                        final dday = ddayList[index];
+                        return _buildGoalCard(
+                            mandalart, index, dday, successNum);
                       },
                     ),
                   ),
@@ -362,7 +412,15 @@ class _MyGoalState extends State<MyGoal> {
                 ),
               ),
               const SizedBox(height: 15),
-              Image.asset('assets/img/completed_goals.png'),
+              if (successNamesList.isEmpty)
+                Image.asset('assets/img/completed_goals.png')
+              else
+                Container(
+                  decoration: const BoxDecoration(color: Colors.yellow),
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: MediaQuery.of(context).size.width * 0.04,
+                  child: const Text('쓰러트린 목표'),
+                ),
               const SizedBox(height: 30),
               Text(
                 '쓰러트리지 못한 목표',
@@ -373,7 +431,17 @@ class _MyGoalState extends State<MyGoal> {
                 ),
               ),
               const SizedBox(height: 15),
-              Image.asset('assets/img/failed_goals.png'),
+              if (failedNamesList.isEmpty)
+                Image.asset('assets/img/failed_goals.png')
+              else
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.yellow,
+                  ),
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: MediaQuery.of(context).size.width * 0.04,
+                  child: const Text('쓰러트리지 못한 목표'),
+                ),
             ],
           ),
         ),

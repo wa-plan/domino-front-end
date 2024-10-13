@@ -8,18 +8,22 @@ import 'package:provider/provider.dart';
 import 'package:domino/apis/services/td_services.dart';
 
 class AddPage2 extends StatefulWidget {
-  const AddPage2({super.key});
+  final int secondGoalId;
+
+  const AddPage2({super.key, required this.secondGoalId});
   @override
   State<AddPage2> createState() => AddPage2State();
 }
 
 class AddPage2State extends State<AddPage2> {
+  late int thirdGoalId;
+
   final formKey = GlobalKey<FormState>();
   String dominoValue = '';
   TextEditingController dominoController =
       TextEditingController(text: "저금"); //텍스트폼필드에 기본으로 들어갈 초기 텍스트 값
   bool switchValue = false;
-  int thirdGoalId = 99;
+  //int thirdGoalId = 99;
 
   RepeatSettingsState repeatSettings =
       RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
@@ -70,6 +74,7 @@ class AddPage2State extends State<AddPage2> {
   void initState() {
     super.initState();
     context.read<DateProvider>().clearPickedDate();
+    thirdGoalId = widget.secondGoalId;
   }
 
   @override

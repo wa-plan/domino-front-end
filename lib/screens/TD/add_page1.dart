@@ -258,7 +258,9 @@ class _AddPage1State extends State<AddPage1> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const AddPage2(),
+                            builder: (context) => AddPage2(
+                              secondGoalId: secondGoalId,
+                            ),
                           ));
                     },
                     style: TextButton.styleFrom(
