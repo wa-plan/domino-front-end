@@ -77,10 +77,11 @@ class _AddPage1State extends State<AddPage1> {
   @override
   Widget build(BuildContext context) {
     int thirdGoalId =
-        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ?? 0;
-    
+        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ??
+            0;
+
     String thirdGoalName =
-        context.watch<SelectAPModel>().selectedAPName.toString() ?? "";
+        context.watch<SelectAPModel>().selectedAPName.toString();
 
     return Scaffold(
       appBar: AppBar(
@@ -260,12 +261,11 @@ class _AddPage1State extends State<AddPage1> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-
-                              builder: (context) => AddPage2(
-                                    thirdGoalId: thirdGoalId,
-                                    thirdGoalName: thirdGoalName,
-                                  )));
-
+                            builder: (context) => AddPage2(
+                              thirdGoalId: thirdGoalId,
+                              thirdGoalName: thirdGoalName,
+                            ),
+                          ));
                     },
                     style: TextButton.styleFrom(
                         backgroundColor: const Color(0xff131313),
@@ -276,11 +276,7 @@ class _AddPage1State extends State<AddPage1> {
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                   ), //다음 버튼
-                TextButton(
-                    onPressed: () {
-                      
-                    },
-                    child: const Text('test'))
+                TextButton(onPressed: () {}, child: const Text('test'))
               ],
             ),
           ],
