@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:domino/apis/services/td_services.dart';
 
 class AddPage2 extends StatefulWidget {
+
   final int thirdGoalId;
   final String thirdGoalName;
 
@@ -17,16 +18,20 @@ class AddPage2 extends StatefulWidget {
     required this.thirdGoalName,
   });
 
+
   @override
   State<AddPage2> createState() => AddPage2State();
 }
 
 class AddPage2State extends State<AddPage2> {
+  late int thirdGoalId;
+
   final formKey = GlobalKey<FormState>();
   late TextEditingController dominoController; // 'late'로 나중에 초기화될 것을 명시
   bool switchValue = false;
+
   String dominoValue = '';
-  int thirdGoalId = 99;
+
 
   RepeatSettingsState repeatSettings = RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
 
@@ -84,6 +89,15 @@ class AddPage2State extends State<AddPage2> {
   }
 
   @override
+
+  void initState() {
+    super.initState();
+    context.read<DateProvider>().clearPickedDate();
+    thirdGoalId = widget.thirdGoalId;
+  }
+
+  @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
