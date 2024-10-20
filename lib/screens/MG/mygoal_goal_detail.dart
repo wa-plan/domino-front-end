@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:typed_data'; // Uint8List 사용을 위한 라이브러리 임포트
 import 'package:domino/screens/MG/mygoal_goal_edit.dart';
 import 'package:domino/apis/services/mg_services.dart';
+import 'package:domino/widgets/popup.dart';
 
 class MyGoalDetail extends StatefulWidget {
   final String id;
@@ -11,9 +12,9 @@ class MyGoalDetail extends StatefulWidget {
   final String mandaDescription;
   final String status;
   final List<String> photoList;
-  final int successNum;
-  final int inProgressNum;
   final int failedNum;
+  final int inProgressNum;
+  final int successNum;
 
   const MyGoalDetail(
       {super.key,
@@ -37,9 +38,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   // 선택된 파일 리스트를 관리할 변수 추가
   List<Uint8List> selectedFiles = [];
   bool bookmark = false;
-  String o = '60';
-  String v = '30';
-  String x = '10';
+  String o = '0';
+  String v = '0';
+  String x = '0';
   String name = '';
   int dday = 0;
   int parsedId = 0;
@@ -47,7 +48,11 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   Color color = const Color(0xffFCFF62);
   String mandaDescription = '';
   String status = '';
-  //    "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!";
+  int successNum = 0;
+  int failedNum = 0;
+  int inProgressNum = 0;
+  List<String> photolist = [];
+  double rate = 0.0;
 
   // GoalImage 리스트 정의
   List<GoalImage> goalImage = [
@@ -131,12 +136,13 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     name = widget.name;
     dday = widget.dday;
     status = widget.status;
-    List<String> photolist = widget.photoList;
+    photolist = widget.photoList;
     mandaDescription = widget.mandaDescription;
-    int failedNum = widget.failedNum;
-    int inProgressNum = widget.inProgressNum;
-    int successNum = widget.successNum;
-    print('status=$status');
+    failedNum = widget.failedNum;
+    inProgressNum = widget.inProgressNum;
+    successNum = widget.successNum;
+
+    rate = (successNum / (successNum + inProgressNum + failedNum)) * 100;
   }
 
   void _onFileSelected() {
@@ -212,6 +218,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                   ),
                 ],
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -254,28 +261,32 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                           onChanged: (value) {
                             setState(() {
                               _selectedStatus = value!;
+                              if (_selectedStatus == '달성 완료') {
+                                PopupDialog.show(
+                                  context,
+                                  '대박! 이 목표 정말 \n달성 완료한거야?',
+                                  true, // cancel
+                                  false, // delete
+                                  true, // signout
+                                  onCancel: () {
+                                    // 취소 버튼을 눌렀을 때 실행할 코드
+                                    Navigator.of(context).pop();
+                                  },
+
+                                  onDelete: () {
+                                    // 삭제 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSignOut: () {
+                                    // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                );
+                              }
                             });
                           },
                         ),
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        bookmark = !bookmark;
-                        String bookmarkAction =
-                            bookmark ? "BOOKMARK" : "UNBOOKMARK";
-                        _mandaBookmark(parsedId, bookmarkAction);
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.star,
-                      size: 30,
-                    ),
-                    color: bookmark ? Colors.yellow : Colors.grey,
-                    iconSize: 35,
-                  )
                 ],
               ),
               const SizedBox(
@@ -344,7 +355,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                               size: 20,
                             ),
                             Text(
-                              ' = $o개',
+                              ' = $successNum개',
                               style: const TextStyle(
                                   color: Colors.yellow, fontSize: 18),
                             ),
@@ -359,7 +370,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                               size: 20,
                             ),
                             Text(
-                              ' = $v개',
+                              ' = $inProgressNum개',
                               style: const TextStyle(
                                   color: Color(0xff888888), fontSize: 18),
                             ),
@@ -374,7 +385,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                               size: 23,
                             ),
                             Text(
-                              ' = $x개',
+                              ' = $failedNum개',
                               style: const TextStyle(
                                   color: Color(0xff626161), fontSize: 18),
                             ),
@@ -392,9 +403,27 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                         MediaQuery.of(context).size.width /
                             5), // CustomPaint의 크기
                     painter: PieChart(
-                      yellowPercentage: 60,
-                      grayPercentage: 30,
-                      blackPercentage: 10,
+                      yellowPercentage:
+                          (successNum + inProgressNum + failedNum) == 0
+                              ? 0 // 0으로 나눌 때는 0으로 설정
+                              : ((successNum /
+                                      (successNum + inProgressNum + failedNum) *
+                                      100)
+                                  .toInt()), // int로 변환
+                      grayPercentage:
+                          (successNum + inProgressNum + failedNum) == 0
+                              ? 0 // 0으로 나눌 때는 0으로 설정
+                              : ((inProgressNum /
+                                      (successNum + inProgressNum + failedNum) *
+                                      100)
+                                  .toInt()), // int로 변환
+                      blackPercentage:
+                          (successNum + inProgressNum + failedNum) == 0
+                              ? 0 // 0으로 나눌 때는 0으로 설정
+                              : ((failedNum /
+                                      (successNum + inProgressNum + failedNum) *
+                                      100)
+                                  .toInt()), // int로 변환
                     ),
                   ),
                 ],
@@ -430,9 +459,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                         width: 18, // 원하는 너비 설정
                         height: 45, // 원하는 높이 설정
                       ),
-                      const Text(
-                        '   x 75',
-                        style: TextStyle(
+                      Text(
+                        '   x ${successNum + inProgressNum * 1 / 2}',
+                        style: const TextStyle(
                             color: Colors.yellow,
                             fontWeight: FontWeight.bold,
                             fontSize: 18),
