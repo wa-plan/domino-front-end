@@ -2,7 +2,7 @@ import 'package:domino/provider/TD/datelist_provider.dart';
 import 'package:domino/provider/TD/date_provider.dart';
 import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/TD/td_main.dart';
-import 'package:domino/widgets/DP/mandalart2.dart';
+//import 'package:domino/widgets/DP/mandalart2.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/widgets/TD/edit_calendar.dart';
 import 'package:domino/widgets/TD/edit_repeat_settings.dart';

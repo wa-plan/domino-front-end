@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:domino/apis/services/td_services.dart';
 
 class AddPage2 extends StatefulWidget {
-
   final int thirdGoalId;
   final String thirdGoalName;
 
@@ -17,7 +16,6 @@ class AddPage2 extends StatefulWidget {
     required this.thirdGoalId,
     required this.thirdGoalName,
   });
-
 
   @override
   State<AddPage2> createState() => AddPage2State();
@@ -32,15 +30,8 @@ class AddPage2State extends State<AddPage2> {
 
   String dominoValue = '';
 
-
-  RepeatSettingsState repeatSettings = RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
-
-  @override
-  void initState() {
-    super.initState();
-    dominoController = TextEditingController(text: widget.thirdGoalName); // initState에서 widget에 접근하여 초기화
-    context.read<DateProvider>().clearPickedDate(); // DateProvider 초기화
-  }
+  RepeatSettingsState repeatSettings =
+      RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
 
   @override
   void dispose() {
@@ -52,7 +43,10 @@ class AddPage2State extends State<AddPage2> {
   void addDomino(int thirdGoalId, String name, List<DateTime> dateList,
       String repetition) async {
     final success = await AddDominoService.addDomino(
-        thirdGoalId: thirdGoalId, name: name, dates: dateList, repetition: repetition);
+        thirdGoalId: thirdGoalId,
+        name: name,
+        dates: dateList,
+        repetition: repetition);
 
     if (success) {
       Navigator.push(
@@ -89,15 +83,15 @@ class AddPage2State extends State<AddPage2> {
   }
 
   @override
-
   void initState() {
     super.initState();
+    dominoController = TextEditingController(
+        text: widget.thirdGoalName); // initState에서 widget에 접근하여 초기화
     context.read<DateProvider>().clearPickedDate();
     thirdGoalId = widget.thirdGoalId;
   }
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -216,7 +210,8 @@ class AddPage2State extends State<AddPage2> {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
 
-                      DateTime? pickedDate = context.read<DateProvider>().pickedDate;
+                      DateTime? pickedDate =
+                          context.read<DateProvider>().pickedDate;
 
                       if (pickedDate == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -226,10 +221,13 @@ class AddPage2State extends State<AddPage2> {
                         context
                             .read<DateListProvider>()
                             .setInterval(switchValue, pickedDate);
-                        List<DateTime> dateList = context.read<DateListProvider>().dateList;
-                        String repeatInfo = context.read<DateListProvider>().repeatInfo();
+                        List<DateTime> dateList =
+                            context.read<DateListProvider>().dateList;
+                        String repeatInfo =
+                            context.read<DateListProvider>().repeatInfo();
 
-                        addDomino(widget.thirdGoalId, dominoController.text, dateList, repeatInfo);
+                        addDomino(widget.thirdGoalId, dominoController.text,
+                            dateList, repeatInfo);
                       }
                     }
                   },

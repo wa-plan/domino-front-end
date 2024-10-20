@@ -6,15 +6,33 @@ import 'package:domino/apis/services/mg_services.dart';
 
 class MyGoalDetail extends StatefulWidget {
   final String id;
+  final String name;
+  final int dday;
+  final String mandaDescription;
+  final String status;
+  final List<String> photoList;
+  final int successNum;
+  final int inProgressNum;
+  final int failedNum;
 
-  const MyGoalDetail({super.key, required this.id});
+  const MyGoalDetail(
+      {super.key,
+      required this.id,
+      required this.name,
+      required this.dday,
+      required this.status,
+      required this.photoList,
+      required this.mandaDescription,
+      required this.failedNum,
+      required this.inProgressNum,
+      required this.successNum});
 
   @override
   MyGoalDetailState createState() => MyGoalDetailState();
 }
 
 class MyGoalDetailState extends State<MyGoalDetail> {
-  final _status = ['진행 중', '달성 완료', '달성 실패'];
+  final _status = ['달성 실패', '진행 중', '달성 완료'];
   String? _selectedStatus;
   // 선택된 파일 리스트를 관리할 변수 추가
   List<Uint8List> selectedFiles = [];
@@ -23,11 +41,13 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   String v = '30';
   String x = '10';
   String name = '';
-  int dday = -8; // 추가: D-day
+  int dday = 0;
   int parsedId = 0;
   bool hasNoImages = false;
   Color color = const Color(0xffFCFF62);
-  String description = "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!";
+  String mandaDescription = '';
+  String status = '';
+  //    "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!";
 
   // GoalImage 리스트 정의
   List<GoalImage> goalImage = [
@@ -48,7 +68,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     // 추가 이미지...
   ];
 
-  void userMandaInfo(context, int mandalartId) async {
+  /*void userMandaInfo(context, int mandalartId) async {
     final data = await UserMandaInfoService.userMandaInfo(context,
         mandalartId: mandalartId);
     if (data != null) {
@@ -58,7 +78,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
         String status = data['status'] ?? '';
         List<dynamic> photoList = data['photoList'] ?? [];
         int dday = -8; // 추가: D-day
-        String ddayString = '-8';
+        //String ddayString = '-8';
 
         if (photoList.isNotEmpty) {
           goalImage = photoList.map((photo) {
@@ -80,7 +100,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
         const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
       );
     }
-  }
+  }*/
 
   void _mandaBookmark(int id, String bookmark) async {
     final success = await MandaBookmarkService.MandaBookmark(
@@ -105,10 +125,19 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   @override
   void initState() {
     super.initState();
-    _selectedStatus = _status[0];
-    int parsedId = int.parse(widget.id);
-    userMandaInfo(context, parsedId);
-  } // 목표 진행 상황 드랍다운 리스트 초기화
+    _selectedStatus = _status[1];
+    //int parsedId = int.parse(widget.id);
+    //userMandaInfo(context, parsedId);
+    name = widget.name;
+    dday = widget.dday;
+    status = widget.status;
+    List<String> photolist = widget.photoList;
+    mandaDescription = widget.mandaDescription;
+    int failedNum = widget.failedNum;
+    int inProgressNum = widget.inProgressNum;
+    int successNum = widget.successNum;
+    print('status=$status');
+  }
 
   void _onFileSelected() {
     // 파일 선택 로직 (예시로 빈 리스트를 추가)
@@ -147,14 +176,16 @@ class MyGoalDetailState extends State<MyGoalDetail> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MygoalEdit(
-                    dday: dday,
-                    name: name,
-                    description: description,
-                    color: color,
-                    goalImage: goalImage2,
-                  )));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MygoalEdit(
+                            dday: dday,
+                            name: name,
+                            description: mandaDescription,
+                            color: color,
+                            goalImage: goalImage2,
+                          )));
             },
             icon: const Icon(Icons.edit),
             color: Colors.grey,
@@ -172,7 +203,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               Row(
                 children: [
                   Text(
-                    dday.toString(),
+                    dday < 0 ? 'D+${dday * -1}' : 'D-$dday',
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: MediaQuery.of(context).size.width * 0.06,
@@ -275,8 +306,8 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               const SizedBox(
                 height: 20,
               ),
-               Text(
-                description,
+              Text(
+                mandaDescription,
                 style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
               const SizedBox(
@@ -431,5 +462,3 @@ class GoalImage {
 
   GoalImage({required this.image, required this.name});
 }
-
-
