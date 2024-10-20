@@ -18,14 +18,12 @@ class _MyGoalState extends State<MyGoal> {
   final String message = "실패하는 것이 두려운 게 아니라\n노력하지 않는 것이 두렵다.";
   String nickname = '당신은 어떤 사람인가요?';
   String description = '프로필 편집을 통해 \n자신을 표현해주세요.';
-  List<Map<String, String>> mandalarts = [];
-  List<int> ddayList = [];
-  List<int> successNumList = [];
+
   String status = '';
   late PageController _pageController; // PageController 추가
   int successNum = 0; // 추가: 성공한 목표 수
   int inProgressNum = 0; // 추가: 진행 중인 목표 수
-  int failedNum = 0; // 추가: 실패한 목표 수
+  int failed = 0; // 추가: 실패한 목표 수
   int dday = 0; // 추가: D-day
   String ddayString = '0';
   List<String> failedNamesList = [];
@@ -35,6 +33,13 @@ class _MyGoalState extends State<MyGoal> {
   String mandaDescription = '';
   bool bookmark = false;
   int parsedId = 0;
+
+  List<Map<String, String>> mandalarts = [];
+  List<int> ddayList = [];
+  List<String> mandaDescriptionList = [];
+  List<int> failedList = [];
+  List<int> inProgressNumList = [];
+  List<int> successNumList = [];
 
   void userInfo() async {
     final data = await UserInfoService.userInfo();
@@ -56,7 +61,10 @@ class _MyGoalState extends State<MyGoal> {
       setState(() {
         mandalarts = data;
         ddayList = List.filled(mandalarts.length, 0); // dday 리스트 초기화
+        failedList = List.filled(mandalarts.length, 0);
+        inProgressNumList = List.filled(mandalarts.length, 0);
         successNumList = List.filled(mandalarts.length, 0);
+        mandaDescriptionList = List.filled(mandalarts.length, '');
       });
 
       // mandalarts가 로드된 후에 userMandaInfo 호출
@@ -89,7 +97,11 @@ class _MyGoalState extends State<MyGoal> {
         if (pageIndex < ddayList.length) {
           // 페이지 인덱스 범위 체크
           ddayList[pageIndex] = data['dday'] ?? 0; // dday를 페이지 인덱스에 맞게 저장
+          failedList[pageIndex] = data['statusNum']['failed'] ?? 0;
+          inProgressNumList[pageIndex] =
+              data['statusNum']['inProgressNum'] ?? 0;
           successNumList[pageIndex] = data['statusNum']['successNum'] ?? 0;
+          mandaDescriptionList[pageIndex] = data['description'];
           status = data['status'];
         }
         String name = data['name']; // name을 가져오기
@@ -105,10 +117,6 @@ class _MyGoalState extends State<MyGoal> {
         } else {
           photoList = []; // 빈 리스트로 초기화
         }
-        successNum = data['statusNum']['successNum'] ?? 0;
-        inProgressNum = data['statusNum']['inProgressNum'] ?? 0;
-        failedNum = data['statusNum']['failed'] ?? 0;
-        mandaDescription = data['description'];
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -131,8 +139,14 @@ class _MyGoalState extends State<MyGoal> {
     super.dispose();
   }
 
-  Widget _buildGoalCard(Map<String, String> mandalart, int mandalartId,
-      int dday, int successNum) {
+  Widget _buildGoalCard(
+      Map<String, String> mandalart,
+      int mandalartId,
+      int dday,
+      String mandaDescription,
+      int failed,
+      int inProgressNum,
+      int successNum) {
     final String name = mandalart['name'] ?? 'Goal';
     final String id = mandalart['id'] ?? '';
     int parsedId = int.parse(id);
@@ -149,7 +163,7 @@ class _MyGoalState extends State<MyGoal> {
                     status: status,
                     photoList: photoList,
                     mandaDescription: mandaDescription,
-                    failedNum: failedNum,
+                    failedNum: failed,
                     inProgressNum: inProgressNum,
                     successNum: successNum,
                   )),
@@ -395,8 +409,18 @@ class _MyGoalState extends State<MyGoal> {
                       itemBuilder: (context, index) {
                         final mandalart = mandalarts[index];
                         final dday = ddayList[index];
+                        final failed = failedList[index];
+                        final inProgressNum = inProgressNumList[index];
+                        final successNum = successNumList[index];
+                        final mandaDescription = mandaDescriptionList[index];
                         return _buildGoalCard(
-                            mandalart, index, dday, successNum);
+                            mandalart,
+                            index,
+                            dday,
+                            mandaDescription,
+                            failed,
+                            inProgressNum,
+                            successNum);
                       },
                     ),
                   ),
