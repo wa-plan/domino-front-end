@@ -195,7 +195,7 @@ class _MyGoalState extends State<MyGoal> {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      dday.toString(),
+                      dday < 0 ? 'D+${dday * -1}' : 'D-$dday',
                       style: const TextStyle(
                         color: Color(0xff5C5C5C),
                         fontSize: 16,
