@@ -51,21 +51,24 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   int successNum = 0;
   int failedNum = 0;
   int inProgressNum = 0;
-  List<String> photolist = [];
+  List<String> goalImage = [];
+  List<String> photoList = [];
   //double rate = 0.0;
   int total = 0;
   int successRate = 0;
   int inProgressRate = 0;
   int failedRate = 0;
 
-  List<String> goalImage = [
+  //List<String> goalImage = photoList.map((photo) => 'assets/img/$photo').toList();
+
+  /*List<String> goalImage = [
     'assets/img/completed_goals.png',
     'assets/img/completed_goals.png',
     'assets/img/completed_goals.png'
     //'assets/img/profile_smp1.png',
     //'assets/img/profile_smp2.png',
     // 추가 이미지...
-  ];
+  ];*/
 
   void _mandaBookmark(int id, String bookmark) async {
     final success = await MandaBookmarkService.MandaBookmark(
@@ -95,7 +98,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     name = widget.name;
     dday = widget.dday;
     status = widget.status;
-    photolist = widget.photoList;
+    photoList = widget.photoList;
     mandaDescription = widget.mandaDescription;
     failedNum = widget.failedNum;
     inProgressNum = widget.inProgressNum;
@@ -105,6 +108,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     successRate = total == 0 ? 0 : (successNum / total * 100).toInt();
     inProgressRate = total == 0 ? 0 : (inProgressNum / total * 100).toInt();
     failedRate = 100 - successRate - inProgressRate;
+
+    goalImage = photoList.map((photo) => 'assets/img/$photo').toList();
+    print('goalImage=$goalImage');
     //failedRate = total == 0 ? 0 : (failedNum / total * 100).toInt();
 
     /*if (successRate == 0 && inProgressRate == 0 && failedRate == 0) {
@@ -553,9 +559,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   }
 }
 
-class GoalImage {
+/*class GoalImage {
   final String image; // 이미지 경로
   final String name; // 이미지 이름 (필요시 추가)
 
   GoalImage({required this.image, required this.name});
-}
+}*/
