@@ -91,7 +91,8 @@ flutter:
     - assets\img\failed_goals.png    #쓰러뜨리지 못한 목표
     - assets\img\if_no_img.png 
     - assets\img\domino_calculate.png 
-    
+    - assets\img\domino.png 
+
     - assets\img\MG_domino3.png
     - assets\img\MG_domino2.png
     - assets\img\MG_domino.png
