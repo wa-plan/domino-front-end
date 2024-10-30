@@ -1,53 +1,73 @@
 import 'package:flutter/material.dart';
-import 'dart:math'; // min 함수 사용을 위해 추가
+import 'dart:math';
 
 class PieChart extends CustomPainter {
-  final int yellowPercentage;
-  final int grayPercentage;
-  final int blackPercentage;
+  final int successPercentage;
+  final int inProgressPercentage;
+  final int failPercentage;
   final double textScaleFactor;
 
   PieChart(
-      {required this.yellowPercentage,
-      required this.grayPercentage,
-      required this.blackPercentage,
+      {required this.successPercentage,
+      required this.inProgressPercentage,
+      required this.failPercentage,
       this.textScaleFactor = 1.0});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..strokeWidth = 25.0
+      ..strokeWidth = 38.0
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.butt;
 
     double radius = size.width * 0.8;
-
     Offset center = Offset(size.width / 2, size.height / 2);
-
     double startAngle = -pi / 2;
 
-    // 1. 노란색 60% 그리기
-    double yellowArcAngle = 2 * pi * (yellowPercentage / 100);
-    paint.color = Colors.yellow;
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
-        yellowArcAngle, false, paint);
+    // 검은색 구분선 각도
+    double separatorAngle = 2 * pi * (1 / 100);
 
-    // 2. 회색 30% 그리기
-    double grayArcAngle = 2 * pi * (grayPercentage / 100);
-    startAngle += yellowArcAngle; // 이전 호 끝에서 시작
-    paint.color = Colors.grey;
+    // 1. 노란색 아크 그리기
+    double successArcAngle = 2 * pi * ((successPercentage - 1) / 100); // 1% 줄이기
+    paint.color = const Color(0xffFCFF62);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
-        grayArcAngle, false, paint);
+        successArcAngle, false, paint);
 
-    // 3. 검정색 10% 그리기
-    double blackArcAngle = 2 * pi * (blackPercentage / 100);
-    startAngle += grayArcAngle; // 이전 호 끝에서 시작
+    // 노란색과 회색 사이 검은색 구분선 추가
+    startAngle += successArcAngle;
     paint.color = Colors.black;
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
-        blackArcAngle, false, paint);
+        separatorAngle, false, paint);
 
-    // 4. 노란색 60% 텍스트 그리기
-    drawText(canvas, size, "달성률\n  $yellowPercentage%");
+    // 2. 회색 아크 그리기
+    double inProgressArcAngle =
+        2 * pi * ((inProgressPercentage - 1) / 100); // 1% 줄이기
+    startAngle += separatorAngle;
+    paint.color = const Color(0xffFEFFC4);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
+        inProgressArcAngle, false, paint);
+
+    // 회색과 검정 사이 검은색 구분선 추가
+    startAngle += inProgressArcAngle;
+    paint.color = Colors.black;
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
+        separatorAngle, false, paint);
+
+    // 3. 검정 아크 그리기
+    double failArcAngle = 2 * pi * ((failPercentage - 1) / 100); // 1% 줄이기
+    startAngle += separatorAngle;
+    paint.color = const Color(0xff383838);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
+        failArcAngle, false, paint);
+
+    // 마지막 검은색 구분선 추가
+    startAngle += failArcAngle;
+    paint.color = Colors.black;
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
+        separatorAngle, false, paint);
+
+    // 달성률 텍스트 그리기
+    drawText(canvas, size, "달성률\n  $successPercentage%");
   }
 
   void drawText(Canvas canvas, Size size, String text) {
@@ -55,9 +75,7 @@ class PieChart extends CustomPainter {
 
     TextSpan sp = TextSpan(
       style: TextStyle(
-          fontSize: fontSize,
-          fontWeight: FontWeight.w600,
-          color: Colors.white), // 텍스트 색상은 노란색으로 설정
+          fontSize: fontSize, fontWeight: FontWeight.w600, color: Colors.white),
       text: text,
     );
 
@@ -77,8 +95,8 @@ class PieChart extends CustomPainter {
 
   @override
   bool shouldRepaint(PieChart old) {
-    return old.yellowPercentage != yellowPercentage ||
-        old.grayPercentage != grayPercentage ||
-        old.blackPercentage != blackPercentage;
+    return old.successPercentage != successPercentage ||
+        old.inProgressPercentage != inProgressPercentage ||
+        old.failPercentage != failPercentage;
   }
 }

@@ -29,7 +29,7 @@ class _MyGoalState extends State<MyGoal> {
   List<String> failedNamesList = [];
   List<String> inProgressNamesList = [];
   List<String> successNamesList = [];
-  List<String> photoList = [];
+  List<Map<String, dynamic>> photoList = [];
   String mandaDescription = '';
   bool bookmark = false;
   int parsedId = 0;
@@ -112,10 +112,10 @@ class _MyGoalState extends State<MyGoal> {
         } else if (status == "SUCCESS") {
           successNamesList.add(name); // "SUCCESS" 상태의 name을 추가
         }
-        if (data['photolist'] is List) {
-          photoList = List<String>.from(data['photolist']); // List<String>으로 변환
+        if (data['photoList'] is List) {
+          photoList = List<Map<String, dynamic>>.from(data['photoList']);
         } else {
-          photoList = []; // 빈 리스트로 초기화
+          photoList = [];
         }
       });
     } else {
@@ -161,7 +161,9 @@ class _MyGoalState extends State<MyGoal> {
                     name: name,
                     dday: dday,
                     status: status,
-                    photoList: photoList,
+                    photoList: photoList
+                        .map((photo) => photo['path'] as String)
+                        .toList(),
                     mandaDescription: mandaDescription,
                     failedNum: failed,
                     inProgressNum: inProgressNum,
@@ -236,16 +238,16 @@ class _MyGoalState extends State<MyGoal> {
                   )
                 else
                   SizedBox(
-                    width: 250, // 컨테이너의 너비를 지정
-                    height: 80, // 컨테이너의 높이를 지정
+                    width: 250,
+                    height: 80,
                     child: CarouselSlider.builder(
-                      itemCount: photoList.length,
+                      itemCount: photoList.length.clamp(1, 3), // 최대 3개로 제한
                       itemBuilder: (context, index, realIndex) {
                         return Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(photoList[index]),
+                              image: NetworkImage(photoList[index]['path']),
                               fit: BoxFit.cover,
                             ),
                             borderRadius: BorderRadius.circular(5.0),
@@ -253,13 +255,16 @@ class _MyGoalState extends State<MyGoal> {
                         );
                       },
                       options: CarouselOptions(
-                        height: 80, // 슬라이더의 높이
-                        autoPlay: true, // 자동 재생
-                        viewportFraction: 0.9, // 뷰포트 비율
-                        enlargeCenterPage: true, // 중심 페이지 확대
+                        height: 80,
+                        autoPlay: true,
+                        viewportFraction: photoList.length == 1
+                            ? 1.0
+                            : 0.9, // 사진이 1개일 때는 뷰포트 전체 사용
+                        enlargeCenterPage: true,
                       ),
                     ),
                   ),
+
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
