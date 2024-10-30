@@ -437,7 +437,7 @@ class _MyGoalState extends State<MyGoal> {
                   ),
                   SmoothPageIndicator(
                     controller: _pageController,
-                    count: mandalarts.length, // 총 페이지 수
+                    count: inProgressNamesList.length, // 총 페이지 수
                     effect: const ColorTransitionEffect(
                       // 스타일 설정
                       dotHeight: 10.0,
@@ -487,11 +487,26 @@ class _MyGoalState extends State<MyGoal> {
               if (successNamesList.isEmpty)
                 Image.asset('assets/img/completed_goals.png')
               else
-                Container(
-                  decoration: const BoxDecoration(color: Colors.yellow),
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.width * 0.04,
-                  child: const Text('쓰러트린 목표'),
+                Column(
+                  children: [
+                    // successNamesList의 각 항목을 반복하여 Container 생성
+                    ...successNamesList.map((name) {
+                      return Container(
+                        decoration:
+                            const BoxDecoration(color: Colors.green), // 원하는 배경색
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.width * 0.08,
+                        margin:
+                            const EdgeInsets.symmetric(vertical: 5.0), // 항목 간격
+                        child: Center(
+                          child: Text(
+                            name,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
                 ),
               const SizedBox(height: 30),
               Text(
@@ -506,13 +521,26 @@ class _MyGoalState extends State<MyGoal> {
               if (failedNamesList.isEmpty)
                 Image.asset('assets/img/failed_goals.png')
               else
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.yellow,
-                  ),
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.width * 0.04,
-                  child: const Text('쓰러트리지 못한 목표'),
+                Column(
+                  children: [
+                    // successNamesList의 각 항목을 반복하여 Container 생성
+                    ...failedNamesList.map((name) {
+                      return Container(
+                        decoration:
+                            const BoxDecoration(color: Colors.green), // 원하는 배경색
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.width * 0.08,
+                        margin:
+                            const EdgeInsets.symmetric(vertical: 5.0), // 항목 간격
+                        child: Center(
+                          child: Text(
+                            name,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
                 ),
             ],
           ),

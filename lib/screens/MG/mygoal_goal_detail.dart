@@ -1,3 +1,4 @@
+import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:domino/screens/MG/piechart.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data'; // Uint8List 사용을 위한 라이브러리 임포트
@@ -241,7 +242,8 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                   '대박! 이 목표 정말 \n달성 완료한거야?',
                                   true, // cancel
                                   false, // delete
-                                  true, // signout
+                                  false, // signout
+                                  true, //success
                                   onCancel: () {
                                     // 취소 버튼을 눌렀을 때 실행할 코드
                                     Navigator.of(context).pop();
@@ -252,6 +254,47 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                   },
                                   onSignOut: () {
                                     // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSuccess: () {
+                                    _mandaProgress(
+                                        int.parse(widget.id), "SUCCESS");
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const MyGoal(),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                              if (_selectedStatus == '달성 실패') {
+                                PopupDialog.show(
+                                  context,
+                                  '아쉬워! 이 목표는 \n달성 실패인거야?',
+                                  true, // cancel
+                                  false, // delete
+                                  false, // signout
+                                  true, //success
+                                  onCancel: () {
+                                    // 취소 버튼을 눌렀을 때 실행할 코드
+                                    Navigator.of(context).pop();
+                                  },
+
+                                  onDelete: () {
+                                    // 삭제 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSignOut: () {
+                                    // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSuccess: () {
+                                    _mandaProgress(
+                                        int.parse(widget.id), "FAIL");
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const MyGoal(),
+                                      ),
+                                    );
                                   },
                                 );
                               }
@@ -558,10 +601,3 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     );
   }
 }
-
-/*class GoalImage {
-  final String image; // 이미지 경로
-  final String name; // 이미지 이름 (필요시 추가)
-
-  GoalImage({required this.image, required this.name});
-}*/

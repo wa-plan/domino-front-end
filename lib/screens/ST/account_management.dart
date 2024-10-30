@@ -96,6 +96,7 @@ class _AccountManagementState extends State<AccountManagement> {
                         true, // cancel
                         false, // delete
                         true, // signout
+                        false,
                         onCancel: () {
                           // 취소 버튼을 눌렀을 때 실행할 코드
                           Navigator.of(context).pop();

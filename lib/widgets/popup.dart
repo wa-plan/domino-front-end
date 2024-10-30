@@ -5,9 +5,11 @@ class PopupDialog extends StatelessWidget {
   final bool cancel;
   final bool delete;
   final bool signout;
+  final bool success;
   final VoidCallback? onCancel;
   final VoidCallback? onDelete;
   final VoidCallback? onSignOut;
+  final VoidCallback? onSuccess;
 
   const PopupDialog({
     super.key,
@@ -15,9 +17,11 @@ class PopupDialog extends StatelessWidget {
     required this.cancel,
     required this.delete,
     required this.signout,
+    required this.success,
     this.onCancel,
     this.onDelete,
     this.onSignOut,
+    this.onSuccess,
   });
 
   @override
@@ -58,6 +62,25 @@ class PopupDialog extends StatelessWidget {
           child: const Text('탈퇴',
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        ),
+      );
+    }
+
+    if (success) {
+      buttons.add(
+        TextButton(
+          onPressed: onSuccess ?? () => Navigator.of(context).pop(),
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(Colors.transparent),
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(4)),
+              ),
+            ),
+          ),
+          child: const Text('확인',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         ),
       );
     }
@@ -134,10 +157,12 @@ class PopupDialog extends StatelessWidget {
     String content,
     bool cancel,
     bool delete,
-    bool signout, {
+    bool signout,
+    bool success, {
     VoidCallback? onCancel,
     VoidCallback? onDelete,
     VoidCallback? onSignOut,
+    VoidCallback? onSuccess,
   }) {
     showDialog(
       context: context,
@@ -148,9 +173,11 @@ class PopupDialog extends StatelessWidget {
           cancel: cancel,
           delete: delete,
           signout: signout,
+          success: success,
           onCancel: onCancel,
           onDelete: onDelete,
           onSignOut: onSignOut,
+          onSuccess: onSuccess,
         );
       },
     );
