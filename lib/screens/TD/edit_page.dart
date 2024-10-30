@@ -26,6 +26,7 @@ class EditPage extends StatefulWidget {
 
 class EditPageState extends State<EditPage> {
   bool switchValue = false;
+  int interval = 0;
   bool everyDay = false;
   bool everyWeek = false;
   bool everyTwoWeek = false;
@@ -86,6 +87,12 @@ class EditPageState extends State<EditPage> {
     super.initState();
     dominoController = TextEditingController(text: widget.content);
     switchValue = widget.switchValue;
+    interval = widget.interval;
+    context.read<DateListProvider>().updateRepeatSettings(interval);
+    everyDay = context.read<DateListProvider>().everyDay;
+    everyWeek = context.read<DateListProvider>().everyWeek;
+    everyTwoWeek = context.read<DateListProvider>().everyTwoWeek;
+    everyMonth = context.read<DateListProvider>().everyMonth;
   }
 
   @override
@@ -158,6 +165,11 @@ class EditPageState extends State<EditPage> {
                     fontWeight: FontWeight.bold),
               ),
               EditCalendar(widget.date), //추가할 때 달력
+
+              const SizedBox(
+                height: 20,
+              ),
+
               //반복하기 기능
               Row(
                 mainAxisAlignment: MainAxisAlignment.end, //오른쪽 정렬
@@ -177,10 +189,16 @@ class EditPageState extends State<EditPage> {
                   ),
                 ],
               ),
+              const SizedBox(
+                height: 20,
+              ),
               if (switchValue)
                 EditRepeatSettings(
                     everyDay, everyWeek, everyTwoWeek, everyMonth),
 
+              const SizedBox(
+                height: 20,
+              ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 TextButton(
                   onPressed: () {
@@ -236,8 +254,15 @@ class EditPageState extends State<EditPage> {
                             context.read<DateListProvider>().dateList;
                         String repeatInfo =
                             context.read<DateListProvider>().repeatInfo();
-                        print(repeatInfo);
-                        howEditDialog(context, widget.goalId, widget.date);
+                        print('repeatInfo=$repeatInfo');
+                        EditDominoService.editDomino(
+                            goalId: widget.goalId,
+                            newGoal: dominoController.text);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const TdMain(),
+                            ));
                       }
                     }
                   },
@@ -352,108 +377,6 @@ void howDeleteDialog(BuildContext context, int goalId, DateTime date) {
                   },
                   child: const Text(
                     '오늘의 도미노만 삭제',
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  )),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-void howEditDialog(BuildContext context, int goalId, DateTime date) {
-  void editAllDomino(int goalId) async {
-    final success =
-        await EditDominoService.editDomino(goalId: goalId, newGoal: "");
-
-    if (success) {
-      // 성공적으로 서버에 전송된 경우에 처리할 코드
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('도미노가 수정되었습니다.')),
-      );
-
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const TdMain(),
-          ));
-    } else {
-      // 실패한 경우에 처리할 코드
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('도미노 수정에 실패했습니다.')),
-      );
-    }
-  }
-
-  void editTodayDomino(int goalId, String goalDate) async {
-    final success = await DeleteTodayDominoService.deleteTodayDomino(
-        goalId: goalId, goalDate: goalDate);
-
-    if (success) {
-      // 성공적으로 서버에 전송된 경우에 처리할 코드
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('도미노가 수정되었습니다.')),
-      );
-
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const TdMain(),
-          ));
-    } else {
-      // 실패한 경우에 처리할 코드
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('도미노 수정에 실패했습니다.')),
-      );
-    }
-  }
-
-  showDialog(
-    context: context,
-    builder: (context) {
-      return Dialog(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(4))),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(5, 25, 5, 25),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                  onPressed: () {
-                    editAllDomino(goalId);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TdMain(),
-                        ));
-                  },
-                  child: const Text(
-                    '앞으로의 도미노 모두 수정',
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold),
-                  )),
-              const SizedBox(
-                height: 10,
-              ),
-              TextButton(
-                  onPressed: () {
-                    String formattedDate =
-                        DateFormat('yyyy-MM-dd').format(date);
-                    print(formattedDate);
-                    //date.toIso8601String()
-                    editTodayDomino(goalId, formattedDate);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TdMain(),
-                        ));
-                  },
-                  child: const Text(
-                    '오늘의 도미노만 수정',
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   )),
