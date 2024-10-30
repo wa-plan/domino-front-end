@@ -29,7 +29,6 @@ class _EventCalendarState extends State<EventCalendar> {
 
   Future<void> dominoInfo(DateTime date) async {
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
-    //"${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
     final events =
         await DominoInfoService.dominoInfo(context, date: formattedDate);
 
@@ -37,18 +36,10 @@ class _EventCalendarState extends State<EventCalendar> {
       setState(() {
         _selectedEvents.value = events;
       });
-      // 성공적으로 서버에 전송된 경우에 처리할 코드
-      //ScaffoldMessenger.of(context).showSnackBar(
-      //  const SnackBar(content: Text('정보조회에 성공했습니다.')),
-      //);
     } else {
       setState(() {
         _selectedEvents.value = [];
       });
-      // 실패한 경우에 처리할 코드
-      //ScaffoldMessenger.of(context).showSnackBar(
-      //  const SnackBar(content: Text('정보조회에 실패했습니다.')),
-      //);
     }
   }
 
@@ -227,11 +218,31 @@ class _EventCalendarState extends State<EventCalendar> {
                     return GestureDetector(
                       onLongPress: () {
                         // 롱 프레스 이벤트 처리
+                        if (value[index].repetition != 'NONE') {
+                          value[index].switchValue = true;
+                          if (value[index].repetition == 'EVERYDAY') {
+                            value[index].interval = 1;
+                          }
+                          if (value[index].repetition == 'EVERYWEEK') {
+                            value[index].interval = 7;
+                          }
+                          if (value[index].repetition == 'BIWEEKLY') {
+                            value[index].interval = 14;
+                          }
+                          if (value[index].repetition == 'EVERYMONTH') {
+                            value[index].interval = 31;
+                          }
+                        } else {
+                          value[index].switchValue = false;
+                          value[index].interval = 0;
+                        }
+                        print('repetition=${value[index].repetition}');
+                        print('interval=${value[index].interval}');
                         editDialog(
                             context,
                             _focusedDay,
-                            value[index].title,
-                            value[index].content,
+                            value[index].goalName,
+                            value[index].thirdGoal,
                             value[index].switchValue,
                             value[index].interval,
                             value[index].id);
@@ -260,12 +271,12 @@ class _EventCalendarState extends State<EventCalendar> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  value[index].content,
+                                  value[index].thirdGoal,
                                   style: const TextStyle(color: Colors.white),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  value[index].title,
+                                  value[index].goalName,
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ],
