@@ -29,6 +29,7 @@ class AddPage2State extends State<AddPage2> {
   bool switchValue = false;
 
   String dominoValue = '';
+  String repeatInfo = '';
 
   RepeatSettingsState repeatSettings =
       RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
@@ -181,7 +182,7 @@ class AddPage2State extends State<AddPage2> {
                           ),
                         ],
                       ),
-                      if (switchValue) const RepeatSettings(), // 반복 설정 위젯 추가
+                      if (switchValue) const RepeatSettings() // 반복 설정 위젯 추가
                     ],
                   ),
                 ],
@@ -223,9 +224,9 @@ class AddPage2State extends State<AddPage2> {
                             .setInterval(switchValue, pickedDate);
                         List<DateTime> dateList =
                             context.read<DateListProvider>().dateList;
-                        String repeatInfo =
+                        repeatInfo =
                             context.read<DateListProvider>().repeatInfo();
-
+                        print('repeatInfo=$repeatInfo');
                         addDomino(widget.thirdGoalId, dominoController.text,
                             dateList, repeatInfo);
                       }

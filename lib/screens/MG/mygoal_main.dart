@@ -176,7 +176,7 @@ class _MyGoalState extends State<MyGoal> {
         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
         color: Colors.transparent,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,7 +227,7 @@ class _MyGoalState extends State<MyGoal> {
                       color: const Color.fromARGB(255, 53, 53, 53),
                       borderRadius: BorderRadius.circular(3.0),
                     ),
-                    width: 250,
+                    width: 300,
                     height: 80,
                     child: const Center(
                       child: Text(
@@ -287,11 +287,14 @@ class _MyGoalState extends State<MyGoal> {
                         ),
                       ],
                     ),
-                    const SizedBox(width: 15),
+                    const SizedBox(width: 50),
                     Image.asset('assets/img/MG_domino.png'),
                   ],
                 ),
               ],
+            ),
+            const SizedBox(
+              width: 40,
             ),
             Container(
               decoration: BoxDecoration(

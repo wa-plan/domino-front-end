@@ -9,22 +9,26 @@ String? baseUrl = dotenv.env['BASE_URL'];
 
 class Event {
   final int id;
-  final String title;
-  final String content;
-  String? attainment;
-  bool switchValue;
+  final String goalName;
+  final String color;
+  final String thirdGoal;
+  final String attainment;
+  final String repetition;
   int interval;
+  bool switchValue;
   bool didZero;
   bool didHalf;
   bool didAll;
 
   Event({
     required this.id,
-    required this.title,
-    required this.content,
-    this.attainment,
-    this.switchValue = false,
+    required this.goalName,
+    required this.color,
+    required this.thirdGoal,
+    required this.attainment,
+    required this.repetition,
     this.interval = 0,
+    this.switchValue = false,
     this.didZero = false,
     this.didHalf = false,
     this.didAll = false,
@@ -37,10 +41,12 @@ class Event {
     bool didHalf = attainment == "IN_PROGRESS";
     bool didAll = attainment == "SUCCESS";
     return Event(
-      id: json['id'],
-      title: json['goalName'] ?? 'Unknown',
-      content: json['thridGoal'] ?? 'No content',
-      attainment: attainment,
+      id: json['id'] ?? 0,
+      goalName: json['goalName'] ?? 'Unknown',
+      color: json['color'] ?? 'white',
+      thirdGoal: json['thridGoal'] ?? 'No content',
+      attainment: json['attainment'] ?? 'NONE',
+      repetition: json['repetition'] ?? 'NONE',
       didZero: didZero,
       didHalf: didHalf,
       didAll: didAll,
@@ -64,12 +70,10 @@ class DominoInfoService {
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
-      return null;
+      return [];
     }
-    print(date);
 
     final url = Uri.parse('$baseUrl/api/goal?date=$date');
-    print(url);
 
     try {
       final response = await http.get(
@@ -80,9 +84,6 @@ class DominoInfoService {
         },
       );
 
-      print('서버 응답 상태 코드: ${response.statusCode}');
-      print('서버 응답 본문: ${response.body}');
-
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final List<dynamic> responseData =
             jsonDecode(utf8.decode(response.bodyBytes));
@@ -90,41 +91,12 @@ class DominoInfoService {
           return Event.fromJson(item);
         }).toList();
 
-        /*Fluttertoast.showToast(
-          msg: '해당 날짜의 도미노 조회에 성공하였습니다.',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );*/
         return events;
       } else if (response.statusCode >= 400) {
-        /*Fluttertoast.showToast(
-          msg: '도미노 조회 실패: ${response.body}',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );*/
-      } else {
-        /*Fluttertoast.showToast(
-          msg: '도미노 조회 실패: ${response.body}',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );*/
-      }
-      return null;
+      } else {}
+      return [];
     } catch (e) {
-      /*Fluttertoast.showToast(
-        msg: '도미노 조회 오류 발생: $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );*/
-      return null;
+      return [];
     }
   }
 }

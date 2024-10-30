@@ -276,7 +276,6 @@ class _AddPage1State extends State<AddPage1> {
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ),
                   ), //다음 버튼
-                TextButton(onPressed: () {}, child: const Text('test'))
               ],
             ),
           ],
