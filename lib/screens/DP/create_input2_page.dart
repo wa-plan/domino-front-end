@@ -1,3 +1,4 @@
+import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/input2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,36 +15,33 @@ class DPcreateInput2Page extends StatelessWidget {
     final selectedDetailGoal = int.tryParse(selectedDetailGoalString) ?? 0;
 
     return Scaffold(
-      backgroundColor: const Color(0xff262626),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff262626),
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+          padding: appBarPadding,
           child: Text(
             '플랜 만들기',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.06,
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
+        backgroundColor: backgroundColor,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(38.0, 20.0, 40.0, 0.0),
+          padding: fullPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 "목표를 이루기 위한 \n작은 계획들을 세워봐요.",
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 19,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1,
-                ),
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
               ),
               const SizedBox(height: 20),
               Container(
@@ -64,54 +62,79 @@ class DPcreateInput2Page extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
-              Center(
-                child: SizedBox(
-                  height: 300,
-                  width: 260,
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 1,
-                      mainAxisSpacing: 1,
-                    ),
-                    itemCount: 9,
-                    itemBuilder: (context, index) {
-                      if (index == 4) {
-                        // 안전한 null 처리
-                        final inputtedDetailGoal = context
-                                .watch<SaveInputtedDetailGoalModel>()
-                                .inputtedDetailGoal['$selectedDetailGoal'] ??
-                            '';
-
-                        return Container(
-                          width: 80,
-                          color: const Color(0xff929292),
-                          margin: const EdgeInsets.all(1.0),
-                          child: Center(
-                            child: Text(
-                              inputtedDetailGoal,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 20),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff2A2A2A),
+                              borderRadius: BorderRadius.circular(3),
                             ),
-                          ),
-                        );
-                      } else {
-                        return Input2(
-                          actionPlanId: index,
-                          selectedDetailGoalId: selectedDetailGoal,
-                        );
-                      }
-                    },
+                child: Column(
+                children: [
+                  Center(
+                    child: SizedBox(
+                      height: 300,
+                      width: 260,
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 1,
+                          mainAxisSpacing: 1,
+                        ),
+                        itemCount: 9,
+                        itemBuilder: (context, index) {
+                          if (index == 4) {
+                            // 안전한 null 처리
+                            final inputtedDetailGoal = context
+                                    .watch<SaveInputtedDetailGoalModel>()
+                                    .inputtedDetailGoal['$selectedDetailGoal'] ??
+                                '';
+                  
+                            return Container(
+                              width: 80,
+                              color: const Color(0xff929292),
+                              margin: const EdgeInsets.all(1.0),
+                              child: Center(
+                                child: Text(
+                                  inputtedDetailGoal,
+                                  style: const TextStyle(
+                                    color: backgroundColor,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Input2(
+                              actionPlanId: index,
+                              selectedDetailGoalId: selectedDetailGoal,
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 70),
+                  const SizedBox(
+                          height: 5,
+                        ),
+                        const Center(
+                            child: Text(
+                          '모든 칸을 다 채우지 않아도 괜찮아요:)',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 158, 158, 158),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13),
+                        )),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                ],
+              ),),
+              const SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(

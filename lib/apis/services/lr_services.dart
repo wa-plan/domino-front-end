@@ -436,7 +436,7 @@ class MorningAlertService {
           msg: '아침알람이 업데이트되었습니다.',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.black,
           textColor: Colors.white,
         );
         return alarm; //성공한 경우 'on' 또는 'off' 값을 반환
@@ -503,7 +503,7 @@ class NightAlertService {
           msg: '저녁알람이 업데이트되었습니다.',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.black,
           textColor: Colors.white,
         );
         return alarm; //성공한 경우 'on' 또는 'off' 값을 반환
