@@ -5,6 +5,7 @@ import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/TD/add_page2.dart';
 import 'package:domino/widgets/DP/mandalart2.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 
@@ -220,8 +221,9 @@ class _AddPage1State extends State<AddPage1> {
                     ),
                     const SizedBox(height: 10),
                     Expanded(
+              
                       child: Container(
-                        padding: const EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(30),
                         decoration: BoxDecoration(
                           color: const Color(0xff2A2A2A),
                           borderRadius: BorderRadius.circular(3),
