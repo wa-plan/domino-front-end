@@ -1,8 +1,9 @@
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/account_management.dart';
 import 'package:domino/screens/ST/contact_us.dart';
 import 'package:domino/widgets/nav_bar.dart';
-import 'package:domino/apis/services/lr_services.dart'; // MorningAlertService를 가져옵니다
+import 'package:domino/apis/services/lr_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -31,7 +32,6 @@ class _SettingsMainState extends State<SettingsMain> {
     });
   }
 
-  // 아침 알림 설정을 서버에 전송하는 메서드
   void _updateMorningAlert(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -44,18 +44,14 @@ class _SettingsMainState extends State<SettingsMain> {
     );
 
     if (result == 'ON' || result == 'OFF') {
-      // 성공적으로 요청이 완료된 경우
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setBool('morningAlert', value); // 설정을 저장
+      prefs.setBool('morningAlert', value);
     } else {
-      // 요청이 실패한 경우
       setState(() {
-        morningAlert = !value; // 상태를 원래대로 되돌림
+        morningAlert = !value;
       });
     }
 
     if (result == null) {
-      // 오류 발생 시 상태를 원래대로 되돌림
       setState(() {
         morningAlert = !value;
       });
@@ -83,18 +79,14 @@ class _SettingsMainState extends State<SettingsMain> {
     );
 
     if (result == 'ON' || result == 'OFF') {
-      // 성공적으로 요청이 완료된 경우
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setBool('nightAlert', value); // 설정을 저장
+      prefs.setBool('nightAlert', value);
     } else {
-      // 요청이 실패한 경우
       setState(() {
-        nightAlert = !value; // 상태를 원래대로 되돌림
+        nightAlert = !value;
       });
     }
 
     if (result == null) {
-      // 오류 발생 시 상태를 원래대로 되돌림
       setState(() {
         nightAlert = !value;
       });
@@ -113,56 +105,35 @@ class _SettingsMainState extends State<SettingsMain> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Text(
-            '설정',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.06,
-              fontWeight: FontWeight.w600,
-            ),
+          padding: appBarPadding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '설정',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              /*const Icon(
+                Icons.settings,
+                color: Colors.white,)*/
+            ],
           ),
         ),
-        backgroundColor: const Color(0xff262626),
+        backgroundColor: backgroundColor,
       ),
-      backgroundColor: const Color(0xff262626),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
-        child: ListView(
+        padding: fullPadding,
+        child: Column(
           children: [
-            const Text(
-              '알림 설정',
-              style: TextStyle(color: Colors.white),
-            ),
-            ListTile(
-              title:
-                  const Text('아침 알림받기', style: TextStyle(color: Colors.white)),
-              subtitle: const Text('아침에 오늘의 일정을 정리해서 알려줘요.',
-                  style: TextStyle(color: Colors.white)),
-              trailing: Switch(
-                  value: morningAlert,
-                  onChanged: (value) {
-                    _updateMorningAlert(value);
-                  } // 수정된 부분
-                  ),
-            ),
-            ListTile(
-              title:
-                  const Text('밤 알림받기', style: TextStyle(color: Colors.white)),
-              subtitle: const Text('일정 체크를 까먹지 않게 한 번 더 상기시켜줘요.',
-                  style: TextStyle(color: Colors.white)),
-              trailing: Switch(
-                  value: nightAlert,
-                  onChanged: (value) {
-                    _updateNightAlert(value);
-                  }),
-            ),
-            ListTile(
-              title: const Text('계정관리', style: TextStyle(color: Colors.white)),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded),
+            const SizedBox(height: 15),
+            _buildSettingItem(
+              menu: '계정',
+              title: '내 계정',
               onTap: () {
                 Navigator.push(
                   context,
@@ -172,12 +143,10 @@ class _SettingsMainState extends State<SettingsMain> {
                 );
               },
             ),
-            const ListTile(
-              title: Text('앱 사용설명서', style: TextStyle(color: Colors.white)),
-            ),
-            ListTile(
-              title: const Text('문의하기', style: TextStyle(color: Colors.white)),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded),
+            _buildCombinedSwitchItem(),
+            _buildSettingItem(
+              menu: '문의',
+              title: '문의하기',
               onTap: () {
                 Navigator.push(
                   context,
@@ -187,10 +156,111 @@ class _SettingsMainState extends State<SettingsMain> {
                 );
               },
             ),
+            _buildSettingItem(menu: '도움', title: '앱 사용설명서',
+            onTap: () {
+                
+              },),
           ],
         ),
       ),
       bottomNavigationBar: const NavBar(),
+    );
+  }
+
+  Widget _buildSettingItem(
+      {required String menu, required String title, void Function()? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        decoration: BoxDecoration(
+          color: const Color(0xff2A2A2A),
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(menu, style: const TextStyle(color: Color(0xff949494))),
+            const SizedBox(height: 9),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                if (onTap != null)
+                  const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Color(0xffD4D4D4),
+                    size: 17,),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCombinedSwitchItem() {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      decoration: BoxDecoration(
+        color: const Color(0xff2A2A2A),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('알림', style: TextStyle(color: Color(0xff949494))),
+          const SizedBox(height: 9),
+          Row(
+            
+            children: [
+              const Text('아침 알림', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+              const SizedBox(width: 13),
+              const Text('일정 정리', style: TextStyle(color: Color(0xffD4D4D4), fontSize: 12, fontWeight: FontWeight.w300)),
+              const Spacer(),
+              Transform.scale(
+              scale: 0.8, // Switch 크기 줄이기
+              child: 
+              SizedBox(
+                height: 10,
+                child: Switch(
+                  activeColor: Colors.white,
+                  activeTrackColor: const Color(0xff18AD00),
+                  inactiveTrackColor: const Color(0xff5D5D5D),
+                  inactiveThumbColor: Colors.white,
+                  value: morningAlert,
+                  onChanged: _updateMorningAlert,
+                ),
+              ),)
+            ],
+          ),
+          const SizedBox(height: 13),
+          Row(
+            children: [
+              const Text('밤 알림', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+              const SizedBox(width: 13),
+              const Text('일정 리마인드', style: TextStyle(color: Color(0xffD4D4D4), fontSize: 12, fontWeight: FontWeight.w300)),
+              const Spacer(),
+              Transform.scale(
+              scale: 0.8, // Switch 크기 줄이기
+              child: 
+              SizedBox(
+                height: 10,
+                child: Switch(
+                  activeColor: Colors.white,
+                  activeTrackColor: const Color(0xff18AD00),
+                  inactiveTrackColor: const Color(0xff5D5D5D),
+                  inactiveThumbColor: Colors.white,
+                  value: nightAlert,
+                  onChanged: _updateNightAlert,
+                ),
+              ),),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

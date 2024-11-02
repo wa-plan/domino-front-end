@@ -56,14 +56,14 @@ class ColorBox extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
               color: inputtedActionPlan['0']?.isEmpty == true
-                  ? const Color(0xff262626)
+                  ? const Color(0xff2A2A2A)
                   : colorPalette[color1] ?? Colors.transparent,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
               child: Text(
                 inputtedActionPlan['0'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 15),
+                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -73,14 +73,14 @@ class ColorBox extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
               color: inputtedActionPlan['1']?.isEmpty == true
-                  ? const Color(0xff262626)
+                  ? const Color(0xff2A2A2A)
                   : colorPalette[color1] ?? Colors.transparent,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
               child: Text(
                 inputtedActionPlan['1'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 15),
+                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -90,14 +90,14 @@ class ColorBox extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
               color: inputtedActionPlan['2']?.isEmpty == true
-                  ? const Color(0xff262626)
+                  ? const Color(0xff2A2A2A)
                   : colorPalette[color1] ?? Colors.transparent,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
               child: Text(
                 inputtedActionPlan['2'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 15),
+                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -107,14 +107,14 @@ class ColorBox extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
               color: inputtedActionPlan['3']?.isEmpty == true
-                  ? const Color(0xff262626)
+                  ? const Color(0xff2A2A2A)
                   : colorPalette[color1] ?? Colors.transparent,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
               child: Text(
                 inputtedActionPlan['3'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 15),
+                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -129,7 +129,7 @@ class ColorBox extends StatelessWidget {
             child: Center(
               child: Text(
                 detailGoal,
-                style: const TextStyle(color: Colors.black, fontSize: 15),
+                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -138,15 +138,15 @@ class ColorBox extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['4']?.isEmpty == true
-                  ? const Color(0xff262626)
+              color: inputtedActionPlan['5']?.isEmpty == true
+                  ? const Color(0xff2A2A2A)
                   : colorPalette[color1] ?? Colors.transparent,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
               child: Text(
-                inputtedActionPlan['4'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 15),
+                inputtedActionPlan['5'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -155,15 +155,15 @@ class ColorBox extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['5']?.isEmpty == true
-                  ? const Color(0xff262626)
+              color: inputtedActionPlan['6']?.isEmpty == true
+                  ? const Color(0xff2A2A2A)
                   : colorPalette[color1] ?? Colors.transparent,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
               child: Text(
-                inputtedActionPlan['5'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 15),
+                inputtedActionPlan['6'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -172,15 +172,15 @@ class ColorBox extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['6']?.isEmpty == true
-                  ? const Color(0xff262626)
+              color: inputtedActionPlan['7']?.isEmpty == true
+                  ? const Color(0xff2A2A2A)
                   : colorPalette[color1] ?? Colors.transparent,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
               child: Text(
-                inputtedActionPlan['6'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 15),
+                inputtedActionPlan['7'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -189,15 +189,15 @@ class ColorBox extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['7']?.isEmpty == true
-                  ? const Color(0xff262626)
+              color: inputtedActionPlan['8']?.isEmpty == true
+                  ? const Color(0xff2A2A2A)
                   : colorPalette[color1] ?? Colors.transparent,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
               child: Text(
-                inputtedActionPlan['7'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 15),
+                inputtedActionPlan['8'] ?? '',
+                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/screens/MG/mygoal_goal_detail.dart';
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/MG/mygoal_profile_edit.dart';
 import 'package:domino/widgets/nav_bar.dart';
@@ -154,7 +155,7 @@ class _MyGoalState extends State<MyGoal> {
                   child: const Center(
                     child: Text(
                       '이미지를 추가해 주세요',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400, fontSize: 13),
                     ),
                   ),
                 ),
@@ -206,42 +207,40 @@ class _MyGoalState extends State<MyGoal> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+          padding: appBarPadding,
           child: Text(
             '나의 목표',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.06,
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
-        backgroundColor: const Color(0xff262626),
+        backgroundColor: backgroundColor,
       ),
       bottomNavigationBar: const NavBar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(35.0, 20, 35.0, 25.0),
+          padding: fullPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: imageSize,
-                    height: imageSize,
+                    width: 70,
+                    height: 70,
                     decoration: BoxDecoration(
-                      border:
-                          Border.all(color: const Color(0xff5C5C5C), width: 1),
+                      border: Border.all(
+                          color: const Color(0xff5C5C5C), width: 0.7),
                       shape: BoxShape.circle,
                       image: const DecorationImage(
                         image: AssetImage('assets/img/profile_smp4.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    width: 20,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,13 +249,17 @@ class _MyGoalState extends State<MyGoal> {
                         nickname,
                         style: const TextStyle(color: Colors.white),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 7),
                       Text(
                         description,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
+                  const Spacer(),
                   IconButton(
                     onPressed: () {
                       Navigator.push(
@@ -279,8 +282,8 @@ class _MyGoalState extends State<MyGoal> {
                     '쓰러트릴 목표',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: MediaQuery.of(context).size.width * 0.04,
-                      fontWeight: FontWeight.bold,
+                      fontSize: MediaQuery.of(context).size.width * 0.035,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   IconButton(
@@ -293,46 +296,57 @@ class _MyGoalState extends State<MyGoal> {
                     },
                     icon: const Icon(Icons.add),
                     color: Colors.white,
+                    padding: EdgeInsets.zero, // 패딩 설정
+                    constraints: const BoxConstraints(),
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: const Color(0xff2A2A2A),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 170,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        itemCount: mandalarts.length,
+                        itemBuilder: (context, index) {
+                          final mandalart = mandalarts[index];
+                          return _buildGoalCard(mandalart, index);
+                        },
+                      ),
+                    ),
+                    
+                  ],
+                ),
+              ),
               const SizedBox(height: 10),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 170,
-                    child: PageView.builder(
-                      controller: _pageController,
-                      itemCount: mandalarts.length,
-                      itemBuilder: (context, index) {
-                        final mandalart = mandalarts[index];
-                        return _buildGoalCard(mandalart, index);
-                      },
-                    ),
+              Center(
+                child: SmoothPageIndicator(
+                  controller: _pageController,
+                  count: mandalarts.length, // 총 페이지 수
+                  effect: const ColorTransitionEffect(
+                    // 스타일 설정
+                    dotHeight: 7.0,
+                    dotWidth: 7.0,
+                    activeDotColor: Color(0xffFF6767),
+                    dotColor: Color.fromARGB(255, 169, 169, 169),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SmoothPageIndicator(
-                    controller: _pageController,
-                    count: mandalarts.length, // 총 페이지 수
-                    effect: const ColorTransitionEffect(
-                      // 스타일 설정
-                      dotHeight: 10.0,
-                      dotWidth: 10.0,
-                      activeDotColor: Color(0xffFF6767),
-                      dotColor: Colors.white,
-                    ),
-                  ),
-                ],
+                ),
               ),
               const SizedBox(height: 30),
               Text(
                 '오늘의 응원',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.04,
-                  fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.width * 0.035,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               const SizedBox(height: 15),
@@ -357,8 +371,8 @@ class _MyGoalState extends State<MyGoal> {
                 '쓰러트린 목표',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.04,
-                  fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.width * 0.035,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               const SizedBox(height: 15),
@@ -368,8 +382,8 @@ class _MyGoalState extends State<MyGoal> {
                 '쓰러트리지 못한 목표',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.04,
-                  fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.width * 0.035,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               const SizedBox(height: 15),

@@ -1,3 +1,4 @@
+import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/input1.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,33 +10,33 @@ class DPcreateInput1Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xff262626),
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xff262626),
+          titleSpacing: 0.0,
           title: Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+            padding: appBarPadding,
             child: Text(
               '플랜 만들기',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.06,
-                  fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
+          backgroundColor: backgroundColor,
         ),
-        body: SingleChildScrollView(
-            child: Padding(
-                padding: const EdgeInsets.fromLTRB(38.0, 20.0, 40.0, 0.0),
+        body: Padding(
+                padding: fullPadding,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text("목표를 이루기 위한 \n작은 계획들을 세워봐요.",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.1)),
+                    const Text(
+                      "목표를 이루기 위한 \n작은 계획들을 세워봐요.",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -57,58 +58,75 @@ class DPcreateInput1Page extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ))),
                     const SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
-                    Center(
-                        child: SizedBox(
-                            height: 300,
-                            width: 260,
-                            child: GridView(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        crossAxisSpacing: 5,
-                                        mainAxisSpacing: 5),
-                                children: [
-                                   Input1(selectedDetailGoalId: 0),
-                                   Input1(selectedDetailGoalId: 1),
-                                   Input1(selectedDetailGoalId: 2),
-                                   Input1(selectedDetailGoalId: 3),
-                                  Container(
-                                    width: 80,
-                                    margin: const EdgeInsets.all(1.0),
-                                    padding: const EdgeInsets.all(7.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      color: const Color(0xffFCFF62),
-                                    ),
-                                    child: Center(
-                                        child: Text(
-                                      context
-                                          .watch<SelectFinalGoalModel>()
-                                          .selectedFinalGoal,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    )),
-                                  ),
-                                   Input1(selectedDetailGoalId: 5),
-                                   Input1(selectedDetailGoalId: 6),
-                                   Input1(selectedDetailGoalId: 7),
-                                   Input1(selectedDetailGoalId: 8),
-                                ]))),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 20),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff2A2A2A),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                      child: Column(
+                      children: [
+                        Center(
+                            child: SizedBox(
+                                height: 300,
+                                width: 260,
+                                child: GridView(
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 3,
+                                            crossAxisSpacing: 5,
+                                            mainAxisSpacing: 5),
+                                    children: [
+                                      const Input1(selectedDetailGoalId: 0),
+                                      const Input1(selectedDetailGoalId: 1),
+                                      const Input1(selectedDetailGoalId: 2),
+                                      const Input1(selectedDetailGoalId: 3),
+                                      Container(
+                                        width: 80,
+                                        margin: const EdgeInsets.all(1.0),
+                                        padding: const EdgeInsets.all(7.0),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(3),
+                                          color: const Color(0xffFCFF62),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          context
+                                              .watch<SelectFinalGoalModel>()
+                                              .selectedFinalGoal,
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        )),
+                                      ),
+                                      const Input1(selectedDetailGoalId: 5),
+                                      const Input1(selectedDetailGoalId: 6),
+                                      const Input1(selectedDetailGoalId: 7),
+                                      const Input1(selectedDetailGoalId: 8),
+                                    ]))),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        const Center(
+                            child: Text(
+                          '모든 칸을 다 채우지 않아도 괜찮아요:)',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 158, 158, 158),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13),
+                        )),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),),
                     const SizedBox(
-                      height: 18,
-                    ),
-                    const Center(
-                        child: Text(
-                      '모든 칸을 다 채우지 않아도 괜찮아요:)',
-                      style: TextStyle(color: Color(0xff5c5c5c)),
-                    )),
-                    const SizedBox(
-                      height: 42,
+                      height: 10,
                     ),
                     Align(
                         alignment: Alignment.centerRight,
@@ -126,6 +144,6 @@ class DPcreateInput1Page extends StatelessWidget {
                           ),
                         ))
                   ],
-                ))));
+                )));
   }
 }
