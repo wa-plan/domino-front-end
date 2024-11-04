@@ -1,4 +1,5 @@
 // DP 메인 페이지에 들어가는 만다라트
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 
 class MandalartGrid extends StatelessWidget {
@@ -16,7 +17,9 @@ class MandalartGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return SizedBox(
+    height: 250,
+    width: 250,
       child: GridView(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3),
@@ -33,10 +36,10 @@ class MandalartGrid extends StatelessWidget {
                 MandalartBox2(hintNum2: 0, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 0, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox1(hintNum: 0, mandalart: mandalart, secondGoals: secondGoals),
-                MandalartBox2(hintNum2: 0, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 0, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 0, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 0, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 0, hintNum3: 8, mandalart: mandalart, secondGoals: secondGoals),
               ]
             )
           ),
@@ -52,10 +55,10 @@ class MandalartGrid extends StatelessWidget {
                 MandalartBox2(hintNum2: 1, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 1, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox1(hintNum: 1, mandalart: mandalart, secondGoals: secondGoals),
-                MandalartBox2(hintNum2: 1, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 1, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 1, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 1, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 1, hintNum3: 8, mandalart: mandalart, secondGoals: secondGoals),
               ]
             )
           ),
@@ -71,10 +74,10 @@ class MandalartGrid extends StatelessWidget {
                 MandalartBox2(hintNum2: 2, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 2, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox1(hintNum: 2, mandalart: mandalart, secondGoals: secondGoals),
-                MandalartBox2(hintNum2: 2, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 2, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 2, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 2, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 2, hintNum3: 8, mandalart: mandalart, secondGoals: secondGoals),
               ]
             )
           ),
@@ -90,10 +93,10 @@ class MandalartGrid extends StatelessWidget {
                 MandalartBox2(hintNum2: 3, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 3, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox1(hintNum: 3, mandalart: mandalart, secondGoals: secondGoals),
-                MandalartBox2(hintNum2: 3, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 3, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 3, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 3, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 3, hintNum3: 8, mandalart: mandalart, secondGoals: secondGoals),
               ]
             )
           ),
@@ -119,10 +122,7 @@ class MandalartGrid extends StatelessWidget {
                     child: Text(
                       mandalart,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                      ),
+                      style: const TextStyle(color: backgroundColor, fontWeight: FontWeight.w600, fontSize: 12)
                     ),
                   )
                 ),
@@ -146,10 +146,10 @@ class MandalartGrid extends StatelessWidget {
                 MandalartBox2(hintNum2: 5, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 5, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox1(hintNum: 5, mandalart: mandalart, secondGoals: secondGoals),
-                MandalartBox2(hintNum2: 5, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 5, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 5, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 5, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 5, hintNum3: 8, mandalart: mandalart, secondGoals: secondGoals),
               ]
             )
           ),
@@ -165,10 +165,10 @@ class MandalartGrid extends StatelessWidget {
                 MandalartBox2(hintNum2: 6, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 6, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox1(hintNum: 6, mandalart: mandalart, secondGoals: secondGoals),
-                MandalartBox2(hintNum2: 6, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 6, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 6, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 6, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 6, hintNum3: 8, mandalart: mandalart, secondGoals: secondGoals),
               ]
             )
           ),
@@ -184,10 +184,10 @@ class MandalartGrid extends StatelessWidget {
                 MandalartBox2(hintNum2: 7, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 7, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox1(hintNum: 7, mandalart: mandalart, secondGoals: secondGoals),
-                MandalartBox2(hintNum2: 7, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 7, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 7, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 7, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 7, hintNum3: 8, mandalart: mandalart, secondGoals: secondGoals),
               ]
             )
           ),
@@ -203,10 +203,10 @@ class MandalartGrid extends StatelessWidget {
                 MandalartBox2(hintNum2: 8, hintNum3: 2, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 8, hintNum3: 3, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox1(hintNum: 8, mandalart: mandalart, secondGoals: secondGoals),
-                MandalartBox2(hintNum2: 8, hintNum3: 4, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 8, hintNum3: 5, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 8, hintNum3: 6, mandalart: mandalart, secondGoals: secondGoals),
                 MandalartBox2(hintNum2: 8, hintNum3: 7, mandalart: mandalart, secondGoals: secondGoals),
+                MandalartBox2(hintNum2: 8, hintNum3: 8, mandalart: mandalart, secondGoals: secondGoals),
               ]
             )
           ),
@@ -235,7 +235,7 @@ class MandalartBox1 extends StatelessWidget {
     return Container(
                   margin: const EdgeInsets.all(1.0),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
+                    borderRadius: BorderRadius.circular(2),
                     color: secondGoals.isNotEmpty 
                     && secondGoals[hintNum]['secondGoal'] != ""
                     ? Color(int.parse(secondGoals[hintNum]['color'].replaceAll('Color(', '').replaceAll(')',''))) 
@@ -245,10 +245,7 @@ class MandalartBox1 extends StatelessWidget {
                     child: Text(
                       secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != "" ? secondGoals[hintNum]['secondGoal'] : "",
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 11,
-                      ),
+                      style: const TextStyle(color: backgroundColor, fontWeight: FontWeight.w400, fontSize: 12),
                     ),
                   )
                 );
@@ -292,7 +289,7 @@ class MandalartBox2 extends StatelessWidget {
     return Container(
                   margin: const EdgeInsets.all(1.0),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
+                    borderRadius: BorderRadius.circular(2),
                     color: secondGoals.isNotEmpty &&
                       secondGoals[hintNum2]['thirdGoals'].isNotEmpty 
                       && secondGoals[hintNum2]['thirdGoals'].asMap().containsKey(hintNum3) && secondGoals[hintNum2]['thirdGoals'][hintNum3]['thirdGoal'] == "" ? Colors.transparent : colorPalette[color]
@@ -305,10 +302,7 @@ class MandalartBox2 extends StatelessWidget {
                       ? secondGoals[hintNum2]['thirdGoals'][hintNum3]['thirdGoal']
                       : "",
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 11,
-                      ),
+                      style: const TextStyle(color: backgroundColor, fontWeight: FontWeight.w400, fontSize: 12),
                     ),
                   )
                 );

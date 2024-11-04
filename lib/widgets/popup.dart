@@ -33,8 +33,8 @@ class PopupDialog extends StatelessWidget {
         TextButton(
           onPressed: onDelete ?? () => Navigator.of(context).pop(),
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(Colors.red),
-            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            backgroundColor: MaterialStateProperty.all(Colors.red),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
@@ -52,8 +52,8 @@ class PopupDialog extends StatelessWidget {
         TextButton(
           onPressed: onSignOut ?? () => Navigator.of(context).pop(),
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(Colors.red),
-            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            backgroundColor: MaterialStateProperty.all(Colors.red),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
@@ -126,7 +126,7 @@ class PopupDialog extends StatelessWidget {
                             TextButton(
                               onPressed: () => Navigator.of(context).pop(),
                               style: ButtonStyle(
-                                shape: WidgetStateProperty.all<
+                                shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   const RoundedRectangleBorder(
                                     borderRadius:

@@ -1,4 +1,5 @@
 // 3X3 만다라트 세부 화면
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 
 class MandalartGrid4 extends StatefulWidget {
@@ -73,7 +74,8 @@ class MandalartBox1 extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 17,)
+                        fontSize: 15,
+                        color: backgroundColor)
                     ),
                   )
                 );
@@ -132,7 +134,8 @@ class MandalartBox2 extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 17,)
+                        fontSize: 15,
+                        color: backgroundColor)
                     ),
                   )
                 );

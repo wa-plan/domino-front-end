@@ -1,3 +1,4 @@
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -16,7 +17,7 @@ class ColorBox2 extends StatelessWidget {
                     .watch<SaveInputtedDetailGoalModel>()
                     .inputtedDetailGoal['$keyNumber']!
                     .isEmpty
-                ? const Color(0xff262626)
+                ? const Color(0xff2A2A2A)
                 : context.watch<GoalColor>().selectedGoalColor['$keyNumber']),
         margin: const EdgeInsets.all(1.0),
         child: Center(
@@ -26,9 +27,9 @@ class ColorBox2 extends StatelessWidget {
               .inputtedDetailGoal['$keyNumber']!,
           textAlign: TextAlign.center,
           style: const TextStyle(
-            fontWeight: FontWeight.w500,
-                        fontSize: 11
-          ),
+              color: backgroundColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 11),
         )));
   }
 }

@@ -1,5 +1,6 @@
 // DP 메인 페이지 (사용자의 만다라트 리스트)
 import 'package:domino/provider/DP/model.dart';
+import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/mandalart.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/DP/create_select_page.dart';
@@ -28,48 +29,51 @@ class _DPlistPageState extends State<DPlistPage> {
   }
 
   void _mainGoalList() async {
-  List<Map<String, dynamic>>? goals = await MainGoalListService.mainGoalList(context);
-  if (goals != null) {
-    List<Map<String, dynamic>> filteredGoals = [];
-    List<Map<String, dynamic>> emptySecondGoals = []; // 비어 있는 secondGoals를 위한 리스트 추가
+    List<Map<String, dynamic>>? goals =
+        await MainGoalListService.mainGoalList(context);
+    if (goals != null) {
+      List<Map<String, dynamic>> filteredGoals = [];
+      List<Map<String, dynamic>> emptySecondGoals =
+          []; // 비어 있는 secondGoals를 위한 리스트 추가
 
-    for (var goal in goals) {
-      final mandalartId = goal['id'].toString();
-      final name = goal['name']; // 목표의 이름 가져오기
+      for (var goal in goals) {
+        final mandalartId = goal['id'].toString();
+        final name = goal['name']; // 목표의 이름 가져오기
 
-      // Fetch second goals to check their content
-      final data = await _fetchSecondGoals(mandalartId);
-      if (data != null) {
-        final secondGoals = data[0]['secondGoals'] as List<Map<String, dynamic>>?;
+        // Fetch second goals to check their content
+        final data = await _fetchSecondGoals(mandalartId);
+        if (data != null) {
+          final secondGoals =
+              data[0]['secondGoals'] as List<Map<String, dynamic>>?;
 
-        // Only add the goal if secondGoals is not null and not empty
-        if (secondGoals != null && secondGoals.isNotEmpty) {
-          filteredGoals.add(goal);
-        } else {
-          // secondGoals가 비어있을 경우 mandalartId와 name을 emptySecondGoals 리스트에 추가
-          emptySecondGoals.add({
-            'mandalartId': mandalartId,
-            'name': name,
-          });
-          print('empty = $emptySecondGoals');
+          // Only add the goal if secondGoals is not null and not empty
+          if (secondGoals != null && secondGoals.isNotEmpty) {
+            filteredGoals.add(goal);
+          } else {
+            // secondGoals가 비어있을 경우 mandalartId와 name을 emptySecondGoals 리스트에 추가
+            emptySecondGoals.add({
+              'mandalartId': mandalartId,
+              'name': name,
+            });
+            print('empty = $emptySecondGoals');
+          }
         }
       }
+
+      setState(() {
+        mainGoals = filteredGoals;
+        emptyMainGoals = emptySecondGoals; // Update state with filtered goals
+        // 필요에 따라 emptySecondGoals 리스트를 다른 상태 변수에 저장할 수 있습니다.
+        // 예를 들어:
+        // this.emptyGoals = emptySecondGoals;
+      });
     }
-
-    setState(() {
-      mainGoals = filteredGoals;
-      emptyMainGoals = emptySecondGoals; // Update state with filtered goals
-      // 필요에 따라 emptySecondGoals 리스트를 다른 상태 변수에 저장할 수 있습니다.
-      // 예를 들어:
-      // this.emptyGoals = emptySecondGoals;
-    });
   }
-}
 
-Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async {
-  return await SecondGoalListService.secondGoalList(context, mandalartId);
-}
-
+  Future<List<Map<String, dynamic>>?> _fetchSecondGoals(
+      String mandalartId) async {
+    return await SecondGoalListService.secondGoalList(context, mandalartId);
+  }
 
   @override
   void dispose() {
@@ -80,25 +84,19 @@ Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff262626),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff262626),
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Text(
-            '도미노 플랜',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.06,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          padding: appBarPadding,
+          child: Text('도미노 플랜', style: Theme.of(context).textTheme.titleLarge),
         ),
+        backgroundColor: backgroundColor,
       ),
       bottomNavigationBar: const NavBar(),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(40.0, 30.0, 40.0, 30.0),
+        padding: const EdgeInsets.fromLTRB(25.0, 10, 25.0, 20.0),
         child: Column(
           children: [
             Row(
@@ -106,8 +104,8 @@ Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async 
               children: [
                 IconButton(
                   icon: const Icon(Icons.add),
-                  color: const Color(0xff5C5C5C),
-                  iconSize: 35.0,
+                  color: const Color(0xffD4D4D4),
+                  iconSize: 30,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   visualDensity: VisualDensity.compact,
@@ -137,7 +135,7 @@ Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async 
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>  DPcreateSelectPage(
+                        builder: (context) => DPcreateSelectPage(
                           emptyMainGoals: emptyMainGoals,
                         ),
                       ),
@@ -146,7 +144,7 @@ Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async 
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
             Expanded(
               child: PageView.builder(
                 controller: _pageController, // PageController 연결
@@ -182,7 +180,8 @@ Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async 
 
                         // secondGoals가 null이거나 비어있는 경우 해당 항목을 건너뜀
                         if (secondGoals == null || secondGoals.isEmpty) {
-                          return const SizedBox.shrink(); // 빈 위젯 반환하여 해당 페이지를 스킵
+                          return const SizedBox
+                              .shrink(); // 빈 위젯 반환하여 해당 페이지를 스킵
                         }
 
                         return GestureDetector(
@@ -198,23 +197,32 @@ Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async 
                               ),
                             );
                           },
-                          child: Column(
-                            children: [
-                              Text(
-                                mandalart,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 20),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff2A2A2A),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 15),
+                                Text(
+                                  mandalart,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              MandalartGrid(
-                                mandalart: mandalart,
-                                secondGoals: secondGoals,
-                                mandalartId: int.parse(mandalartId),
-                              ),
-                            ],
+                                const SizedBox(height: 30),
+                                MandalartGrid(
+                                  mandalart: mandalart,
+                                  secondGoals: secondGoals,
+                                  mandalartId: int.parse(mandalartId),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }
@@ -223,17 +231,17 @@ Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async 
                 },
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
             SmoothPageIndicator(
               // PageIndicator 추가
               controller: _pageController, // PageController 연결
               count: mainGoals.length, // 총 페이지 수
               effect: const ColorTransitionEffect(
                 // 스타일 설정
-                dotHeight: 10.0,
-                dotWidth: 10.0,
+                dotHeight: 8.0,
+                dotWidth: 8.0,
                 activeDotColor: Color(0xffFF6767),
-                dotColor: Colors.white,
+                dotColor: Colors.grey
               ),
             ),
             const SizedBox(height: 20), // 간격 조절
