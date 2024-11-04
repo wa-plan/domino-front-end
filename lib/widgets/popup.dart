@@ -71,8 +71,8 @@ class PopupDialog extends StatelessWidget {
         TextButton(
           onPressed: onSuccess ?? () => Navigator.of(context).pop(),
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(Colors.transparent),
-            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(4)),
               ),
