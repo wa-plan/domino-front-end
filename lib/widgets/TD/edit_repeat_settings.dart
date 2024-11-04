@@ -40,7 +40,7 @@ class EditRepeatSettingsState extends State<EditRepeatSettings> {
             Row(
               children: [
                 Checkbox(
-                  side: WidgetStateBorderSide.resolveWith((states) =>
+                  side: MaterialStateBorderSide.resolveWith((states) =>
                       const BorderSide(
                           width: 1.5,
                           color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
@@ -66,7 +66,7 @@ class EditRepeatSettingsState extends State<EditRepeatSettings> {
             Row(
               children: [
                 Checkbox(
-                  side: WidgetStateBorderSide.resolveWith((states) =>
+                  side: MaterialStateBorderSide.resolveWith((states) =>
                       const BorderSide(
                           width: 1.5,
                           color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
@@ -92,7 +92,7 @@ class EditRepeatSettingsState extends State<EditRepeatSettings> {
             Row(
               children: [
                 Checkbox(
-                  side: WidgetStateBorderSide.resolveWith((states) =>
+                  side: MaterialStateBorderSide.resolveWith((states) =>
                       const BorderSide(
                           width: 1.5,
                           color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
@@ -120,7 +120,7 @@ class EditRepeatSettingsState extends State<EditRepeatSettings> {
             Row(
               children: [
                 Checkbox(
-                  side: WidgetStateBorderSide.resolveWith((states) =>
+                  side: MaterialStateBorderSide.resolveWith((states) =>
                       const BorderSide(
                           width: 1.5,
                           color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
