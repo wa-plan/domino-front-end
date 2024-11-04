@@ -115,23 +115,23 @@ class DateListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateRepeatSettings() {
-    if (_interval == 1) {
+  void updateRepeatSettings(int interval) {
+    if (interval == 1) {
       _everyDay = true;
       _everyWeek = false;
       _everyTwoWeek = false;
       _everyMonth = false;
-    } else if (_interval == 7) {
+    } else if (interval == 7) {
       _everyDay = false;
       _everyWeek = true;
       _everyTwoWeek = false;
       _everyMonth = false;
-    } else if (_interval == 14) {
+    } else if (interval == 14) {
       _everyDay = false;
       _everyWeek = false;
       _everyTwoWeek = true;
       _everyMonth = false;
-    } else if (_interval > 14) {
+    } else if (interval > 14) {
       _everyDay = false;
       _everyWeek = false;
       _everyTwoWeek = false;

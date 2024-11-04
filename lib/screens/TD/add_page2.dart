@@ -23,22 +23,19 @@ class AddPage2 extends StatefulWidget {
 }
 
 class AddPage2State extends State<AddPage2> {
+  late int thirdGoalId;
+
   final formKey = GlobalKey<FormState>();
   late TextEditingController dominoController; // 'late'로 나중에 초기화될 것을 명시
   bool switchValue = false;
+
+
   String dominoValue = '';
-  int thirdGoalId = 99;
+  String repeatInfo = '';
 
   RepeatSettingsState repeatSettings =
       RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
 
-  @override
-  void initState() {
-    super.initState();
-    dominoController = TextEditingController(
-        text: widget.thirdGoalName); // initState에서 widget에 접근하여 초기화
-    context.read<DateProvider>().clearPickedDate(); // DateProvider 초기화
-  }
 
   @override
   void dispose() {
@@ -102,6 +99,15 @@ class AddPage2State extends State<AddPage2> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dominoController = TextEditingController(
+        text: widget.thirdGoalName); // initState에서 widget에 접근하여 초기화
+    context.read<DateProvider>().clearPickedDate();
+    thirdGoalId = widget.thirdGoalId;
   }
 
   @override
@@ -213,6 +219,7 @@ class AddPage2State extends State<AddPage2> {
                           ),
                         ],
                       ),
+<<<<<<< YujinPark3
                       const SizedBox(height: 20),
                       if (switchValue) const RepeatSettings(),
                       const SizedBox(height: 20),
@@ -281,6 +288,67 @@ class AddPage2State extends State<AddPage2> {
                         ],
                       )
                     ],
+=======
+                      if (switchValue) const RepeatSettings() // 반복 설정 위젯 추가
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xff131313),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                  ),
+                  child: const Text(
+                    '이전',
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+
+                      DateTime? pickedDate =
+                          context.read<DateProvider>().pickedDate;
+
+                      if (pickedDate == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('날짜를 선택해 주세요.')),
+                        );
+                      } else {
+                        context
+                            .read<DateListProvider>()
+                            .setInterval(switchValue, pickedDate);
+                        List<DateTime> dateList =
+                            context.read<DateListProvider>().dateList;
+                        repeatInfo =
+                            context.read<DateListProvider>().repeatInfo();
+                        print('repeatInfo=$repeatInfo');
+                        addDomino(widget.thirdGoalId, dominoController.text,
+                            dateList, repeatInfo);
+                      }
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 57, 33, 33),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                  ),
+                  child: const Text(
+                    '완료',
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+>>>>>>> dev
                   ),
                 ],
               ),
