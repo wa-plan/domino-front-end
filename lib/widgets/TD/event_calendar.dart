@@ -295,6 +295,12 @@ class _EventCalendarState extends State<EventCalendar> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onLongPress: () {
+                        print(
+                          value[index]
+                              .color
+                              .replaceAll('Color(', '') // 'Color(' 부분 제거
+                              .replaceAll(')', ''),
+                        );
 
                         // 롱 프레스 이벤트 처리
                         if (value[index].repetition != 'NONE') {
@@ -315,8 +321,6 @@ class _EventCalendarState extends State<EventCalendar> {
                           value[index].switchValue = false;
                           value[index].interval = 0;
                         }
-                        print('repetition=${value[index].repetition}');
-                        print('interval=${value[index].interval}');
 
                         editDialog(
                             context,
@@ -342,8 +346,15 @@ class _EventCalendarState extends State<EventCalendar> {
                               height: 50,
                               margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
                               decoration: BoxDecoration(
-                                color: mainRed,
+                                color: Color(int.parse(
+                                  value[index]
+                                      .color
+                                      .replaceAll(
+                                          'Color(', '') // 'Color(' 부분 제거
+                                      .replaceAll(')', ''),
+                                )),
                                 borderRadius: BorderRadius.circular(2),
+
                               ),
                             ),
                             Column(

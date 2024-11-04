@@ -1,3 +1,4 @@
+import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:domino/screens/MG/piechart.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data'; // Uint8List 사용을 위한 라이브러리 임포트
@@ -93,7 +94,6 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   @override
   void initState() {
     super.initState();
-    _selectedStatus = _status[1];
 
     name = widget.name;
     dday = widget.dday;
@@ -111,13 +111,17 @@ class MyGoalDetailState extends State<MyGoalDetail> {
 
     goalImage = photoList.map((photo) => 'assets/img/$photo').toList();
     print('goalImage=$goalImage');
-    //failedRate = total == 0 ? 0 : (failedNum / total * 100).toInt();
 
-    /*if (successRate == 0 && inProgressRate == 0 && failedRate == 0) {
-      successRate = 1; // 기본값으로 1% 설정
-      inProgressRate = 0; // 기본값으로 1% 설정
-      failedRate = 0; // 기본값으로 1% 설정
-    }*/
+    if (status == 'FAIL') {
+      _selectedStatus = _status[0];
+    } else if (status == 'IN_PROGRESS') {
+      _selectedStatus = _status[1];
+    } else if (status == 'SUCCESS') {
+      _selectedStatus = _status[2];
+    } else {
+      // status가 예상 범위를 벗어날 경우 처리
+      _selectedStatus = _status[1]; // 기본값으로 '진행 중' 설정
+    }
   }
 
   void _onFileSelected() {
@@ -234,14 +238,15 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                               color: Colors.white, fontSize: 16),
                           onChanged: (value) {
                             setState(() {
-                              _selectedStatus = value!;
+                              _selectedStatus = value;
                               if (_selectedStatus == '달성 완료') {
                                 PopupDialog.show(
                                   context,
                                   '대박! 이 목표 정말 \n달성 완료한거야?',
                                   true, // cancel
                                   false, // delete
-                                  true, // signout
+                                  false, // signout
+                                  true, //success
                                   onCancel: () {
                                     // 취소 버튼을 눌렀을 때 실행할 코드
                                     Navigator.of(context).pop();
@@ -252,6 +257,47 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                   },
                                   onSignOut: () {
                                     // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSuccess: () {
+                                    _mandaProgress(
+                                        int.parse(widget.id), "SUCCESS");
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const MyGoal(),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                              if (_selectedStatus == '달성 실패') {
+                                PopupDialog.show(
+                                  context,
+                                  '아쉬워! 이 목표는 \n달성 실패인거야?',
+                                  true, // cancel
+                                  false, // delete
+                                  false, // signout
+                                  true, //success
+                                  onCancel: () {
+                                    // 취소 버튼을 눌렀을 때 실행할 코드
+                                    Navigator.of(context).pop();
+                                  },
+
+                                  onDelete: () {
+                                    // 삭제 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSignOut: () {
+                                    // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSuccess: () {
+                                    _mandaProgress(
+                                        int.parse(widget.id), "FAIL");
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const MyGoal(),
+                                      ),
+                                    );
                                   },
                                 );
                               }
@@ -558,10 +604,3 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     );
   }
 }
-
-/*class GoalImage {
-  final String image; // 이미지 경로
-  final String name; // 이미지 이름 (필요시 추가)
-
-  GoalImage({required this.image, required this.name});
-}*/
