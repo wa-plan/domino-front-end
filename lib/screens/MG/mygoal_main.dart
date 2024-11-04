@@ -459,7 +459,7 @@ Widget build(BuildContext context) {
                   height: 200,
                   child: PageView.builder(
                     controller: _pageController,
-                    itemCount: inProgressNamesList.length,
+                    itemCount: inProgressIDList.length,
                     itemBuilder: (context, index) {
                       final mandalart = mandalarts[index];
                       final dday = ddayList[index];
@@ -480,66 +480,21 @@ Widget build(BuildContext context) {
                   ),
                 ),
                 const SizedBox(height: 20),
-               
+                Center(
+                  child: SmoothPageIndicator(
+                    controller: _pageController,
+                    count: mandalarts.length,
+                    effect: const ColorTransitionEffect(
+                      dotHeight: 7.0,
+                      dotWidth: 7.0,
+                      activeDotColor: Color(0xffFF6767),
+                      dotColor: Color.fromARGB(255, 169, 169, 169),
+                    ),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 10),
-            Center(
-              child: SmoothPageIndicator(
-                controller: _pageController,
-                count: mandalarts.length,
-                effect: const ColorTransitionEffect(
-                  dotHeight: 7.0,
-                  dotWidth: 7.0,
-                  activeDotColor: Color(0xffFF6767),
-                  dotColor: Color.fromARGB(255, 169, 169, 169),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 200,
-                    child: PageView.builder(
-                      controller: _pageController,
-                      itemCount: inProgressIDList.length,
-                      itemBuilder: (context, index) {
-                        final mandalart = mandalarts[index];
-                        final dday = ddayList[index];
-                        final failed = failedList[index];
-                        final inProgressNum = inProgressNumList[index];
-                        final successNum = successNumList[index];
-                        final mandaDescription = mandaDescriptionList[index];
-                        return _buildGoalCard(
-                            mandalart,
-                            index,
-                            dday,
-                            mandaDescription,
-                            failed,
-                            inProgressNum,
-                            successNum);
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SmoothPageIndicator(
-                    controller: _pageController,
-                    count: inProgressIDList.length, // 총 페이지 수
-                    effect: const ColorTransitionEffect(
-                      // 스타일 설정
-                      dotHeight: 10.0,
-                      dotWidth: 10.0,
-                      activeDotColor: Color(0xffFF6767),
-                      dotColor: Colors.white,
-                    ),
-                  ),
-                ],
-
-            ),
-            const SizedBox(height: 30),
             Text(
               '오늘의 응원',
               style: TextStyle(
@@ -554,7 +509,6 @@ Widget build(BuildContext context) {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 border: Border.all(color: const Color(0xff5C5C5C), width: 1),
-
               ),
               padding: const EdgeInsets.all(10.0),
               child: Text(
@@ -576,7 +530,7 @@ Widget build(BuildContext context) {
               ),
             ),
             const SizedBox(height: 15),
-            if (successNamesList.isEmpty)
+            if (successIDList.isEmpty)
               Image.asset('assets/img/completed_goals.png')
             else
               Container(
@@ -595,82 +549,40 @@ Widget build(BuildContext context) {
                 fontSize: MediaQuery.of(context).size.width * 0.035,
                 fontWeight: FontWeight.w400,
               ),
-              const SizedBox(height: 15),
-              if (successIDList.isEmpty)
-                Image.asset('assets/img/completed_goals.png')
-              else
-                Column(
-                  children: [
-                    // successIDList의 각 항목을 반복하여 Container 생성
-                    ...successIDList.map((item) {
-                      return GestureDetector(
-                        onTap: () {
-                          notInProgressInfo(context, item['id']);
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.green), // 원하는 배경색
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.width * 0.08,
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 5.0), // 항목 간격
-                          child: Center(
-                            child: Text(
-                              item['name'],
-                              style: const TextStyle(color: Colors.white),
-                            ),
+            ),
+            const SizedBox(height: 15),
+            if (failedIDList.isEmpty)
+              Image.asset('assets/img/failed_goals.png')
+            else
+              Column(
+                children: [
+                  ...failedIDList.map((item) {
+                    return GestureDetector(
+                      onTap: () {
+                        notInProgressInfo(context, item['id']);
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(color: Colors.green),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.width * 0.08,
+                        margin: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: Center(
+                          child: Text(
+                            item['name'],
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ),
-                      );
-                    }),
-                  ],
-                ),
-              const SizedBox(height: 30),
-              Text(
-                '쓰러트리지 못한 목표',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.04,
-                  fontWeight: FontWeight.bold,
-                ),
+                      ),
+                    );
+                  }),
+                ],
               ),
-              const SizedBox(height: 15),
-              if (failedIDList.isEmpty)
-                Image.asset('assets/img/failed_goals.png')
-              else
-                Column(
-                  children: [
-                    // successNamesList의 각 항목을 반복하여 Container 생성
-                    ...failedIDList.map((item) {
-                      return GestureDetector(
-                        onTap: () {
-                          notInProgressInfo(context, item['id']);
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.green), // 원하는 배경색
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.width * 0.08,
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 5.0), // 항목 간격
-                          child: Center(
-                            child: Text(
-                              item['name'],
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-            ],
-          ),
-
+          ],
         ),
       ),
     ),
   );
 }
+
 
 }
