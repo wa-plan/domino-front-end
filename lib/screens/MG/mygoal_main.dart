@@ -27,9 +27,9 @@ class _MyGoalState extends State<MyGoal> {
   int failed = 0; // 추가: 실패한 목표 수
   int dday = 0; // 추가: D-day
   String ddayString = '0';
-  List<String> failedNamesList = [];
-  List<String> inProgressNamesList = [];
-  List<String> successNamesList = [];
+  List<Map<String, dynamic>> failedIDList = [];
+  List<Map<String, dynamic>> inProgressIDList = [];
+  List<Map<String, dynamic>> successIDList = [];
   List<Map<String, dynamic>> photoList = [];
   String mandaDescription = '';
   bool bookmark = false;
@@ -105,19 +105,70 @@ class _MyGoalState extends State<MyGoal> {
           mandaDescriptionList[pageIndex] = data['description'];
           status = data['status'];
         }
+
         String name = data['name']; // name을 가져오기
+        int id = data['id'];
+
         if (status == "FAIL") {
-          failedNamesList.add(name); // "FAIL" 상태의 name을 추가
+          failedIDList.add({"id": id, "name": name}); // "FAIL" 상태의 name을 추가
         } else if (status == "IN_PROGRESS") {
-          inProgressNamesList.add(name); // "IN_PROGRESS" 상태의 name을 추가
+          inProgressIDList
+              .add({"id": id, "name": name}); // "IN_PROGRESS" 상태의 name을 추가
         } else if (status == "SUCCESS") {
-          successNamesList.add(name); // "SUCCESS" 상태의 name을 추가
+          successIDList.add({"id": id, "name": name});
         }
         if (data['photoList'] is List) {
           photoList = List<Map<String, dynamic>>.from(data['photoList']);
         } else {
           photoList = [];
         }
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
+      );
+    }
+  }
+
+  void notInProgressInfo(context, int mandalartId) async {
+    final data = await UserMandaInfoService.userMandaInfo(context,
+        mandalartId: mandalartId);
+    if (data != null) {
+      setState(() {
+        // 페이지 인덱스 범위 체크
+        int plusId = data['id'];
+        String plusName = data['name'];
+        int plusDday = data['dday'];
+        String plusStatus = data['status'];
+        List<Map<String, dynamic>> plusPhotoList;
+        String plusMandaDescription = data['description'];
+        int plusFailedNum = data['statusNum']['failed'];
+        int plusInProgressNum = data['statusNum']['inProgressNum'];
+        int plusSuccessNum = data['statusNum']['successNum'];
+
+        if (data['photoList'] is List) {
+          plusPhotoList = List<Map<String, dynamic>>.from(data['photoList']);
+        } else {
+          plusPhotoList = [];
+        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MyGoalDetail(
+              id: plusId.toString(),
+              name: plusName,
+              dday: plusDday,
+              status: plusStatus,
+              photoList: plusPhotoList
+                  .map((photo) => photo['path'] as String)
+                  .toList(),
+              mandaDescription: plusMandaDescription,
+              failedNum: plusFailedNum,
+              inProgressNum: plusInProgressNum,
+              successNum: plusSuccessNum,
+            ),
+          ),
+        );
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -444,6 +495,49 @@ Widget build(BuildContext context) {
                   dotColor: Color.fromARGB(255, 169, 169, 169),
                 ),
               ),
+
+              const SizedBox(height: 10),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 200,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: inProgressIDList.length,
+                      itemBuilder: (context, index) {
+                        final mandalart = mandalarts[index];
+                        final dday = ddayList[index];
+                        final failed = failedList[index];
+                        final inProgressNum = inProgressNumList[index];
+                        final successNum = successNumList[index];
+                        final mandaDescription = mandaDescriptionList[index];
+                        return _buildGoalCard(
+                            mandalart,
+                            index,
+                            dday,
+                            mandaDescription,
+                            failed,
+                            inProgressNum,
+                            successNum);
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SmoothPageIndicator(
+                    controller: _pageController,
+                    count: inProgressIDList.length, // 총 페이지 수
+                    effect: const ColorTransitionEffect(
+                      // 스타일 설정
+                      dotHeight: 10.0,
+                      dotWidth: 10.0,
+                      activeDotColor: Color(0xffFF6767),
+                      dotColor: Colors.white,
+                    ),
+                  ),
+                ],
+
             ),
             const SizedBox(height: 30),
             Text(
@@ -460,6 +554,7 @@ Widget build(BuildContext context) {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 border: Border.all(color: const Color(0xff5C5C5C), width: 1),
+
               ),
               padding: const EdgeInsets.all(10.0),
               child: Text(
@@ -500,20 +595,78 @@ Widget build(BuildContext context) {
                 fontSize: MediaQuery.of(context).size.width * 0.035,
                 fontWeight: FontWeight.w400,
               ),
-            ),
-            const SizedBox(height: 15),
-            if (failedNamesList.isEmpty)
-              Image.asset('assets/img/failed_goals.png')
-            else
-              Container(
-                decoration: const BoxDecoration(color: Colors.yellow),
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.width * 0.04,
-                child: const Center(
-                  child: Text('쓰러트리지 못한 목표'),
+              const SizedBox(height: 15),
+              if (successIDList.isEmpty)
+                Image.asset('assets/img/completed_goals.png')
+              else
+                Column(
+                  children: [
+                    // successIDList의 각 항목을 반복하여 Container 생성
+                    ...successIDList.map((item) {
+                      return GestureDetector(
+                        onTap: () {
+                          notInProgressInfo(context, item['id']);
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.green), // 원하는 배경색
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.width * 0.08,
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5.0), // 항목 간격
+                          child: Center(
+                            child: Text(
+                              item['name'],
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              const SizedBox(height: 30),
+              Text(
+                '쓰러트리지 못한 목표',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.width * 0.04,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-          ],
+              const SizedBox(height: 15),
+              if (failedIDList.isEmpty)
+                Image.asset('assets/img/failed_goals.png')
+              else
+                Column(
+                  children: [
+                    // successNamesList의 각 항목을 반복하여 Container 생성
+                    ...failedIDList.map((item) {
+                      return GestureDetector(
+                        onTap: () {
+                          notInProgressInfo(context, item['id']);
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.green), // 원하는 배경색
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.width * 0.08,
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5.0), // 항목 간격
+                          child: Center(
+                            child: Text(
+                              item['name'],
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+            ],
+          ),
+
         ),
       ),
     ),

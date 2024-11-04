@@ -54,6 +54,7 @@ class _AccountManagementState extends State<AccountManagement> {
             Expanded(
               child: ListView(
                 children: [
+
                   const SizedBox(height: 15),
                   // Information Section
                  
@@ -65,7 +66,6 @@ class _AccountManagementState extends State<AccountManagement> {
                         menu: '휴대폰 번호',
                         title: '010 7536 7932',
                       ),
-                  
 
                   // Security Section
                
