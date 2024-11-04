@@ -217,6 +217,12 @@ class _EventCalendarState extends State<EventCalendar> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onLongPress: () {
+                        print(
+                          value[index]
+                              .color
+                              .replaceAll('Color(', '') // 'Color(' 부분 제거
+                              .replaceAll(')', ''),
+                        );
                         // 롱 프레스 이벤트 처리
                         if (value[index].repetition != 'NONE') {
                           value[index].switchValue = true;
@@ -236,8 +242,7 @@ class _EventCalendarState extends State<EventCalendar> {
                           value[index].switchValue = false;
                           value[index].interval = 0;
                         }
-                        print('repetition=${value[index].repetition}');
-                        print('interval=${value[index].interval}');
+
                         editDialog(
                             context,
                             _focusedDay,
@@ -263,7 +268,13 @@ class _EventCalendarState extends State<EventCalendar> {
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 20),
                               decoration: BoxDecoration(
-                                color: Colors.red,
+                                color: Color(int.parse(
+                                  value[index]
+                                      .color
+                                      .replaceAll(
+                                          'Color(', '') // 'Color(' 부분 제거
+                                      .replaceAll(')', ''),
+                                )),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
