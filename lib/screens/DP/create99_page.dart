@@ -1,5 +1,6 @@
-import 'package:domino/screens/DP/create_confirm_page.dart';
+import 'package:domino/screens/DP/create_color_page.dart';
 import 'package:domino/screens/DP/create_input1_page.dart';
+import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/smallgrid_with_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,33 +13,31 @@ class DPcreate99Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xff262626),
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xff262626),
+          titleSpacing: 0.0,
           title: Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+            padding: appBarPadding,
             child: Text(
               '플랜 만들기',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.06,
-                  fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
+          backgroundColor: backgroundColor,
         ),
         body: Padding(
-            padding: const EdgeInsets.fromLTRB(38.0, 15.0, 40.0, 0.0),
+            padding: fullPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
                   '목표를 이루기 위한 \n작은 계획들을 세워봐요.',
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.1),
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
@@ -103,7 +102,7 @@ class DPcreate99Page extends StatelessWidget {
                                       .selectedFinalGoal,
                                   style: const TextStyle(
                                       color: Colors.black,
-                                      fontSize: 8,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center,
                                 )),
@@ -128,7 +127,7 @@ class DPcreate99Page extends StatelessWidget {
                                   value!,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
-                                      color: Colors.black, fontSize: 15),
+                                      color: Colors.black, fontSize: 12,),
                                 )),
                               );
                             }
@@ -163,10 +162,9 @@ class DPcreate99Page extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    DPcreateConfirmPage(
-                                      mainGoalId: mainGoalId,
-                                    ),
+                                builder: (context) => DPcreateColorPage(
+                                  mainGoalId: mainGoalId,
+                                ),
                               ));
                         },
                         style: TextButton.styleFrom(
@@ -179,9 +177,7 @@ class DPcreate99Page extends StatelessWidget {
                         ),
                       )
                     ]),
-                const SizedBox(
-                  height: 20,
-                ),
+                
               ],
             )));
   }

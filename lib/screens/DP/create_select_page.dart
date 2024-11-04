@@ -1,4 +1,5 @@
 import 'package:domino/screens/DP/create99_page.dart';
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -6,8 +7,9 @@ import 'package:domino/widgets/DP/smallgrid.dart';
 import 'package:domino/apis/services/dp_services.dart';
 
 class DPcreateSelectPage extends StatefulWidget {
-  final List<Map<String, dynamic>> emptyMainGoals;
-  const DPcreateSelectPage({super.key, required this.emptyMainGoals});
+  List<Map<String, dynamic>> emptyMainGoals = [];
+  DPcreateSelectPage({super.key, required this.emptyMainGoals});
+
 
   @override
   State<DPcreateSelectPage> createState() => _DPcreateSelectPageState();
@@ -37,39 +39,40 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff262626),
+
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff262626),
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+          padding: appBarPadding,
           child: Text(
             '플랜 만들기',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.06,
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
+        backgroundColor: backgroundColor,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(38.0, 20.0, 40.0, 0.0),
+        padding: fullPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 5),
+
             const Text(
               "어떤 목표를 이루고 싶나요?",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 19,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1.1,
+
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 13),
             Container(
-              height: 43,
+              height: 45,
+
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -108,7 +111,9 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                       return match;
                     }).toList();
 
+
                     print('Filtered Goals: $filteredGoals');
+
 
                     if (filteredGoals.isEmpty) {
                       return const Center(
@@ -151,6 +156,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                       style: const TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.white,
                       underline: Container(),
+
                     );
                   } else {
                     return const Center(
@@ -164,52 +170,23 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
               ),
             ),
             const SizedBox(height: 20),
-            Expanded(
-              child: GridView(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 1,
-                  mainAxisSpacing: 1,
+            Container(
+                height: 43,
+                width: double.infinity,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  color: Color(0xffFCFF62),
+                  borderRadius: BorderRadius.all(Radius.circular(3)),
                 ),
-                children: List.generate(9, (index) {
-                  if (index == 4) {
-                    return SizedBox(
-                      width: 100,
-                      child: GridView.count(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 1,
-                        mainAxisSpacing: 1,
-                        children: List.generate(9, (innerIndex) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(3),
-                              color: innerIndex == 4
-                                  ? const Color(0xffFCFF62)
-                                  : const Color(0xff929292),
-                            ),
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.all(1.0),
-                            child: innerIndex == 4
-                                ? Text(
-                                    selectedGoalName,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  )
-                                : const Text(""),
-                          );
-                        }),
-                      ),
-                    );
-                  } else {
-                    return const Smallgrid();
-                  }
-                }),
-              ),
-            ),
+                child: Text(selectedGoalName,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                    ))),
+                    const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -251,7 +228,6 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
