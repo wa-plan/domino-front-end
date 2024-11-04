@@ -314,7 +314,7 @@ class AddThirdGoalService {
               msg: '목표가 성공적으로 저장되었습니다.',
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.BOTTOM,
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.black,
               textColor: Colors.white,
             );
           } else {

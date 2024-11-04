@@ -3,6 +3,7 @@ import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/screens/DP/edit99_page.dart';
 import 'package:domino/screens/DP/list_page.dart';
+import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/mandalart3.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,45 +23,42 @@ class DPdetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff262626),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff262626),
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Text(
-            '도미노 플랜',
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: MediaQuery.of(context).size.width * 0.06,
-                fontWeight: FontWeight.w600),
+          padding: appBarPadding,
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                color: const Color(0xffD4D4D4),
+                iconSize: 17,
+              ),
+              Text(
+                '도미노 플랜',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ],
           ),
         ),
+        backgroundColor: backgroundColor,
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
+        padding: fullPadding,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  color: const Color(0xff5C5C5C),
-                  iconSize: 30.0,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  visualDensity: VisualDensity.compact,
-                  onPressed: () {
-                    Navigator.pop(
-                      context
-                    );
-                  },
-                ),
                 PopupMenuButton(
-                  iconColor: const Color(0xff5C5C5C),
-                  iconSize: 30,
+                  iconColor: const Color(0xffD4D4D4),
+                  iconSize: 28,
                   itemBuilder: (context) {
                     return [
                       const PopupMenuItem(
@@ -177,12 +175,20 @@ class DPdetailPage extends StatelessWidget {
               mandalart,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 17,
+                fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 20),
-            Expanded(
+            const SizedBox(height: 25),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 20),
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+              height: 300,
+              width: 300,
               child: Center(
                 child: MandalartGrid3(
                   mandalart: mandalart,

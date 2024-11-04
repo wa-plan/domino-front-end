@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/widgets/TD/event_calendar.dart';
+import 'package:domino/styles.dart';
 
+// TD 메인 페이지 
 class TdMain extends StatelessWidget {
   const TdMain({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
+
+      //appBar
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+          padding: appBarPadding,
           child: Text(
             '오늘의 도미노',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.06,
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(context).textTheme.titleLarge
           ),
         ),
-        backgroundColor: const Color(0xff262626),
+        backgroundColor: backgroundColor,
       ),
-      backgroundColor: const Color(0xff262626),
-      body: const EventCalendar(),
+
+      //body
+      body: const Padding(
+        padding: fullPadding,
+        child: EventCalendar()),
       bottomNavigationBar: const NavBar(),
     );
   }

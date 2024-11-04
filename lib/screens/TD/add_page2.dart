@@ -1,5 +1,6 @@
 import 'package:domino/provider/TD/datelist_provider.dart';
 import 'package:domino/screens/TD/td_main.dart';
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/provider/TD/date_provider.dart';
 import 'package:domino/widgets/TD/add_calendar.dart';
@@ -28,11 +29,13 @@ class AddPage2State extends State<AddPage2> {
   late TextEditingController dominoController; // 'late'로 나중에 초기화될 것을 명시
   bool switchValue = false;
 
+
   String dominoValue = '';
   String repeatInfo = '';
 
   RepeatSettingsState repeatSettings =
       RepeatSettingsState(); // RepeatSettingsState 인스턴스 생성
+
 
   @override
   void dispose() {
@@ -64,21 +67,36 @@ class AddPage2State extends State<AddPage2> {
     required FormFieldSetter onSaved,
     required FormFieldValidator validator,
   }) {
-    return TextFormField(
-      onSaved: onSaved,
-      validator: validator,
-      controller: dominoController,
-      style: const TextStyle(fontSize: 16, color: Colors.white),
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        suffixIcon: dominoController.text.isNotEmpty
-            ? IconButton(
-                onPressed: () {
-                  dominoController.clear();
-                },
-                icon: const Icon(Icons.clear_outlined),
-              )
-            : null,
+    return SizedBox(
+      height: 45,
+      child: TextFormField(
+        onSaved: onSaved,
+        validator: validator,
+        controller: dominoController,
+        style: const TextStyle(fontSize: 16, color: Colors.white),
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(10.0),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(3),
+              borderSide:
+                  const BorderSide(color: Color(0xffBFBFBF), width: 0.5)),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(3),
+              borderSide:
+                  const BorderSide(color: Color(0xffBFBFBF), width: 0.5)),
+          suffixIcon: dominoController.text.isNotEmpty
+              ? IconButton(
+                  onPressed: () {
+                    dominoController.clear();
+                  },
+                  icon: const Icon(
+                    Icons.clear_outlined,
+                    color: Color(0xffBFBFBF),
+                    size: 17,
+                  ),
+                )
+              : null,
+        ),
       ),
     );
   }
@@ -95,26 +113,25 @@ class AddPage2State extends State<AddPage2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+          padding: appBarPadding,
           child: Text(
             '도미노 만들기',
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: MediaQuery.of(context).size.width * 0.06,
-                fontWeight: FontWeight.w600),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
-        backgroundColor: const Color(0xff262626),
+        backgroundColor: backgroundColor,
       ),
-      backgroundColor: const Color(0xff262626),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
+        padding: fullPadding,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            const SizedBox(height: 5),
             Expanded(
               child: ListView(
                 children: [
@@ -124,20 +141,20 @@ class AddPage2State extends State<AddPage2> {
                       const Text(
                         '더 자세하게 바꿀 수 있어요.',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.1),
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       const Text(
-                        '예시) 영어 공부 > 영단어 5개 암기',
+                        '영어 공부를 영단어 5개 암기로!',
                         style: TextStyle(
-                            color: Color(0xffF6C92B),
+                            color: mainGold,
                             fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             letterSpacing: 1.1),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 13),
                       Form(
                         key: formKey,
                         child: renderTextFormField(
@@ -148,22 +165,35 @@ class AddPage2State extends State<AddPage2> {
                           },
                           validator: (value) {
                             if (value!.length < 1) {
-                              return '1자 이상 써주세요';
+                              return '한 글자 이상 써주세요';
                             }
                             return null;
                           },
                         ),
                       ),
-                      const SizedBox(height: 35),
+                      const SizedBox(height: 28),
                       const Text(
                         '언제 실행하고 싶나요?',
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                      const AddCalendar(), // 달력 위젯 추가
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 14),
+                      Center(
+                        child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 15),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff2A2A2A),
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            height: 350,
+                            width: 350,
+                            child: const AddCalendar()),
+                      ),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -172,13 +202,20 @@ class AddPage2State extends State<AddPage2> {
                             style: TextStyle(color: Colors.white),
                           ),
                           const SizedBox(width: 10),
-                          Switch(
-                            value: switchValue,
-                            onChanged: (value) {
-                              setState(() {
-                                switchValue = value;
-                              });
-                            },
+                          SizedBox(
+                            height: 10,
+                            child: Switch(
+                              activeColor: Colors.white,
+                              activeTrackColor: const Color(0xff18AD00),
+                              inactiveTrackColor: const Color(0xff5D5D5D),
+                              inactiveThumbColor: Colors.white,
+                              value: switchValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  switchValue = value;
+                                });
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -233,7 +270,7 @@ class AddPage2State extends State<AddPage2> {
                     }
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 57, 33, 33),
+                    backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0),
                     ),
@@ -242,9 +279,9 @@ class AddPage2State extends State<AddPage2> {
                     '완료',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
-                )
-              ],
-            ),
+                
+              ),
+           ] ),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 
 class ContactUs extends StatefulWidget {
@@ -11,48 +12,80 @@ class _ContactUsState extends State<ContactUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
         appBar: AppBar(
           automaticallyImplyLeading: false,
+          titleSpacing: 0.0,
           title: Padding(
-            padding: const EdgeInsets.fromLTRB(5.0, 20.0, 20.0, 0.0),
+            padding: appBarPadding,
             child: Row(
               children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                  color: Colors.white,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  '문의하기',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: MediaQuery.of(context).size.width * 0.06,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                color: const Color(0xffD4D4D4),
+                iconSize: 17,
+              ),
+              Text(
+                '문의하기',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ],
             ),
           ),
-          backgroundColor: const Color(0xff262626),
+          backgroundColor: backgroundColor,
         ),
-        backgroundColor: const Color(0xff262626),
-        body: const Padding(
-          padding: EdgeInsets.fromLTRB(38.0, 30.0, 40.0, 0.0),
-          child: Row(
+        body: Padding(
+          padding: fullPadding,
+          child: Column(
             children: [
-              Text(
-                '이메일',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+              const SizedBox(height: 15),
+              Container(
+                color: const Color(0xff2A2A2A),
+                height: 350,
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('언제나 물어봐!',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17
+                      ),),
+                    const SizedBox(height: 15),
+                    const Text(
+                      '궁금한 점이 있거나,\n개선하고 싶은 점이 있으면\n내 이메일은 24시간 열려있어!',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14
+                      ),),
+                      const Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 90),
+                            Icon(Icons.email, color: Color(0xffD4D4D4)),
+                            SizedBox(height: 3),
+                            Text('new7932@naver.com',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 13
+                              ),),
+                          ],
+                        ),
+                        const SizedBox(width: 10),
+                        Image.asset('assets/img/Dominho2.png')
+                      ],
+                    )
+                  ],
+                )
               ),
-              SizedBox(
-                width: 130,
-              ),
-              Text('new7932@naver.com',
-                  style: TextStyle(color: Colors.white, fontSize: 16))
             ],
           ),
         ));

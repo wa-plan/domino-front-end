@@ -1,6 +1,7 @@
 // DP 디테일 페이지에 들어가는 9x9 만다라트 (3x3 만다라트 선택 가능)
 import 'package:domino/screens/DP/detail2_page.dart';
 import 'package:domino/screens/DP/detail3_page.dart';
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 
 class MandalartGrid3 extends StatefulWidget {
@@ -212,7 +213,8 @@ class MandalartGrid3 extends StatefulWidget {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 12,)
+                        fontSize: 12,
+                        color: backgroundColor,)
                     ),
                   )
                 ),
@@ -332,7 +334,8 @@ class MandalartBox1 extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 11,)
+                        fontSize: 11,
+                        color: backgroundColor,)
                     ),
                   )
                 );
@@ -390,6 +393,7 @@ class MandalartBox2 extends StatelessWidget {
                       : "",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
+                        color: backgroundColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 11,)
                     ),

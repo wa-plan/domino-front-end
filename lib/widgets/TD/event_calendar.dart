@@ -4,6 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:domino/screens/TD/add_page1.dart';
 import 'package:domino/screens/TD/edit_page.dart';
 import 'package:intl/intl.dart'; // 요일 변환을 위한 패키지
+import 'package:domino/styles.dart';
 
 class EventCalendar extends StatefulWidget {
   const EventCalendar({super.key});
@@ -17,11 +18,11 @@ class _EventCalendarState extends State<EventCalendar> {
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
   late final ValueNotifier<List<Event>> _selectedEvents;
+  bool _isExpanded = false; // 달력 확장 상태
 
   @override
   void initState() {
     super.initState();
-
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier([]);
     dominoInfo(_selectedDay!);
@@ -43,17 +44,79 @@ class _EventCalendarState extends State<EventCalendar> {
     }
   }
 
+  void editDialog(BuildContext context, DateTime date, String title,
+      String content, bool switchValue, int interval, int id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // 다이얼로그 안에 들어갈 변수
+        TextEditingController titleController =
+            TextEditingController(text: title);
+        TextEditingController contentController =
+            TextEditingController(text: content);
+
+        return AlertDialog(
+          title: const Text('Edit Event'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              TextField(
+                controller: contentController,
+                decoration: const InputDecoration(labelText: 'Content'),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Switch Value'),
+                  Switch(
+                    value: switchValue,
+                    onChanged: (bool value) {
+                      setState(() {
+                        switchValue = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // 수정된 값을 반영하는 코드를 여기에 추가
+                setState(() {
+                  // 필요한 경우 이벤트 정보 업데이트
+                  // 예: _updateEvent(id, titleController.text, contentController.text, switchValue);
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void dominoStatus(int goalId, String attainment, String date) async {
     final success = await DominoStatusService.dominoStatus(
         goalId: goalId, attainment: attainment, date: date);
 
     if (success) {
-      // 성공적으로 서버에 전송된 경우에 처리할 코드
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('상태가 $attainment(으)로 업데이트 되었습니다.')),
       );
     } else {
-      // 실패한 경우에 처리할 코드
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('업데이트에 실패했습니다.')),
       );
@@ -66,9 +129,21 @@ class _EventCalendarState extends State<EventCalendar> {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
       });
-
       dominoInfo(selectedDay);
     }
+  }
+
+  // 캘린더 형식을 토글하는 함수
+  void _toggleCalendarFormat() {
+    setState(() {
+      if (_calendarFormat == CalendarFormat.week) {
+        _calendarFormat = CalendarFormat.month;
+        _isExpanded = true;
+      } else {
+        _calendarFormat = CalendarFormat.week;
+        _isExpanded = false;
+      }
+    });
   }
 
   @override
@@ -81,89 +156,99 @@ class _EventCalendarState extends State<EventCalendar> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: TableCalendar<Event>(
-            firstDay: DateTime.utc(2014, 1, 1),
-            lastDay: DateTime.utc(2034, 12, 31),
-            focusedDay: _focusedDay,
-            eventLoader: (day) {
-              if (isSameDay(day, _selectedDay)) {
-                return _selectedEvents.value;
-              }
-              return [];
-            },
-            calendarFormat: _calendarFormat,
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: _onDaySelected,
-            onPageChanged: (focusedDay) {
+        TableCalendar<Event>(
+          firstDay: DateTime.utc(2014, 1, 1),
+          lastDay: DateTime.utc(2034, 12, 31),
+          focusedDay: _focusedDay,
+          eventLoader: (day) {
+            if (isSameDay(day, _selectedDay)) {
+              return _selectedEvents.value;
+            }
+            return [];
+          },
+          calendarFormat: _calendarFormat,
+          selectedDayPredicate: (day) {
+            return isSameDay(_selectedDay, day);
+          },
+          onDaySelected: _onDaySelected,
+          onPageChanged: (focusedDay) {
+            setState(() {
+              _focusedDay = focusedDay;
+              _selectedDay = focusedDay;
+            });
+            dominoInfo(focusedDay);
+          },
+          onFormatChanged: (format) {
+            if (_calendarFormat != format) {
               setState(() {
-                _focusedDay = focusedDay;
-                _selectedDay = focusedDay;
+                _calendarFormat = format;
               });
-              dominoInfo(focusedDay);
-            },
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            availableCalendarFormats: const {
-              CalendarFormat.month: '한달',
-              CalendarFormat.week: '1주',
-            },
-            locale: 'ko-KR',
-            calendarStyle: CalendarStyle(
-                markerSize: 0.0,
-                isTodayHighlighted: true,
-                todayDecoration: const BoxDecoration(
-                    color: Color(0xFF5B5B5B), shape: BoxShape.circle),
-                selectedDecoration: const BoxDecoration(
-                    color: Color(0xFFFF6767), shape: BoxShape.rectangle),
-                defaultTextStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.035,
-                ),
-                weekendTextStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.035,
-                )),
-            headerStyle: HeaderStyle(
-              leftChevronMargin: const EdgeInsets.only(right: 55.0),
-              // formatButtonVisible: false,
-              titleCentered: true,
-              titleTextStyle:
-                  const TextStyle(color: Colors.white, fontSize: 20),
-              leftChevronIcon: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-              ),
-              rightChevronIcon: const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white,
-              ),
-              formatButtonVisible: true,
-              formatButtonDecoration: BoxDecoration(
-                color: Colors.transparent, // 버튼의 배경색을 투명으로 설정
-                borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(
-                  color: Colors.white, // 윤곽선을 흰색으로 설정
-                ),
-              ),
-              formatButtonTextStyle: const TextStyle(
-                color: Colors.white,
-                fontSize: 14.0,
-              ),
+            }
+          },
+          availableCalendarFormats: const {
+            CalendarFormat.month: '열기',
+            CalendarFormat.week: '닫기',
+          },
+          locale: 'ko-KR',
+          calendarStyle: CalendarStyle(
+            markerSize: 0.0,
+            isTodayHighlighted: true,
+            todayDecoration: const BoxDecoration(
+                color: Color(0xFF5B5B5B), shape: BoxShape.circle),
+            selectedDecoration: const BoxDecoration(
+              color: mainRed,
+              shape: BoxShape.circle,
             ),
+            defaultTextStyle: TextStyle(
+              color: mainTextColor,
+              fontSize: MediaQuery.of(context).size.width * 0.035,
+            ),
+            weekendTextStyle: TextStyle(
+              color: mainTextColor,
+              fontSize: MediaQuery.of(context).size.width * 0.035,
+            ),
+          ),
+          daysOfWeekStyle: const DaysOfWeekStyle(
+            weekdayStyle: TextStyle(color: Color(0xffD4D4D4)), // 평일 색상
+            weekendStyle: TextStyle(color: Color(0xffD4D4D4)), // 주말 색상
+          ),
+          headerStyle: const HeaderStyle(
+            titleCentered: true,
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 15),
+            leftChevronIcon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xffD4D4D4),
+              size: 17,
+            ),
+            rightChevronIcon: Icon(
+              Icons.arrow_forward_ios,
+              color: Color(0xffD4D4D4),
+              size: 17,
+            ),
+            formatButtonVisible:
+                false, //원래 달력 열고 닫는 버튼. 지금은 화살표 아이콘이 역할을 대신하고 있음.
           ),
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(width: MediaQuery.of(context).size.width * (6 / 7)),
+            IconButton(
+              onPressed: () {},
+              padding: EdgeInsets.zero, // 패딩 설정
+              constraints: const BoxConstraints(),
+              icon: const Icon(Icons.add, color: backgroundColor, size: 26),
+            ),
+            // 화살표 버튼 추가
+            IconButton(
+              onPressed: _toggleCalendarFormat,
+              padding: EdgeInsets.zero, // 패딩 설정
+              constraints: const BoxConstraints(), // constraints
+              icon: Icon(
+                _isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                color: const Color(0xffD4D4D4),
+                size: 30,
+              ),
+            ),
             IconButton(
               onPressed: () {
                 Navigator.push(
@@ -172,23 +257,18 @@ class _EventCalendarState extends State<EventCalendar> {
                       builder: (context) => const AddPage1(),
                     ));
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff262626),
-                elevation: 0.0,
-              ),
-              icon: const Icon(Icons.add, color: Color(0xff5C5C5C), size: 30),
-              alignment: Alignment.centerRight,
-            ), //루틴 추가하기 아이콘
+              padding: EdgeInsets.zero, // 패딩 설정
+              constraints: const BoxConstraints(),
+              icon: const Icon(Icons.add, color: Color(0xffD4D4D4), size: 26),
+            ),
           ],
         ),
-        const SizedBox(height: 8.0),
+        const SizedBox(height: 10,),
         Expanded(
           child: ValueListenableBuilder<List<Event>>(
-            //ValueNotifier의 값이 변경될 때마다 자신의 'builder' 콜백을 호출한다.
             valueListenable: _selectedEvents,
             builder: (context, value, _) {
               if (value.isEmpty) {
-                // 이벤트가 없는 경우
                 return const Center(
                   child: Column(
                     children: [
@@ -210,8 +290,6 @@ class _EventCalendarState extends State<EventCalendar> {
                   ),
                 );
               } else {
-                // 이벤트가 있는 경우
-
                 return ListView.builder(
                   itemCount: value.length,
                   itemBuilder: (context, index) {
@@ -223,6 +301,7 @@ class _EventCalendarState extends State<EventCalendar> {
                               .replaceAll('Color(', '') // 'Color(' 부분 제거
                               .replaceAll(')', ''),
                         );
+
                         // 롱 프레스 이벤트 처리
                         if (value[index].repetition != 'NONE') {
                           value[index].switchValue = true;
@@ -253,20 +332,19 @@ class _EventCalendarState extends State<EventCalendar> {
                             value[index].id);
                       },
                       child: Container(
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 20),
                         decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Colors.transparent), // 테두리 제거
+                          color: const Color(0xff2A2A2A),
+                          borderRadius: BorderRadius.circular(3),
                         ),
-                        padding: const EdgeInsets.all(8.0),
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 4.0),
                         child: Row(
                           children: [
                             Container(
-                              width: 22,
-                              height: 55,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
+                              width: 14,
+                              height: 50,
+                              margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
                               decoration: BoxDecoration(
                                 color: Color(int.parse(
                                   value[index]
@@ -275,20 +353,25 @@ class _EventCalendarState extends State<EventCalendar> {
                                           'Color(', '') // 'Color(' 부분 제거
                                       .replaceAll(')', ''),
                                 )),
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(2),
+
                               ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
+
                                   value[index].thirdGoal,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: Theme.of(context).textTheme.bodySmall,
+
                                 ),
-                                const SizedBox(height: 5),
+                                const SizedBox(height: 3),
                                 Text(
+
                                   value[index].goalName,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: Theme.of(context).textTheme.bodyMedium,
+
                                 ),
                               ],
                             ),
@@ -304,7 +387,6 @@ class _EventCalendarState extends State<EventCalendar> {
                                         value[index].didHalf = false;
                                         value[index].didAll = false;
                                       });
-                                      //_selectedDay
                                       String formattedDate =
                                           DateFormat('yyyy-MM-dd')
                                               .format(_selectedDay!);
@@ -313,8 +395,9 @@ class _EventCalendarState extends State<EventCalendar> {
                                     },
                                     icon: Icon(
                                       Icons.clear_outlined,
+                                      size: 20,
                                       color: value[index].didZero
-                                          ? Colors.yellow
+                                          ? mainGold
                                           : const Color(0xff5C5C5C),
                                     ),
                                   ),
@@ -335,8 +418,9 @@ class _EventCalendarState extends State<EventCalendar> {
                                     },
                                     icon: Icon(
                                       Icons.change_history_outlined,
+                                      size: 20,
                                       color: value[index].didHalf
-                                          ? Colors.yellow
+                                          ? mainGold
                                           : const Color(0xff5C5C5C),
                                     ),
                                   ),
@@ -352,13 +436,14 @@ class _EventCalendarState extends State<EventCalendar> {
                                       String formattedDate =
                                           DateFormat('yyyy-MM-dd')
                                               .format(_selectedDay!);
-                                      dominoStatus(value[index].id, "SUCCESS",
+                                      dominoStatus(value[index].id, "COMPLETE",
                                           formattedDate);
                                     },
                                     icon: Icon(
                                       Icons.circle_outlined,
+                                      size: 20,
                                       color: value[index].didAll
-                                          ? Colors.yellow
+                                          ? mainGold
                                           : const Color(0xff5C5C5C),
                                     ),
                                   ),
@@ -378,111 +463,4 @@ class _EventCalendarState extends State<EventCalendar> {
       ],
     );
   }
-}
-
-void editDialog(BuildContext context, DateTime date, String title,
-    String content, bool switchvalue, int interval, int goalId) {
-  String getIntervalText() {
-    if (!switchvalue) {
-      return 'X';
-    }
-
-    String weekday = DateFormat('EEEE', 'ko_KR').format(date); // 요일을 한국어로 변환
-    String dayOfMonth = date.day.toString(); // 날짜 가져오기
-
-    if (interval == 1) {
-      return '매일';
-    } else if (interval == 7) {
-      return '매주 $weekday';
-    } else if (interval == 14) {
-      return '격주 $weekday';
-    } else if (interval > 14) {
-      return '매월 $dayOfMonth일';
-    }
-
-    return 'X'; // 기본값
-  }
-
-  showDialog(
-    context: context,
-    barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
-    builder: (BuildContext context) {
-      return AlertDialog(
-        //title: const Text('팝업 메시지'),
-        backgroundColor: const Color(0xff262626),
-        content: Row(
-          children: [
-            Container(
-              width: 15,
-              height: 140,
-              decoration: const BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.all(Radius.circular(3)),
-              ),
-            ),
-            const SizedBox(width: 20),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '환상적인 세계여행',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          content,
-                          style:
-                              const TextStyle(color: Colors.grey, fontSize: 13),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 80,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditPage(date, content, title,
-                                switchvalue, interval, goalId),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.edit),
-                    ),
-                  ],
-                ),
-                Text(
-                  title,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Container(
-                    height: 1,
-                    width: 200,
-                    color: Colors.grey,
-                  ),
-                ),
-                const Text(
-                  '반복',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                Text(
-                  getIntervalText(),
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    },
-  );
 }
