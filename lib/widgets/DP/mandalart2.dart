@@ -1,3 +1,4 @@
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -31,6 +32,7 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: 350,
       child: GridView(
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
@@ -205,6 +207,7 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     child: Text(
                       widget.mandalart,
                       textAlign: TextAlign.center,
+                      style: const TextStyle(color: backgroundColor, fontWeight: FontWeight.w600, fontSize: 12)
                     ),
                   ),
                 ),
@@ -328,6 +331,7 @@ class MandalartBox1 extends StatelessWidget {
               ? secondGoals[hintNum]['secondGoal']
               : "",
           textAlign: TextAlign.center,
+          style: const TextStyle(color: backgroundColor, fontWeight: FontWeight.w600, fontSize: 12)
         ),
       ),
     );
@@ -431,6 +435,7 @@ class _MandalartBox2State extends State<MandalartBox2> {
                     [widget.hintNum3]['thirdGoal']
                 : "",
             textAlign: TextAlign.center,
+            style: const TextStyle(color: backgroundColor, fontWeight: FontWeight.w400, fontSize: 12),
           ),
         ),
       ),

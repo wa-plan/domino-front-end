@@ -48,7 +48,7 @@ class Smallgridwithdata extends StatelessWidget {
                           .watch<SaveInputtedDetailGoalModel>()
                           .inputtedDetailGoal['$goalId'] ??
                       '',
-                  style: const TextStyle(color: Colors.black, fontSize: 14),
+                  style: const TextStyle(color: Colors.black, fontSize: 12),
                   textAlign: TextAlign.center,
                 )),
               );
@@ -62,7 +62,7 @@ class Smallgridwithdata extends StatelessWidget {
                 child: Center(
                     child: Text(
                   values.toString(),
-                  style: const TextStyle(color: Colors.black, fontSize: 14),
+                  style: const TextStyle(color: Colors.black, fontSize: 12),
                   textAlign: TextAlign.center,
                 )),
               );

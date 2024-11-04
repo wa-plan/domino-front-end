@@ -1,3 +1,4 @@
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/TD/datelist_provider.dart';
@@ -19,6 +20,7 @@ class RepeatSettingsState extends State<RepeatSettings> {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: [
         Row(
@@ -134,5 +136,6 @@ class RepeatSettingsState extends State<RepeatSettings> {
         ),
       ],
     );
+
   }
 }
