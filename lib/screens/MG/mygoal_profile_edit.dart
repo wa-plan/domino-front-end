@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:domino/screens/MG/profile_img_samplegallery.dart';
 import 'package:domino/apis/services/mg_services.dart';
+import 'package:domino/screens/MG/mygoal_main.dart';
 
 class ProfileEdit extends StatefulWidget {
   final String? selectedImage;
@@ -29,8 +30,6 @@ class _ProfileEditState extends State<ProfileEdit> {
   }
 
   void _editProfile(String nickname, String profile, String description) async {
-    print('프로필 수정 요청 시작');
-    print('닉네임: $nickname, 프로필 경로: $profile, 설명: $description');
     final success = await EditProfileService.editProfile(
       nickname: nickname,
       profile: profile,
@@ -38,7 +37,13 @@ class _ProfileEditState extends State<ProfileEdit> {
     );
 
     if (success) {
-      Navigator.pop(context, true); // 성공적으로 프로필을 수정한 후, true를 반환
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MyGoal(),
+        ),
+      );
+      //Navigator.pop(context, true); // 성공적으로 프로필을 수정한 후, true를 반환
     }
   }
 
@@ -202,14 +207,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                           _explaincontroller.text,
                         );
                       }
-                      //Navigator.pop(context);
-
-                      //Navigator.push(
-                      //  context,
-                      //  MaterialPageRoute(
-                      //    builder: (context) => const MyGoal(),
-                      //  ),
-                      //);
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
