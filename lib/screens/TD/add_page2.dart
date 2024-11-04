@@ -219,76 +219,6 @@ class AddPage2State extends State<AddPage2> {
                           ),
                         ],
                       ),
-<<<<<<< YujinPark3
-                      const SizedBox(height: 20),
-                      if (switchValue) const RepeatSettings(),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: const Color(0xff131313),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.0),
-                              ),
-                            ),
-                            child: const Text(
-                              '이전',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 15),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                formKey.currentState!.save();
-
-                                DateTime? pickedDate =
-                                    context.read<DateProvider>().pickedDate;
-
-                                if (pickedDate == null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('날짜를 선택해 주세요.')),
-                                  );
-                                } else {
-                                  context
-                                      .read<DateListProvider>()
-                                      .setInterval(switchValue, pickedDate);
-                                  List<DateTime> dateList =
-                                      context.read<DateListProvider>().dateList;
-                                  String repeatInfo = context
-                                      .read<DateListProvider>()
-                                      .repeatInfo();
-
-                                  addDomino(
-                                      widget.thirdGoalId,
-                                      dominoController.text,
-                                      dateList,
-                                      repeatInfo);
-                                }
-                              }
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.0),
-                              ),
-                            ),
-                            child: const Text(
-                              '완료',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 15),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-=======
                       if (switchValue) const RepeatSettings() // 반복 설정 위젯 추가
                     ],
                   ),
@@ -340,7 +270,7 @@ class AddPage2State extends State<AddPage2> {
                     }
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 57, 33, 33),
+                    backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0),
                     ),
@@ -348,11 +278,10 @@ class AddPage2State extends State<AddPage2> {
                   child: const Text(
                     '완료',
                     style: TextStyle(color: Colors.white, fontSize: 15),
->>>>>>> dev
                   ),
-                ],
+                
               ),
-            ),
+           ] ),
           ],
         ),
       ),

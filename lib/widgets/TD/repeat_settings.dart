@@ -20,122 +20,131 @@ class RepeatSettingsState extends State<RepeatSettings> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Row(
-              children: [
-                Checkbox(
-                  side: WidgetStateBorderSide.resolveWith((states) =>
-                      const BorderSide(
-                          width: 1.5,
-                          color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
-                  activeColor: const Color(0xff262626),
-                  checkColor: const Color(0xffFF6767),
-                  value: everyDay,
-                  onChanged: (value) {
-                    setState(() {
-                      everyDay = value!;
-                      everyWeek = false;
-                      everyTwoWeek = false;
-                      everyMonth = false;
-                    });
-                    context.read<DateListProvider>().setEveryday(everyDay);
-                  },
-                ),
-                const Text(
-                  '매일',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  side: WidgetStateBorderSide.resolveWith((states) =>
-                      const BorderSide(
-                          width: 1.5,
-                          color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
-                  activeColor: const Color(0xff262626),
-                  checkColor: const Color(0xffFF6767),
-                  value: everyWeek,
-                  onChanged: (value) {
-                    setState(() {
-                      everyWeek = value!;
-                      everyDay = false;
-                      everyTwoWeek = false;
-                      everyMonth = false;
-                    });
-                    context.read<DateListProvider>().setEveryweek(everyWeek);
-                  },
-                ),
-                const Text(
-                  '매주',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  side: WidgetStateBorderSide.resolveWith((states) =>
-                      const BorderSide(
-                          width: 1.5,
-                          color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
-                  activeColor: const Color(0xff262626),
-                  checkColor: const Color(0xffFF6767),
-                  value: everyTwoWeek,
-                  onChanged: (value) {
-                    setState(() {
-                      everyTwoWeek = value!;
-                      everyDay = false;
-                      everyWeek = false;
-                      everyMonth = false;
-                    });
-                    context
-                        .read<DateListProvider>()
-                        .setEverytwoweek(everyTwoWeek);
-                  },
-                ),
-                const Text(
-                  '격주',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  side: WidgetStateBorderSide.resolveWith((states) =>
-                      const BorderSide(
-                          width: 1.5,
-                          color: Colors.white)), //체크박스 테두리의 두께와 색깔 지정
-                  activeColor: const Color(0xff262626),
-                  checkColor: const Color(0xffFF6767),
-                  value: everyMonth,
-                  onChanged: (value) {
-                    setState(() {
-                      everyMonth = value!;
-                      everyDay = false;
-                      everyWeek = false;
-                      everyTwoWeek = false;
-                    });
-                    context.read<DateListProvider>().setEverymonth(everyMonth);
-                  },
-                ),
-                const Text(
-                  '매월',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ],
+        const SizedBox(height: 20,),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 20),
+          decoration: BoxDecoration(
+            color: const Color(0xff2A2A2A),
+            borderRadius: BorderRadius.circular(3),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Row(
+                children: [
+                  Checkbox(
+                    side: MaterialStateBorderSide.resolveWith((states) =>
+                        const BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 156, 156, 156))), //체크박스 테두리의 두께와 색깔 지정
+                    activeColor: const Color(0xff262626),
+                    checkColor: const Color(0xffFF6767),
+                    value: everyDay,
+                    onChanged: (value) {
+                      setState(() {
+                        everyDay = value!;
+                        everyWeek = false;
+                        everyTwoWeek = false;
+                        everyMonth = false;
+                      });
+                      context.read<DateListProvider>().setEveryday(everyDay);
+                    },
+                  ),
+                  const Text(
+                    '매일',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                    side: MaterialStateBorderSide.resolveWith((states) =>
+                        const BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 156, 156, 156))), //체크박스 테두리의 두께와 색깔 지정
+                    activeColor: const Color(0xff262626),
+                    checkColor: const Color(0xffFF6767),
+                    value: everyWeek,
+                    onChanged: (value) {
+                      setState(() {
+                        everyWeek = value!;
+                        everyDay = false;
+                        everyTwoWeek = false;
+                        everyMonth = false;
+                      });
+                      context.read<DateListProvider>().setEveryweek(everyWeek);
+                    },
+                  ),
+                  const Text(
+                    '매주',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                    side: MaterialStateBorderSide.resolveWith((states) =>
+                        const BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 156, 156, 156))), //체크박스 테두리의 두께와 색깔 지정
+                    activeColor: const Color(0xff262626),
+                    checkColor: const Color(0xffFF6767),
+                    value: everyTwoWeek,
+                    onChanged: (value) {
+                      setState(() {
+                        everyTwoWeek = value!;
+                        everyDay = false;
+                        everyWeek = false;
+                        everyMonth = false;
+                      });
+                      context
+                          .read<DateListProvider>()
+                          .setEverytwoweek(everyTwoWeek);
+                    },
+                  ),
+                  const Text(
+                    '격주',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                    side: MaterialStateBorderSide.resolveWith((states) =>
+                        const BorderSide(
+                            width: 1,
+                            color: Color.fromARGB(255, 156, 156, 156))), //체크박스 테두리의 두께와 색깔 지정
+                    activeColor: const Color(0xff262626),
+                    checkColor: const Color(0xffFF6767),
+                    value: everyMonth,
+                    onChanged: (value) {
+                      setState(() {
+                        everyMonth = value!;
+                        everyDay = false;
+                        everyWeek = false;
+                        everyTwoWeek = false;
+                      });
+                      context
+                          .read<DateListProvider>()
+                          .setEverymonth(everyMonth);
+                    },
+                  ),
+                  const Text(
+                    '매월',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
+        const SizedBox(height: 20,),
       ],
     );
-
   }
 }
