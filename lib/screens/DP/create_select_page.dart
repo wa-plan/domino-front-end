@@ -10,6 +10,7 @@ class DPcreateSelectPage extends StatefulWidget {
   List<Map<String, dynamic>> emptyMainGoals = [];
   DPcreateSelectPage({super.key, required this.emptyMainGoals});
 
+
   @override
   State<DPcreateSelectPage> createState() => _DPcreateSelectPageState();
 }
@@ -38,6 +39,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -57,10 +59,12 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 5),
+
             const Text(
               "어떤 목표를 이루고 싶나요?",
               style: TextStyle(
                 color: Colors.white,
+
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -68,6 +72,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
             const SizedBox(height: 13),
             Container(
               height: 45,
+
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -106,7 +111,9 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                       return match;
                     }).toList();
 
+
                     print('Filtered Goals: $filteredGoals');
+
 
                     if (filteredGoals.isEmpty) {
                       return const Center(
@@ -149,6 +156,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                       style: const TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.white,
                       underline: Container(),
+
                     );
                   } else {
                     return const Center(

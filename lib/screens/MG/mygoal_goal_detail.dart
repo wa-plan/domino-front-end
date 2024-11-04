@@ -3,84 +3,72 @@ import 'package:flutter/material.dart';
 import 'dart:typed_data'; // Uint8List 사용을 위한 라이브러리 임포트
 import 'package:domino/screens/MG/mygoal_goal_edit.dart';
 import 'package:domino/apis/services/mg_services.dart';
+import 'package:domino/widgets/popup.dart';
 
 class MyGoalDetail extends StatefulWidget {
   final String id;
+  final String name;
+  final int dday;
+  final String mandaDescription;
+  final String status;
+  final List<String> photoList;
+  final int failedNum;
+  final int inProgressNum;
+  final int successNum;
 
-  const MyGoalDetail({super.key, required this.id});
+  const MyGoalDetail(
+      {super.key,
+      required this.id,
+      required this.name,
+      required this.dday,
+      required this.status,
+      required this.photoList,
+      required this.mandaDescription,
+      required this.failedNum,
+      required this.inProgressNum,
+      required this.successNum});
 
   @override
   MyGoalDetailState createState() => MyGoalDetailState();
 }
 
 class MyGoalDetailState extends State<MyGoalDetail> {
-  final _status = ['진행 중', '달성 완료', '달성 실패'];
+  final _status = ['달성 실패', '진행 중', '달성 완료'];
   String? _selectedStatus;
   // 선택된 파일 리스트를 관리할 변수 추가
   List<Uint8List> selectedFiles = [];
   bool bookmark = false;
-  String o = '60';
-  String v = '30';
-  String x = '10';
+  String o = '0';
+  String v = '0';
+  String x = '0';
   String name = '';
-  int dday = -8; // 추가: D-day
+  int dday = 0;
   int parsedId = 0;
   bool hasNoImages = false;
   Color color = const Color(0xffFCFF62);
-  String description = "아시아부터 유럽, 아프리카까지 세계 곳곳을 뚜벅뚜벅 나홀로 여행하며 세상을 보는 눈을 넓히고 싶다! 일탈하고 싶다!";
+  String mandaDescription = '';
+  String status = '';
+  int successNum = 0;
+  int failedNum = 0;
+  int inProgressNum = 0;
+  List<String> goalImage = [];
+  List<String> photoList = [];
+  //double rate = 0.0;
+  int total = 0;
+  int successRate = 0;
+  int inProgressRate = 0;
+  int failedRate = 0;
 
-  // GoalImage 리스트 정의
-  List<GoalImage> goalImage = [
-    GoalImage(image: 'assets/img/profile_smp1.png', name: 'Image 1'),
-    GoalImage(image: 'assets/img/profile_smp2.png', name: 'Image 2'),
-    GoalImage(image: 'assets/img/profile_smp3.png', name: 'Image 3'),
-    GoalImage(image: 'assets/img/profile_smp4.png', name: 'Image 4'),
-    GoalImage(image: 'assets/img/profile_smp5.png', name: 'Image 5'),
-    GoalImage(image: 'assets/img/profile_smp6.png', name: 'Image 6'),
-    GoalImage(image: 'assets/img/profile_smp7.png', name: 'Image 7'),
-    GoalImage(image: 'assets/img/profile_smp8.png', name: 'Image 8'),
+  //List<String> goalImage = photoList.map((photo) => 'assets/img/$photo').toList();
+
+  /*List<String> goalImage = [
+    'assets/img/completed_goals.png',
+    'assets/img/completed_goals.png',
+    'assets/img/completed_goals.png'
+    //'assets/img/profile_smp1.png',
+    //'assets/img/profile_smp2.png',
     // 추가 이미지...
-  ];
-
-  List<String> goalImage2 = [
-    'assets/img/profile_smp1.png',
-    'assets/img/profile_smp2.png',
-    // 추가 이미지...
-  ];
-
-  void userMandaInfo(context, int mandalartId) async {
-    final data = await UserMandaInfoService.userMandaInfo(context,
-        mandalartId: mandalartId);
-    if (data != null) {
-      // 클래스 변수에 데이터를 저장
-      setState(() {
-        name = data['name'] ?? ''; // 이제 name이 클래스 변수에 저장됨
-        String status = data['status'] ?? '';
-        List<dynamic> photoList = data['photoList'] ?? [];
-        int dday = -8; // 추가: D-day
-        String ddayString = '-8';
-
-        if (photoList.isNotEmpty) {
-          goalImage = photoList.map((photo) {
-            return GoalImage(image: photo['url'], name: photo['name']);
-          }).toList();
-          hasNoImages = false;
-        } else {
-          goalImage.clear(); // photoList가 비어있으면 goalImage를 비움
-          hasNoImages = true;
-        }
-
-        print('목표 이름: $name');
-        print('상태: $status');
-        print('사진 리스트: $photoList');
-        print('디데이: $dday');
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
-      );
-    }
-  }
+  ];*/
 
   void _mandaBookmark(int id, String bookmark) async {
     final success = await MandaBookmarkService.MandaBookmark(
@@ -105,10 +93,32 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   @override
   void initState() {
     super.initState();
-    _selectedStatus = _status[0];
-    int parsedId = int.parse(widget.id);
-    userMandaInfo(context, parsedId);
-  } // 목표 진행 상황 드랍다운 리스트 초기화
+    _selectedStatus = _status[1];
+
+    name = widget.name;
+    dday = widget.dday;
+    status = widget.status;
+    photoList = widget.photoList;
+    mandaDescription = widget.mandaDescription;
+    failedNum = widget.failedNum;
+    inProgressNum = widget.inProgressNum;
+    successNum = widget.successNum;
+    total = successNum + inProgressNum + failedNum;
+
+    successRate = total == 0 ? 0 : (successNum / total * 100).toInt();
+    inProgressRate = total == 0 ? 0 : (inProgressNum / total * 100).toInt();
+    failedRate = 100 - successRate - inProgressRate;
+
+    goalImage = photoList.map((photo) => 'assets/img/$photo').toList();
+    print('goalImage=$goalImage');
+    //failedRate = total == 0 ? 0 : (failedNum / total * 100).toInt();
+
+    /*if (successRate == 0 && inProgressRate == 0 && failedRate == 0) {
+      successRate = 1; // 기본값으로 1% 설정
+      inProgressRate = 0; // 기본값으로 1% 설정
+      failedRate = 0; // 기본값으로 1% 설정
+    }*/
+  }
 
   void _onFileSelected() {
     // 파일 선택 로직 (예시로 빈 리스트를 추가)
@@ -147,14 +157,15 @@ class MyGoalDetailState extends State<MyGoalDetail> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MygoalEdit(
-                    dday: dday,
-                    name: name,
-                    description: description,
-                    color: color,
-                    goalImage: goalImage2,
-                  )));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MygoalEdit(
+                          dday: dday,
+                          name: name,
+                          description: mandaDescription,
+                          color: color,
+                          goalImage: goalImage)));
             },
             icon: const Icon(Icons.edit),
             color: Colors.grey,
@@ -172,7 +183,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               Row(
                 children: [
                   Text(
-                    dday.toString(),
+                    dday < 0 ? 'D+${dday * -1}' : 'D-$dday',
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: MediaQuery.of(context).size.width * 0.06,
@@ -181,6 +192,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                   ),
                 ],
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -223,28 +235,32 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                           onChanged: (value) {
                             setState(() {
                               _selectedStatus = value!;
+                              if (_selectedStatus == '달성 완료') {
+                                PopupDialog.show(
+                                  context,
+                                  '대박! 이 목표 정말 \n달성 완료한거야?',
+                                  true, // cancel
+                                  false, // delete
+                                  true, // signout
+                                  onCancel: () {
+                                    // 취소 버튼을 눌렀을 때 실행할 코드
+                                    Navigator.of(context).pop();
+                                  },
+
+                                  onDelete: () {
+                                    // 삭제 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSignOut: () {
+                                    // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                );
+                              }
                             });
                           },
                         ),
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        bookmark = !bookmark;
-                        String bookmarkAction =
-                            bookmark ? "BOOKMARK" : "UNBOOKMARK";
-                        _mandaBookmark(parsedId, bookmarkAction);
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.star,
-                      size: 30,
-                    ),
-                    color: bookmark ? Colors.yellow : Colors.grey,
-                    iconSize: 35,
-                  )
                 ],
               ),
               const SizedBox(
@@ -253,21 +269,33 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               if (goalImage.isEmpty) ...[
                 Image.asset('assets/img/if_no_img.png'),
               ] else ...[
-                AspectRatio(
-                  aspectRatio: 1 / 1, // 1:1 비율 유지
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1 / 1,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
+                SizedBox(
+                  height: 140,
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3, // 이미지 개수에 맞춰 열 개수 조정
+                      childAspectRatio: 1 / 1,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    itemCount: 3,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    children: List.generate(goalImage.length, (index) {
-                      return Image.asset(
-                        goalImage[index].image,
-                        fit: BoxFit.cover,
-                      );
-                    }),
+                    itemBuilder: (context, index) {
+                      if (index < goalImage.length) {
+                        return ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(15), // 둥근 네모 형태로 설정
+                          child: Image.asset(
+                            goalImage[index],
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      } else {
+                        return Container(); // 빈 자리를 유지
+                      }
+                    },
                   ),
                 ),
               ],
@@ -275,8 +303,8 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               const SizedBox(
                 height: 20,
               ),
-               Text(
-                description,
+              Text(
+                mandaDescription,
                 style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
               const SizedBox(
@@ -288,7 +316,27 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                       fontSize: 16,
                       fontWeight: FontWeight.w600)),
               const SizedBox(
-                height: 30,
+                height: 20,
+              ),
+              const Row(
+                children: [
+                  Text('나의 도미노',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600)),
+                  SizedBox(
+                    width: 80,
+                  ),
+                  Text('*동그라미로만 도미노를 만들 수 있어요.',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600)),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -313,7 +361,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                               size: 20,
                             ),
                             Text(
-                              ' = $o개',
+                              ' = $successNum개',
                               style: const TextStyle(
                                   color: Colors.yellow, fontSize: 18),
                             ),
@@ -324,13 +372,13 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                           children: [
                             const Icon(
                               Icons.change_history_outlined,
-                              color: Color(0xff888888),
+                              color: Colors.white,
                               size: 20,
                             ),
                             Text(
-                              ' = $v개',
+                              ' = $inProgressNum개',
                               style: const TextStyle(
-                                  color: Color(0xff888888), fontSize: 18),
+                                  color: Colors.white, fontSize: 18),
                             ),
                           ],
                         ),
@@ -339,81 +387,167 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                           children: [
                             const Icon(
                               Icons.clear_outlined,
-                              color: Color(0xff626161),
+                              color: Colors.white,
                               size: 23,
                             ),
                             Text(
-                              ' = $x개',
+                              ' = $failedNum개',
                               style: const TextStyle(
-                                  color: Color(0xff626161), fontSize: 18),
+                                  color: Colors.white, fontSize: 18),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    width: 50,
+                  const Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Colors.grey,
                   ),
-                  CustomPaint(
-                    size: Size(
-                        MediaQuery.of(context).size.width / 5,
-                        MediaQuery.of(context).size.width /
-                            5), // CustomPaint의 크기
-                    painter: PieChart(
-                      yellowPercentage: 60,
-                      grayPercentage: 30,
-                      blackPercentage: 10,
-                    ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            'assets/img/domino.png',
+                            width: 50,
+                          ),
+                          Text(
+                            ' x $successNum',
+                            style: const TextStyle(
+                                color: Colors.yellow, fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                        thickness: 3, // 줄의 두께
+                        height: 1, // 줄과 Row 사이의 간격 조절
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 30), // 아이콘과 다른 콘텐츠 사이의 간격 조정
-              Center(
-                  child: Column(
+              const SizedBox(height: 60), // 아이콘과 다른 콘텐츠 사이의 간격 조정
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Icon(
-                    Icons.arrow_downward,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    '전체 도미노',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const Text('할 일 달성 비율',
+                      style: TextStyle(color: Colors.white)),
+                  const SizedBox(height: 60),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(2)),
-                            color: Colors.yellow),
-                        width: 18, // 원하는 너비 설정
-                        height: 45, // 원하는 높이 설정
+                      CustomPaint(
+                        size: Size(MediaQuery.of(context).size.width / 5,
+                            MediaQuery.of(context).size.width / 5),
+                        painter: PieChart(
+                            successPercentage: successRate, // int로 변환
+                            inProgressPercentage: inProgressRate, // int로 변환
+                            failPercentage: failedRate),
                       ),
-                      const Text(
-                        '   x 75',
-                        style: TextStyle(
-                            color: Colors.yellow,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      )
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.circle_outlined,
+                                color: Colors.yellow,
+                                size: 20,
+                              ),
+                              Text(
+                                ' = $successRate%',
+                                style: const TextStyle(
+                                    color: Colors.yellow, fontSize: 18),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.change_history_outlined,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              Text(
+                                ' = $inProgressRate%',
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.clear_outlined,
+                                color: Color(0xff626161),
+                                size: 23,
+                              ),
+                              Text(
+                                ' = ${failedRate == 100 ? 0 : failedRate}%',
+                                style: const TextStyle(
+                                    color: Color(0xff626161), fontSize: 18),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 50,
+                          )
+                        ],
+                      ),
                     ],
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 50,
+                  )
+                  /*const Icon(
+                Icons.arrow_downward,
+                color: Colors.white,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                '전체 도미노',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(2)),
+                        color: Colors.yellow),
+                    width: 18, // 원하는 너비 설정
+                    height: 45, // 원하는 높이 설정
                   ),
-                  Image.asset('assets/img/domino_calculate.png'),
+                  Text(
+                    '   x ${successNum + inProgressNum * 1 / 2}',
+                    style: const TextStyle(
+                        color: Colors.yellow,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  )
                 ],
-              )),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              //Image.asset('assets/img/domino_calculate.png'),*/
+                ],
+              ),
               const SizedBox(
                 height: 30,
               )
@@ -425,11 +559,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   }
 }
 
-class GoalImage {
+/*class GoalImage {
   final String image; // 이미지 경로
   final String name; // 이미지 이름 (필요시 추가)
 
   GoalImage({required this.image, required this.name});
-}
-
-
+}*/

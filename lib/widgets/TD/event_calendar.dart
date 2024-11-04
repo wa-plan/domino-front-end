@@ -295,11 +295,34 @@ class _EventCalendarState extends State<EventCalendar> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onLongPress: () {
+
+                        // 롱 프레스 이벤트 처리
+                        if (value[index].repetition != 'NONE') {
+                          value[index].switchValue = true;
+                          if (value[index].repetition == 'EVERYDAY') {
+                            value[index].interval = 1;
+                          }
+                          if (value[index].repetition == 'EVERYWEEK') {
+                            value[index].interval = 7;
+                          }
+                          if (value[index].repetition == 'BIWEEKLY') {
+                            value[index].interval = 14;
+                          }
+                          if (value[index].repetition == 'EVERYMONTH') {
+                            value[index].interval = 31;
+                          }
+                        } else {
+                          value[index].switchValue = false;
+                          value[index].interval = 0;
+                        }
+                        print('repetition=${value[index].repetition}');
+                        print('interval=${value[index].interval}');
+
                         editDialog(
                             context,
                             _focusedDay,
-                            value[index].title,
-                            value[index].content,
+                            value[index].goalName,
+                            value[index].thirdGoal,
                             value[index].switchValue,
                             value[index].interval,
                             value[index].id);
@@ -327,13 +350,17 @@ class _EventCalendarState extends State<EventCalendar> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  value[index].content,
+
+                                  value[index].thirdGoal,
                                   style: Theme.of(context).textTheme.bodySmall,
+
                                 ),
                                 const SizedBox(height: 3),
                                 Text(
-                                  value[index].title,
+
+                                  value[index].goalName,
                                   style: Theme.of(context).textTheme.bodyMedium,
+
                                 ),
                               ],
                             ),
