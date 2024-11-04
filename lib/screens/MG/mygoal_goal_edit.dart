@@ -1,10 +1,10 @@
-import 'package:domino/provider/DP/model.dart';
+//import 'package:domino/provider/DP/model.dart';
+//import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:provider/provider.dart';
 
 class MygoalEdit extends StatefulWidget {
   final String name;
@@ -13,14 +13,13 @@ class MygoalEdit extends StatefulWidget {
   final Color color; // 여기서 색상을 받아옴
   final List<String> goalImage;
 
-  const MygoalEdit({
-    super.key,
-    required this.name,
-    required this.dday,
-    required this.description,
-    required this.color,
-    required this.goalImage
-  });
+  const MygoalEdit(
+      {super.key,
+      required this.name,
+      required this.dday,
+      required this.description,
+      required this.color,
+      required this.goalImage});
 
   @override
   State<MygoalEdit> createState() => _MygoalEditState();
@@ -215,48 +214,45 @@ class _MygoalEditState extends State<MygoalEdit> {
 
                 // 목표 사진 선택
                 const Text(
-  '목표를 보여주는 사진이 있나요?',
-  style: TextStyle(
-    color: Colors.white,
-    fontSize: 20,
-    fontWeight: FontWeight.w600,
-    letterSpacing: 1.1,
-  ),
-),
-const SizedBox(height: 20),
-Row(
-  children: [
+                  '목표를 보여주는 사진이 있나요?',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: _getPhotoLibraryImage,
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.grey[300],
+                        backgroundImage: _pickedFile != null
+                            ? FileImage(File(_pickedFile!.path))
+                            : null,
+                        child: _pickedFile == null
+                            ? const Icon(Icons.add_a_photo, color: Colors.white)
+                            : null,
+                      ),
+                    ),
+                    // 기존에 선택된 이미지가 있다면 나열
+                    ...widget.goalImage.map((imagePath) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: CircleAvatar(
+                          radius: 40,
+                          backgroundImage: AssetImage(imagePath),
+                        ),
+                      );
+                    }),
 
-     GestureDetector(
-      onTap: _getPhotoLibraryImage,
-      child: CircleAvatar(
-        radius: 40,
-        backgroundColor: Colors.grey[300],
-        backgroundImage: _pickedFile != null
-            ? FileImage(File(_pickedFile!.path))
-            : null,
-        child: _pickedFile == null
-            ? const Icon(Icons.add_a_photo, color: Colors.white)
-            : null,
-      ),
-    ),
-    // 기존에 선택된 이미지가 있다면 나열
-    ...widget.goalImage.map((imagePath) {
-      return Padding(
-        padding: const EdgeInsets.only(left: 10.0),
-        child: CircleAvatar(
-          radius: 40,
-          backgroundImage: AssetImage(imagePath),
-        ),
-      );
-
-    }),
-    
-    // 이미지 추가를 위한 CircleAvatar
-   
-  ],
-),
-const SizedBox(height: 20),
+                    // 이미지 추가를 위한 CircleAvatar
+                  ],
+                ),
+                const SizedBox(height: 20),
 
                 // 목표 색상 선택
                 const Text(

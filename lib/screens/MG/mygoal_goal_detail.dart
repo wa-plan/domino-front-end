@@ -94,7 +94,6 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   @override
   void initState() {
     super.initState();
-    _selectedStatus = _status[1];
 
     name = widget.name;
     dday = widget.dday;
@@ -112,13 +111,17 @@ class MyGoalDetailState extends State<MyGoalDetail> {
 
     goalImage = photoList.map((photo) => 'assets/img/$photo').toList();
     print('goalImage=$goalImage');
-    //failedRate = total == 0 ? 0 : (failedNum / total * 100).toInt();
 
-    /*if (successRate == 0 && inProgressRate == 0 && failedRate == 0) {
-      successRate = 1; // 기본값으로 1% 설정
-      inProgressRate = 0; // 기본값으로 1% 설정
-      failedRate = 0; // 기본값으로 1% 설정
-    }*/
+    if (status == 'FAIL') {
+      _selectedStatus = _status[0];
+    } else if (status == 'IN_PROGRESS') {
+      _selectedStatus = _status[1];
+    } else if (status == 'SUCCESS') {
+      _selectedStatus = _status[2];
+    } else {
+      // status가 예상 범위를 벗어날 경우 처리
+      _selectedStatus = _status[1]; // 기본값으로 '진행 중' 설정
+    }
   }
 
   void _onFileSelected() {
@@ -235,7 +238,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                               color: Colors.white, fontSize: 16),
                           onChanged: (value) {
                             setState(() {
-                              _selectedStatus = value!;
+                              _selectedStatus = value;
                               if (_selectedStatus == '달성 완료') {
                                 PopupDialog.show(
                                   context,

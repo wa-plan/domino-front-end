@@ -22,6 +22,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   List<image_picker.XFile?> selectedImages = [];
+  final List<String> _combinedImages = [];
 
   void _addGoal() async {
     final name = _nameController.text;
@@ -83,6 +84,12 @@ class _MyGoalAddState extends State<MyGoalAdd> {
   void _onColorSelected(Color color) {
     setState(() {
       _selectedColor = color;
+    });
+  }
+
+  void _deleteImage(String imagePath) {
+    setState(() {
+      _combinedImages.remove(imagePath); // 이미지 리스트에서 제거
     });
   }
 
@@ -155,6 +162,10 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                       onChanged: (value) {
                         setState(() {
                           _isChecked = value!;
+                          if (_isChecked) {
+                            selectedDate =
+                                DateTime.now(); //목표 날짜 확실하지 않은 경우, 오늘 날짜로 설정
+                          }
                         });
                       },
                     ),
@@ -228,7 +239,64 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                GestureDetector(
+                // 목표 사진 선택
+                Row(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ..._combinedImages.map((imagePath) {
+                              return Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10.0),
+                                    child: CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: File(imagePath)
+                                              .existsSync()
+                                          ? FileImage(
+                                              File(imagePath)) // For new images
+                                          : AssetImage(imagePath)
+                                              as ImageProvider, // For existing images
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                    top: 0,
+                                    child: GestureDetector(
+                                      onTap: () => _deleteImage(
+                                          imagePath), // 이미지 삭제 함수 호출
+                                      child: const CircleAvatar(
+                                        radius: 12,
+                                        backgroundColor: Colors.black54,
+                                        child: Icon(Icons.close,
+                                            size: 15, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }),
+                            if (_combinedImages.length <
+                                3) // 이미지가 3개 미만일 때만 CircleAvatar 버튼 표시
+                              GestureDetector(
+                                onTap: _getPhotoLibraryImage,
+                                child: CircleAvatar(
+                                  radius: 40,
+                                  backgroundColor: Colors.grey[300],
+                                  child: const Icon(Icons.add_a_photo,
+                                      color: Colors.white),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                /*GestureDetector(
                   onTap: _getPhotoLibraryImage,
                   child: CircleAvatar(
                     radius: 40,
@@ -240,7 +308,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                         ? const Icon(Icons.add_a_photo, color: Colors.white)
                         : null,
                   ),
-                ),
+                ),*/
                 const SizedBox(height: 20),
 
                 // 목표 색상 선택
@@ -319,8 +387,46 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                     TextButton(
                       onPressed: () {
                         // 완료 버튼 기능 구현
-                        _addGoal();
-                        Navigator.pop(context);
+
+                        if (_nameController.text == '') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('목표를 입력해 주세요.')),
+                          );
+                        } else if (_selectedColor == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('색상을 선택해 주세요.')),
+                          );
+                        } else {
+                          _addGoal();
+                          Navigator.pop(context);
+                        }
+
+/*if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+
+                      DateTime? pickedDate =
+                          context.read<DateProvider>().pickedDate;
+
+                      if (pickedDate == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('날짜를 선택해 주세요.')),
+                        );
+                      } else {
+                        context
+                            .read<DateListProvider>()
+                            .setInterval(switchValue, pickedDate);
+                        List<DateTime> dateList =
+                            context.read<DateListProvider>().dateList;
+                        repeatInfo =
+                            context.read<DateListProvider>().repeatInfo();
+                        print('repeatInfo=$repeatInfo');
+                        addDomino(widget.thirdGoalId, dominoController.text,
+                            dateList, repeatInfo);
+                      }
+                    }*/
+
+                        //_addGoal();
+                        //Navigator.pop(context);
                       },
                       style: TextButton.styleFrom(
                         backgroundColor: const Color(0xff131313),
