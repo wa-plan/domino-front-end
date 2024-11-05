@@ -31,7 +31,10 @@ class _MyGoalAddState extends State<MyGoalAdd> {
     final date = selectedDate;
 
     // 이미지 파일 경로 추출
-    final picturePaths = selectedImages.map((image) => image!.path).toList();
+final picturePaths = [
+  ...selectedImages.map((image) => image!.path),
+  ..._combinedImages
+];
 
 // 서버에 보낼 데이터들을 출력
     print('Name: $name');
@@ -65,6 +68,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
     if (pickedFile != null) {
       setState(() {
         _pickedFile = pickedFile;
+        _combinedImages.add(pickedFile.path);
       });
     } else {
       if (kDebugMode) {
@@ -229,73 +233,65 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                 const SizedBox(height: 20),
 
                 // 목표 사진 선택
-                const Text(
-                  '목표를 보여주는 사진이 있나요?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.1,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                // 목표 사진 선택
-                Row(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ..._combinedImages.map((imagePath) {
-                              return Stack(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10.0),
-                                    child: CircleAvatar(
-                                      radius: 40,
-                                      backgroundImage: File(imagePath)
-                                              .existsSync()
-                                          ? FileImage(
-                                              File(imagePath)) // For new images
-                                          : AssetImage(imagePath)
-                                              as ImageProvider, // For existing images
-                                    ),
+              Text('목표를 보여주는 사진이 있나요?',
+                  style: Theme.of(context).textTheme.titleSmall),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          ..._combinedImages.map((imagePath) {
+                            return Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: CircleAvatar(
+                                    radius: 40,
+                                    backgroundImage: File(imagePath)
+                                            .existsSync()
+                                        ? FileImage(
+                                            File(imagePath)) // For new images
+                                        : AssetImage(imagePath)
+                                            as ImageProvider, // For existing images
                                   ),
-                                  Positioned(
-                                    right: 0,
-                                    top: 0,
-                                    child: GestureDetector(
-                                      onTap: () => _deleteImage(
-                                          imagePath), // 이미지 삭제 함수 호출
-                                      child: const CircleAvatar(
-                                        radius: 12,
-                                        backgroundColor: Colors.black54,
-                                        child: Icon(Icons.close,
-                                            size: 15, color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }),
-                            if (_combinedImages.length <
-                                3) // 이미지가 3개 미만일 때만 CircleAvatar 버튼 표시
-                              GestureDetector(
-                                onTap: _getPhotoLibraryImage,
-                                child: CircleAvatar(
-                                  radius: 40,
-                                  backgroundColor: Colors.grey[300],
-                                  child: const Icon(Icons.add_a_photo,
-                                      color: Colors.white),
                                 ),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: GestureDetector(
+                                    onTap: () =>
+                                        _deleteImage(imagePath), // 이미지 삭제 함수 호출
+                                    child: const CircleAvatar(
+                                      radius: 12,
+                                      backgroundColor: Colors.black54,
+                                      child: Icon(Icons.close,
+                                          size: 15, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                          if (_combinedImages.length <
+                              3) // 이미지가 3개 미만일 때만 CircleAvatar 버튼 표시
+                            GestureDetector(
+                              onTap: _getPhotoLibraryImage,
+                              child: CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Colors.grey[300],
+                                child: const Icon(Icons.add_a_photo,
+                                    color: Colors.white),
                               ),
-                          ],
-                        ),
+                            ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
                 /*GestureDetector(
                   onTap: _getPhotoLibraryImage,
                   child: CircleAvatar(

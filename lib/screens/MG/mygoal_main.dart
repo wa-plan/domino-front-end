@@ -483,7 +483,7 @@ Widget build(BuildContext context) {
                 Center(
                   child: SmoothPageIndicator(
                     controller: _pageController,
-                    count: mandalarts.length,
+                    count: inProgressIDList.length,
                     effect: const ColorTransitionEffect(
                       dotHeight: 7.0,
                       dotWidth: 7.0,
