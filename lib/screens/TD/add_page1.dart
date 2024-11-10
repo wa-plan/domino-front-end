@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:domino/screens/TD/add_page2.dart';
 import 'package:domino/widgets/DP/mandalart2.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 
@@ -36,18 +37,16 @@ class _AddPage1State extends State<AddPage1> {
     final success = await MandalartInfoService.mandalartInfo(context,
         mandalartId: mandalartId);
     if (success) {
-      // 성공적으로 서버에 전송된 경우에 처리할 코드
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('도미노가 조회되었습니다.')),
       );
-
       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const TdMain(),
-          ));
+        context,
+        MaterialPageRoute(
+          builder: (context) => const TdMain(),
+        ),
+      );
     } else {
-      // 실패한 경우에 처리할 코드
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('도미노 조회에 실패했습니다.')),
       );
@@ -65,22 +64,21 @@ class _AddPage1State extends State<AddPage1> {
   }
 
   void _fetchSecondGoals(String mandalartId) async {
-    // Fetch second goals based on the selected mandalartId
     List<Map<String, dynamic>>? result =
         await SecondGoalListService.secondGoalList(context, mandalartId);
 
     if (result != null && result.isNotEmpty) {
       setState(() {
-        secondGoals = result[0]['secondGoals']; // 제2목표 정보
+        secondGoals = result[0]['secondGoals'];
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    List<String> createdGoals = context.watch<SaveMandalartCreatedGoal>().mandalartCreatedGoal;
     int thirdGoalId =
-        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ??
-            0;
+        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ?? 0;
 
     String thirdGoalName =
         context.watch<SelectAPModel>().selectedAPName.toString();
@@ -144,23 +142,23 @@ class _AddPage1State extends State<AddPage1> {
                           ),
                         );
                       } else if (snapshot.hasData) {
-                        List<Map<String, dynamic>> goals = snapshot.data!;
+                        // createdGoals에 있는 목표만 필터링
+                        List<Map<String, dynamic>> goals = snapshot.data!
+                            .where((goal) => createdGoals.contains(goal['id'].toString()))
+                            .toList();
 
-                        // Add a default option at the start
+                        // 기본 옵션을 시작으로 추가
                         List<Map<String, dynamic>> options = [
                           {'id': '0', 'name': '목표를 선택해 주세요.'},
                           ...goals
-                        ]; // Add goals after the default option
+                        ];
 
                         return DropdownButton<String>(
-                          value: selectedGoalId.isNotEmpty
-                              ? selectedGoalId
-                              : '0', // Default to '선택 안됨'
+                          value: selectedGoalId.isNotEmpty ? selectedGoalId : '0',
                           items: options.map<DropdownMenuItem<String>>((goal) {
                             final goalName = goal['name'] ?? 'Unknown Goal';
                             return DropdownMenuItem<String>(
-                              value: goal['id']
-                                  .toString(), // Ensure the value is the id (string)
+                              value: goal['id'].toString(),
                               child: Text(
                                 goalName,
                                 style: const TextStyle(color: Colors.white),
@@ -169,21 +167,18 @@ class _AddPage1State extends State<AddPage1> {
                           }).toList(),
                           onChanged: (String? value) {
                             if (value != null) {
-                              if (value == '0') {
-                                setState(() {
-                                  selectedGoalName =
-                                      ''; // Clear if '선택 안됨' is selected
-                                  selectedGoalId = '';
-                                });
-                              } else {
-                                final selectedGoal = options.firstWhere(
-                                    (goal) => goal['id'].toString() == value);
-                                setState(() {
+                              setState(() {
+                                selectedGoalId = value;
+                                if (value == '0') {
+                                  selectedGoalName = '';
+                                } else {
+                                  final selectedGoal = options.firstWhere(
+                                    (goal) => goal['id'].toString() == value,
+                                  );
                                   selectedGoalName = selectedGoal['name'] ?? '';
-                                  selectedGoalId = value;
-                                });
-                                _fetchSecondGoals(selectedGoalId);
-                              }
+                                  _fetchSecondGoals(selectedGoalId);
+                                }
+                              });
                             }
                           },
                           isExpanded: true,
@@ -202,7 +197,7 @@ class _AddPage1State extends State<AddPage1> {
                       }
                     },
                   ),
-                )
+                ),
               ],
             ),
             if (selectedGoalName != "") ...[
@@ -221,7 +216,6 @@ class _AddPage1State extends State<AddPage1> {
                     ),
                     const SizedBox(height: 10),
                     Expanded(
-              
                       child: Container(
                         padding: const EdgeInsets.all(30),
                         decoration: BoxDecoration(
@@ -239,49 +233,64 @@ class _AddPage1State extends State<AddPage1> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
             ],
+            const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TdMain(),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TdMain(),
+                      ),
+                    );
                   },
                   style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xff131313),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0))),
+                    backgroundColor: const Color(0xff131313),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
+                    ),
+                  ),
                   child: const Text(
                     '취소',
                     style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
                   ),
-                ), //취소 버튼
-                if (selectedGoalName != "")
-                  TextButton(
-                    onPressed: () {
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (thirdGoalName != "플랜을 선택해주세요.") {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddPage2(
-                              thirdGoalId: thirdGoalId,
-                              thirdGoalName: thirdGoalName,
-                            ),
-                          ));
-                    },
-                    style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xff131313),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0))),
-                    child: const Text(
-                      '다음',
-                      style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddPage2(
+                            thirdGoalId: thirdGoalId,
+                            thirdGoalName: thirdGoalName,
+                          ),
+                        ),
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: '플랜을 선택해주세요.',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.white,
+                        textColor: backgroundColor,
+                      );
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: const Color(0xff131313),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0),
                     ),
-                  ), //다음 버튼
+                  ),
+                  child: const Text(
+                    '다음',
+                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
+                  ),
+                ),
               ],
             ),
           ],

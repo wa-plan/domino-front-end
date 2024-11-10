@@ -1,3 +1,4 @@
+import 'package:domino/provider/DP/model.dart';
 import 'package:domino/provider/TD/datelist_provider.dart';
 import 'package:domino/screens/TD/td_main.dart';
 import 'package:domino/styles.dart';
@@ -266,6 +267,7 @@ class AddPage2State extends State<AddPage2> {
                         print('repeatInfo=$repeatInfo');
                         addDomino(widget.thirdGoalId, dominoController.text,
                             dateList, repeatInfo);
+                            context.read<SelectAPModel>().selectAP("", null);
                       }
                     }
                   },

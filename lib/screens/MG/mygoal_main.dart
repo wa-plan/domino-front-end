@@ -19,6 +19,7 @@ class _MyGoalState extends State<MyGoal> {
   final String message = "실패하는 것이 두려운 게 아니라\n노력하지 않는 것이 두렵다.";
   String nickname = '당신은 어떤 사람인가요?';
   String description = '프로필 편집을 통해 \n자신을 표현해주세요.';
+  String selectedImage = "assets/img/profile_smp4.png";
 
   String status = '';
   late PageController _pageController; // PageController 추가
@@ -225,17 +226,17 @@ class _MyGoalState extends State<MyGoal> {
         //final int parsedId = int.tryParse(id) ?? 0; // 문자열을 정수로 변환, 실패 시 0으로 설정
       },
       child: Container(
-        padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
         color: Colors.transparent,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                 
                   children: [
-                    //const Icon(Icons.star, color: Colors.yellow),
                     IconButton(
                       onPressed: () {
                         setState(() {
@@ -247,12 +248,13 @@ class _MyGoalState extends State<MyGoal> {
                       },
                       icon: const Icon(
                         Icons.star,
-                        //size: 30,
                       ),
                       color: bookmark ? Colors.yellow : Colors.grey,
-                      iconSize: 30,
+                      iconSize: 25,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 5),
                     Text(
                       name,
                       style: const TextStyle(
@@ -261,7 +263,7 @@ class _MyGoalState extends State<MyGoal> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 15),
                     Text(
                       dday < 0 ? 'D+${dday * -1}' : 'D-$dday',
                       style: const TextStyle(
@@ -280,7 +282,7 @@ class _MyGoalState extends State<MyGoal> {
                       color: const Color.fromARGB(255, 53, 53, 53),
                       borderRadius: BorderRadius.circular(3.0),
                     ),
-                    width: 300,
+                    width: 250,
                     height: 80,
                     child: const Center(
                       child: Text(
@@ -340,15 +342,16 @@ class _MyGoalState extends State<MyGoal> {
                         ),
                       ],
                     ),
-                    const SizedBox(width: 50),
+                    const SizedBox(width: 25),
                     Image.asset('assets/img/MG_domino.png'),
                   ],
                 ),
               ],
             ),
             const SizedBox(
-              width: 40,
+              width: 20,
             ),
+            //첫번째 목표 색깔 연결하기(아래 컨테이너)
             Container(
               decoration: BoxDecoration(
                 color: const Color(0xffFCFF62),
@@ -368,6 +371,7 @@ Widget build(BuildContext context) {
   final imageSize = MediaQuery.of(context).size.width / 4;
   return Scaffold(
     appBar: AppBar(
+      scrolledUnderElevation: 0,
       automaticallyImplyLeading: false,
       titleSpacing: 0.0,
       title: Padding(
@@ -394,8 +398,8 @@ Widget build(BuildContext context) {
                   decoration: BoxDecoration(
                     border: Border.all(color: const Color(0xff5C5C5C), width: 0.7),
                     shape: BoxShape.circle,
-                    image: const DecorationImage(
-                      image: AssetImage('assets/img/profile_smp4.png'),
+                    image: DecorationImage(
+                      image: AssetImage(selectedImage),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -417,7 +421,9 @@ Widget build(BuildContext context) {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ProfileEdit()),
+                      MaterialPageRoute(builder: (context) =>  ProfileEdit(
+                        selectedImage: selectedImage,
+                      )),
                     );
                   },
                   icon: const Icon(Icons.edit),
