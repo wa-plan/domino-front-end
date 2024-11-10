@@ -50,32 +50,32 @@ class MyApp extends StatelessWidget {
       home: const LoginScreen(), 
       theme: ThemeData(
         useMaterial3: true,
-        textTheme: const TextTheme(
+        textTheme: TextTheme(
           // all > appBar의 메뉴 텍스트 
           titleLarge: TextStyle(
-            fontSize: 22,
+            fontSize: MediaQuery.of(context).size.width*0.055,
             fontWeight: FontWeight.w600,
             color:Colors.white),
            // all > 메뉴 설명
-          titleMedium: TextStyle(
+          titleMedium: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
             color:Colors.white
           ),
           // TD > 투두 컨테이너 > 두 번째 목표
-           bodySmall: TextStyle(
+           bodySmall: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
             color:Color(0xffA1A1A1)
           ),
           // TD > 투두 컨테이너 > 세 번째 목표
-           bodyMedium: TextStyle(
+           bodyMedium: const TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w400,
             color:Colors.white
           ),
           // MG > 질문 텍스트 
-          titleSmall: TextStyle(
+          titleSmall: const TextStyle(
             fontSize: 17,
             fontWeight: FontWeight.w600,
             color:Colors.white

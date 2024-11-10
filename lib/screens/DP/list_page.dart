@@ -146,103 +146,122 @@ class _DPlistPageState extends State<DPlistPage> {
             ),
             const SizedBox(height: 5),
             Expanded(
-              child: PageView.builder(
-                controller: _pageController, // PageController 연결
-                itemCount: mainGoals.length,
-                itemBuilder: (context, index) {
-                  final goal = mainGoals[index];
-                  final mandalartId = goal['id'].toString();
-
-                  return FutureBuilder<List<Map<String, dynamic>>?>(
-                    future: _fetchSecondGoals(mandalartId), // 새로 만든 함수 사용
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return const Center(
-                          child: Text(
-                            '데이터를 불러오는 데 실패했습니다.',
-                            style: TextStyle(color: Colors.white),
+              child: mainGoals.isEmpty
+                  ? Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xff2A2A2A),
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          '목표를 달성하기 위한\n플랜을 만들어봐요.',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 146, 146, 146),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
                           ),
-                        );
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            '목표가 없습니다.',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        );
-                      } else {
-                        final data = snapshot.data!;
-                        final mandalart = data[0]['mandalart'];
-                        final secondGoals = data[0]['secondGoals']
-                            as List<Map<String, dynamic>>?;
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  : PageView.builder(
+                      controller: _pageController,
+                      itemCount: mainGoals.length,
+                      itemBuilder: (context, index) {
+                        final goal = mainGoals[index];
+                        final mandalartId = goal['id'].toString();
 
-                        // secondGoals가 null이거나 비어있는 경우 해당 항목을 건너뜀
-                        if (secondGoals == null || secondGoals.isEmpty) {
-                          return const SizedBox
-                              .shrink(); // 빈 위젯 반환하여 해당 페이지를 스킵
-                        }
-
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DPdetailPage(
-                                  mandalart: mandalart,
-                                  secondGoals: secondGoals,
-                                  mandalartId: int.parse(mandalartId),
+                        return FutureBuilder<List<Map<String, dynamic>>?>(
+                          future: _fetchSecondGoals(mandalartId),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return const Center(
+                                child: Text(
+                                  '데이터를 불러오는 데 실패했습니다.',
+                                  style: TextStyle(color: Colors.white),
                                 ),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff2A2A2A),
-                              borderRadius: BorderRadius.circular(3),
-                            ),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 15),
-                                Text(
-                                  mandalart,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500,
+                              );
+                            } else if (!snapshot.hasData ||
+                                snapshot.data!.isEmpty) {
+                              return const Center(
+                                child: Text(
+                                  '목표가 없습니다.',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
+                            } else {
+                              final data = snapshot.data!;
+                              final mandalart = data[0]['mandalart'];
+                              final secondGoals = data[0]['secondGoals']
+                                  as List<Map<String, dynamic>>?;
+
+                              if (secondGoals == null || secondGoals.isEmpty) {
+                                return const SizedBox.shrink();
+                              }
+
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DPdetailPage(
+                                        mandalart: mandalart,
+                                        secondGoals: secondGoals,
+                                        mandalartId: int.parse(mandalartId),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 20),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff2A2A2A),
+                                    borderRadius: BorderRadius.circular(3),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 15),
+                                      Text(
+                                        mandalart,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 30),
+                                      MandalartGrid(
+                                        mandalart: mandalart,
+                                        secondGoals: secondGoals,
+                                        mandalartId: int.parse(mandalartId),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(height: 30),
-                                MandalartGrid(
-                                  mandalart: mandalart,
-                                  secondGoals: secondGoals,
-                                  mandalartId: int.parse(mandalartId),
-                                ),
-                              ],
-                            ),
-                          ),
+                              );
+                            }
+                          },
                         );
-                      }
-                    },
-                  );
-                },
-              ),
+                      },
+                    ),
             ),
+
             const SizedBox(height: 40),
             SmoothPageIndicator(
               // PageIndicator 추가
               controller: _pageController, // PageController 연결
               count: mainGoals.length, // 총 페이지 수
               effect: const ColorTransitionEffect(
-                // 스타일 설정
-                dotHeight: 8.0,
-                dotWidth: 8.0,
-                activeDotColor: Color(0xffFF6767),
-                dotColor: Colors.grey
-              ),
+                  // 스타일 설정
+                  dotHeight: 8.0,
+                  dotWidth: 8.0,
+                  activeDotColor: Color(0xffFF6767),
+                  dotColor: Colors.grey),
             ),
             const SizedBox(height: 20), // 간격 조절
           ],
