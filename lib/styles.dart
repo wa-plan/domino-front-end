@@ -8,5 +8,5 @@ const mainTextColor = Colors.white;
 const mainGold = Color(0xffF6C92B);
 
 //padding
-const appBarPadding = EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 0);
-const fullPadding = EdgeInsets.fromLTRB(25.0, 20, 25.0, 20.0);
+const appBarPadding = EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 20);
+const fullPadding = EdgeInsets.fromLTRB(25.0, 10, 25.0, 20.0);

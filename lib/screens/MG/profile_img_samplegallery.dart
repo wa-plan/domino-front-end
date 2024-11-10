@@ -1,7 +1,10 @@
+import 'package:domino/screens/MG/mygoal_profile_edit.dart';
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 
 class ProfileSampleGallery extends StatefulWidget {
-  const ProfileSampleGallery({super.key});
+  final String selectedImage;
+  const ProfileSampleGallery({super.key, required this.selectedImage});
 
   @override
   ProfileSampleGalleryState createState() => ProfileSampleGalleryState();
@@ -20,49 +23,50 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
     'assets/img/profile_smp9.png',
   ];
 
-  String _selectedImage = 'assets/img/profile_smp4.png'; // 초기 이미지를 설정
+  late String _selectedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedImage = widget.selectedImage;
+  }
 
   @override
   Widget build(BuildContext context) {
     final imageSize = MediaQuery.of(context).size.width / 3.5;
 
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        scrolledUnderElevation: 0,
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 20.0, 20.0, 0.0),
+          padding: appBarPadding,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                color: const Color(0xffD4D4D4),
+                iconSize: 17,
+              ),
               Text(
-                '프로필 편집하기',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.06,
-                  fontWeight: FontWeight.bold,
-                ),
+                '기본 이미지 선택',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ],
           ),
         ),
-        backgroundColor: const Color(0xff262626),
+        backgroundColor: backgroundColor,
       ),
-      backgroundColor: const Color(0xff262626),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: fullPadding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              '사진으로 당신을 표현해봐요.',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
             Center(
               child: Container(
                 width: imageSize,
@@ -76,85 +80,90 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             Expanded(
               child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.grey),
+                  color: const Color(0xff2A2A2A),
+                  borderRadius: BorderRadius.circular(3),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            '기본 이미지',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context, _selectedImage);
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => ProfileEdit(
-                              //       selectedImage: _selectedImage,
-                              //     ),
-                              //   ),
-                              // );
-                            },
-                            style: TextButton.styleFrom(
-                                backgroundColor: Colors.grey,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4))),
-                            child: const Text(
-                              '완료',
-                              style: TextStyle(color: Colors.white),
+                child: Column(
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '기본 이미지',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 17.0,
+                              crossAxisSpacing: 17.0,
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Expanded(
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                mainAxisSpacing: 10.0,
-                                crossAxisSpacing: 10.0,
-                              ),
-                              padding: const EdgeInsets.all(5.0),
-                              itemCount: _imageUrls.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    // 이미지를 클릭했을 때 _selectedImage 업데이트
-                                    setState(() {
-                                      _selectedImage = _imageUrls[index];
-                                    });
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage(_imageUrls[index]),
-                                      ),
+                            padding: const EdgeInsets.all(5.0),
+                            itemCount: _imageUrls.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedImage = _imageUrls[index];
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(_imageUrls[index]),
                                     ),
                                   ),
-                                );
-                              },
-                            );
-                          },
-                        ),
+                                ),
+                              );
+                            },
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            
+                            Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProfileEdit(
+                                        selectedImage: _selectedImage,
+                                       ),
+                                     ),
+                                   );
+                          },
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4))),
+                          child: const Text(
+                            '완료',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
