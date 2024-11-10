@@ -20,6 +20,8 @@ class DPdetailPage extends StatelessWidget {
     required this.secondGoals, 
   });
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,6 +93,7 @@ class DPdetailPage extends StatelessWidget {
                           context,
                           mandalartId,
                         );
+                        context.read<SaveMandalartCreatedGoal>().removeGoal(mandalartId.toString());
                         if (isDeleted) {
                           Navigator.push(
                             context,

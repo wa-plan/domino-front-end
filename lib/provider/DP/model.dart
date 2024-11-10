@@ -21,7 +21,7 @@ class SelectFinalGoalId with ChangeNotifier {
 }
 
 class SelectAPModel with ChangeNotifier {
-  String _selectedAPName = "선택안됨"; // 초기값 설정
+  String _selectedAPName = ""; // 초기값 설정
   String get selectedAPName => _selectedAPName;
   int? _selectedAPID; // 초기값 설정
   int? get selectedAPID => _selectedAPID;
@@ -183,5 +183,11 @@ class SaveMandalartCreatedGoal with ChangeNotifier {
     _mandalartCreatedGoal.add(goalId);  
     notifyListeners();  
   }
+
+  void removeGoal(String goalId) {
+    _mandalartCreatedGoal.remove(goalId);
+    notifyListeners();
+  }
+
 }
 
