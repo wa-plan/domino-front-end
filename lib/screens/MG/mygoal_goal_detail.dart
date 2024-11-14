@@ -1,5 +1,6 @@
 import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:domino/screens/MG/piechart.dart';
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data'; // Uint8List 사용을 위한 라이브러리 임포트
 import 'package:domino/screens/MG/mygoal_goal_edit.dart';
@@ -140,59 +141,62 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          name,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: MediaQuery.of(context).size.width * 0.06,
-            fontWeight: FontWeight.w600,
+          automaticallyImplyLeading: false,
+          titleSpacing: 0.0,
+          title: Padding(
+            padding: appBarPadding,
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                  color: const Color(0xffD4D4D4),
+                  iconSize: 17,
+                ),
+                Text(
+                  name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
+            ),
           ),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          color: Colors.white,
-        ),
-        backgroundColor: const Color(0xff262626),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MygoalEdit(
-                          dday: dday,
-                          name: name,
-                          description: mandaDescription,
-                          color: color,
-                          goalImage: goalImage)));
-            },
-            icon: const Icon(Icons.edit),
-            color: Colors.grey,
-          ),
-        ],
-      ), // Icon Theme 지정
-      backgroundColor: const Color(0xff262626),
+          backgroundColor: backgroundColor), // Icon Theme 지정
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(38.0, 5.0, 40.0, 0.0),
+          padding: fullPadding,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    dday < 0 ? 'D+${dday * -1}' : 'D-$dday',
+                    dday < 0 ? 'D + ${dday * -1}' : 'D - $dday',
                     style: TextStyle(
                       color: Colors.grey,
-                      fontSize: MediaQuery.of(context).size.width * 0.06,
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MygoalEdit(
+                                  dday: dday,
+                                  name: name,
+                                  description: mandaDescription,
+                                  color: color,
+                                  goalImage: goalImage)));
+                    },
+                    icon: const Icon(Icons.edit),
+                    color: Colors.grey,
                   ),
                 ],
               ),
@@ -206,23 +210,23 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                         "이 목표는   ",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       Container(
-                        alignment: Alignment.center,
+                        padding: const EdgeInsets.fromLTRB(10, 3, 10,3),
                         height: 30,
-                        width: 90,
+                        width: 100,
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: Colors.white, width: 0.7), // White border
-                          borderRadius: BorderRadius.circular(
-                              5), // Optional: rounded corners
+                              color: const Color(0xffBFBFBF), width: 0.5),
+                          borderRadius: BorderRadius.circular(3), 
                         ),
                         child: DropdownButton<String>(
                           underline: const SizedBox.shrink(),
                           dropdownColor: const Color(0xff262626),
-                          iconEnabledColor: Colors.white,
+                          iconEnabledColor: const Color(0xffBFBFBF),
                           value: _selectedStatus,
                           items: _status
                               .map(
@@ -235,7 +239,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                               )
                               .toList(),
                           style: const TextStyle(
-                              color: Colors.white, fontSize: 16),
+                              color: Colors.white, 
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                           onChanged: (value) {
                             setState(() {
                               _selectedStatus = value;

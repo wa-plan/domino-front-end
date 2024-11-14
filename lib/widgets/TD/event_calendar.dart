@@ -271,22 +271,23 @@ class _EventCalendarState extends State<EventCalendar> {
             valueListenable: _selectedEvents,
             builder: (context, value, _) {
               if (value.isEmpty) {
-                return const Center(
-                  child: Column(
+                return Container(
+                  padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                  child: const Column(
                     children: [
                       Text(
                         '오늘은 도미노가 없네요.',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
                             color: Color(0xff5C5C5C),
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.w500),
                       ),
                       Text(
                         '여유를 가져도 되겠어요:)',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 15,
                             color: Color(0xff5C5C5C),
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
