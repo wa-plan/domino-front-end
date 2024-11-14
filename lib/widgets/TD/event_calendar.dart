@@ -263,7 +263,9 @@ class _EventCalendarState extends State<EventCalendar> {
             ),
           ],
         ),
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
         Expanded(
           child: ValueListenableBuilder<List<Event>>(
             valueListenable: _selectedEvents,
@@ -354,24 +356,19 @@ class _EventCalendarState extends State<EventCalendar> {
                                       .replaceAll(')', ''),
                                 )),
                                 borderRadius: BorderRadius.circular(2),
-
                               ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-
                                   value[index].thirdGoal,
                                   style: Theme.of(context).textTheme.bodySmall,
-
                                 ),
                                 const SizedBox(height: 3),
                                 Text(
-
                                   value[index].goalName,
                                   style: Theme.of(context).textTheme.bodyMedium,
-
                                 ),
                               ],
                             ),
@@ -436,7 +433,7 @@ class _EventCalendarState extends State<EventCalendar> {
                                       String formattedDate =
                                           DateFormat('yyyy-MM-dd')
                                               .format(_selectedDay!);
-                                      dominoStatus(value[index].id, "COMPLETE",
+                                      dominoStatus(value[index].id, "SUCCESS",
                                           formattedDate);
                                     },
                                     icon: Icon(
