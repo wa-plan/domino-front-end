@@ -6,6 +6,7 @@ import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/apis/services/lr_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:domino/apis/services/mg_services.dart';
 
 class SettingsMain extends StatefulWidget {
   const SettingsMain({super.key});
@@ -15,45 +16,101 @@ class SettingsMain extends StatefulWidget {
 }
 
 class _SettingsMainState extends State<SettingsMain> {
-  bool morningAlert = false;
-  bool nightAlert = false;
+  //String? id;d
+  String? userId;
+  String? password;
+  String? email;
+  String? phoneNum;
+  String? description;
+  String? role;
+  String? morningAlarm;
+  String? nightAlarm;
+  String? nickname;
+  bool isMorningAlarmOn = false;
+  bool isNightAlarmOn = false;
+
+  void userInfo() async {
+    final data = await UserInfoService.userInfo();
+    if (data.isNotEmpty) {
+      setState(() {
+        //id = data['id'];
+        userId = data['userId'];
+        password = data['password'];
+        email = data['email'];
+        phoneNum = data['phoneNum'];
+        description = data['description'];
+        role = data['role'];
+        morningAlarm = data['morningAlarm'];
+        nightAlarm = data['nightAlarm'];
+        nickname = data['nickname'];
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
+      );
+    }
+  }
+
+  Future<bool> _updateMorningAlarm() async {
+    final success = await MorningAlertService.morningAlert(
+        context, isMorningAlarmOn.toString());
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('아침알람이 업데이트되었습니다.')),
+      );
+    }
+    return success;
+  }
+
+  Future<bool> _updateNightAlarm() async {
+    final success =
+        await NightAlertService.nightAlert(context, isNightAlarmOn.toString());
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('저녁알람이 업데이트되었습니다.')),
+      );
+    }
+    return success;
+  }
 
   @override
   void initState() {
     super.initState();
-    _loadSettings();
+    userInfo();
+    isMorningAlarmOn = morningAlarm == 'ON';
+    isNightAlarmOn = nightAlarm == 'ON';
+    //_loadSettings();
   }
 
-  Future<void> _loadSettings() async {
+  /*Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      morningAlert = prefs.getBool('morningAlert') ?? false;
+      morningAlarm = prefs.getBool('morningAlarm') ?? false;
       nightAlert = prefs.getBool('nightAlert') ?? false;
     });
-  }
+  }*/
 
-  void _updateMorningAlert(bool value) async {
+  /*void _updateMorningAlert(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      morningAlert = value;
+      morningAlarm = value;
     });
 
-    final result = await MorningAlertService.morningAlert(
+    final result = await MorningAlertService.morningAlarm(
       context,
-      morningAlert ? 'ON' : 'OFF',
+      morningAlarm ? 'ON' : 'OFF',
     );
 
     if (result == 'ON' || result == 'OFF') {
-      prefs.setBool('morningAlert', value);
+      prefs.setBool('morningAlarm', value);
     } else {
       setState(() {
-        morningAlert = !value;
+        morningAlarm = !value;
       });
     }
 
     if (result == null) {
       setState(() {
-        morningAlert = !value;
+        morningAlarm = !value;
       });
       Fluttertoast.showToast(
         msg: '아침 알림 설정을 업데이트하지 못했습니다.',
@@ -63,7 +120,7 @@ class _SettingsMainState extends State<SettingsMain> {
         textColor: Colors.white,
       );
     } else {
-      prefs.setBool('morningAlert', morningAlert);
+      prefs.setBool('morningAlarm', morningAlarm);
     }
   }
 
@@ -100,7 +157,7 @@ class _SettingsMainState extends State<SettingsMain> {
     } else {
       prefs.setBool('nightAlert', nightAlert);
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -156,10 +213,11 @@ class _SettingsMainState extends State<SettingsMain> {
                 );
               },
             ),
-            _buildSettingItem(menu: '도움', title: '앱 사용설명서',
-            onTap: () {
-                
-              },),
+            _buildSettingItem(
+              menu: '도움',
+              title: '앱 사용설명서',
+              onTap: () {},
+            ),
           ],
         ),
       ),
@@ -186,12 +244,15 @@ class _SettingsMainState extends State<SettingsMain> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                Text(title,
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600)),
                 if (onTap != null)
                   const Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: Color(0xffD4D4D4),
-                    size: 17,),
+                    size: 17,
+                  ),
               ],
             ),
           ],
@@ -214,49 +275,72 @@ class _SettingsMainState extends State<SettingsMain> {
           const Text('알림', style: TextStyle(color: Color(0xff949494))),
           const SizedBox(height: 9),
           Row(
-            
             children: [
-              const Text('아침 알림', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+              const Text('아침 알림',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600)),
               const SizedBox(width: 13),
-              const Text('일정 정리', style: TextStyle(color: Color(0xffD4D4D4), fontSize: 12, fontWeight: FontWeight.w300)),
+              const Text('일정 정리',
+                  style: TextStyle(
+                      color: Color(0xffD4D4D4),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)),
               const Spacer(),
               Transform.scale(
-              scale: 0.8, // Switch 크기 줄이기
-              child: 
-              SizedBox(
-                height: 10,
-                child: Switch(
-                  activeColor: Colors.white,
-                  activeTrackColor: const Color(0xff18AD00),
-                  inactiveTrackColor: const Color(0xff5D5D5D),
-                  inactiveThumbColor: Colors.white,
-                  value: morningAlert,
-                  onChanged: _updateMorningAlert,
+                scale: 0.8, // Switch 크기 줄이기
+                child: SizedBox(
+                  height: 10,
+                  child: Switch(
+                    activeColor: Colors.white,
+                    activeTrackColor: const Color(0xff18AD00),
+                    inactiveTrackColor: const Color(0xff5D5D5D),
+                    inactiveThumbColor: Colors.white,
+                    value: isMorningAlarmOn,
+                    onChanged: (value) async {
+                      // isMorningAlarmOn 값을 업데이트하고 알람을 업데이트하는 비동기 작업 실행
+                      setState(() {
+                        isMorningAlarmOn = value;
+                      });
+                      await _updateMorningAlarm(); // 비동기 함수 호출
+                    },
+                  ),
                 ),
-              ),)
+              )
             ],
           ),
           const SizedBox(height: 13),
           Row(
             children: [
-              const Text('밤 알림', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+              const Text('밤 알림',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600)),
               const SizedBox(width: 13),
-              const Text('일정 리마인드', style: TextStyle(color: Color(0xffD4D4D4), fontSize: 12, fontWeight: FontWeight.w300)),
+              const Text('일정 리마인드',
+                  style: TextStyle(
+                      color: Color(0xffD4D4D4),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300)),
               const Spacer(),
               Transform.scale(
-              scale: 0.8, // Switch 크기 줄이기
-              child: 
-              SizedBox(
-                height: 10,
-                child: Switch(
-                  activeColor: Colors.white,
-                  activeTrackColor: const Color(0xff18AD00),
-                  inactiveTrackColor: const Color(0xff5D5D5D),
-                  inactiveThumbColor: Colors.white,
-                  value: nightAlert,
-                  onChanged: _updateNightAlert,
+                scale: 0.8, // Switch 크기 줄이기
+                child: SizedBox(
+                  height: 10,
+                  child: Switch(
+                    activeColor: Colors.white,
+                    activeTrackColor: const Color(0xff18AD00),
+                    inactiveTrackColor: const Color(0xff5D5D5D),
+                    inactiveThumbColor: Colors.white,
+                    value: isNightAlarmOn,
+                    onChanged: (value) async {
+                      // isMorningAlarmOn 값을 업데이트하고 알람을 업데이트하는 비동기 작업 실행
+                      setState(() {
+                        isNightAlarmOn = value;
+                      });
+                      await _updateNightAlarm(); // 비동기 함수 호출
+                    },
+                  ),
                 ),
-              ),),
+              ),
             ],
           ),
         ],
