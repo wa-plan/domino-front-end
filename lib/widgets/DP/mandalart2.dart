@@ -401,7 +401,7 @@ class _MandalartBox2State extends State<MandalartBox2> {
                     [widget.hintNum3]['thirdGoal'],
                 widget.secondGoals[widget.hintNum2]['thirdGoals']
                     [widget.hintNum3]['id'])
-            : context.read<SelectAPModel>().selectAP("NA Name", null);
+            : context.read<SelectAPModel>().selectAP("플랜을 선택해주세요.", null);
         // Call the onSelect callback
       },
       child: Container(
@@ -419,8 +419,16 @@ class _MandalartBox2State extends State<MandalartBox2> {
                       ""
               ? Colors.transparent
               : widget.colorPalette[color],
-          border: widget.isSelected // Use the passed isSelected
-              ? Border.all(color: Colors.blue, width: 2)
+          border: widget.isSelected && widget.secondGoals.isNotEmpty &&
+                  widget
+                      .secondGoals[widget.hintNum2]['thirdGoals'].isNotEmpty &&
+                  widget.secondGoals[widget.hintNum2]['thirdGoals']
+                      .asMap()
+                      .containsKey(widget.hintNum3) &&
+                  widget.secondGoals[widget.hintNum2]['thirdGoals']
+                          [widget.hintNum3]['thirdGoal'] !=
+                      "" // Use the passed isSelected
+              ? Border.all(color: Colors.white, width: 2)
               : null,
         ),
         child: Center(
