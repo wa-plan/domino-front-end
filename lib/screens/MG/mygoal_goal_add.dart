@@ -110,22 +110,21 @@ class _MyGoalAddState extends State<MyGoalAdd> {
         title: Padding(
           padding: appBarPadding,
           child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                  color: const Color(0xffD4D4D4),
-                  iconSize: 17,
-                  
-                ),
-                Text(
-                  '목표 세우기',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ],
-            ),
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                color: const Color(0xffD4D4D4),
+                iconSize: 17,
+              ),
+              Text(
+                '목표 세우기',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ],
+          ),
         ),
         backgroundColor: backgroundColor,
       ),
@@ -239,10 +238,9 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                             Text(
                               '그럼 오늘부터 날짜를 세어나갈게요\n예시 : D + 1',
                               style: TextStyle(
-                                color: mainRed,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w400
-                              ),
+                                  color: mainRed,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
@@ -313,11 +311,13 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('목표를 보여주는 사진이 있나요?',
-                        style: TextStyle(
+                    const Text(
+                      '목표를 보여주는 사진이 있나요?',
+                      style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
-                          fontSize: 16),),
+                          fontSize: 16),
+                    ),
                     const SizedBox(height: 13),
                     Row(
                       children: [
@@ -365,9 +365,11 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                                     onTap: _getPhotoLibraryImage,
                                     child: const CircleAvatar(
                                       radius: 40,
-                                      backgroundColor: Color.fromARGB(255, 79, 79, 79),
+                                      backgroundColor:
+                                          Color.fromARGB(255, 79, 79, 79),
                                       child: Icon(Icons.add_a_photo,
-                                          color: Color.fromARGB(255, 173, 173, 173)),
+                                          color: Color.fromARGB(
+                                              255, 173, 173, 173)),
                                     ),
                                   ),
                               ],
@@ -407,7 +409,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                   children: [
                     const Text(
                       '* 목표를 색깔로 표현해주세요.',
-                      style:TextStyle(
+                      style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
                           fontSize: 16),
@@ -421,32 +423,38 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                         ColorOption(
                           colorCode: const Color(0xffFF7A7A),
                           isSelected: _selectedColor == const Color(0xffFF7A7A),
-                          onTap: () => _onColorSelected(const Color(0xffFF7A7A)),
+                          onTap: () =>
+                              _onColorSelected(const Color(0xffFF7A7A)),
                         ),
                         ColorOption(
                           colorCode: const Color(0xffFFB82D),
                           isSelected: _selectedColor == const Color(0xffFFB82D),
-                          onTap: () => _onColorSelected(const Color(0xffFFB82D)),
+                          onTap: () =>
+                              _onColorSelected(const Color(0xffFFB82D)),
                         ),
                         ColorOption(
                           colorCode: const Color(0xffFCFF62),
                           isSelected: _selectedColor == const Color(0xffFCFF62),
-                          onTap: () => _onColorSelected(const Color(0xffFCFF62)),
+                          onTap: () =>
+                              _onColorSelected(const Color(0xffFCFF62)),
                         ),
                         ColorOption(
                           colorCode: const Color(0xff72FF5B),
                           isSelected: _selectedColor == const Color(0xff72FF5B),
-                          onTap: () => _onColorSelected(const Color(0xff72FF5B)),
+                          onTap: () =>
+                              _onColorSelected(const Color(0xff72FF5B)),
                         ),
                         ColorOption(
                           colorCode: const Color(0xff5DD8FF),
                           isSelected: _selectedColor == const Color(0xff5DD8FF),
-                          onTap: () => _onColorSelected(const Color(0xff5DD8FF)),
+                          onTap: () =>
+                              _onColorSelected(const Color(0xff5DD8FF)),
                         ),
                         ColorOption(
                           colorCode: const Color(0xffffffff),
                           isSelected: _selectedColor == const Color(0xffffffff),
-                          onTap: () => _onColorSelected(const Color(0xffffffff)),
+                          onTap: () =>
+                              _onColorSelected(const Color(0xffffffff)),
                         ),
                       ],
                     ),
@@ -459,29 +467,14 @@ class _MyGoalAddState extends State<MyGoalAdd> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xff131313),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                    ),
-                    child: const Text(
-                      '취소',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // 완료 버튼 기능 구현
+                  //취소버튼
+                  Button(Colors.black, Colors.white, '취소',
+                      () => Navigator.pop(context)).button(),
 
+                  //완료버튼
+                  Button(
+                    Colors.black,Colors.white,'완료',
+                    () {
                       if (_nameController.text == '') {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('목표를 입력해 주세요.')),
@@ -494,49 +487,8 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                         _addGoal();
                         Navigator.pop(context);
                       }
-
-/*if (formKey.currentState!.validate()) {
-                      formKey.currentState!.save();
-
-                      DateTime? pickedDate =
-                          context.read<DateProvider>().pickedDate;
-
-                      if (pickedDate == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('날짜를 선택해 주세요.')),
-                        );
-                      } else {
-                        context
-                            .read<DateListProvider>()
-                            .setInterval(switchValue, pickedDate);
-                        List<DateTime> dateList =
-                            context.read<DateListProvider>().dateList;
-                        repeatInfo =
-                            context.read<DateListProvider>().repeatInfo();
-                        print('repeatInfo=$repeatInfo');
-                        addDomino(widget.thirdGoalId, dominoController.text,
-                            dateList, repeatInfo);
-                      }
-                    }*/
-
-                      //_addGoal();
-                      //Navigator.pop(context);
                     },
-                    style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xff131313),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                    ),
-                    child: const Text(
-                      '완료',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  ).button(),                 
                 ],
               ),
             ],

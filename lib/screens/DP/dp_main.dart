@@ -10,14 +10,14 @@ import 'package:domino/screens/DP/detail_page.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'; // 추가
 
-class DPlistPage extends StatefulWidget {
-  const DPlistPage({super.key});
+class DPMain extends StatefulWidget {
+  const DPMain({super.key});
 
   @override
-  State<DPlistPage> createState() => _DPlistPageState();
+  State<DPMain> createState() => _DPMainState();
 }
 
-class _DPlistPageState extends State<DPlistPage> {
+class _DPMainState extends State<DPMain> {
   List<Map<String, dynamic>> mainGoals = [];
   List<Map<String, dynamic>> emptyMainGoals = [];
   final PageController _pageController = PageController(); // PageController 추가
@@ -47,7 +47,7 @@ class _DPlistPageState extends State<DPlistPage> {
               data[0]['secondGoals'] as List<Map<String, dynamic>>?;
 
           // Only add the goal if secondGoals is not null and not empty
-          if (secondGoals != null && secondGoals.isNotEmpty) {
+          if (secondGoals != null && secondGoals.isNotEmpty && secondGoals != "") {
             filteredGoals.add(goal);
           } else {
             // secondGoals가 비어있을 경우 mandalartId와 name을 emptySecondGoals 리스트에 추가
