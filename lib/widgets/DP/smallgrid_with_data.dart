@@ -33,7 +33,7 @@ class Smallgridwithdata extends StatelessWidget {
                 ? inputtedActionPlan[index.toString()]
                 : '';
 
-                 print('Index: $index, Values: $values');
+            print('Index: $index, Values: $values');
 
             if (index == 4) {
               return Container(
@@ -44,11 +44,16 @@ class Smallgridwithdata extends StatelessWidget {
                 margin: const EdgeInsets.all(1.0),
                 child: Center(
                     child: Text(
+                  maxLines: 2, // 두 줄로 제한
+                  overflow: TextOverflow.ellipsis,
                   context
                           .watch<SaveInputtedDetailGoalModel>()
                           .inputtedDetailGoal['$goalId'] ??
                       '',
-                  style: const TextStyle(color: Colors.black, fontSize: 12),
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
                 )),
               );

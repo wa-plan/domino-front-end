@@ -1,3 +1,4 @@
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 
 class PopupDialog extends StatelessWidget {
@@ -30,124 +31,91 @@ class PopupDialog extends StatelessWidget {
     List<Widget> buttons = [];
     if (delete) {
       buttons.add(
-        TextButton(
-          onPressed: onDelete ?? () => Navigator.of(context).pop(),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.red),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-              ),
-            ),
-          ),
-          child: const Text(
-            '삭제',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-        ),
+        Button(
+          const Color.fromARGB(255, 255, 61, 47),
+          Colors.black,
+          '삭제',
+          () => onDelete != null ? onDelete!() : Navigator.of(context).pop(),
+        ).button(),
       );
     }
     if (signout) {
       buttons.add(
-        TextButton(
-          onPressed: onSignOut ?? () => Navigator.of(context).pop(),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.red),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-              ),
-            ),
-          ),
-          child: const Text('탈퇴',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-        ),
+        Button(
+          const Color.fromARGB(255, 255, 61, 47),
+          Colors.black,
+          '탈퇴',
+          () => onSignOut != null ? onSignOut!() : Navigator.of(context).pop(),
+        ).button(),
       );
     }
-
     if (success) {
       buttons.add(
-        TextButton(
-          onPressed: onSuccess ?? () => Navigator.of(context).pop(),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.transparent),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(4)),
-              ),
-            ),
-          ),
-          child: const Text('확인',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        ),
+        Button(
+          Colors.black,
+          Colors.white,
+          '확인',
+          () => onSuccess != null ? onSuccess!() : Navigator.of(context).pop(),
+        ).button(),
       );
     }
 
     return AlertDialog(
-      backgroundColor: const Color(0xff262626),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Image.asset('assets/img/Dominho.png', width: 70, height: 100),
-              const SizedBox(width: 20),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      contentPadding: const EdgeInsets.all(0),
+      elevation: 10.0,
+      content: Container(
+        padding: const EdgeInsets.fromLTRB(20, 30, 30, 0),
+        decoration: const BoxDecoration(
+            color: Color(0xff262626),
+            borderRadius: BorderRadius.all(Radius.circular(8))),
+        height: 180,
+        width: 400,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Image.asset('assets/img/Dominho.png', width: 90, height: 120),
+            const SizedBox(width: 30),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    content,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 6),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      SizedBox.shrink(), // Empty space on the left
                       Text(
-                        content,
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(height: 10),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox.shrink(), // Empty space on the left
-                          Text(
-                            "from 도민호",
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                        width: 150,
-                      ),
-                      Row(
-                        children: [
-                          if (cancel)
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
-                                  ),
-                                ),
-                              ),
-                              child: const Text('취소',
-                                  style: TextStyle(color: Colors.white)),
-                            ),
-                          const Spacer(), // Pushes the buttons to the end
-                          ...buttons,
-                        ],
+                        "from 도민호",
+                        style: TextStyle(color: Color(0xffBDBDBD)),
                       ),
                     ],
                   ),
-                ),
+                  const SizedBox(
+                    height: 18,
+                  ),
+                  Row(
+                    children: [
+                      if (cancel)
+                        Button(Colors.black, Colors.white, '취소',
+                            () => Navigator.of(context).pop()).button(),
+
+                      const Spacer(), // Pushes the buttons to the end
+                      ...buttons,
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

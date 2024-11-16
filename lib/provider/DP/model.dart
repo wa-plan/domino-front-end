@@ -48,14 +48,15 @@ class SaveInputtedDetailGoalModel with ChangeNotifier {
 
   Map<String, String> get inputtedDetailGoal => _inputtedDetailGoal;
 
+  // Update the goal's value in the map
   void updateDetailGoal(String key, String value) {
     if (_inputtedDetailGoal.containsKey(key)) {
-      // 키가 존재하는지 확인
       _inputtedDetailGoal[key] = value;
       notifyListeners();
     }
   }
 }
+
 
 class SaveInputtedActionPlanModel with ChangeNotifier {
   final List<Map<String, String>> _inputtedActionPlan = List.generate(9, (_) {
@@ -85,6 +86,7 @@ class SaveInputtedActionPlanModel with ChangeNotifier {
     }
   }
 }
+
 
 class SelectDetailGoal with ChangeNotifier {
   String _selectedDetailGoal = "";
