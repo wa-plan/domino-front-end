@@ -263,7 +263,7 @@ class EditProfileService {
 }
 
 class UserInfoService {
-  static Future<Map<String, String>> userInfo() async {
+  static Future<Map<String, dynamic>> userInfo() async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
     print('저장된 토큰: $token');
@@ -295,7 +295,7 @@ class UserInfoService {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
-        String id = data['id'];
+        int id = data['id'];
         String userId = data['userId'];
         String password = data['password'];
         String email = data['email'];
@@ -307,13 +307,13 @@ class UserInfoService {
         String nightAlarm = data['nightAlarm'];
         String nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
 
-        Fluttertoast.showToast(
+        /*Fluttertoast.showToast(
           msg: '조회 성공',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.green,
           textColor: Colors.white,
-        );
+        );*/
         return {
           'id': id,
           'userId': userId,

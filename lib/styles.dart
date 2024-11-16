@@ -39,3 +39,24 @@ class Button {
     );
   }
 }
+
+
+//MG Sub Title
+class MGSubTitle {
+  final String text;
+
+  MGSubTitle(this.text);
+
+  Widget mgSubTitle(BuildContext context){
+    return Text(
+                text,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.width * 0.035,
+                  fontWeight: FontWeight.w400,
+                ),
+              );
+  }
+}
+
+

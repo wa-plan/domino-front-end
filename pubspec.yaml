@@ -37,6 +37,7 @@ dependencies:
   video_player: ^2.9.1
   flutter_dotenv: ^5.0.2
   flutter_secure_storage: ^9.2.2
+  url_launcher: ^6.1.10
 
 
 

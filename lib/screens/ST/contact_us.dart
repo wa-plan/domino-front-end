@@ -50,16 +50,16 @@ class _ContactUsState extends State<ContactUs> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('언제나 물어봐!',
+                    const Text('언제든 물어봐.',
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 17
                       ),),
                     const SizedBox(height: 15),
                     const Text(
-                      '궁금한 점이 있거나,\n개선하고 싶은 점이 있으면\n내 이메일은 24시간 열려있어!',
+                      '궁금한 점이나,\n개선하고 싶은 부분이 있으면\n내 이메일은 24시간 열려있어!',
                       style: TextStyle(
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                         fontSize: 14
                       ),),
                       const Spacer(),
