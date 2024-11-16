@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 package="com.example.flutterdemo">
     <application
+        android:enableOnBackInvokedCallback="true"
         android:label="front_end_develop"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

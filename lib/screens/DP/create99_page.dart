@@ -117,6 +117,7 @@ class DPcreate99Page extends StatelessWidget {
                                   : '';
 
                               return Container(
+                                padding: const EdgeInsets.fromLTRB(3, 3, 3, 3),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(3),
                                   color: const Color(0xff929292),
@@ -124,10 +125,12 @@ class DPcreate99Page extends StatelessWidget {
                                 margin: const EdgeInsets.all(1.0),
                                 child: Center(
                                     child: Text(
+                                      maxLines: 2, // 두 줄로 제한
+                                    overflow: TextOverflow.ellipsis,
                                   value!,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
-                                      color: Colors.black, fontSize: 12,),
+                                      color: Colors.black, fontSize: 10, fontWeight: FontWeight.w500),
                                 )),
                               );
                             }

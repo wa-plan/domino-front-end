@@ -5,6 +5,7 @@ import 'package:domino/screens/DP/edit99_page.dart';
 import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/mandalart3.dart';
+import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,10 +18,8 @@ class DPdetailPage extends StatelessWidget {
     super.key,
     required this.mandalart,
     required this.mandalartId,
-    required this.secondGoals, 
+    required this.secondGoals,
   });
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +63,8 @@ class DPdetailPage extends StatelessWidget {
                   itemBuilder: (context) {
                     return [
                       const PopupMenuItem(
-                        value: 'delete', // Changed 'edit' to 'delete' for clarity
+                        value:
+                            'delete', // Changed 'edit' to 'delete' for clarity
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -88,21 +88,40 @@ class DPdetailPage extends StatelessWidget {
                   onSelected: (value) async {
                     switch (value) {
                       case 'delete':
-                        bool isDeleted =
-                            await DeleteMandalartService.deleteMandalart(
+                        PopupDialog.show(
                           context,
-                          mandalartId,
+                          '멋진 계획이었는데,\n이대로 보낼꺼야..?',
+                          true, // cancel
+                          true, // delete
+                          false, // signout
+                          false, //success
+                          onCancel: () {
+                            // 취소 버튼을 눌렀을 때 실행할 코드
+                            Navigator.of(context).pop();
+                          },
+
+                          
+                          onDelete:() async {
+                            bool isDeleted =
+                                await DeleteMandalartService.deleteMandalart(
+                              context,
+                              mandalartId,
+                            );
+                            context
+                                .read<SaveMandalartCreatedGoal>()
+                                .removeGoal(mandalartId.toString());
+                            if (isDeleted) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const DPMain(),
+                                ),
+                              );
+                            }
+                          },
                         );
-                        context.read<SaveMandalartCreatedGoal>().removeGoal(mandalartId.toString());
-                        if (isDeleted) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const DPMain(),
-                            ),
-                          );
-                        }
                         break;
+
                       case 'edit':
                         for (int i = 0; i < 9; i++) {
                           context
@@ -114,17 +133,17 @@ class DPdetailPage extends StatelessWidget {
                                       ? secondGoals[i]['secondGoal']
                                       : "");
                         }
-                
+
                         for (int i = 0; i < 9; i++) {
                           context
                               .read<SaveEditedDetailGoalIdModel>()
                               .editDetailGoalId(
                                   i.toString(),
-                                  secondGoals.isNotEmpty                                     
+                                  secondGoals.isNotEmpty
                                       ? secondGoals[i]['id']
                                       : 0);
                         }
-                
+
                         for (int i = 0; i < 9; i++) {
                           context.read<GoalColor>().updateGoalColor(
                               i.toString(),
@@ -135,29 +154,44 @@ class DPdetailPage extends StatelessWidget {
                                       .replaceAll(')', '')))
                                   : Colors.transparent);
                         }
-                
+
                         for (int i = 0; i < 9; i++) {
                           for (int j = 0; j < 9; j++) {
-                            context.read<SaveInputtedActionPlanModel>().updateActionPlan(i,j.toString(),
-                            secondGoals.isNotEmpty &&
-                          secondGoals[i]['thirdGoals'].isNotEmpty 
-                          && secondGoals[i]['thirdGoals'].asMap().containsKey(j)  
-                          ? secondGoals[i]['thirdGoals'][j]['thirdGoal']
-                          : "");
+                            context
+                                .read<SaveInputtedActionPlanModel>()
+                                .updateActionPlan(
+                                    i,
+                                    j.toString(),
+                                    secondGoals.isNotEmpty &&
+                                            secondGoals[i]['thirdGoals']
+                                                .isNotEmpty &&
+                                            secondGoals[i]['thirdGoals']
+                                                .asMap()
+                                                .containsKey(j)
+                                        ? secondGoals[i]['thirdGoals'][j]
+                                            ['thirdGoal']
+                                        : "");
+                          }
                         }
-                        }
-                
+
                         for (int i = 0; i < 9; i++) {
                           for (int j = 0; j < 9; j++) {
-                            context.read<SaveEditedActionPlanIdModel>().editActionPlanId(i,j.toString(),
-                            secondGoals.isNotEmpty &&
-                          secondGoals[i]['thirdGoals'].isNotEmpty 
-                          && secondGoals[i]['thirdGoals'].asMap().containsKey(j)  
-                          ? secondGoals[i]['thirdGoals'][j]['id']
-                          : 0);
+                            context
+                                .read<SaveEditedActionPlanIdModel>()
+                                .editActionPlanId(
+                                    i,
+                                    j.toString(),
+                                    secondGoals.isNotEmpty &&
+                                            secondGoals[i]['thirdGoals']
+                                                .isNotEmpty &&
+                                            secondGoals[i]['thirdGoals']
+                                                .asMap()
+                                                .containsKey(j)
+                                        ? secondGoals[i]['thirdGoals'][j]['id']
+                                        : 0);
+                          }
                         }
-                        }
-                
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -184,12 +218,11 @@ class DPdetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 25),
             Container(
-              padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(3),
-                            ),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(3),
+              ),
               height: 300,
               width: 300,
               child: Center(
