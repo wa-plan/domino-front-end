@@ -32,7 +32,7 @@ class Button {
         text,
         style: TextStyle(
           color: textColor, 
-          fontSize: 15,
+          fontSize: 14,
           fontWeight: FontWeight.w600,
         ),
       ),
