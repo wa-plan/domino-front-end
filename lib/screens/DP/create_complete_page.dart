@@ -1,4 +1,4 @@
-import 'package:domino/screens/DP/list_page.dart';
+import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/widgets/DP/color_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -128,7 +128,7 @@ class DPcreateCompletePage extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const DPlistPage(),
+                              builder: (context) => const DPMain(),
                             ));
                       },
                       style: TextButton.styleFrom(

@@ -238,29 +238,14 @@ class _AddPage1State extends State<AddPage1> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TdMain(),
-                      ),
-                    );
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xff131313),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                  ),
-                  child: const Text(
-                    '취소',
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (thirdGoalName != "플랜을 선택해주세요.") {
+                //취소버튼
+                Button(Colors.black, Colors.white, '취소', 
+                () => Navigator.pop(context)).button(),
+
+                //다음버튼
+                Button(Colors.black, Colors.white, '다음', 
+                (){
+                  if (thirdGoalName != "플랜을 선택해주세요.") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -279,18 +264,7 @@ class _AddPage1State extends State<AddPage1> {
                         textColor: backgroundColor,
                       );
                     }
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xff131313),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                  ),
-                  child: const Text(
-                    '다음',
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),
-                  ),
-                ),
+                }).button(),
               ],
             ),
           ],

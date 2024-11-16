@@ -1,5 +1,5 @@
 import 'package:domino/apis/services/dp_services.dart';
-import 'package:domino/screens/DP/list_page.dart';
+import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/color_box.dart';
 import 'package:domino/widgets/DP/color_box2.dart';
@@ -457,7 +457,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const DPlistPage()),
+                                builder: (context) => const DPMain()),
                           );
                         }
                       }
