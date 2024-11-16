@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/screens/DP/create99_page.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
@@ -202,9 +203,11 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                             child: innerIndex == 4
                                 ? Text(
                                     selectedGoalName,
+                                    maxLines: 2, // 두 줄로 제한
+                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       color: Colors.black,
-                                      fontSize: 12,
+                                      fontSize: 11,
                                       fontWeight: FontWeight.bold,
                                     ),
                                     textAlign: TextAlign.center,
