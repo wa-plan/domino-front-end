@@ -372,6 +372,7 @@ class _MyGoalState extends State<MyGoal> {
 Widget build(BuildContext context) {
   final imageSize = MediaQuery.of(context).size.width / 4;
   return Scaffold(
+    backgroundColor: backgroundColor,
     appBar: AppBar(
       scrolledUnderElevation: 0,
       automaticallyImplyLeading: false,
@@ -382,7 +383,6 @@ Widget build(BuildContext context) {
           '나의 목표',
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        backgroundColor: backgroundColor,
       ),
       backgroundColor: backgroundColor,
     ),
@@ -445,14 +445,16 @@ Widget build(BuildContext context) {
                     color: Colors.white,
                     fontSize: MediaQuery.of(context).size.width * 0.035,
                     fontWeight: FontWeight.w400,
-                  ),
+                )),
                   const Spacer(),
                   IconButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ProfileEdit()),
+                            builder: (context) => ProfileEdit(
+                              selectedImage: selectedImage,
+                            )),
                       );
                     },
                     icon: const Icon(Icons.edit),
