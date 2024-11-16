@@ -4,9 +4,8 @@ import 'package:domino/screens/ST/account_management.dart';
 import 'package:domino/screens/ST/contact_us.dart';
 import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/apis/services/lr_services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:domino/apis/services/mg_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsMain extends StatefulWidget {
   const SettingsMain({super.key});
@@ -44,9 +43,9 @@ class _SettingsMainState extends State<SettingsMain> {
         nightAlarm = data['nightAlarm'];
         nickname = data['nickname'];
       });
-      ScaffoldMessenger.of(context).showSnackBar(
+      /*ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
-      );
+      );*/
     }
   }
 
@@ -216,7 +215,11 @@ class _SettingsMainState extends State<SettingsMain> {
             _buildSettingItem(
               menu: '도움',
               title: '앱 사용설명서',
-              onTap: () {},
+              onTap: () async {
+      if (!await launchUrl(Uri.parse('https://www.naver.com'))) { //도닦기 앱 소개 노션 링크 넣기
+        throw 'Could not launch';
+      }
+    },
             ),
           ],
         ),
@@ -280,7 +283,7 @@ class _SettingsMainState extends State<SettingsMain> {
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w600)),
               const SizedBox(width: 13),
-              const Text('일정 정리',
+              const Text('오늘의 일정 보고',
                   style: TextStyle(
                       color: Color(0xffD4D4D4),
                       fontSize: 12,

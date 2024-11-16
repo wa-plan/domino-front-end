@@ -227,7 +227,7 @@ class _MyGoalState extends State<MyGoal> {
         //final int parsedId = int.tryParse(id) ?? 0; // 문자열을 정수로 변환, 실패 시 0으로 설정
       },
       child: Container(
-        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+        padding: const EdgeInsets.fromLTRB(35, 0, 35, 0),
         color: Colors.transparent,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -236,7 +236,8 @@ class _MyGoalState extends State<MyGoal> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                 
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     IconButton(
                       onPressed: () {
@@ -250,9 +251,11 @@ class _MyGoalState extends State<MyGoal> {
                       icon: const Icon(
                         Icons.star,
                       ),
-                      color: bookmark ? Colors.yellow : Colors.grey,
+                      color: bookmark
+                          ? mainGold
+                          : const Color(0xff5C5C5C),
                       iconSize: 25,
-                      padding: EdgeInsets.zero,
+                      padding: EdgeInsets.zero, // 아이콘 내부 여백 제거
                       constraints: const BoxConstraints(),
                     ),
                     const SizedBox(width: 5),
@@ -275,8 +278,6 @@ class _MyGoalState extends State<MyGoal> {
                     ),
                   ],
                 ),
-
-                //const SizedBox(height: 10),
                 if (photoList.isEmpty)
                   Container(
                     decoration: BoxDecoration(
@@ -284,7 +285,7 @@ class _MyGoalState extends State<MyGoal> {
                       borderRadius: BorderRadius.circular(3.0),
                     ),
                     width: 250,
-                    height: 80,
+                    height: 85,
                     child: const Center(
                       child: Text(
                         '이미지를 추가해 주세요',
@@ -320,7 +321,6 @@ class _MyGoalState extends State<MyGoal> {
                       ),
                     ),
                   ),
-
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -350,7 +350,7 @@ class _MyGoalState extends State<MyGoal> {
               ],
             ),
             const SizedBox(
-              width: 20,
+              width: 15,
             ),
             //첫번째 목표 색깔 연결하기(아래 컨테이너)
             Container(
@@ -359,7 +359,7 @@ class _MyGoalState extends State<MyGoal> {
                 borderRadius: BorderRadius.circular(3.0),
               ),
               width: 15,
-              height: 170,
+              height: 190,
             ),
           ],
         ),
@@ -368,87 +368,85 @@ class _MyGoalState extends State<MyGoal> {
   }
 
   @override
-
-Widget build(BuildContext context) {
-  final imageSize = MediaQuery.of(context).size.width / 4;
-  return Scaffold(
-    backgroundColor: backgroundColor,
-    appBar: AppBar(
-      scrolledUnderElevation: 0,
-      automaticallyImplyLeading: false,
-      titleSpacing: 0.0,
-      title: Padding(
-        padding: appBarPadding,
-        child: Text(
-          '나의 목표',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ),
+  Widget build(BuildContext context) {
+    return Scaffold(
       backgroundColor: backgroundColor,
-    ),
-    bottomNavigationBar: const NavBar(),
-    body: SingleChildScrollView(
-      child: Padding(
-        padding: fullPadding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xff5C5C5C), width: 0.7),
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage(selectedImage),
-                      fit: BoxFit.cover,
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        automaticallyImplyLeading: false,
+        titleSpacing: 0.0,
+        title: Padding(
+          padding: appBarPadding,
+          child: Text(
+            '나의 목표',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        backgroundColor: backgroundColor,
+      ),
+      bottomNavigationBar: const NavBar(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: fullPadding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: const Color(0xff5C5C5C), width: 0.7),
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(selectedImage),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(nickname, style: const TextStyle(color: Colors.white)),
-                    const SizedBox(height: 7),
-                    Text(
-                      description,
-                      style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>  ProfileEdit(
-                        selectedImage: selectedImage,
-                      )),
-                    );
-                  },
-                  icon: const Icon(Icons.edit),
-                  color: const Color(0xff5C5C5C),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            
-              const SizedBox(height: 10),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(nickname,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400)),
+                      const SizedBox(height: 7),
+                      Text(
+                        description,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileEdit(
+                                  selectedImage: selectedImage,
+                                )),
+                      );
+                    },
+                    icon: const Icon(Icons.edit),
+                    color: const Color(0xff5C5C5C),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
               const Divider(color: Color(0xff5C5C5C), thickness: 1),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '쓰러트릴 목표',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: MediaQuery.of(context).size.width * 0.035,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  MGSubTitle('쓰러뜨릴 목표').mgSubTitle(context),
                   IconButton(
                     onPressed: () {
                       Navigator.push(
@@ -506,42 +504,12 @@ Widget build(BuildContext context) {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              Text(
-                '\'도민호\'의 응원',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.035,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              const SizedBox(height: 40),
+              MGSubTitle('이번 주의 응원').mgSubTitle(context),
               const SizedBox(height: 15),
               const CheeringMessage(),
-              /*Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3),
-                  border: Border.all(color: const Color(0xff5C5C5C), width: 1),
-                ),
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  message,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),*/
-              const SizedBox(height: 30),
-              Text(
-                '쓰러트린 목표',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.035,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              const SizedBox(height: 40),
+              MGSubTitle('쓰러뜨린 목표').mgSubTitle(context),
               const SizedBox(height: 15),
               if (successIDList.isEmpty)
                 Image.asset('assets/img/completed_goals.png')
@@ -569,15 +537,8 @@ Widget build(BuildContext context) {
                     }),
                   ],
                 ),
-              const SizedBox(height: 30),
-              Text(
-                '쓰러트리지 못한 목표',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.035,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              const SizedBox(height: 40),
+              MGSubTitle('쓰러뜨리지 못한 목표').mgSubTitle(context),
               const SizedBox(height: 15),
               if (failedIDList.isEmpty)
                 Image.asset('assets/img/failed_goals.png')
@@ -590,10 +551,15 @@ Widget build(BuildContext context) {
                           notInProgressInfo(context, item['id']);
                         },
                         child: Container(
-                          decoration: const BoxDecoration(color: Colors.green),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 13),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 0),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
                           width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.width * 0.08,
-                          margin: const EdgeInsets.symmetric(vertical: 5.0),
+                          height: MediaQuery.of(context).size.width * 0.09,
                           child: Center(
                             child: Text(
                               item['name'],
@@ -603,6 +569,7 @@ Widget build(BuildContext context) {
                         ),
                       );
                     }),
+                    const SizedBox(height: 40),
                   ],
                 ),
             ],

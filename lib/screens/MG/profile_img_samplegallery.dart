@@ -55,7 +55,7 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
               ),
               Text(
                 '기본 이미지 선택',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ],
           ),
