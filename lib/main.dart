@@ -75,8 +75,8 @@ class MyApp extends StatelessWidget {
             color:Colors.white
           ),
           // MG > 질문 텍스트 
-          titleSmall: const TextStyle(
-            fontSize: 17,
+          titleSmall: TextStyle(
+            fontSize: MediaQuery.of(context).size.width * 0.035,
             fontWeight: FontWeight.w600,
             color:Colors.white
           ),
