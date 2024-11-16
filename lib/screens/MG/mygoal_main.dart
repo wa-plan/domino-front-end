@@ -435,33 +435,7 @@ Widget build(BuildContext context) {
               ],
             ),
             const SizedBox(height: 10),
-            const Divider(color: Color(0xff5C5C5C), thickness: 1),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '쓰러트릴 목표',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: MediaQuery.of(context).size.width * 0.035,
-                    fontWeight: FontWeight.w400,
-                )),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProfileEdit(
-                              selectedImage: selectedImage,
-                            )),
-                      );
-                    },
-                    icon: const Icon(Icons.edit),
-                    color: const Color(0xff5C5C5C),
-                  ),
-                ],
-              ),
+            
               const SizedBox(height: 10),
               const Divider(color: Color(0xff5C5C5C), thickness: 1),
               Row(
