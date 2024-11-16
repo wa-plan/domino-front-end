@@ -51,9 +51,9 @@ class _MyGoalState extends State<MyGoal> {
         nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
         description = data['description'] ?? '프로필 편집을 통해 \n자신을 표현해주세요.';
       });
-      ScaffoldMessenger.of(context).showSnackBar(
+      /*ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
-      );
+      );*/
     }
   }
 
@@ -76,9 +76,9 @@ class _MyGoalState extends State<MyGoal> {
         userMandaInfo(context, mandalartId, i);
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      /*ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
-      );
+      );*/
     }
   }
 

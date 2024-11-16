@@ -2,7 +2,7 @@
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/screens/DP/edit99_page.dart';
-import 'package:domino/screens/DP/list_page.dart';
+import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/mandalart3.dart';
 import 'package:flutter/material.dart';
@@ -98,7 +98,7 @@ class DPdetailPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const DPlistPage(),
+                              builder: (context) => const DPMain(),
                             ),
                           );
                         }
