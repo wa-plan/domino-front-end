@@ -295,16 +295,37 @@ class UserInfoService {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
-        String nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
+        String id = data['id'];
+        String userId = data['userId'];
+        String password = data['password'];
+        String email = data['email'];
+        String phoneNum = data['phoneNum'];
         String description = data['description'] ?? '프로필 편집을 통해 \n자신을 표현해주세요.';
-        /*Fluttertoast.showToast(
+
+        String role = data['role'];
+        String morningAlarm = data['morningAlarm'];
+        String nightAlarm = data['nightAlarm'];
+        String nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
+
+        Fluttertoast.showToast(
           msg: '조회 성공',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.green,
           textColor: Colors.white,
-        );*/
-        return {'nickname': nickname, 'description': description};
+        );
+        return {
+          'id': id,
+          'userId': userId,
+          'password': password,
+          'email': email,
+          'phoneNum': phoneNum,
+          'description': description,
+          'role': role,
+          'morningAlarm': morningAlarm,
+          'nightAlarm': nightAlarm,
+          'nickname': nickname,
+        };
       } else if (response.statusCode >= 400) {
         Fluttertoast.showToast(
           msg: '조회 실패: ${response.body}',
