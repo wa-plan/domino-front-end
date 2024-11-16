@@ -297,13 +297,13 @@ class UserInfoService {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
         String nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
         String description = data['description'] ?? '프로필 편집을 통해 \n자신을 표현해주세요.';
-        Fluttertoast.showToast(
+        /*Fluttertoast.showToast(
           msg: '조회 성공',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.green,
           textColor: Colors.white,
-        );
+        );*/
         return {'nickname': nickname, 'description': description};
       } else if (response.statusCode >= 400) {
         Fluttertoast.showToast(
@@ -375,13 +375,13 @@ class UserMandaIdService {
           return {'id': id, 'name': name};
         }).toList();
 
-        Fluttertoast.showToast(
+        /*Fluttertoast.showToast(
           msg: '조회 성공',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.green,
           textColor: Colors.white,
-        );
+        );*/
 
         return mandaList;
       } else if (response.statusCode >= 400) {
@@ -449,13 +449,13 @@ class UserMandaInfoService {
           jsonDecode(utf8.decode(response.bodyBytes)); // UTF-8로 디코딩
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        Fluttertoast.showToast(
+        /*Fluttertoast.showToast(
           msg: '조회 성공',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.green,
           textColor: Colors.white,
-        );
+        );*/
 
         print('서버 응답 데이터: $decodedResponse');
         return decodedResponse; // 성공 시 데이터 반환

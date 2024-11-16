@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/nav_provider.dart';
 
-import 'package:domino/screens/DP/list_page.dart';
+import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/screens/TD/td_main.dart';
 import 'package:domino/screens/ST/settings_main.dart';
 import 'package:domino/screens/MG/mygoal_main.dart';
@@ -78,7 +78,7 @@ class NavBar extends StatelessWidget {
       case 1:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const DPlistPage()),
+          MaterialPageRoute(builder: (context) => const DPMain()),
         );
         break;
       case 2:
