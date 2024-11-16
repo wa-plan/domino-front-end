@@ -397,7 +397,7 @@ class SignOutService {
 }
 
 class MorningAlertService {
-  static Future<String?> morningAlert(
+  static Future<bool> morningAlert(
     BuildContext context,
     String alarm,
   ) async {
@@ -413,7 +413,7 @@ class MorningAlertService {
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
-      return null;
+      return false;
     }
 
     final url = Uri.parse('$baseUrl/api/user/morning_alarm');
@@ -439,7 +439,7 @@ class MorningAlertService {
           backgroundColor: Colors.black,
           textColor: Colors.white,
         );
-        return alarm; //성공한 경우 'on' 또는 'off' 값을 반환
+        return true; //성공한 경우 'on' 또는 'off' 값을 반환
       } else {
         Fluttertoast.showToast(
           msg: '업데이트 실패: ${response.body}',
@@ -448,7 +448,7 @@ class MorningAlertService {
           backgroundColor: Colors.red,
           textColor: Colors.white,
         );
-        return null;
+        return false;
       }
     } catch (e) {
       Fluttertoast.showToast(
@@ -458,13 +458,13 @@ class MorningAlertService {
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
-      return null;
+      return false;
     }
   }
 }
 
 class NightAlertService {
-  static Future<String?> nightAlert(
+  static Future<bool> nightAlert(
     BuildContext context,
     String alarm,
   ) async {
@@ -480,7 +480,7 @@ class NightAlertService {
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
-      return null;
+      return false;
     }
 
     final url = Uri.parse('$baseUrl/api/user/night_alarm');
@@ -506,7 +506,7 @@ class NightAlertService {
           backgroundColor: Colors.black,
           textColor: Colors.white,
         );
-        return alarm; //성공한 경우 'on' 또는 'off' 값을 반환
+        return true; //성공한 경우 'on' 또는 'off' 값을 반환
       } else {
         Fluttertoast.showToast(
           msg: '업데이트 실패: ${response.body}',
@@ -515,7 +515,7 @@ class NightAlertService {
           backgroundColor: Colors.red,
           textColor: Colors.white,
         );
-        return null;
+        return false;
       }
     } catch (e) {
       Fluttertoast.showToast(
@@ -525,7 +525,7 @@ class NightAlertService {
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
-      return null;
+      return false;
     }
   }
 }
