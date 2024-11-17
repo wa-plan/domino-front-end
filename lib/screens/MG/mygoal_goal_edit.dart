@@ -1,5 +1,4 @@
-//import 'package:domino/provider/DP/model.dart';
-//import 'package:provider/provider.dart';
+import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,11 +10,13 @@ class MygoalEdit extends StatefulWidget {
   final String name;
   final int dday;
   final String description;
-  final Color color; // 색상 전달
+  final String color; // 색상 전달
   final List<String> goalImage;
+  final String id;
 
   const MygoalEdit(
       {super.key,
+      required this.id,
       required this.name,
       required this.dday,
       required this.description,
@@ -27,15 +28,18 @@ class MygoalEdit extends StatefulWidget {
 }
 
 class _MygoalEditState extends State<MygoalEdit> {
+  final TextEditingController _namecontroller = TextEditingController();
+  final TextEditingController _descriptcontroller = TextEditingController();
   bool _isChecked = false;
   XFile? _pickedFile;
-  Color? _selectedColor;
+  late String _selectedColor;
   DateTime calculatedDate = DateTime.now();
   List<String> _combinedImages = []; // Combined list of existing and new images
 
   @override
   void initState() {
     super.initState();
+    _selectedColor = widget.color;
 
     // Initialize combinedImages with existing images
     _combinedImages = List.from(widget.goalImage);
@@ -64,6 +68,45 @@ class _MygoalEditState extends State<MygoalEdit> {
     }
   }
 
+  Future<bool> _editName(String name, int mandalartId) async {
+    try {
+      final success = await EditGoalNameService.editGoalName(
+        name: name,
+        mandalartId: mandalartId,
+      );
+      return success;
+    } catch (e) {
+      debugPrint('Error in _editName: $e');
+      return false; // Return false if there's an error
+    }
+  }
+
+  Future<bool> _editDescript(String description, int mandalartId) async {
+    try {
+      final success = await EditGoalDescriptionService.editGoalDescription(
+        description: description,
+        mandalartId: mandalartId,
+      );
+      return success;
+    } catch (e) {
+      debugPrint('Error in _editDescription: $e');
+      return false; // Return false if there's an error
+    }
+  }
+
+  Future<bool> _editColor(String color, int mandalartId) async {
+    try {
+      final success = await EditGoalColorService.editGoalColor(
+        color: color,
+        mandalartId: mandalartId,
+      );
+      return success;
+    } catch (e) {
+      debugPrint('Error in _editColor: $e');
+      return false; // Return false if there's an error
+    }
+  }
+
   // 날짜 형식을 변환하는 메서드
   String convertDateTimeDisplay(String date, String text) {
     final DateFormat displayFormatter = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
@@ -72,7 +115,7 @@ class _MygoalEditState extends State<MygoalEdit> {
     return serverFormatter.format(displayDate);
   }
 
-  void _onColorSelected(Color color) {
+  void _onColorSelected(String color) {
     setState(() {
       _selectedColor = color;
     });
@@ -82,6 +125,13 @@ class _MygoalEditState extends State<MygoalEdit> {
     setState(() {
       _combinedImages.remove(imagePath); // 이미지 리스트에서 제거
     });
+  }
+
+  @override
+  void dispose() {
+    _namecontroller.dispose();
+    _descriptcontroller.dispose();
+    super.dispose();
   }
 
   @override
@@ -137,6 +187,7 @@ class _MygoalEditState extends State<MygoalEdit> {
                     ),
                     const SizedBox(height: 13),
                     TextFormField(
+                      controller: _namecontroller,
                       decoration: InputDecoration(
                         hintText: widget.name,
                         contentPadding: const EdgeInsets.all(10.0),
@@ -240,15 +291,18 @@ class _MygoalEditState extends State<MygoalEdit> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('목표에 대해서 더 알고 싶어요. ',
-                        style: TextStyle(
+                    const Text(
+                      '목표에 대해서 더 알고 싶어요. ',
+                      style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
-                          fontSize: 16),),
+                          fontSize: 16),
+                    ),
                     const SizedBox(height: 13),
                     SizedBox(
-                       height: 80,
+                      height: 80,
                       child: TextFormField(
+                        controller: _descriptcontroller,
                         maxLines: 5,
                         decoration: InputDecoration(
                           hintText: widget.description,
@@ -283,11 +337,13 @@ class _MygoalEditState extends State<MygoalEdit> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('목표를 보여주는 사진이 있나요?',
-                        style: TextStyle(
+                    const Text(
+                      '목표를 보여주는 사진이 있나요?',
+                      style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
-                          fontSize: 16),),
+                          fontSize: 16),
+                    ),
                     const SizedBox(height: 20),
                     Row(
                       children: [
@@ -300,13 +356,14 @@ class _MygoalEditState extends State<MygoalEdit> {
                                   return Stack(
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(right: 10.0),
+                                        padding:
+                                            const EdgeInsets.only(right: 10.0),
                                         child: CircleAvatar(
                                           radius: 40,
                                           backgroundImage: File(imagePath)
                                                   .existsSync()
-                                              ? FileImage(
-                                                  File(imagePath)) // For new images
+                                              ? FileImage(File(
+                                                  imagePath)) // For new images
                                               : AssetImage(imagePath)
                                                   as ImageProvider, // For existing images
                                         ),
@@ -315,8 +372,8 @@ class _MygoalEditState extends State<MygoalEdit> {
                                         right: 0,
                                         top: 0,
                                         child: GestureDetector(
-                                          onTap: () =>
-                                              _deleteImage(imagePath), // 이미지 삭제 함수 호출
+                                          onTap: () => _deleteImage(
+                                              imagePath), // 이미지 삭제 함수 호출
                                           child: const CircleAvatar(
                                             radius: 12,
                                             backgroundColor: Colors.black54,
@@ -334,9 +391,11 @@ class _MygoalEditState extends State<MygoalEdit> {
                                     onTap: _getPhotoLibraryImage,
                                     child: const CircleAvatar(
                                       radius: 40,
-                                      backgroundColor: Color.fromARGB(255, 79, 79, 79),
+                                      backgroundColor:
+                                          Color.fromARGB(255, 79, 79, 79),
                                       child: Icon(Icons.add_a_photo,
-                                          color: Color.fromARGB(255, 173, 173, 173)),
+                                          color: Color.fromARGB(
+                                              255, 173, 173, 173)),
                                     ),
                                   ),
                               ],
@@ -360,11 +419,13 @@ class _MygoalEditState extends State<MygoalEdit> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('목표를 색깔로 표현해주세요.',
-                        style:TextStyle(
+                    const Text(
+                      '목표를 색깔로 표현해주세요.',
+                      style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
-                          fontSize: 16),),
+                          fontSize: 16),
+                    ),
                     const SizedBox(
                       height: 13,
                     ),
@@ -373,39 +434,33 @@ class _MygoalEditState extends State<MygoalEdit> {
                       children: [
                         ColorOption(
                           colorCode: const Color(0xffFF7A7A),
-                          isSelected: _selectedColor == const Color(0xffFF7A7A) ||
-                              widget.color == '0xffFF7A7A',
-                          onTap: () => _onColorSelected(const Color(0xffFF7A7A)),
+                          isSelected: _selectedColor == '0xffFF7A7A',
+                          onTap: () => _onColorSelected('0xffFF7A7A'),
                         ),
                         ColorOption(
                           colorCode: const Color(0xffFFB82D),
-                          isSelected: _selectedColor == const Color(0xffFFB82D) ||
-                              widget.color == '0xffFFB82D',
-                          onTap: () => _onColorSelected(const Color(0xffFFB82D)),
+                          isSelected: _selectedColor == '0xffFFB82D',
+                          onTap: () => _onColorSelected('0xffFFB82D'),
                         ),
                         ColorOption(
                           colorCode: const Color(0xffFCFF62),
-                          isSelected: _selectedColor == const Color(0xffFCFF62) ||
-                              widget.color == '0xffFCFF62',
-                          onTap: () => _onColorSelected(const Color(0xffFCFF62)),
+                          isSelected: _selectedColor == '0xffFCFF62',
+                          onTap: () => _onColorSelected('0xffFCFF62'),
                         ),
                         ColorOption(
                           colorCode: const Color(0xff72FF5B),
-                          isSelected: _selectedColor == const Color(0xff72FF5B) ||
-                              widget.color == '0xff72FF5B',
-                          onTap: () => _onColorSelected(const Color(0xff72FF5B)),
+                          isSelected: _selectedColor == '0xff72FF5B',
+                          onTap: () => _onColorSelected('0xff72FF5B'),
                         ),
                         ColorOption(
                           colorCode: const Color(0xff5B8DFF),
-                          isSelected: _selectedColor == const Color(0xff5B8DFF) ||
-                              widget.color == '0xff5B8DFF',
-                          onTap: () => _onColorSelected(const Color(0xff5B8DFF)),
+                          isSelected: _selectedColor == '0xff5B8DFF',
+                          onTap: () => _onColorSelected('0xff5B8DFF'),
                         ),
                         ColorOption(
                           colorCode: const Color(0xffD09CFF),
-                          isSelected: _selectedColor == const Color(0xffD09CFF) ||
-                              widget.color == '0xffD09CFF',
-                          onTap: () => _onColorSelected(const Color(0xffD09CFF)),
+                          isSelected: _selectedColor == '0xffD09CFF',
+                          onTap: () => _onColorSelected('0xffD09CFF'),
                         ),
                       ],
                     ),
@@ -466,7 +521,34 @@ class _MygoalEditState extends State<MygoalEdit> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      bool nameSuccess = false;
+                      bool descriptSuccess = false;
+                      bool colorSuccess = false;
+
+                      nameSuccess = await _editName(
+                          _namecontroller.text, int.parse(widget.id));
+
+                      // If successful, navigate to the MyGoalDetail page
+                      if (nameSuccess) {
+                        descriptSuccess = await _editDescript(
+                            _descriptcontroller.text, int.parse(widget.id));
+                      } else {
+                        // Show error or feedback if save fails
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('목표 저장에 실패했습니다.')),
+                        );
+                      }
+
+                      if (descriptSuccess) {
+                        colorSuccess = await _editColor(
+                            _selectedColor, int.parse(widget.id));
+                      }
+
+                      if (colorSuccess) {
+                        Navigator.pop(context);
+                      }
+                    },
                     style: TextButton.styleFrom(
                       backgroundColor: const Color(0xff131313),
                       shape: RoundedRectangleBorder(
@@ -476,11 +558,12 @@ class _MygoalEditState extends State<MygoalEdit> {
                     child: const Text(
                       '완료',
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500),
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ],
@@ -555,7 +638,9 @@ class ColorOption extends StatelessWidget {
           color: colorCode,
           borderRadius: BorderRadius.circular(6),
         ),
-        child: isSelected ? const Icon(Icons.check, color: Colors.black, size: 24) : null,
+        child: isSelected
+            ? const Icon(Icons.check, color: Colors.black, size: 24)
+            : null,
       ),
     );
   }

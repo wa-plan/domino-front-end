@@ -174,9 +174,6 @@ class _SettingsMainState extends State<SettingsMain> {
                 '설정',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              /*const Icon(
-                Icons.settings,
-                color: Colors.white,)*/
             ],
           ),
         ),
@@ -216,10 +213,11 @@ class _SettingsMainState extends State<SettingsMain> {
               menu: '도움',
               title: '앱 사용설명서',
               onTap: () async {
-      if (!await launchUrl(Uri.parse('https://www.naver.com'))) { //도닦기 앱 소개 노션 링크 넣기
-        throw 'Could not launch';
-      }
-    },
+                if (!await launchUrl(Uri.parse('https://www.naver.com'))) {
+                  //도닦기 앱 소개 노션 링크 넣기
+                  throw 'Could not launch';
+                }
+              },
             ),
           ],
         ),
