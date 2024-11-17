@@ -29,20 +29,28 @@ class _ProfileEditState extends State<ProfileEdit> {
     userInfo();
   }
 
-  void _editProfile(String nickname, String profile, String description) async {
-    final success = await EditProfileService.editProfile(
-      nickname: nickname,
-      profile: widget.selectedImage,
-      description: description,
-    );
-
-    if (success) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const MyGoal(),
-        ),
+  Future<bool> _editProfile(
+      String nickname, String profile, String description) async {
+    try {
+      final success = await EditProfileService.editProfile(
+        nickname: nickname,
+        profile: profile,
+        description: description,
       );
+      return success;
+    } catch (e) {
+      debugPrint('Error in _editProfile: $e');
+      return false; // Return false if there's an error
+    }
+  }
+
+  Future<bool> _editImage(String image) async {
+    try {
+      final success = await AddProfileImage.addImage(image: image);
+      return success;
+    } catch (e) {
+      debugPrint('Error in _editImage: $e');
+      return false; // Return false if there's an error
     }
   }
 
@@ -246,22 +254,45 @@ class _ProfileEditState extends State<ProfileEdit> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // 완료 버튼 기능 구현
+                    bool profileUpdated = false;
+                    bool imageUpdated = false;
 
-                    if (_pickedFile != null) {
-                      // 파일이 선택되었을 때만 프로필 수정 요청
-                      _editProfile(
-                        _nicknamecontroller.text,
-                        _pickedFile!.path, // 여기서 null 확인이 이미 되었으므로 ! 사용
-                        _explaincontroller.text,
-                      );
+                    profileUpdated = await _editProfile(
+                      _nicknamecontroller.text,
+                      _pickedFile!.path, // 선택된 파일 경로
+                      _explaincontroller.text,
+                    );
+
+                    if (profileUpdated) {
+                      // 프로필 수정이 성공하면 이미지 추가 요청 실행
+                      if (_pickedFile != null) {
+                        imageUpdated = await _editImage(
+                            _pickedFile!.path); // 선택된 이미지 경로 사용
+                      } else {
+                        imageUpdated = await _editImage(
+                            _selectedProfileImage); // 기본 이미지 경로 사용
+                      }
+
+                      if (imageUpdated) {
+                        // 이미지 추가가 성공하면 MyGoal로 이동
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyGoal(),
+                          ),
+                        );
+                      } else {
+                        // 이미지 추가 실패 처리
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('이미지 추가에 실패했습니다.')),
+                        );
+                      }
                     } else {
-                      // 파일이 선택되지 않은 경우 기본 이미지로 처리하거나 오류 메시지 처리
-                      _editProfile(
-                        _nicknamecontroller.text,
-                        _selectedProfileImage, // 기본 이미지 경로 사용
-                        _explaincontroller.text,
+                      // 프로필 수정 실패 처리
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('프로필 수정에 실패했습니다.')),
                       );
                     }
                   },
