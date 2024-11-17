@@ -230,7 +230,7 @@ class _MyGoalState extends State<MyGoal> {
         padding: const EdgeInsets.fromLTRB(35, 0, 35, 0),
         color: Colors.transparent,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,9 +251,7 @@ class _MyGoalState extends State<MyGoal> {
                       icon: const Icon(
                         Icons.star,
                       ),
-                      color: bookmark
-                          ? mainGold
-                          : const Color(0xff5C5C5C),
+                      color: bookmark ? mainGold : const Color(0xff5C5C5C),
                       iconSize: 25,
                       padding: EdgeInsets.zero, // 아이콘 내부 여백 제거
                       constraints: const BoxConstraints(),
@@ -278,6 +276,7 @@ class _MyGoalState extends State<MyGoal> {
                     ),
                   ],
                 ),
+                SizedBox(height: 10),
                 if (photoList.isEmpty)
                   Container(
                     decoration: BoxDecoration(
