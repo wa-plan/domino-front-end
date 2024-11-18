@@ -473,7 +473,9 @@ class _MyGoalAddState extends State<MyGoalAdd> {
 
                   //완료버튼
                   Button(
-                    Colors.black,Colors.white,'완료',
+                    Colors.black,
+                    Colors.white,
+                    '완료',
                     () {
                       if (_nameController.text == '') {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -488,7 +490,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                         Navigator.pop(context);
                       }
                     },
-                  ).button(),                 
+                  ).button(),
                 ],
               ),
             ],

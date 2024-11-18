@@ -397,10 +397,9 @@ class SignOutService {
 }
 
 class MorningAlertService {
-  static Future<bool> morningAlert(
-    BuildContext context,
-    String alarm,
-  ) async {
+  static Future<bool> morningAlert({
+    required String alarm,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
     print('저장된 토큰: $token');
@@ -430,6 +429,7 @@ class MorningAlertService {
           body: body);
 
       print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답: ${response.body}');
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         Fluttertoast.showToast(
@@ -439,7 +439,7 @@ class MorningAlertService {
           backgroundColor: Colors.black,
           textColor: Colors.white,
         );
-        return true; //성공한 경우 'on' 또는 'off' 값을 반환
+        return true;
       } else {
         Fluttertoast.showToast(
           msg: '업데이트 실패: ${response.body}',
