@@ -19,7 +19,7 @@ class AddGoalService {
     String? token = prefs.getString('authToken');
     print('저장된 토큰: $token');
 
-    if (token == null) {
+    if (token == null || token.isEmpty) {
       Fluttertoast.showToast(
         msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
         toastLength: Toast.LENGTH_SHORT,

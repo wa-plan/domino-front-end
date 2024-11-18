@@ -15,7 +15,6 @@ class SettingsMain extends StatefulWidget {
 }
 
 class _SettingsMainState extends State<SettingsMain> {
-  //String? id;d
   String? userId;
   String? password;
   String? email;
@@ -49,15 +48,14 @@ class _SettingsMainState extends State<SettingsMain> {
     }
   }
 
-  Future<bool> _updateMorningAlarm() async {
+  void _updateMorningAlarm() async {
     final success = await MorningAlertService.morningAlert(
-        context, isMorningAlarmOn.toString());
+        alarm: isMorningAlarmOn.toString().toUpperCase());
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('아침알람이 업데이트되었습니다.')),
       );
     }
-    return success;
   }
 
   Future<bool> _updateNightAlarm() async {
@@ -191,7 +189,11 @@ class _SettingsMainState extends State<SettingsMain> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AccountManagement(),
+                    builder: (context) => AccountManagement(
+                      email: email!,
+                      phoneNum: phoneNum!,
+                      password: password!,
+                    ),
                   ),
                 );
               },
@@ -213,7 +215,8 @@ class _SettingsMainState extends State<SettingsMain> {
               menu: '도움',
               title: '앱 사용설명서',
               onTap: () async {
-                if (!await launchUrl(Uri.parse('https://www.naver.com'))) {
+                if (!await launchUrl(Uri.parse(
+                    'https://www.notion.so/343b8dda304c415fb9cd0417120103eb?v=d2780555ab674e33b6e9c96e22575921&pvs=4'))) {
                   //도닦기 앱 소개 노션 링크 넣기
                   throw 'Could not launch';
                 }
@@ -302,7 +305,7 @@ class _SettingsMainState extends State<SettingsMain> {
                       setState(() {
                         isMorningAlarmOn = value;
                       });
-                      await _updateMorningAlarm(); // 비동기 함수 호출
+                      _updateMorningAlarm(); // 비동기 함수 호출
                     },
                   ),
                 ),

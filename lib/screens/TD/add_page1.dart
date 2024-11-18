@@ -33,7 +33,7 @@ class _AddPage1State extends State<AddPage1> {
     _mainGoalList();
   }
 
-  void mandalartInfo(context, int mandalartId) async {
+  /*void mandalartInfo(context, int mandalartId) async {
     final success = await MandalartInfoService.mandalartInfo(context,
         mandalartId: mandalartId);
     if (success) {
@@ -51,7 +51,7 @@ class _AddPage1State extends State<AddPage1> {
         const SnackBar(content: Text('도미노 조회에 실패했습니다.')),
       );
     }
-  }
+  }*/
 
   void _mainGoalList() async {
     List<Map<String, dynamic>>? goals =
@@ -76,9 +76,11 @@ class _AddPage1State extends State<AddPage1> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> createdGoals = context.watch<SaveMandalartCreatedGoal>().mandalartCreatedGoal;
+    List<String> createdGoals =
+        context.watch<SaveMandalartCreatedGoal>().mandalartCreatedGoal;
     int thirdGoalId =
-        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ?? 0;
+        int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ??
+            0;
 
     String thirdGoalName =
         context.watch<SelectAPModel>().selectedAPName.toString();
@@ -144,7 +146,8 @@ class _AddPage1State extends State<AddPage1> {
                       } else if (snapshot.hasData) {
                         // createdGoals에 있는 목표만 필터링
                         List<Map<String, dynamic>> goals = snapshot.data!
-                            .where((goal) => createdGoals.contains(goal['id'].toString()))
+                            .where((goal) =>
+                                createdGoals.contains(goal['id'].toString()))
                             .toList();
 
                         // 기본 옵션을 시작으로 추가
@@ -154,7 +157,8 @@ class _AddPage1State extends State<AddPage1> {
                         ];
 
                         return DropdownButton<String>(
-                          value: selectedGoalId.isNotEmpty ? selectedGoalId : '0',
+                          value:
+                              selectedGoalId.isNotEmpty ? selectedGoalId : '0',
                           items: options.map<DropdownMenuItem<String>>((goal) {
                             final goalName = goal['name'] ?? 'Unknown Goal';
                             return DropdownMenuItem<String>(
@@ -239,31 +243,30 @@ class _AddPage1State extends State<AddPage1> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 //취소버튼
-                Button(Colors.black, Colors.white, '취소', 
-                () => Navigator.pop(context)).button(),
+                Button(Colors.black, Colors.white, '취소',
+                    () => Navigator.pop(context)).button(),
 
                 //다음버튼
-                Button(Colors.black, Colors.white, '다음', 
-                (){
+                Button(Colors.black, Colors.white, '다음', () {
                   if (thirdGoalName != "플랜을 선택해주세요.") {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddPage2(
-                            thirdGoalId: thirdGoalId,
-                            thirdGoalName: thirdGoalName,
-                          ),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddPage2(
+                          thirdGoalId: thirdGoalId,
+                          thirdGoalName: thirdGoalName,
                         ),
-                      );
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: '플랜을 선택해주세요.',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: Colors.white,
-                        textColor: backgroundColor,
-                      );
-                    }
+                      ),
+                    );
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: '플랜을 선택해주세요.',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.white,
+                      textColor: backgroundColor,
+                    );
+                  }
                 }).button(),
               ],
             ),
