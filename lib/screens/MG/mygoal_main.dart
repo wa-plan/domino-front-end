@@ -481,7 +481,7 @@ class _MyGoalState extends State<MyGoal> {
               Column(
                 children: [
                   SizedBox(
-                    height: 200,
+                    height: 220,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: inProgressIDList.length,
