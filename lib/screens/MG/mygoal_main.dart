@@ -276,7 +276,7 @@ class _MyGoalState extends State<MyGoal> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 if (photoList.isEmpty)
                   Container(
                     decoration: BoxDecoration(
@@ -465,7 +465,7 @@ class _MyGoalState extends State<MyGoal> {
               Column(
                 children: [
                   SizedBox(
-                    height: 200,
+                    height: 220,
                     child: PageView.builder(
                       controller: _pageController,
                       itemCount: inProgressIDList.length,
