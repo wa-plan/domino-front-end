@@ -1,3 +1,4 @@
+import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/input2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -126,22 +127,22 @@ class EditInput2Page extends StatelessWidget {
                       ),
                       // Index 5
                       Input2(
-                        actionPlanId: 4,
+                        actionPlanId: 5,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 6
                       Input2(
-                        actionPlanId: 5,
+                        actionPlanId: 6,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 7
                       Input2(
-                        actionPlanId: 6,
+                        actionPlanId: 7,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 8
                       Input2(
-                        actionPlanId: 7,
+                        actionPlanId: 8,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                     ],
@@ -149,27 +150,44 @@ class EditInput2Page extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 70),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Button(
+                  Colors.black,
+                  Colors.white,
+                  '취소',
+                  () {
+                    // TestInputtedActionPlanModel 초기화
+                    context
+                        .read<TestInputtedActionPlanModel>()
+                        .resetActionPlans();
                     Navigator.pop(context);
                   },
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xff131313),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                  ),
-                  child: const Text(
-                    '완료',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ),
+                ).button(),
+                Button(
+                  Colors.black,
+                  Colors.white,
+                  '완료',
+                  () {
+                    // 모델 가져오기
+                    final testModel =
+                        context.read<TestInputtedActionPlanModel>();
+                    final saveModel =
+                        context.read<SaveInputtedActionPlanModel>();
+
+                    // TestInputtedActionPlanModel의 데이터를 SaveInputtedActionPlanModel로 복사
+                    for (int goalId = 0;
+                        goalId < testModel.inputtedActionPlan.length;
+                        goalId++) {
+                      testModel.inputtedActionPlan[goalId]
+                          .forEach((key, value) {
+                        saveModel.updateActionPlan(goalId, key, value);
+                      });
+                    }
+
+                    Navigator.pop(context);
+                  },
+                ).button(),
+              ]),
             ],
           ),
         ),

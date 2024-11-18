@@ -63,7 +63,7 @@ class MandalartGrid3 extends StatefulWidget {
 
                 MandalartBox1(hintNum: 0, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
 
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(hintNum2: 0, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
               ]
             )
@@ -98,7 +98,7 @@ class MandalartGrid3 extends StatefulWidget {
 
                 MandalartBox1(hintNum: 1, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
 
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(hintNum2: 1, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
               
               ]
@@ -134,7 +134,7 @@ class MandalartGrid3 extends StatefulWidget {
                 
                 MandalartBox1(hintNum: 2, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
                 
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(hintNum2: 2, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
               ]
             )
@@ -170,7 +170,7 @@ class MandalartGrid3 extends StatefulWidget {
                   
                 MandalartBox1(hintNum: 3, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
 
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(hintNum2: 3, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
               
               ]
@@ -238,7 +238,7 @@ class MandalartGrid3 extends StatefulWidget {
 
                 MandalartBox1(hintNum: 5, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
 
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(hintNum2: 5, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
               ]
             )
@@ -256,7 +256,7 @@ class MandalartGrid3 extends StatefulWidget {
 
                 MandalartBox1(hintNum: 6, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
 
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(hintNum2: 6, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
               ]
             )
@@ -274,7 +274,7 @@ class MandalartGrid3 extends StatefulWidget {
 
                 MandalartBox1(hintNum: 7, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
 
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(hintNum2: 7, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
               ]
             )
@@ -292,7 +292,7 @@ class MandalartGrid3 extends StatefulWidget {
 
                 MandalartBox1(hintNum: 8, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
 
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(hintNum2: 8, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
               ]
             )

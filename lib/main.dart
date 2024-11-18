@@ -33,6 +33,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => SaveEditedDetailGoalIdModel()),
         ChangeNotifierProvider(create: (_) => SaveEditedActionPlanIdModel()),
         ChangeNotifierProvider(create: (_) => SaveMandalartCreatedGoal()),
+        ChangeNotifierProvider(create: (_) => TestInputtedDetailGoalModel()),
+        ChangeNotifierProvider(create: (_) => TestInputtedActionPlanModel()),
       ],
       child: const MyApp(), // MyApp 클래스를 사용
     ),

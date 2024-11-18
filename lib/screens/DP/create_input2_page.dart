@@ -38,10 +38,10 @@ class DPcreateInput2Page extends StatelessWidget {
               const Text(
                 "목표를 이루기 위한 \n작은 계획들을 세워봐요.",
                 style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               const SizedBox(height: 20),
               Container(
@@ -64,98 +64,117 @@ class DPcreateInput2Page extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Container(
-                padding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff2A2A2A),
-                              borderRadius: BorderRadius.circular(3),
-                            ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: const Color(0xff2A2A2A),
+                  borderRadius: BorderRadius.circular(3),
+                ),
                 child: Column(
-                children: [
-                  Center(
-                    child: SizedBox(
-                      height: 300,
-                      width: 260,
-                      child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 1,
-                          mainAxisSpacing: 1,
-                        ),
-                        itemCount: 9,
-                        itemBuilder: (context, index) {
-                          if (index == 4) {
-                            // 안전한 null 처리
-                            final inputtedDetailGoal = context
-                                    .watch<SaveInputtedDetailGoalModel>()
-                                    .inputtedDetailGoal['$selectedDetailGoal'] ??
-                                '';
-                  
-                            return Container(
-                              width: 80,
-                              color: const Color(0xff929292),
-                              margin: const EdgeInsets.all(1.0),
-                              child: Center(
-                                child: Text(
-                                  inputtedDetailGoal,
-                                  style: const TextStyle(
-                                    color: backgroundColor,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
+                  children: [
+                    Center(
+                      child: SizedBox(
+                        height: 300,
+                        width: 260,
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 1,
+                            mainAxisSpacing: 1,
+                          ),
+                          itemCount: 9,
+                          itemBuilder: (context, index) {
+                            if (index == 4) {
+                              // 안전한 null 처리
+                              final inputtedDetailGoal = context
+                                          .watch<SaveInputtedDetailGoalModel>()
+                                          .inputtedDetailGoal[
+                                      '$selectedDetailGoal'] ??
+                                  '';
+
+                              return Container(
+                                width: 80,
+                                color: const Color(0xff929292),
+                                margin: const EdgeInsets.all(1.0),
+                                child: Center(
+                                  child: Text(
+                                    inputtedDetailGoal,
+                                    style: const TextStyle(
+                                      color: backgroundColor,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
-                              ),
-                            );
-                          } else {
-                            return Input2(
-                              actionPlanId: index,
-                              selectedDetailGoalId: selectedDetailGoal,
-                            );
-                          }
-                        },
+                              );
+                            } else {
+                              return Input2(
+                                actionPlanId: index,
+                                selectedDetailGoalId: selectedDetailGoal,
+                              );
+                            }
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                          height: 5,
-                        ),
-                        const Center(
-                            child: Text(
-                          '모든 칸을 다 채우지 않아도 괜찮아요:)',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 158, 158, 158),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13),
-                        )),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                ],
-              ),),
-              const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xff131313),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
+                    const SizedBox(
+                      height: 5,
                     ),
-                  ),
-                  child: const Text(
-                    '완료',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
+                    const Center(
+                        child: Text(
+                      '모든 칸을 다 채우지 않아도 괜찮아요:)',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 158, 158, 158),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 13),
+                    )),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
+                  ],
                 ),
               ),
+              const SizedBox(height: 20),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Button(
+                  Colors.black,
+                  Colors.white,
+                  '취소',
+                  () {
+                    // TestInputtedActionPlanModel 초기화
+                    context
+                        .read<TestInputtedActionPlanModel>()
+                        .resetActionPlans();
+                    Navigator.pop(context);
+                  },
+                ).button(),
+                Button(
+                  Colors.black,
+                  Colors.white,
+                  '완료',
+                  () {
+                    // 모델 가져오기
+                    final testModel =
+                        context.read<TestInputtedActionPlanModel>();
+                    final saveModel =
+                        context.read<SaveInputtedActionPlanModel>();
+
+                    // TestInputtedActionPlanModel의 데이터를 SaveInputtedActionPlanModel로 복사
+                    for (int goalId = 0;
+                        goalId < testModel.inputtedActionPlan.length;
+                        goalId++) {
+                      testModel.inputtedActionPlan[goalId]
+                          .forEach((key, value) {
+                        saveModel.updateActionPlan(goalId, key, value);
+                      });
+                    }
+
+                    Navigator.pop(context);
+                  },
+                ).button(),
+              ]),
             ],
           ),
         ),
