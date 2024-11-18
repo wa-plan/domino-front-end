@@ -134,24 +134,37 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                 const SizedBox(
                   height: 10,
                 ),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          Clicked = "yes";
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Button(
+                        Colors.black,
+                        Colors.white,
+                        '취소',
+                        () {
+                          // TestInputtedDetailGoalModel만 초기화
+                          context
+                              .read<TestInputtedDetailGoalModel>()
+                              .resetDetailGoals();
+                          Navigator.pop(context);
+                        },
+                      ).button(),
+                      Button(Colors.black, Colors.white, '저장', () {
+                        // 현재 context를 통해 두 모델에 접근
+                        final testModel =
+                            context.read<TestInputtedDetailGoalModel>();
+                        final saveModel =
+                            context.read<SaveInputtedDetailGoalModel>();
+
+                        // TestInputtedDetailGoalModel의 데이터를 SaveInputtedDetailGoalModel로 복사
+                        testModel.testinputtedDetailGoal.forEach((key, value) {
+                          saveModel.updateDetailGoal(
+                              key, value); // Save 모델에 값 저장
                         });
+
                         Navigator.pop(context);
-                      },
-                      style: TextButton.styleFrom(
-                          backgroundColor: const Color(0xff131313),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0))),
-                      child: const Text(
-                        '저장',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                    ))
+                      }).button()
+                    ])
               ],
             )));
   }

@@ -1,6 +1,7 @@
 //DP 수정 메인 페이지
-import 'package:domino/screens/DP/edit_create_confirm_page.dart';
+import 'package:domino/screens/DP/edit_create_color_page.dart';
 import 'package:domino/screens/DP/edit_create_input1_page.dart';
+import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/edit_smallgrid_with_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,33 +20,31 @@ class Edit99Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xff262626),
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xff262626),
+          titleSpacing: 0.0,
           title: Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+            padding: appBarPadding,
             child: Text(
               '플랜 수정하기',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.06,
-                  fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
+          backgroundColor: backgroundColor,
         ),
         body: Padding(
-            padding: const EdgeInsets.fromLTRB(38.0, 10.0, 38.0, 0.0),
+            padding: fullPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
                   '플랜을 수정할 수 있어요.',
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1.1),
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(
                   height: 20,
@@ -414,7 +413,7 @@ class Edit99Page extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditConfirmPage(
+                                builder: (context) => EditColorPage(
                                   mandalart: mandalart,
                                 ),
                               ));

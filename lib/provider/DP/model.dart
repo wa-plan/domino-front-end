@@ -48,12 +48,39 @@ class SaveInputtedDetailGoalModel with ChangeNotifier {
 
   Map<String, String> get inputtedDetailGoal => _inputtedDetailGoal;
 
-  // Update the goal's value in the map
   void updateDetailGoal(String key, String value) {
     if (_inputtedDetailGoal.containsKey(key)) {
       _inputtedDetailGoal[key] = value;
       notifyListeners();
     }
+  }
+}
+
+class TestInputtedDetailGoalModel with ChangeNotifier {
+  final Map<String, String> _testinputtedDetailGoal = {
+    '0': '',
+    '1': '',
+    '2': '',
+    '3': '',
+    '4': '',
+    '5': '',
+    '6': '',
+    '7': '',
+    '8': ''
+  };
+
+  Map<String, String> get testinputtedDetailGoal => _testinputtedDetailGoal;
+
+  void updateTestDetailGoal(String key, String value) {
+    if (_testinputtedDetailGoal.containsKey(key)) {
+      _testinputtedDetailGoal[key] = value;
+      notifyListeners();
+    }
+  }
+
+  void resetDetailGoals() {
+    _testinputtedDetailGoal.updateAll((key, value) => '');
+    notifyListeners();
   }
 }
 
@@ -84,6 +111,43 @@ class SaveInputtedActionPlanModel with ChangeNotifier {
         notifyListeners();
       }
     }
+  }
+}
+
+class TestInputtedActionPlanModel with ChangeNotifier {
+  final List<Map<String, String>> _testinputtedActionPlan = List.generate(9, (_) {
+    return {
+      '0': '',
+      '1': '',
+      '2': '',
+      '3': '',
+      '4': '',
+      '5': '',
+      '6': '',
+      '7': '',
+      '8': ''
+    };
+  });
+
+  List<Map<String, String>> get inputtedActionPlan => _testinputtedActionPlan;
+
+  void updateTestActionPlan(int goalId, String key, String value) {
+    if (goalId >= 0 && goalId < _testinputtedActionPlan.length) {
+      // 유효한 인덱스인지 확인
+      if (_testinputtedActionPlan[goalId].containsKey(key)) {
+        // 키가 존재하는지 확인
+        _testinputtedActionPlan[goalId][key] = value;
+        notifyListeners();
+      }
+    }
+  }
+
+  // 초기화 메서드 추가
+  void resetActionPlans() {
+    for (int i = 0; i < _testinputtedActionPlan.length; i++) {
+      _testinputtedActionPlan[i].updateAll((key, value) => '');
+    }
+    notifyListeners();
   }
 }
 

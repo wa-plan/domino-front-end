@@ -1,4 +1,4 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/screens/DP/create99_page.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +9,8 @@ import 'package:domino/widgets/DP/smallgrid.dart';
 import 'package:domino/apis/services/dp_services.dart';
 
 class DPcreateSelectPage extends StatefulWidget {
-  List<Map<String, dynamic>> emptyMainGoals = [];
-  DPcreateSelectPage({super.key, required this.emptyMainGoals});
+  final List<Map<String, dynamic>> emptyMainGoals;
+  const DPcreateSelectPage({super.key, required this.emptyMainGoals});
 
   @override
   State<DPcreateSelectPage> createState() => _DPcreateSelectPageState();
@@ -20,7 +20,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   String? selectedGoalId;
   String selectedGoalName = '';
   List<Map<String, dynamic>> mainGoals = [];
-
+  
   @override
   void initState() {
     super.initState();
@@ -28,11 +28,16 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   }
 
   void _mainGoalList() async {
-    List<Map<String, dynamic>>? goals =
-        await MainGoalListService.mainGoalList(context);
-    if (goals != null) {
+    // Fetching goals using UserMandaIdService without filtering
+    List<Map<String, dynamic>> goals = await UserMandaIdService.userManda();
+    if (goals.isNotEmpty) {
       setState(() {
-        mainGoals = goals;
+        mainGoals = goals.map((goal) {
+          return {
+            'id': goal['id']!.toString(),
+            'name': goal['name']!.toString(),
+          };
+        }).toList();
       });
     }
   }
@@ -78,63 +83,23 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                   color: const Color(0xff5C5C5C),
                 ),
               ),
-              child: FutureBuilder(
-                future: MainGoalListService.mainGoalList(context),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                      child: Text(
-                        '목표를 불러오는 데 실패했습니다.',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                  } else if (snapshot.hasData) {
-                    // emptyMainGoals를 사용하여 필터링
-                    List<Map<String, dynamic>> emptyGoals =
-                        widget.emptyMainGoals;
-                    // filteredGoals에서 emptyGoals에 있는 목표 ID를 포함하는 목표만 필터링
-                    List<dynamic> filteredGoals = snapshot.data!.where((goal) {
-                      bool match = emptyGoals.any((emptyGoal) {
-                        bool isMatch = emptyGoal['mandalartId'].toString() ==
-                            goal['id'].toString();
-                        print(
-                            'Comparing mandalartId: ${emptyGoal['mandalartId']} with id: ${goal['id']} - Match: $isMatch');
-                        return isMatch;
-                      });
-                      return match;
-                    }).toList();
-
-                    print('Filtered Goals: $filteredGoals');
-
-                    if (filteredGoals.isEmpty) {
-                      return const Center(
-                        child: Text(
-                          '만다라트를 생성할 목표가 없습니다.', // Message when no goal matches
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }
-
-                    return DropdownButton<String>(
+              child: mainGoals.isEmpty
+                  ? const Center(child: CircularProgressIndicator())
+                  : DropdownButton<String>(
                       value: selectedGoalId,
                       items: [
                         const DropdownMenuItem<String>(
-                          value: null, // 기본 선택 값은 null로 설정
+                          value: null,
                           child: Text(
                             '목표를 선택해 주세요.',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
-                        ...filteredGoals.map<DropdownMenuItem<String>>((goal) {
-                          final goalName = goal['name'] ?? 'Unknown Goal';
+                        ...mainGoals.map<DropdownMenuItem<String>>((goal) {
                           return DropdownMenuItem<String>(
-                            value: goal['id'].toString(),
+                            value: goal['id'],
                             child: Text(
-                              goalName,
+                              goal['name']!,
                               style: const TextStyle(color: Colors.white),
                             ),
                           );
@@ -142,12 +107,12 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                       ],
                       onChanged: (String? value) {
                         if (value != null) {
-                          final selectedGoal = snapshot.data!.firstWhere(
-                            (goal) => goal['id'].toString() == value,
+                          final selectedGoal = mainGoals.firstWhere(
+                            (goal) => goal['id'] == value,
                           );
                           setState(() {
                             selectedGoalId = value;
-                            selectedGoalName = selectedGoal['name'] ?? '';
+                            selectedGoalName = selectedGoal['name']!;
                           });
                           context
                               .read<SelectFinalGoalModel>()
@@ -162,17 +127,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                       style: const TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.white,
                       underline: Container(),
-                    );
-                  } else {
-                    return const Center(
-                      child: Text(
-                        '목표가 없습니다.',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                  }
-                },
-              ),
+                    ),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -203,7 +158,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                             child: innerIndex == 4
                                 ? Text(
                                     selectedGoalName,
-                                    maxLines: 2, // 두 줄로 제한
+                                    maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       color: Colors.black,
@@ -268,7 +223,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                     ),
                   ),
                   child: const Text(
-                    "다음",
+                    '다음',
                     style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
