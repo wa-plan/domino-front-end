@@ -20,6 +20,21 @@ class _EventCalendarState extends State<EventCalendar> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   bool _isExpanded = false; // 달력 확장 상태
 
+  void mandalartInfo(context, int mandalartId) async {
+    final data = await MandalartInfoService.mandalartInfo(context,
+        mandalartId: mandalartId);
+    if (data != null) {
+      setState(() {
+        String firstColor = data['color']; // name을 가져오기
+        print(firstColor);
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
