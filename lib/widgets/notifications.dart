@@ -4,7 +4,8 @@ showNotification() async {
 await flutterLocalNotificationsPlugin.zonedSchedule(
 0, //알림 id
 '도닦기',
-'오늘도 힘내자!',
+'오늘이 거의 끝나간다... 오늘의 도미노를 체크해줘 ! 
+From. 도민호',
 makeDate(18, 30, 0),
 NotificationDetails(
 android: AndroidNotificationDetails('channelId', 'channelName')),
