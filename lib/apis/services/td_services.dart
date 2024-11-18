@@ -573,6 +573,73 @@ class DeleteTodayDominoService {
 }
 
 class MandalartInfoService {
+  static Future<Map<String, dynamic>?> mandalartInfo(context,
+      {required int mandalartId}) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return null; // 로그인 토큰 없으면 null 반환
+    }
+
+    final url = Uri.parse('$baseUrl/api/mandalart/all/$mandalartId');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      final decodedResponse =
+          jsonDecode(utf8.decode(response.bodyBytes)); // UTF-8로 디코딩
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        print('서버 응답 데이터: $decodedResponse');
+        return decodedResponse; // 성공 시 데이터 반환
+      } else if (response.statusCode >= 400) {
+        Fluttertoast.showToast(
+          msg: '조회 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: '조회 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+      return null; // 실패 시 null 반환
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return null; // 오류 발생 시 null 반환
+    }
+  }
+}
+
+/*class MandalartInfoService {
   static Future<bool> mandalartInfo(context, {required int mandalartId}) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
@@ -641,4 +708,4 @@ class MandalartInfoService {
       return false;
     }
   }
-}
+}*/

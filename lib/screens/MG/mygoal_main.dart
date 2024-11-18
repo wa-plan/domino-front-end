@@ -1,4 +1,5 @@
 import 'package:domino/apis/services/mg_services.dart';
+import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/MG/mygoal_goal_detail.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,21 @@ class _MyGoalState extends State<MyGoal> {
       /*ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
       );*/
+    }
+  }
+
+  void mandalartInfo(context, int mandalartId) async {
+    final data = await MandalartInfoService.mandalartInfo(context,
+        mandalartId: mandalartId);
+    if (data != null) {
+      setState(() {
+        String firstColor = data['color']; // color 값 가져오기
+        print(firstColor);
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
+      );
     }
   }
 
@@ -276,7 +292,7 @@ class _MyGoalState extends State<MyGoal> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 if (photoList.isEmpty)
                   Container(
                     decoration: BoxDecoration(
