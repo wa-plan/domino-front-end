@@ -10,7 +10,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:domino/apis/services/lr_services.dart'; // Import the new service
 
 class AccountManagement extends StatefulWidget {
-  const AccountManagement({super.key});
+  final String email;
+  final String password;
+  final String phoneNum;
+  const AccountManagement({
+    super.key,
+    required this.email,
+    required this.password,
+    required this.phoneNum,
+  });
 
   @override
   State<AccountManagement> createState() => _AccountManagementState();
@@ -50,43 +58,41 @@ class _AccountManagementState extends State<AccountManagement> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             Expanded(
               child: ListView(
                 children: [
-
                   const SizedBox(height: 15),
                   // Information Section
-                 
-                      _buildSettingItem(
-                        menu: '이메일',
-                        title: 'new7932@naver.com',
-                      ),
-                      _buildSettingItem(
-                        menu: '휴대폰 번호',
-                        title: '010 7536 7932',
-                      ),
+
+                  _buildSettingItem(
+                    menu: '이메일',
+                    title: widget.email,
+                  ),
+                  _buildSettingItem(
+                    menu: '휴대폰 번호',
+                    title: widget.phoneNum,
+                  ),
 
                   // Security Section
-               
-                      _buildSettingItem(
-                        menu: '보안',
-                        title: '비밀번호 변경',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ChangePassword(),
-                            ),
-                          );
-                        },
-                      ),
-                  
+
+                  _buildSettingItem(
+                    menu: '보안',
+                    title: '비밀번호 변경',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangePassword(
+                            password: widget.password,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
 
                   // End Section
-                 
-                      _buildCombinedSwitchItem()
-                    
+
+                  _buildCombinedSwitchItem()
                 ],
               ),
             ),
@@ -115,12 +121,15 @@ class _AccountManagementState extends State<AccountManagement> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                Text(title,
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600)),
                 if (onTap != null)
                   const Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: Color(0xffD4D4D4),
-                    size: 17,),
+                    size: 17,
+                  ),
               ],
             ),
           ],
@@ -137,83 +146,81 @@ class _AccountManagementState extends State<AccountManagement> {
         color: const Color(0xff2A2A2A),
         borderRadius: BorderRadius.circular(3),
       ),
-      child:  Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('종료', style: TextStyle(color: Color(0xff949494))),
           const SizedBox(height: 9),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            
             children: [
-              const Text('로그아웃', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+              const Text('로그아웃',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600)),
               GestureDetector(
-                 onTap: () {
-                          _logout();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
-                        },
+                onTap: () {
+                  _logout();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
+                  );
+                },
                 child: const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Color(0xffD4D4D4),
-                      size: 17,),
+                  Icons.arrow_forward_ios_rounded,
+                  color: Color(0xffD4D4D4),
+                  size: 17,
+                ),
               ),
-              
-              
             ],
           ),
           const SizedBox(height: 13),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('탈퇴하기', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+              const Text('탈퇴하기',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600)),
               GestureDetector(
                 onTap: () {
-                          PopupDialog.show(
-                            context,
-                            '이건 아니야.. \n정말 떠날거야...?',
-                            true, // cancel
-                            false, // delete
-                            true,
-                            true, // signout
-                            onCancel: () {
-                              Navigator.of(context).pop();
-                            },
-                            onDelete: () {
-                              // 삭제 버튼을 눌렀을 때 실행할 코드
-                            },
-                            onSignOut: () {
-                              SignOutService.signOut(context);
-                              Navigator.of(context).pop();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MyApp(),
-                                ),
-                              );
-                            },
-                          );
-                        },
+                  PopupDialog.show(
+                    context,
+                    '이건 아니야.. \n정말 떠날거야...?',
+                    true, // cancel
+                    false, // delete
+                    true,
+                    true, // signout
+                    onCancel: () {
+                      Navigator.of(context).pop();
+                    },
+                    onDelete: () {
+                      // 삭제 버튼을 눌렀을 때 실행할 코드
+                    },
+                    onSignOut: () {
+                      SignOutService.signOut(context);
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MyApp(),
+                        ),
+                      );
+                    },
+                  );
+                },
                 child: const Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      color: Color(0xffD4D4D4),
-                      size: 17,),
+                  Icons.arrow_forward_ios_rounded,
+                  color: Color(0xffD4D4D4),
+                  size: 17,
+                ),
               ),
-              
-              
             ],
           ),
         ],
       ),
     );
   }
-
-  
-
 
   void _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -1,9 +1,11 @@
 import 'package:domino/screens/LR/loginregister_find_password.dart';
+import 'package:domino/screens/TD/td_main.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/LR/register.dart';
 import 'package:domino/apis/services/lr_services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,8 +17,17 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _idcontroller = TextEditingController();
   final TextEditingController _pwcontroller = TextEditingController();
+  final storage = const FlutterSecureStorage();
 
   final LoginService _loginService = LoginService();
+
+  _asyncMethod() async {
+    if (await storage.read(key: "token") != null) {
+      if (!mounted) return;
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const TdMain()));
+    }
+  }
 
   void _login() {
     final userId = _idcontroller.text;
@@ -74,6 +85,12 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       validator: validator,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _asyncMethod(); // SecureStorage에서 로그인 유무 확인
   }
 
   @override
@@ -207,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             )
                           ]),
-                      const SizedBox(height: 40.0),
+                      const SizedBox(height: 10.0),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -215,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Row(children: [
+                                  /*const Row(children: [
                                     Text(
                                       '자동으로 로그인되기',
                                       style: TextStyle(
@@ -224,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           fontWeight: FontWeight.w400),
                                     ),
                                     MyCheckBox(),
-                                  ]),
+                                  ]),*/
                                   GestureDetector(
                                       onTap: () {
                                         Navigator.push(
@@ -258,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class MyCheckBox extends StatefulWidget {
+/*class MyCheckBox extends StatefulWidget {
   const MyCheckBox({super.key});
 
   @override
@@ -283,4 +300,4 @@ class MyCheckBoxState extends State<MyCheckBox> {
       },
     );
   }
-}
+}*/
