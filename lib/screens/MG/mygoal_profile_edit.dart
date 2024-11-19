@@ -261,7 +261,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                     profileUpdated = await _editProfile(
                       _nicknamecontroller.text,
-                      _pickedFile!.path, // 선택된 파일 경로
+                      _selectedProfileImage, // 선택된 파일 경로
                       _explaincontroller.text,
                     );
 
@@ -269,7 +269,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                       // 프로필 수정이 성공하면 이미지 추가 요청 실행
                       if (_pickedFile != null) {
                         imageUpdated = await _editImage(
-                            _pickedFile!.path); // 선택된 이미지 경로 사용
+                            _selectedProfileImage); // 선택된 이미지 경로 사용
                       } else {
                         imageUpdated = await _editImage(
                             _selectedProfileImage); // 기본 이미지 경로 사용
