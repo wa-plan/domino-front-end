@@ -18,9 +18,9 @@ class MyGoal extends StatefulWidget {
 }
 
 class _MyGoalState extends State<MyGoal> {
-  final String message = "실패하는 것이 두려운 게 아니라\n노력하지 않는 것이 두렵다.";
-  String nickname = '당신은 어떤 사람인가요?';
-  String description = '프로필 편집을 통해 \n자신을 표현해주세요.';
+  final String message = "";
+  String nickname = '';
+  String description = '';
   String selectedImage = "assets/img/profile_smp4.png";
 
   String status = '';
@@ -30,9 +30,9 @@ class _MyGoalState extends State<MyGoal> {
   int failed = 0; // 추가: 실패한 목표 수
   int dday = 0; // 추가: D-day
   String ddayString = '0';
-  List<Map<String, dynamic>> failedIDList = [];
-  List<Map<String, dynamic>> inProgressIDList = [];
-  List<Map<String, dynamic>> successIDList = [];
+  List<Map<String, String>> failedIDList = [];
+  List<Map<String, String>> inProgressIDList = [];
+  List<Map<String, String>> successIDList = [];
   List<Map<String, dynamic>> photoList = [];
   String mandaDescription = '';
   bool bookmark = false;
@@ -45,6 +45,8 @@ class _MyGoalState extends State<MyGoal> {
   List<int> inProgressNumList = [];
   List<int> successNumList = [];
 
+  List<Map<String, String>> colorList = [];
+
   void userInfo() async {
     final data = await UserInfoService.userInfo();
     if (data.isNotEmpty) {
@@ -55,21 +57,6 @@ class _MyGoalState extends State<MyGoal> {
       /*ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
       );*/
-    }
-  }
-
-  void mandalartInfo(context, int mandalartId) async {
-    final data = await MandalartInfoService.mandalartInfo(context,
-        mandalartId: mandalartId);
-    if (data != null) {
-      setState(() {
-        String firstColor = data['color']; // color 값 가져오기
-        print(firstColor);
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
-      );
     }
   }
 
@@ -92,9 +79,11 @@ class _MyGoalState extends State<MyGoal> {
         userMandaInfo(context, mandalartId, i);
       }
 
-      /*ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
-      );*/
+      // mandalarts가 로드된 후에 mandalartInfo 호출
+      for (var mandalart in mandalarts) {
+        final String mandalartId = mandalart["id"]!;
+        mandalartInfo(mandalartId); // id값 전달
+      }
     }
   }
 
@@ -128,12 +117,15 @@ class _MyGoalState extends State<MyGoal> {
         int id = data['id'];
 
         if (status == "FAIL") {
-          failedIDList.add({"id": id, "name": name}); // "FAIL" 상태의 name을 추가
+          failedIDList
+              .add({"id": id.toString(), "name": name}); // "FAIL" 상태의 name을 추가
         } else if (status == "IN_PROGRESS") {
-          inProgressIDList
-              .add({"id": id, "name": name}); // "IN_PROGRESS" 상태의 name을 추가
+          inProgressIDList.add({
+            "id": id.toString(),
+            "name": name
+          }); // "IN_PROGRESS" 상태의 name을 추가
         } else if (status == "SUCCESS") {
-          successIDList.add({"id": id, "name": name});
+          successIDList.add({"id": id.toString(), "name": name});
         }
         if (data['photoList'] is List) {
           photoList = List<Map<String, dynamic>>.from(data['photoList']);
@@ -195,6 +187,29 @@ class _MyGoalState extends State<MyGoal> {
     }
   }
 
+  void mandalartInfo(String mandalartId) async {
+    try {
+      // 서버에서 데이터 가져오기
+      int id = int.parse(mandalartId);
+      final data = await MandalartInfoService.mandalartInfo(mandalartId: id);
+      if (data != null) {
+        // 반환된 데이터를 colorList에 추가
+        setState(() {
+          colorList.add({"id": mandalartId, "color": data["color"]});
+        });
+        print('colorList=$colorList');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('오류 발생: $e')),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -216,13 +231,17 @@ class _MyGoalState extends State<MyGoal> {
       String mandaDescription,
       int failed,
       int inProgressNum,
-      int successNum) {
+      int successNum,
+      String color) {
     final String name = mandalart['name'] ?? 'Goal';
     final String id = mandalart['id'] ?? '';
     int parsedId = int.parse(id);
+    final colorValue =
+        int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
 
     return GestureDetector(
       onTap: () {
+        print('failedIDList=$failedIDList');
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -370,11 +389,11 @@ class _MyGoalState extends State<MyGoal> {
             //첫번째 목표 색깔 연결하기(아래 컨테이너)
             Container(
               decoration: BoxDecoration(
-                color: const Color(0xffFCFF62),
+                color: Color(colorValue),
                 borderRadius: BorderRadius.circular(3.0),
               ),
               width: 15,
-              height: 190,
+              height: 150,
             ),
           ],
         ),
@@ -486,21 +505,22 @@ class _MyGoalState extends State<MyGoal> {
                       controller: _pageController,
                       itemCount: inProgressIDList.length,
                       itemBuilder: (context, index) {
-                        final mandalart = mandalarts[index];
+                        final mandalart = inProgressIDList[index];
                         final dday = ddayList[index];
                         final failed = failedList[index];
                         final inProgressNum = inProgressNumList[index];
                         final successNum = successNumList[index];
                         final mandaDescription = mandaDescriptionList[index];
+                        final color = colorList[index]["color"];
                         return _buildGoalCard(
-                          mandalart,
-                          index,
-                          dday,
-                          mandaDescription,
-                          failed,
-                          inProgressNum,
-                          successNum,
-                        );
+                            mandalart,
+                            index,
+                            dday,
+                            mandaDescription,
+                            failed,
+                            inProgressNum,
+                            successNum,
+                            color!);
                       },
                     ),
                   ),
@@ -520,7 +540,7 @@ class _MyGoalState extends State<MyGoal> {
                 ],
               ),
               const SizedBox(height: 40),
-              MGSubTitle('이번 주의 응원').mgSubTitle(context),
+              MGSubTitle('이번주의 응원!!').mgSubTitle(context),
               const SizedBox(height: 15),
               const CheeringMessage(),
               const SizedBox(height: 40),
@@ -532,19 +552,31 @@ class _MyGoalState extends State<MyGoal> {
                 Column(
                   children: [
                     ...successIDList.map((item) {
+// id에 맞는 색상을 찾아서 적용
+                      final color = colorList.firstWhere(
+                          (element) => element['id'] == item['id'],
+                          orElse: () => {
+                                'color': 'Color(0xff000000)'
+                              } // 색상이 없을 경우 기본값 (검정색)
+                          )['color'];
+
+                      // Color로 변환 (문자열에서 'Color('와 ')'를 제거하고 int로 변환한 뒤 Color 객체로 감싸기)
+                      final colorValue = Color(int.parse(
+                          color!.replaceAll('Color(', '').replaceAll(')', '')));
+
                       return GestureDetector(
                         onTap: () {
-                          notInProgressInfo(context, item['id']);
+                          notInProgressInfo(context, int.parse(item['id']!));
                         },
                         child: Container(
-                          decoration: const BoxDecoration(color: Colors.green),
+                          decoration: BoxDecoration(color: colorValue),
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: MediaQuery.of(context).size.width * 0.08,
                           margin: const EdgeInsets.symmetric(vertical: 5.0),
                           child: Center(
                             child: Text(
-                              item['name'],
-                              style: const TextStyle(color: Colors.white),
+                              item['name']!,
+                              style: const TextStyle(color: Colors.black),
                             ),
                           ),
                         ),
@@ -561,24 +593,37 @@ class _MyGoalState extends State<MyGoal> {
                 Column(
                   children: [
                     ...failedIDList.map((item) {
+                      // id에 맞는 색상을 찾아서 적용
+                      final color = colorList.firstWhere(
+                          (element) => element['id'] == item['id'],
+                          orElse: () => {
+                                'color': 'Color(0xff000000)'
+                              } // 색상이 없을 경우 기본값 (검정색)
+                          )['color'];
+
+                      // Color로 변환 (문자열에서 'Color('와 ')'를 제거하고 int로 변환한 뒤 Color 객체로 감싸기)
+                      final colorValue = Color(int.parse(
+                          color!.replaceAll('Color(', '').replaceAll(')', '')));
+
                       return GestureDetector(
                         onTap: () {
-                          notInProgressInfo(context, item['id']);
+                          print('colorValue=$colorValue');
+                          notInProgressInfo(context, int.parse(item['id']!));
                         },
                         child: Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 0, 13),
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 0),
                           decoration: BoxDecoration(
-                            color: Colors.black,
+                            color: colorValue,
                             borderRadius: BorderRadius.circular(3),
                           ),
                           width: MediaQuery.of(context).size.width * 0.9,
                           height: MediaQuery.of(context).size.width * 0.09,
                           child: Center(
                             child: Text(
-                              item['name'],
-                              style: const TextStyle(color: Colors.white),
+                              item['name']!,
+                              style: const TextStyle(color: Colors.black),
                             ),
                           ),
                         ),

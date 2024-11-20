@@ -1,3 +1,4 @@
+import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +21,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
   bool _isChecked = false;
   XFile? _pickedFile;
   Color? _selectedColor;
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   List<image_picker.XFile?> selectedImages = [];
@@ -49,7 +50,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
       name: name,
       description: description,
       color: color, // 색상 문자열로 전달
-      date: date,
+      date: date!,
       pictures: picturePaths,
     );
 
@@ -199,7 +200,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                       alignment: Alignment.center,
                       scale: 0.9,
                       child: DatePicker(
-                        initialDay: selectedDate,
+                        initialDay: DateTime.now(),
                         onDateChanged: (newDate) {
                           setState(() {
                             selectedDate = newDate;
@@ -220,6 +221,8 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                               if (_isChecked) {
                                 selectedDate = DateTime
                                     .now(); //목표 날짜 확실하지 않은 경우, 오늘 날짜로 설정
+                              } else {
+                                selectedDate = null;
                               }
                             });
                           },
@@ -477,9 +480,15 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                     Colors.white,
                     '완료',
                     () {
+                      print('selectedDate=$selectedDate');
+                      print('_isChecked=$_isChecked');
                       if (_nameController.text == '') {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('목표를 입력해 주세요.')),
+                        );
+                      } else if (!_isChecked && selectedDate == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('목표 날짜를 선택해 주세요.')),
                         );
                       } else if (_selectedColor == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -487,7 +496,12 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                         );
                       } else {
                         _addGoal();
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MyGoal(),
+                          ),
+                        );
                       }
                     },
                   ).button(),

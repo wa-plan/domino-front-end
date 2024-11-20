@@ -1,4 +1,5 @@
 import 'package:domino/apis/services/lr_services.dart';
+import 'package:domino/screens/ST/settings_main.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,7 +34,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('비밀번호 변경에 실패했습니다.')),
+        const SnackBar(content: Text('기존 비밀번호와 일치하지 않습니다.')),
       );
     }
   }
@@ -117,8 +118,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return '비밀번호를 입력해 주세요.';
-                              } else if (value != widget.password) {
-                                return '기존 비밀번호와 일치하지 않습니다.';
                               }
                               return null;
                             },
@@ -225,13 +224,23 @@ class _ChangePasswordState extends State<ChangePassword> {
                     Button(Colors.black, Colors.white, '취소',
                         () => Navigator.pop(context)).button(),
                     Button(Colors.black, Colors.white, '완료', () {
-                      if (_formKey.currentState!.validate()) {}
-                      if (widget.password == _currentkeycontroller.text) {
+                      if (_formKey.currentState!.validate()) {
+                        if (_newkeycontroller.text == _newkeycontroller.text) {
+                          _changePassword(_currentkeycontroller.text,
+                              _newkeycontroller.text);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SettingsMain()),
+                          );
+                        }
+                      }
+                      /*if (widget.password == _currentkeycontroller.text) {
                         if (_newkeycontroller.text == _newkeycontroller.text) {
                           _changePassword(
                               widget.password, _newkeycontroller.text);
                         }
-                      }
+                      }*/
                     }).button(),
                   ],
                 ),
