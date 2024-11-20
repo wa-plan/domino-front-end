@@ -266,6 +266,37 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                   },
                                 );
                               }
+                              if (_selectedStatus == '진행 중') {
+                                PopupDialog.show(
+                                  context,
+                                  '잘 생각했어! 다시 도전해보는거야?',
+                                  true, // cancel
+                                  false, // delete
+                                  false, // signout
+                                  true, //success
+                                  onCancel: () {
+                                    // 취소 버튼을 눌렀을 때 실행할 코드
+                                    Navigator.of(context).pop();
+                                  },
+
+                                  onDelete: () {
+                                    // 삭제 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSignOut: () {
+                                    // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSuccess: () {
+                                    _mandaProgress(
+                                        int.parse(widget.id), "IN_PROGRESS");
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const MyGoal(),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
                               if (_selectedStatus == '달성 실패') {
                                 PopupDialog.show(
                                   context,

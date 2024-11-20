@@ -573,7 +573,7 @@ class DeleteTodayDominoService {
 }
 
 class MandalartInfoService {
-  static Future<Map<String, dynamic>?> mandalartInfo(context,
+  static Future<Map<String, dynamic>?> mandalartInfo(
       {required int mandalartId}) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');

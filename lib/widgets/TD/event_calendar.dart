@@ -21,8 +21,8 @@ class _EventCalendarState extends State<EventCalendar> {
   bool _isExpanded = false; // 달력 확장 상태
 
   void mandalartInfo(context, int mandalartId) async {
-    final data = await MandalartInfoService.mandalartInfo(context,
-        mandalartId: mandalartId);
+    final data =
+        await MandalartInfoService.mandalartInfo(mandalartId: mandalartId);
     if (data != null) {
       setState(() {
         String firstColor = data['color']; // name을 가져오기
