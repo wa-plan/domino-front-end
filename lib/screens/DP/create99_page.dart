@@ -8,7 +8,11 @@ import 'package:domino/provider/DP/model.dart';
 
 class DPcreate99Page extends StatelessWidget {
   final String? mainGoalId;
-  const DPcreate99Page({super.key, required this.mainGoalId});
+  final String firstColor;
+  const DPcreate99Page({super.key,
+  required this.firstColor,
+  required this.mainGoalId});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +35,59 @@ class DPcreate99Page extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  '목표를 이루기 위한 \n작은 계획들을 세워봐요.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      '목표를 이루기 위한 \n작은 계획들을 세워봐요.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Button(Colors.grey, Colors.black, '예시', (){
+                      showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Container(
+        
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // 이미지 크기 제한
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    double maxWidth = MediaQuery.of(context).size.width * 0.9;
+                    double maxHeight = MediaQuery.of(context).size.height * 0.8;
+
+                    return Image.asset(
+                      'assets/img/Tutorial2.png',
+                      fit: BoxFit.contain,
+                      width: maxWidth,
+                      height: maxHeight,
+                    );
+                  },
+                ),
+                const SizedBox(height: 10.0),
+                Button(Colors.white, Colors.black, '닫기', () {
+                    Navigator.pop(context);
+                  }).button()
+                
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  },
+                    ).button(),
+                  ],
                 ),
                 const SizedBox(
                   height: 20,
@@ -46,10 +96,12 @@ class DPcreate99Page extends StatelessWidget {
                     height: 43,
                     width: double.infinity,
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      color: Color(0xffFCFF62),
-                      borderRadius: BorderRadius.all(Radius.circular(3)),
+                      color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
+                      borderRadius: const BorderRadius.all(Radius.circular(3)),
                     ),
                     child: Text(
                         textAlign: TextAlign.center,
@@ -69,16 +121,18 @@ class DPcreate99Page extends StatelessWidget {
                       crossAxisSpacing: 1,
                       mainAxisSpacing: 1),
                   children: [
-                    const Smallgridwithdata(goalId: 0),
-                    const Smallgridwithdata(goalId: 1),
-                    const Smallgridwithdata(goalId: 2),
-                    const Smallgridwithdata(goalId: 3),
+                     Smallgridwithdata(goalId: 0, firstColor: firstColor,),
+                     Smallgridwithdata(goalId: 1, firstColor: firstColor),
+                     Smallgridwithdata(goalId: 2, firstColor: firstColor),
+                     Smallgridwithdata(goalId: 3, firstColor: firstColor),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const DPcreateInput1Page(),
+                              builder: (context) =>  DPcreateInput1Page(
+                                firstColor: firstColor,
+                              ),
                             ));
                       },
                       child: SizedBox(
@@ -92,7 +146,9 @@ class DPcreate99Page extends StatelessWidget {
                               return Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(3),
-                                  color: const Color(0xffFCFF62),
+                                  color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
                                 ),
                                 margin: const EdgeInsets.all(1.0),
                                 child: Center(
@@ -138,10 +194,10 @@ class DPcreate99Page extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Smallgridwithdata(goalId: 5),
-                    const Smallgridwithdata(goalId: 6),
-                    const Smallgridwithdata(goalId: 7),
-                    const Smallgridwithdata(goalId: 8),
+                     Smallgridwithdata(goalId: 5, firstColor: firstColor),
+                     Smallgridwithdata(goalId: 6, firstColor: firstColor),
+                     Smallgridwithdata(goalId: 7, firstColor: firstColor),
+                     Smallgridwithdata(goalId: 8, firstColor: firstColor),
                   ],
                 )),
                 Row(
@@ -167,6 +223,7 @@ class DPcreate99Page extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => DPcreateColorPage(
                                   mainGoalId: mainGoalId,
+                                  firstColor: firstColor,
                                 ),
                               ));
                         },

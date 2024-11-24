@@ -7,12 +7,14 @@ class MandalartGrid4 extends StatefulWidget {
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
   final int selectedSecondGoal;
+  final String firstColor;
 
   const MandalartGrid4({
     super.key,
     required this.mandalart,
     required this.secondGoals,
     required this.selectedSecondGoal,
+    required this.firstColor
   });
 
   @override

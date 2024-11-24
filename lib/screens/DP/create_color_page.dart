@@ -10,7 +10,8 @@ import 'package:domino/widgets/DP/color_option.dart';
 
 class DPcreateColorPage extends StatefulWidget {
   final String? mainGoalId;
-  const DPcreateColorPage({super.key, required this.mainGoalId});
+  final String firstColor;
+  const DPcreateColorPage({super.key, required this.mainGoalId, required this.firstColor,});
 
   @override
   DPcreateColorPageState createState() => DPcreateColorPageState();
@@ -275,7 +276,9 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(3),
-                                    color: const Color(0xffFCFF62),
+                                    color: Color(int.parse(widget.firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
                                   ),
                                   margin: const EdgeInsets.all(1.0),
                                   child: Center(

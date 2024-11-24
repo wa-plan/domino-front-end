@@ -13,12 +13,14 @@ class DPdetailPage extends StatelessWidget {
   final String mandalart;
   final int mandalartId;
   final List<Map<String, dynamic>> secondGoals;
+  final String firstColor;
 
   const DPdetailPage({
     super.key,
     required this.mandalart,
     required this.mandalartId,
     required this.secondGoals,
+    required this.firstColor
   });
 
   @override
@@ -198,6 +200,7 @@ class DPdetailPage extends StatelessWidget {
                             builder: (context) => Edit99Page(
                               mandalart: mandalart,
                               mandalartId: mandalartId,
+                              firstColor: firstColor,
                             ),
                           ),
                         );
@@ -230,6 +233,7 @@ class DPdetailPage extends StatelessWidget {
                   mandalart: mandalart,
                   secondGoals: secondGoals,
                   mandalartId: mandalartId,
+                  firstColor : firstColor,
                 ),
               ),
             ),
