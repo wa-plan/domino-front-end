@@ -401,7 +401,7 @@ class _MandalartBox2State extends State<MandalartBox2> {
                     [widget.hintNum3]['thirdGoal'],
                 widget.secondGoals[widget.hintNum2]['thirdGoals']
                     [widget.hintNum3]['id'])
-            : context.read<SelectAPModel>().selectAP("플랜을 선택해주세요.", null);
+            : context.read<SelectAPModel>().selectAP("플랜선택없음", null);
         // Call the onSelect callback
       },
       child: Container(

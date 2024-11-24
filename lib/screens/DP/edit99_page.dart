@@ -10,11 +10,13 @@ import 'package:domino/provider/DP/model.dart';
 class Edit99Page extends StatelessWidget {
   final String mandalart;
   final int mandalartId;
+  final String firstColor;
 
   const Edit99Page({
     super.key,
     required this.mandalart,
     required this.mandalartId,
+    required this.firstColor
   });
 
   @override
@@ -53,10 +55,12 @@ class Edit99Page extends StatelessWidget {
                     height: 43,
                     width: double.infinity,
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      color: Color(0xffFCFF62),
-                      borderRadius: BorderRadius.all(Radius.circular(3)),
+                      color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
+                      borderRadius: const BorderRadius.all(Radius.circular(3)),
                     ),
                     child: Text(
                         textAlign: TextAlign.center,
@@ -76,10 +80,10 @@ class Edit99Page extends StatelessWidget {
                       crossAxisSpacing: 0.5,
                       mainAxisSpacing: 0.5),
                   children: [
-                    EditSmallgridwithdata(goalId: 0, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 1, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 2, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 3, mandalart: mandalart,),
+                    EditSmallgridwithdata(goalId: 0, mandalart: mandalart, firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 1, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 2, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 3, mandalart: mandalart,firstColor: firstColor,),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -87,6 +91,7 @@ class Edit99Page extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => EditInput1Page(
                                 mandalart: mandalart,
+                                firstColor: firstColor
                               ),
                             ));
                       },
@@ -235,7 +240,9 @@ class Edit99Page extends StatelessWidget {
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(3),
-                                color: const Color(0xffFCFF62),
+                                color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', '')))
                               ),
                               margin: const EdgeInsets.all(1.0),
                               child: Center(
@@ -386,10 +393,10 @@ class Edit99Page extends StatelessWidget {
                         ),
                       ),
                     ),
-                    EditSmallgridwithdata(goalId: 5, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 6, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 7, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 8, mandalart: mandalart,),
+                    EditSmallgridwithdata(goalId: 5, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 6, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 7, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 8, mandalart: mandalart,firstColor: firstColor,),
                   ],
                 )),
                 Row(
@@ -415,6 +422,7 @@ class Edit99Page extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => EditColorPage(
                                   mandalart: mandalart,
+                                  firstColor: firstColor,
                                 ),
                               ));
                         },

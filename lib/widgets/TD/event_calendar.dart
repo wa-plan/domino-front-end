@@ -59,70 +59,6 @@ class _EventCalendarState extends State<EventCalendar> {
     }
   }
 
-  void editDialog(BuildContext context, DateTime date, String title,
-      String content, bool switchValue, int interval, int id) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // 다이얼로그 안에 들어갈 변수
-        TextEditingController titleController =
-            TextEditingController(text: title);
-        TextEditingController contentController =
-            TextEditingController(text: content);
-
-        return AlertDialog(
-          title: const Text('Edit Event'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
-              ),
-              TextField(
-                controller: contentController,
-                decoration: const InputDecoration(labelText: 'Content'),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Switch Value'),
-                  Switch(
-                    value: switchValue,
-                    onChanged: (bool value) {
-                      setState(() {
-                        switchValue = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // 수정된 값을 반영하는 코드를 여기에 추가
-                setState(() {
-                  // 필요한 경우 이벤트 정보 업데이트
-                  // 예: _updateEvent(id, titleController.text, contentController.text, switchValue);
-                });
-                Navigator.of(context).pop();
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void dominoStatus(int goalId, String attainment, String date) async {
     final success = await DominoStatusService.dominoStatus(
         goalId: goalId, attainment: attainment, date: date);
@@ -476,4 +412,111 @@ class _EventCalendarState extends State<EventCalendar> {
       ],
     );
   }
+}
+
+void editDialog(BuildContext context, DateTime date, String title,
+    String content, bool switchvalue, int interval, int goalId) {
+  String getIntervalText() {
+    if (!switchvalue) {
+      return 'X';
+    }
+
+    String weekday = DateFormat('EEEE', 'ko_KR').format(date); // 요일을 한국어로 변환
+    String dayOfMonth = date.day.toString(); // 날짜 가져오기
+
+    if (interval == 1) {
+      return '매일';
+    } else if (interval == 7) {
+      return '매주 $weekday';
+    } else if (interval == 14) {
+      return '격주 $weekday';
+    } else if (interval > 14) {
+      return '매월 $dayOfMonth일';
+    }
+
+    return 'X'; // 기본값
+  }
+
+  showDialog(
+    context: context,
+    barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
+    builder: (BuildContext context) {
+      return AlertDialog(
+        //title: const Text('팝업 메시지'),
+        backgroundColor: const Color(0xff262626),
+        content: Row(
+          children: [
+            Container(
+              width: 15,
+              height: 140,
+              decoration: const BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.all(Radius.circular(3)),
+              ),
+            ),
+            const SizedBox(width: 20),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          '환상적인 세계여행',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          content,
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 13),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 80,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditPage(date, content, title,
+                                switchvalue, interval, goalId),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
+                  ],
+                ),
+                Text(
+                  title,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Container(
+                    height: 1,
+                    width: 200,
+                    color: Colors.grey,
+                  ),
+                ),
+                const Text(
+                  '반복',
+                  style: TextStyle(color: Colors.grey),
+                ),
+                Text(
+                  getIntervalText(),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

@@ -195,6 +195,7 @@ class _DPMainState extends State<DPMain> {
                               );
                             } else {
                               final data = snapshot.data!;
+                              final firstColor = data[0]['color'];
                               final mandalart = data[0]['mandalart'];
                               final secondGoals = data[0]['secondGoals']
                                   as List<Map<String, dynamic>>?;
@@ -212,6 +213,7 @@ class _DPMainState extends State<DPMain> {
                                         mandalart: mandalart,
                                         secondGoals: secondGoals,
                                         mandalartId: int.parse(mandalartId),
+                                        firstColor : firstColor,
                                       ),
                                     ),
                                   );
@@ -237,6 +239,7 @@ class _DPMainState extends State<DPMain> {
                                       const SizedBox(height: 30),
                                       MandalartGrid(
                                         mandalart: mandalart,
+                                        firstColor : firstColor,
                                         secondGoals: secondGoals,
                                         mandalartId: int.parse(mandalartId),
                                       ),
