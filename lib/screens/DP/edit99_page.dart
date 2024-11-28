@@ -1,8 +1,10 @@
 //DP 수정 메인 페이지
+import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/screens/DP/edit_create_color_page.dart';
 import 'package:domino/screens/DP/edit_create_input1_page.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/edit_smallgrid_with_data.dart';
+import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -404,14 +406,82 @@ class Edit99Page extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          PopupDialog.show(
+                          context,
+                          '지금 취소하면,\n수정한 내용이 사라져!',
+                          true, // cancel
+                          false, // delete
+                          false, // signout
+                          true, //success
+                          onCancel: () {
+                            // 취소 버튼을 눌렀을 때 실행할 코드
+                            Navigator.pop(context);
+                          },
+
+                          
+                          onSuccess:() async {
+                            
+                            for (int i = 0; i < 9; i++) {
+                          context
+                              .read<SaveInputtedDetailGoalModel>()
+                              .updateDetailGoal(
+                                  i.toString(),
+                                  "");
+                        }
+                        
+                        for (int i = 0; i < 9; i++) {
+                        context
+                              .read<TestInputtedDetailGoalModel>()
+                              .updateTestDetailGoal(
+                                  i.toString(),
+                                  "");
+                        }
+
+                        
+
+                        for (int i = 0; i < 9; i++) {
+                          context.read<GoalColor>().updateGoalColor(
+                              i.toString(),
+                              const Color(0xff929292));
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          for (int j = 0; j < 9; j++) {
+                            context
+                                .read<SaveInputtedActionPlanModel>()
+                                .updateActionPlan(
+                                    i,
+                                    j.toString(),
+                                     "");
+                          }
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          for (int j = 0; j < 9; j++) {
+                            context
+                                .read< TestInputtedActionPlanModel>()
+                                .updateTestActionPlan(
+                                    i,
+                                    j.toString(),
+                                     "");
+                          }
+                        }
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DPMain(),
+                              ),
+                            );
+                          },
+                        );
                         },
                         style: TextButton.styleFrom(
                             backgroundColor: const Color(0xff131313),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6.0))),
                         child: const Text(
-                          '이전',
+                          '취소',
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ),

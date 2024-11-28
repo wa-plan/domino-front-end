@@ -520,6 +520,30 @@ class EditColorPageState extends State<EditColorPage> {
 
                           // If both are successful, navigate to DPlistPage
                           if (thirdGoalSuccess) {
+                            for (int i = 0; i < 9; i++) {
+                          context
+                              .read<SaveInputtedDetailGoalModel>()
+                              .updateDetailGoal(
+                                  i.toString(),
+                                  "");
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          context.read<GoalColor>().updateGoalColor(
+                              i.toString(),
+                              const Color(0xff929292));
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          for (int j = 0; j < 9; j++) {
+                            context
+                                .read<SaveInputtedActionPlanModel>()
+                                .updateActionPlan(
+                                    i,
+                                    j.toString(),
+                                     "");
+                          }
+                        }
                             Navigator.push(
                               context,
                               MaterialPageRoute(

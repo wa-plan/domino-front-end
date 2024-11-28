@@ -116,8 +116,8 @@ class AddSecondGoalService {
           body: body,
         );
 
-        print('서버 응답 상태 코드: ${response.statusCode}');
-        print('서버 응답 본문: ${response.body}');
+        //print('서버 응답 상태 코드: ${response.statusCode}');
+        //print('서버 응답 본문: ${response.body}');
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           Fluttertoast.showToast(
