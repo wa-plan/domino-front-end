@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 
-class Input2 extends StatelessWidget {
+class Input2 extends StatefulWidget {
   final int actionPlanId;
   final int selectedDetailGoalId;
   final Map<Color, Color> colorPalette = {
@@ -21,58 +21,73 @@ class Input2 extends StatelessWidget {
     Colors.transparent: const Color(0xff5C5C5C),
   };
 
-  Input2({super.key, required this.actionPlanId, required this.selectedDetailGoalId});
+  Input2({
+    super.key,
+    required this.actionPlanId,
+    required this.selectedDetailGoalId,
+  });
+
+  @override
+  _Input2State createState() => _Input2State();
+}
+
+class _Input2State extends State<Input2> {
+  late String initialValue;
+  late Color initialColor;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Save 모델에서 초기값 가져오기
+    final saveModel = context.read<SaveInputtedActionPlanModel>();
+    initialValue = saveModel.inputtedActionPlan[widget.selectedDetailGoalId]
+            ['${widget.actionPlanId}'] ??
+        ''; // 초기 값이 없으면 빈 문자열로 설정
+
+    // 초기 색상 가져오기
+    initialColor = context
+            .read<GoalColor>()
+            .selectedGoalColor['${widget.selectedDetailGoalId}'] ??
+        Colors.transparent;
+
+    // Test 모델에 초기화 반영
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      for (int detailGoalId = 0;
+          detailGoalId < saveModel.inputtedActionPlan.length;
+          detailGoalId++) {
+        final actionPlanData = saveModel.inputtedActionPlan[detailGoalId];
+        actionPlanData.forEach((actionPlanId, value) {
+          context.read<TestInputtedActionPlanModel>().updateTestActionPlan(
+                detailGoalId,
+                actionPlanId, // actionPlanId를 int로 변환
+                value ?? '',
+              );
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final saveModel = context.watch<SaveInputtedActionPlanModel>();
-
-    // Initialize values
-    final initialColor = context.watch<GoalColor>().selectedGoalColor['$selectedDetailGoalId'] ?? Colors.transparent;
-    final initialValue = saveModel.inputtedActionPlan[selectedDetailGoalId]['$actionPlanId'] ?? '';
-
-    // Print debug logs to check values
-    print('Initial Color: $initialColor');
-    print('Initial Value: $initialValue');
-
-    // Ensure Test model is initialized with all values (including those that haven't been modified yet)
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final saveModel = context.read<SaveInputtedActionPlanModel>();
-
-      // Initialize all values in the Test model
-      for (int detailGoalId = 0; detailGoalId < saveModel.inputtedActionPlan.length; detailGoalId++) {
-        final actionPlanData = saveModel.inputtedActionPlan[detailGoalId];
-        // actionPlanData는 Map<String, String>을 포함하므로, 각 actionPlanId에 대해 처리
-        actionPlanData.forEach((actionPlanId, value) {
-          // 초기 값을 Test 모델에 반영
-          context.read<TestInputtedActionPlanModel>().updateTestActionPlan(
-            detailGoalId,
-            actionPlanId,
-            value ?? '', // 값이 null이면 빈 문자열로 처리
-          );
-          print('Initialized: Detail Goal ID $detailGoalId, Action Plan ID $actionPlanId, Value: $value');
-        });
-            }
-    });
-
     return Container(
       width: 80,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: colorPalette[initialColor] ?? colorPalette[Colors.transparent],
+        color: widget.colorPalette[initialColor] ??
+            widget.colorPalette[Colors.transparent],
       ),
       margin: const EdgeInsets.all(1.0),
       child: Center(
         child: TextFormField(
-          initialValue: initialValue,
+          initialValue: initialValue, // 초기 값 표시
           onChanged: (value) {
-            // When the value changes, update the Test model with the new value
-            print('Changed Value: $value');
+            // 값 변경 시 Test 모델에 업데이트
             context.read<TestInputtedActionPlanModel>().updateTestActionPlan(
-              selectedDetailGoalId,
-              '$actionPlanId',
-              value.isEmpty ? "" : value,
-            );
+                  widget.selectedDetailGoalId,
+                  widget.actionPlanId.toString(),
+                  value.isEmpty ? "" : value,
+                );
           },
           textAlign: TextAlign.center,
           decoration: const InputDecoration(

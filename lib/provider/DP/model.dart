@@ -54,6 +54,18 @@ class SaveInputtedDetailGoalModel with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  bool isAllEmpty() {
+    return _inputtedDetailGoal.values.every((value) => value == '');
+  }
+
+  // 빈 값이 있는 키들을 반환
+  List<String> getEmptyKeys() {
+    return _inputtedDetailGoal.entries
+        .where((entry) => entry.value == '')
+        .map((entry) => entry.key)
+        .toList();
+  }
 }
 
 class TestInputtedDetailGoalModel with ChangeNotifier {
@@ -111,6 +123,17 @@ class SaveInputtedActionPlanModel with ChangeNotifier {
         notifyListeners();
       }
     }
+  }
+
+  bool isAllEmpty() {
+    for (var plan in _inputtedActionPlan) {
+      for (var value in plan.values) {
+        if (value != '') {
+          return false; // 하나라도 ''이 아닌 값이 있으면 false 반환
+        }
+      }
+    }
+    return true; // 모든 값이 ''이면 true 반환
   }
 }
 
