@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 //color
 const backgroundColor = Color(0xff262626);
@@ -56,6 +57,26 @@ class MGSubTitle {
                   fontWeight: FontWeight.w400,
                 ),
               );
+  }
+}
+
+
+//Fluttertoast
+class Message {
+  final String text;
+  final Color textColor;
+  final Color BgColor;
+
+  Message(this.text, this.textColor, this.BgColor);
+
+  Future<bool?> message(BuildContext context){
+    return Fluttertoast.showToast(
+        msg: text,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: BgColor,
+        textColor: textColor,
+      );
   }
 }
 

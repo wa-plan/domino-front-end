@@ -15,306 +15,149 @@ class MandalartGrid3 extends StatefulWidget {
     required this.mandalart,
     required this.secondGoals,
     required this.mandalartId,
-    required this.firstColor
+    required this.firstColor,
   });
 
   @override
   State<MandalartGrid3> createState() => _MandalartGrid3();
 }
 
-  class _MandalartGrid3 extends State<MandalartGrid3> {
-      int selectedSecondGoal = 0;
+class _MandalartGrid3 extends State<MandalartGrid3> {
+  int selectedSecondGoal = 0;
 
+  void navigateToDetail(int selectedGoal) {
+    setState(() {
+      selectedSecondGoal = selectedGoal;
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DPdetail2Page(
+          mandalart: widget.mandalart,
+          secondGoals: widget.secondGoals,
+          mandalartId: widget.mandalartId,
+          selectedSecondGoal: selectedSecondGoal,
+          firstColor: widget.firstColor,
+        ),
+      ),
+    );
+  }
+
+  Widget buildGridCell(int hintNum2) {
+  // 체크: 모든 그리드 박스 컬러가 투명한지 확인
+  bool isAllTransparent = widget.secondGoals.isNotEmpty &&
+      widget.secondGoals[hintNum2]['thirdGoals'].every((goal) => goal['thirdGoal'] == "");
+
+  return GestureDetector(
+    onTap: isAllTransparent 
+        ? null // 투명하면 아무 동작도 하지 않음
+        : () => navigateToDetail(hintNum2),
+    child: SizedBox(
+      width: 100,
+      child: GridView.count(
+        crossAxisCount: 3,
+        crossAxisSpacing: 0.5,
+        mainAxisSpacing: 0.5,
+        children: [
+          for (int i = 0; i < 4; i++)
+            MandalartBox2(
+              hintNum2: hintNum2,
+              hintNum3: i,
+              mandalart: widget.mandalart,
+              secondGoals: widget.secondGoals,
+            ),
+          MandalartBox1(
+            hintNum: hintNum2,
+            mandalart: widget.mandalart,
+            secondGoals: widget.secondGoals,
+          ),
+          for (int i = 5; i < 9; i++)
+            MandalartBox2(
+              hintNum2: hintNum2,
+              hintNum3: i,
+              mandalart: widget.mandalart,
+              secondGoals: widget.secondGoals,
+            ),
+        ],
+      ),
+    ),
+  );
+}
 
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: GridView(
+      child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
-        children: [
-
-          GestureDetector(
-            onTap: (){
-              setState(() {
-                selectedSecondGoal = 0;
-              });
-              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DPdetail2Page(
-                                  mandalart: widget.mandalart,
-                                  secondGoals: widget.secondGoals,
-                                  mandalartId: widget.mandalartId,
-                                  selectedSecondGoal: selectedSecondGoal,
-                                  firstColor: widget.firstColor,
-                                ),
-                              ),
-                            );
-            },
-            child: SizedBox(
-            width:100,
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 0.5,
-              mainAxisSpacing: 0.5,
-              children: [
-                for (int i = 0; i < 4; i++)
-                  MandalartBox2(hintNum2: 0, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                MandalartBox1(hintNum: 0, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                for (int i = 5; i < 9; i++)
-                  MandalartBox2(hintNum2: 0, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-              ]
-            )
-          )),
-
-          GestureDetector(
-            onTap: (){
-              setState(() {
-                selectedSecondGoal = 1;
-              });
-              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DPdetail2Page(
-                                  mandalart: widget.mandalart,
-                                  secondGoals: widget.secondGoals,
-                                  mandalartId: widget.mandalartId,
-                                  selectedSecondGoal: selectedSecondGoal,
-                                  firstColor: widget.firstColor,
-                                  
-                                ),
-                              ),
-                            );
-            },
-            child: SizedBox(
-            width:100,
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 0.5,
-              mainAxisSpacing: 0.5,
-              children: [
-                for (int i = 0; i < 4; i++)
-                  MandalartBox2(hintNum2: 1, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                MandalartBox1(hintNum: 1, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                for (int i = 5; i < 9; i++)
-                  MandalartBox2(hintNum2: 1, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-              
-              ]
-            )
-          )),
-
-          GestureDetector(
-            onTap: (){
-              setState(() {
-                selectedSecondGoal = 2;
-              });
-              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DPdetail2Page(
-                                  mandalart: widget.mandalart,
-                                  secondGoals: widget.secondGoals,
-                                  mandalartId: widget.mandalartId,
-                                  selectedSecondGoal: selectedSecondGoal,
-                                  firstColor: widget.firstColor,
-                                ),
-                              ),
-                            );
-            },
-            child: SizedBox(
-            width:100,
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 0.5,
-              mainAxisSpacing: 0.5,
-              children: [
-                for (int i = 0; i < 4; i++)
-                  MandalartBox2(hintNum2: 2, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-                
-                MandalartBox1(hintNum: 2, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-                
-                for (int i = 5; i < 9; i++)
-                  MandalartBox2(hintNum2: 2, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-              ]
-            )
-          )),
-
-          GestureDetector(
-            onTap: (){
-              setState(() {
-                selectedSecondGoal = 3;
-              });
-              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DPdetail2Page(
-                                  mandalart: widget.mandalart,
-                                  secondGoals: widget.secondGoals,
-                                  mandalartId: widget.mandalartId,
-                                  selectedSecondGoal: selectedSecondGoal,
-                                  firstColor: widget.firstColor,
-                                ),
-                              ),
-                            );
-            },
-            child: SizedBox(
-            width:100,
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 0.5,
-              mainAxisSpacing: 0.5,
-              children: [
-
-                for (int i = 0; i < 4; i++)
-                  MandalartBox2(hintNum2: 3, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-                  
-                MandalartBox1(hintNum: 3, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                for (int i = 5; i < 9; i++)
-                  MandalartBox2(hintNum2: 3, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-              
-              ]
-            )
-          )),
-
-          GestureDetector(
-            onTap: (){
-              
-              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DPdetail3Page(
-                                  mandalart: widget.mandalart,
-                                  secondGoals: widget.secondGoals,
-                                  mandalartId: widget.mandalartId,
-                                  selectedSecondGoal: selectedSecondGoal,
-                                  firstColor : widget.firstColor,
-                                  
-                                ),
-                              ),
-                            );
-            },
-            child: SizedBox(
-            width:100,
-            child: GridView.count(
-              crossAxisCount: 3,
-              children: [  
-
-                for (int i = 0; i < 4; i++)
-                  MandalartBox1(hintNum: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),         
-
-                Container(
-                  margin: const EdgeInsets.all(1.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3),
-                    color: Color(int.parse(widget.firstColor
-            .replaceAll('Color(', '')
-            .replaceAll(')', '')))
-                  ),
-                  child: Center(
-                    child: Text(
-                      widget.mandalart,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                        color: backgroundColor,)
-                    ),
-                  )
-                ),
-
-                for (int i = 5; i < 9; i++)
-                  MandalartBox1(hintNum: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-          
-              ],
-            ),
-          )),
-
-          SizedBox(
-            width:100,
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 0.5,
-              mainAxisSpacing: 0.5,
-              children: [
-                for (int i = 0; i < 4; i++)
-                  MandalartBox2(hintNum2: 5, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                MandalartBox1(hintNum: 5, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                for (int i = 5; i < 9; i++)
-                  MandalartBox2(hintNum2: 5, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-              ]
-            )
-          ),
-
-          SizedBox(
-            width:100,
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 0.5,
-              mainAxisSpacing: 0.5,
-              children: [
-                for (int i = 0; i < 4; i++)
-                  MandalartBox2(hintNum2: 6, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                MandalartBox1(hintNum: 6, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                for (int i = 5; i < 9; i++)
-                  MandalartBox2(hintNum2: 6, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-              ]
-            )
-          ),
-
-          SizedBox(
-            width:100,
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 0.5,
-              mainAxisSpacing: 0.5,
-              children: [
-                for (int i = 0; i < 4; i++)
-                  MandalartBox2(hintNum2: 7, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                MandalartBox1(hintNum: 7, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                for (int i = 5; i < 9; i++)
-                  MandalartBox2(hintNum2: 7, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-              ]
-            )
-          ),
-
-          SizedBox(
-            width:100,
-            child: GridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 0.5,
-              mainAxisSpacing: 0.5,
-              children: [
-                for (int i = 0; i < 4; i++)
-                  MandalartBox2(hintNum2: 8, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                MandalartBox1(hintNum: 8, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-
-                for (int i = 5; i < 9; i++)
-                  MandalartBox2(hintNum2: 8, hintNum3: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
-              ]
-            )
-          ),
-
-
-        ],              
+          crossAxisCount: 3,
         ),
+        itemCount: 9,
+        itemBuilder: (context, index) {
+          if (index == 4) {
+            return GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DPdetail3Page(
+                    mandalart: widget.mandalart,
+                    secondGoals: widget.secondGoals,
+                    mandalartId: widget.mandalartId,
+                    selectedSecondGoal: selectedSecondGoal,
+                    firstColor: widget.firstColor,
+                  ),
+                ),
+              ),
+              child: SizedBox(
+                width: 100,
+                child: GridView.count(
+                  crossAxisCount: 3,
+                  children: [
+                    for (int i = 0; i < 4; i++)
+                      MandalartBox1(
+                        hintNum: i,
+                        mandalart: widget.mandalart,
+                        secondGoals: widget.secondGoals,
+                      ),
+                    Container(
+                      margin: const EdgeInsets.all(1.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        color: Color(int.parse(widget.firstColor
+                            .replaceAll('Color(', '')
+                            .replaceAll(')', ''))),
+                      ),
+                      child: Center(
+                        child: Text(
+                          widget.mandalart,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: backgroundColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    for (int i = 5; i < 9; i++)
+                      MandalartBox1(
+                        hintNum: i,
+                        mandalart: widget.mandalart,
+                        secondGoals: widget.secondGoals,
+                      ),
+                  ],
+                ),
+              ),
+            );
+          }
+          return buildGridCell(index);
+        },
+      ),
     );
   }
-
 }
+
 
 class MandalartBox1 extends StatelessWidget {
   final int hintNum;

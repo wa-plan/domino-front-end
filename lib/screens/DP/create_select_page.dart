@@ -1,4 +1,3 @@
-import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/screens/DP/create99_page.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   List<Map<String, dynamic>> mainGoals = [];
   List<Map<String, dynamic>> emptyMainGoals = [];
   List<Map<String, dynamic>> secondGoals = [];
-  String firstColor = "0xff000000"; 
+  String firstColor = "0xff000000";
 
   @override
   void initState() {

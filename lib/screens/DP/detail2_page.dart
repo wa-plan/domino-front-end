@@ -1,4 +1,3 @@
-//DP 디테일 페이지에서 이동한 3x3 만다라트 페이지
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/mandalart4.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ class DPdetail2Page extends StatelessWidget {
     required this.mandalartId,
     required this.secondGoals,
     required this.selectedSecondGoal,
-    required this.firstColor
+    required this.firstColor,
   });
 
   @override
@@ -47,41 +46,57 @@ class DPdetail2Page extends StatelessWidget {
         ),
         backgroundColor: backgroundColor,
       ),
-      body: Padding(
-        padding: fullPadding,
-        child: Center(
-          child: Column(
-            children: [
-              const SizedBox(height: 40),
-              Text(
-                mandalart,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 25),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: const Color(0xff2A2A2A),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                height: 300,
-                width: 300,
-                child: Center(
-                  child: MandalartGrid4(
-                    mandalart: mandalart,
-                    secondGoals: secondGoals,
-                    selectedSecondGoal: selectedSecondGoal,
-                    firstColor : firstColor,
+      body: Stack(
+        children: [
+          // 화면 전체의 클릭 이벤트 감지를 위한 투명 GestureDetector
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop(); // 빈 영역 클릭 시 팝업 닫기
+            },
+            child: Container(
+              color: Colors.transparent, // 투명 배경으로 클릭 이벤트만 전달
+            ),
+          ),
+          Center(
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
+                Text(
+                  mandalart,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 25),
+                // MandalartGrid4가 상호작용 가능한 영역
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: const Color(0xff2A2A2A),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  height: 300,
+                  width: 300,
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        // MandalartGrid4 내부는 아무 동작도 하지 않음
+                      },
+                      child: MandalartGrid4(
+                        mandalart: mandalart,
+                        secondGoals: secondGoals,
+                        selectedSecondGoal: selectedSecondGoal,
+                        firstColor: firstColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
