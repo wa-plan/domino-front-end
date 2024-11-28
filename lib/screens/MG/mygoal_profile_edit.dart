@@ -266,7 +266,9 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                     if (profileUpdated) {
                       // 프로필 수정이 성공하면 이미지 추가 요청 실행
+
                       Navigator.push(
+
                           context,
                           MaterialPageRoute(
                             builder: (context) => const MyGoal(),
