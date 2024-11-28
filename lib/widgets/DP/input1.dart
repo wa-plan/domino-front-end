@@ -57,6 +57,7 @@ class _Input1State extends State<Input1> {
           controller: controller,
           onChanged: (value) {
             // 값이 변경될 때마다 Test 모델에 반영
+            
             context.read<TestInputtedDetailGoalModel>().updateTestDetailGoal(
               '${widget.selectedDetailGoalId}',
               value,
