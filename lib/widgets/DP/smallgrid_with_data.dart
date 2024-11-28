@@ -5,8 +5,9 @@ import 'package:domino/screens/DP/create_input2_page.dart';
 
 class Smallgridwithdata extends StatelessWidget {
   final int goalId;
+  final String firstColor;
 
-  const Smallgridwithdata({super.key, required this.goalId});
+  const Smallgridwithdata({super.key, required this.goalId, required this.firstColor,});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class Smallgridwithdata extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const DPcreateInput2Page(),
+              builder: (context) => DPcreateInput2Page(firstColor: firstColor,),
             ));
       },
       child: SizedBox(

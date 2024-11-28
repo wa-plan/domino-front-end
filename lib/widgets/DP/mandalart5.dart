@@ -7,12 +7,15 @@ class MandalartGrid5 extends StatefulWidget {
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
   final int selectedSecondGoal;
+  final String firstColor;
 
   const MandalartGrid5({
     super.key,
     required this.mandalart,
     required this.secondGoals,
     required this.selectedSecondGoal,
+    required this.firstColor
+    
   });
 
   @override
@@ -35,7 +38,7 @@ class MandalartGrid5 extends StatefulWidget {
             for (int i = 0; i < 4; i++)
               MandalartBox1(hintNum: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
 
-            MandalartBox2(mandalart: widget.mandalart),
+            MandalartBox2(mandalart: widget.mandalart, firstColor: widget.firstColor),
 
             for (int i = 4; i < 8; i++)
               MandalartBox1(hintNum: i, mandalart: widget.mandalart, secondGoals: widget.secondGoals),
@@ -85,6 +88,7 @@ class MandalartBox1 extends StatelessWidget {
 class MandalartBox2 extends StatelessWidget {
 
   final String mandalart;
+  final String firstColor;
 
   final Map<Color, Color> colorPalette = {
     const Color(0xffFF7A7A): const Color(0xffFFC2C2),
@@ -105,6 +109,7 @@ class MandalartBox2 extends StatelessWidget {
     super.key, 
 
     required this. mandalart,
+    required this.firstColor
 });
 
   @override
@@ -115,7 +120,9 @@ class MandalartBox2 extends StatelessWidget {
                   margin: const EdgeInsets.all(1.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: const Color(0xffFCFF62)
+                    color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', '')))
                   ),
                   child: Center(
                     child: Text(

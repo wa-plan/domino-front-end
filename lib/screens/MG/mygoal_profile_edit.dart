@@ -257,7 +257,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                   onPressed: () async {
                     // 완료 버튼 기능 구현
                     bool profileUpdated = false;
-                    bool imageUpdated = false;
 
                     profileUpdated = await _editProfile(
                       _nicknamecontroller.text,
@@ -267,28 +266,16 @@ class _ProfileEditState extends State<ProfileEdit> {
 
                     if (profileUpdated) {
                       // 프로필 수정이 성공하면 이미지 추가 요청 실행
-                      if (_pickedFile != null) {
-                        imageUpdated = await _editImage(
-                            _selectedProfileImage); // 선택된 이미지 경로 사용
-                      } else {
-                        imageUpdated = await _editImage(
-                            _selectedProfileImage); // 기본 이미지 경로 사용
-                      }
 
-                      if (imageUpdated) {
-                        // 이미지 추가가 성공하면 MyGoal로 이동
-                        Navigator.push(
+                      Navigator.push(
+
                           context,
                           MaterialPageRoute(
                             builder: (context) => const MyGoal(),
                           ),
                         );
-                      } else {
-                        // 이미지 추가 실패 처리
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('이미지 추가에 실패했습니다.')),
-                        );
-                      }
+
+                      
                     } else {
                       // 프로필 수정 실패 처리
                       ScaffoldMessenger.of(context).showSnackBar(

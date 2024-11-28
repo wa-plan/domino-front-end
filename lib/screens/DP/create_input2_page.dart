@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 
 class DPcreateInput2Page extends StatelessWidget {
-  const DPcreateInput2Page({super.key});
+  final String firstColor;
+  const DPcreateInput2Page({super.key, required this.firstColor,});
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +49,12 @@ class DPcreateInput2Page extends StatelessWidget {
                 height: 43,
                 width: double.infinity,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                   shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(3)),
-                  color: Color(0xffFCFF62),
+                  borderRadius: const BorderRadius.all(Radius.circular(3)),
+                  color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
                 ),
                 child: Text(
                   context.watch<SelectFinalGoalModel>().selectedFinalGoal,

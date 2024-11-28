@@ -5,7 +5,7 @@ import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 
 class MandalartGrid3 extends StatefulWidget {
-  
+  final String firstColor;
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
   final int mandalartId;
@@ -15,6 +15,7 @@ class MandalartGrid3 extends StatefulWidget {
     required this.mandalart,
     required this.secondGoals,
     required this.mandalartId,
+    required this.firstColor
   });
 
   @override
@@ -47,6 +48,7 @@ class MandalartGrid3 extends StatefulWidget {
                                   secondGoals: widget.secondGoals,
                                   mandalartId: widget.mandalartId,
                                   selectedSecondGoal: selectedSecondGoal,
+                                  firstColor: widget.firstColor,
                                 ),
                               ),
                             );
@@ -82,6 +84,8 @@ class MandalartGrid3 extends StatefulWidget {
                                   secondGoals: widget.secondGoals,
                                   mandalartId: widget.mandalartId,
                                   selectedSecondGoal: selectedSecondGoal,
+                                  firstColor: widget.firstColor,
+                                  
                                 ),
                               ),
                             );
@@ -118,6 +122,7 @@ class MandalartGrid3 extends StatefulWidget {
                                   secondGoals: widget.secondGoals,
                                   mandalartId: widget.mandalartId,
                                   selectedSecondGoal: selectedSecondGoal,
+                                  firstColor: widget.firstColor,
                                 ),
                               ),
                             );
@@ -153,6 +158,7 @@ class MandalartGrid3 extends StatefulWidget {
                                   secondGoals: widget.secondGoals,
                                   mandalartId: widget.mandalartId,
                                   selectedSecondGoal: selectedSecondGoal,
+                                  firstColor: widget.firstColor,
                                 ),
                               ),
                             );
@@ -188,6 +194,8 @@ class MandalartGrid3 extends StatefulWidget {
                                   secondGoals: widget.secondGoals,
                                   mandalartId: widget.mandalartId,
                                   selectedSecondGoal: selectedSecondGoal,
+                                  firstColor : widget.firstColor,
+                                  
                                 ),
                               ),
                             );
@@ -205,7 +213,9 @@ class MandalartGrid3 extends StatefulWidget {
                   margin: const EdgeInsets.all(1.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
-                    color: Colors.yellow,
+                    color: Color(int.parse(widget.firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', '')))
                   ),
                   child: Center(
                     child: Text(

@@ -269,6 +269,7 @@ class AddPage2State extends State<AddPage2> {
                             dateList, repeatInfo);
                             context.read<SelectAPModel>().selectAP("", null);
                       }
+                      context.read<SelectAPModel>().selectAP("플랜선택없음", null);
                     }
                   },
                   style: TextButton.styleFrom(

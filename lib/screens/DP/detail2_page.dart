@@ -8,6 +8,7 @@ class DPdetail2Page extends StatelessWidget {
   final int mandalartId;
   final List<Map<String, dynamic>> secondGoals;
   final int selectedSecondGoal;
+  final String firstColor;
 
   const DPdetail2Page({
     super.key,
@@ -15,6 +16,7 @@ class DPdetail2Page extends StatelessWidget {
     required this.mandalartId,
     required this.secondGoals,
     required this.selectedSecondGoal,
+    required this.firstColor
   });
 
   @override
@@ -73,6 +75,7 @@ class DPdetail2Page extends StatelessWidget {
                     mandalart: mandalart,
                     secondGoals: secondGoals,
                     selectedSecondGoal: selectedSecondGoal,
+                    firstColor : firstColor,
                   ),
                 ),
               ),

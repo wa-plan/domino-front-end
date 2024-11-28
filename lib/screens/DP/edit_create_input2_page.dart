@@ -6,8 +6,12 @@ import 'package:domino/provider/DP/model.dart';
 
 class EditInput2Page extends StatelessWidget {
   final String mandalart;
+  final String firstColor;
 
-  const EditInput2Page({super.key,required this.mandalart,});
+  const EditInput2Page({
+    super.key,
+    required this.firstColor,
+    required this.mandalart,});
   
 
   @override
@@ -54,10 +58,12 @@ class EditInput2Page extends StatelessWidget {
                 height: 43,
                 width: double.infinity,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                   shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(3)),
-                  color: Color(0xffFCFF62),
+                  borderRadius: const BorderRadius.all(Radius.circular(3)),
+                  color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
                 ),
                 child: Text(
                   mandalart,
