@@ -195,6 +195,7 @@ class SecondGoalListService {
         final List<Map<String, dynamic>> mainGoals = [
           {
             "mandalart": jsonResponse["mandalart"],
+            "color" : jsonResponse["color"],
             "secondGoals": (jsonResponse["secondGoals"] as List<dynamic>)
                 .map((secondGoal) => {
                       "id": secondGoal["id"],

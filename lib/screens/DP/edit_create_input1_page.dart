@@ -6,9 +6,11 @@ import 'package:provider/provider.dart';
 
 class EditInput1Page extends StatelessWidget {
   final String mandalart;
+  final String firstColor;
 
   const EditInput1Page({
     super.key,
+    required this.firstColor,
     required this.mandalart});
 
   @override
@@ -48,10 +50,12 @@ class EditInput1Page extends StatelessWidget {
                         height: 43,
                         width: double.infinity,
                         alignment: Alignment.center,
-                        decoration: const BoxDecoration(
+                        decoration:  BoxDecoration(
                             shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.all(Radius.circular(3)),
-                            color: Color(0xffFCFF62)),
+                            borderRadius: const BorderRadius.all(Radius.circular(3)),
+                            color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', '')))),
                         child: Text(
                             mandalart,
                             style: const TextStyle(
@@ -83,7 +87,9 @@ class EditInput1Page extends StatelessWidget {
                                     padding: const EdgeInsets.all(7.0),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(3),
-                                      color: const Color(0xffFCFF62),
+                                      color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', '')))
                                     ),
                                     child: Center(
                                         child: Text(

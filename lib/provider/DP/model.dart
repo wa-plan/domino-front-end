@@ -21,7 +21,7 @@ class SelectFinalGoalId with ChangeNotifier {
 }
 
 class SelectAPModel with ChangeNotifier {
-  String _selectedAPName = ""; // 초기값 설정
+  String _selectedAPName = "플랜선택없음"; // 초기값 설정
   String get selectedAPName => _selectedAPName;
   int? _selectedAPID; // 초기값 설정
   int? get selectedAPID => _selectedAPID;

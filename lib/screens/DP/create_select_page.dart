@@ -17,29 +17,77 @@ class DPcreateSelectPage extends StatefulWidget {
 }
 
 class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
-  String? selectedGoalId;
+  String selectedGoalId = "";
   String selectedGoalName = '';
   List<Map<String, dynamic>> mainGoals = [];
-  
+  List<Map<String, dynamic>> emptyMainGoals = [];
+  List<Map<String, dynamic>> secondGoals = [];
+  String firstColor = "0xff000000"; 
+
   @override
   void initState() {
     super.initState();
     _mainGoalList();
   }
 
+  
+
   void _mainGoalList() async {
-    // Fetching goals using UserMandaIdService without filtering
-    List<Map<String, dynamic>> goals = await UserMandaIdService.userManda();
-    if (goals.isNotEmpty) {
+    List<Map<String, dynamic>>? goals =
+        await MainGoalListService.mainGoalList(context);
+    if (goals != null) {
+      List<Map<String, dynamic>> filteredGoals = [];
+      List<Map<String, dynamic>> emptySecondGoals =
+          []; // 비어 있는 secondGoals를 위한 리스트 추가
+
+      for (var goal in goals) {
+        final mandalartId = goal['id'].toString();
+        final name = goal['name'];
+        
+        // Fetch second goals to check their content
+        final data = await _fetchSecondGoals(mandalartId);
+        if (data != null) {
+          final secondGoals =
+              data[0]['secondGoals'] as List<Map<String, dynamic>>?;
+
+          // Only add the goal if secondGoals is not null and not empty
+          if (secondGoals != null &&
+              secondGoals.isNotEmpty &&
+              secondGoals != "") {
+            filteredGoals.add(goal);
+          } else {
+            // secondGoals가 비어있을 경우 mandalartId와 name을 emptySecondGoals 리스트에 추가
+            emptySecondGoals.add(goal);
+            print('empty = $emptySecondGoals');
+          }
+        }
+      }
+
       setState(() {
-        mainGoals = goals.map((goal) {
-          return {
-            'id': goal['id']!.toString(),
-            'name': goal['name']!.toString(),
-          };
-        }).toList();
+        mainGoals = filteredGoals;
+        emptyMainGoals = emptySecondGoals;
       });
     }
+  }
+
+  Future<List<Map<String, dynamic>>?> _fetchSecondGoals(
+      String mandalartId) async {
+    // Fetch the result from the SecondGoalListService
+    List<Map<String, dynamic>>? result =
+        await SecondGoalListService.secondGoalList(context, mandalartId);
+
+    // Check if the result is not null and contains data
+    if (result != null && result.isNotEmpty) {
+      setState(() {
+        secondGoals =
+            result[0]['secondGoals']; 
+        firstColor = result[0]['color'];
+        print(firstColor);// Update the secondGoals state variable
+      });
+    }
+
+    // Return the result (this allows you to use the result wherever you call this function)
+    return result;
   }
 
   @override
@@ -74,52 +122,76 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
             ),
             const SizedBox(height: 13),
             Container(
+              padding: const EdgeInsets.fromLTRB(13, 0, 13, 0),
               height: 45,
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
               decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(3),
+                shape: BoxShape.rectangle,
                 border: Border.all(
                   color: const Color(0xff5C5C5C),
                 ),
               ),
-              child: mainGoals.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
-                  : DropdownButton<String>(
-                      value: selectedGoalId,
-                      items: [
-                        const DropdownMenuItem<String>(
-                          value: null,
+              child: FutureBuilder(
+                future: MainGoalListService.mainGoalList(context),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Text(
+                        '목표를 불러오는 데 실패했습니다.',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  } else if (snapshot.hasData) {
+                    // createdGoals에 있는 목표만 필터링
+                    List<Map<String, dynamic>> goals = emptyMainGoals;
+
+                    // 기본 옵션을 시작으로 추가
+                    List<Map<String, dynamic>> options = [
+                      {'id': '0', 'name': '목표를 선택해 주세요.'},
+                      ...goals
+                    ];
+
+                    return DropdownButton<String>(
+                      value: selectedGoalId.isNotEmpty ? selectedGoalId : '0',
+                      items: options.map<DropdownMenuItem<String>>((goal) {
+                        final goalName = goal['name'] ?? 'Unknown Goal';
+                        return DropdownMenuItem<String>(
+                          value: goal['id'].toString(),
                           child: Text(
-                            '목표를 선택해 주세요.',
-                            style: TextStyle(color: Colors.white),
+                            goalName,
+                            style: const TextStyle(color: Colors.white),
                           ),
-                        ),
-                        ...mainGoals.map<DropdownMenuItem<String>>((goal) {
-                          return DropdownMenuItem<String>(
-                            value: goal['id'],
-                            child: Text(
-                              goal['name']!,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }),
-                      ],
-                      onChanged: (String? value) {
+                        );
+                      }).toList(),
+                      onChanged: (String? value) async {
                         if (value != null) {
-                          final selectedGoal = mainGoals.firstWhere(
-                            (goal) => goal['id'] == value,
-                          );
                           setState(() {
                             selectedGoalId = value;
-                            selectedGoalName = selectedGoal['name']!;
+                            if (value == '0') {
+                              selectedGoalName = '';
+                            }
                           });
-                          context
+
+                          if (value != '0') {
+                            // selectedGoalId가 변경된 후에 secondGoals를 가져오는 비동기 작업 처리
+                            final selectedGoal = options.firstWhere(
+                              (goal) => goal['id'].toString() == value,
+                            );
+                            selectedGoalName = selectedGoal['name'] ?? '';
+                            context
                               .read<SelectFinalGoalModel>()
                               .selectFinalGoal(selectedGoalName);
                           context
                               .read<SelectFinalGoalId>()
-                              .selectFinalGoalId(selectedGoalId!);
+                              .selectFinalGoalId(selectedGoalId);
+
+                            // _fetchSecondGoals 호출 후에 결과 업데이트
+                            await _fetchSecondGoals(selectedGoalId);
+                          }
                         }
                       },
                       isExpanded: true,
@@ -127,7 +199,17 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                       style: const TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.white,
                       underline: Container(),
-                    ),
+                    );
+                  } else {
+                    return const Center(
+                      child: Text(
+                        '목표가 없습니다.',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -150,7 +232,9 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(3),
                               color: innerIndex == 4
-                                  ? const Color(0xffFCFF62)
+                                  ? Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', '')))
                                   : const Color(0xff929292),
                             ),
                             alignment: Alignment.center,
@@ -203,7 +287,9 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              DPcreate99Page(mainGoalId: selectedGoalId),
+                              DPcreate99Page(
+                                mainGoalId: selectedGoalId,
+                                firstColor: firstColor),
                         ),
                       );
                     } else {
