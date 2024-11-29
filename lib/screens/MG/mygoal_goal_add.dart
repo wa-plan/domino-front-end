@@ -1,12 +1,10 @@
 import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:domino/apis/services/mg_services.dart';
-import 'package:domino/screens/TD/td_main.dart';
 import 'package:image_picker/image_picker.dart' as image_picker;
 import 'package:domino/styles.dart';
 
@@ -58,7 +56,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const TdMain(),
+          builder: (context) => const MyGoal(),
         ),
       );
     }
@@ -496,12 +494,6 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                         );
                       } else {
                         _addGoal();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MyGoal(),
-                          ),
-                        );
                       }
                     },
                   ).button(),

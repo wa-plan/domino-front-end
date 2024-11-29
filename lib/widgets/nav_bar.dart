@@ -21,16 +21,21 @@ class NavBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(context, 'assets/img/vector1.png', '나의 목표', 0, selectedIndex),
-          _buildNavItem(context, 'assets/img/vector2.png', '도미노 플랜', 1, selectedIndex),
-          _buildNavItem(context, 'assets/img/vector3.png', '오늘의 도미노', 2, selectedIndex),
-          _buildNavItem(context, 'assets/img/vector4.png', '설정', 3, selectedIndex),
+          _buildNavItem(
+              context, 'assets/img/vector1.png', '나의 목표', 0, selectedIndex),
+          _buildNavItem(
+              context, 'assets/img/vector2.png', '도미노 플랜', 1, selectedIndex),
+          _buildNavItem(
+              context, 'assets/img/vector3.png', '오늘의 도미노', 2, selectedIndex),
+          _buildNavItem(
+              context, 'assets/img/vector4.png', '설정', 3, selectedIndex),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(BuildContext context, String iconPath, String label, int index, int selectedIndex) {
+  Widget _buildNavItem(BuildContext context, String iconPath, String label,
+      int index, int selectedIndex) {
     final isSelected = selectedIndex == index;
 
     return GestureDetector(
@@ -50,7 +55,8 @@ class NavBar extends StatelessWidget {
               iconPath,
               width: isSelected ? 25 : 21, // 선택된 아이콘 크기 조정
               height: isSelected ? 25 : 21,
-              color: isSelected ? mainGold : const Color(0xffE5E5E5), // 선택된 색상 조정
+              color:
+                  isSelected ? mainGold : const Color(0xffE5E5E5), // 선택된 색상 조정
             ),
           ),
           Text(
