@@ -248,7 +248,7 @@ class _EventCalendarState extends State<EventCalendar> {
                   itemCount: value.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onLongPress: () {
+                      onTap: () {
                         print(
                           value[index]
                               .color
