@@ -14,7 +14,6 @@ class MyGoalDetail extends StatefulWidget {
   final List<String> photoList;
   final int dday;
   final String color;
-  //final int successNum;
 
   const MyGoalDetail({
     super.key,
@@ -24,7 +23,6 @@ class MyGoalDetail extends StatefulWidget {
     required this.photoList,
     required this.dday,
     required this.color,
-    //required this.successNum,
   });
 
   @override
@@ -32,6 +30,8 @@ class MyGoalDetail extends StatefulWidget {
 }
 
 class MyGoalDetailState extends State<MyGoalDetail> {
+  //description, successNum
+
   final _status = ['달성 실패', '진행 중', '달성 완료'];
   String? _selectedStatus;
   // 선택된 파일 리스트를 관리할 변수 추가
@@ -58,6 +58,42 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   int inProgressRate = 0;
   int failedRate = 0;
 
+  Future<void> userMandaInfo(String mandalartId) async {
+    try {
+      final data = await UserMandaInfoService.userMandaInfo(context,
+          mandalartId: int.parse(mandalartId));
+
+      if (data != null) {
+        String description = data['description'] ?? '';
+        int failedNum = data['statusNum']?['failed'] ?? 0;
+        int inProgressNum = data['statusNum']?['inProgressNum'] ?? 0;
+        int successNum = data['statusNum']?['successNum'] ?? 0;
+
+        setState(() {
+          mandaDescription = description;
+          this.failedNum = failedNum;
+          this.inProgressNum = inProgressNum;
+          this.successNum = successNum;
+
+          total = this.successNum + this.inProgressNum + this.failedNum;
+          successRate =
+              total == 0 ? 0 : (this.successNum / total * 100).toInt();
+          inProgressRate =
+              total == 0 ? 0 : (this.inProgressNum / total * 100).toInt();
+          failedRate = 100 - successRate - inProgressRate;
+          print('total=$total');
+        });
+      } else {
+        print('userMandaInfo 실패: 데이터 없음 ($mandalartId)');
+      }
+    } catch (e) {
+      print('userMandaInfo 에러 발생: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('데이터 로드 실패: $e')),
+      );
+    }
+  }
+
   void _mandaBookmark(int id, String bookmark) async {
     final success = await MandaBookmarkService.MandaBookmark(
       id: id,
@@ -81,24 +117,16 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   @override
   void initState() {
     super.initState();
-
+    String mandalartId = widget.id;
     color = widget.color;
-    print(color);
+    print('color=$color');
 
     name = widget.name;
     dday = widget.dday;
     status = widget.status;
     photoList = widget.photoList;
-    mandaDescription;
-    failedNum;
-    inProgressNum;
-    //successNum = widget.successNum;
-    total = successNum + inProgressNum + failedNum;
 
-    print('status=$status');
-    successRate = total == 0 ? 0 : (successNum / total * 100).toInt();
-    inProgressRate = total == 0 ? 0 : (inProgressNum / total * 100).toInt();
-    failedRate = 100 - successRate - inProgressRate;
+    userMandaInfo(mandalartId);
 
     goalImage = photoList.map((photo) => 'assets/img/$photo').toList();
     print('goalImage=$goalImage');
@@ -534,6 +562,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                       inProgressRate, // int로 변환
                                   failPercentage: failedRate,
                                   color: color),
+                            ),
+                            const SizedBox(
+                              width: 30,
                             ),
                             Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
