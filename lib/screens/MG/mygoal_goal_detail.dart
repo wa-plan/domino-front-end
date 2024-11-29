@@ -10,25 +10,22 @@ import 'package:domino/widgets/popup.dart';
 class MyGoalDetail extends StatefulWidget {
   final String id;
   final String name;
-  final int dday;
-  final String mandaDescription;
   final String status;
   final List<String> photoList;
-  final int failedNum;
-  final int inProgressNum;
-  final int successNum;
+  final int dday;
+  final String color;
+  //final int successNum;
 
-  const MyGoalDetail(
-      {super.key,
-      required this.id,
-      required this.name,
-      required this.dday,
-      required this.status,
-      required this.photoList,
-      required this.mandaDescription,
-      required this.failedNum,
-      required this.inProgressNum,
-      required this.successNum});
+  const MyGoalDetail({
+    super.key,
+    required this.id,
+    required this.name,
+    required this.status,
+    required this.photoList,
+    required this.dday,
+    required this.color,
+    //required this.successNum,
+  });
 
   @override
   MyGoalDetailState createState() => MyGoalDetailState();
@@ -85,16 +82,20 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   void initState() {
     super.initState();
 
+    color = widget.color;
+    print(color);
+
     name = widget.name;
     dday = widget.dday;
     status = widget.status;
     photoList = widget.photoList;
-    mandaDescription = widget.mandaDescription;
-    failedNum = widget.failedNum;
-    inProgressNum = widget.inProgressNum;
-    successNum = widget.successNum;
+    mandaDescription;
+    failedNum;
+    inProgressNum;
+    //successNum = widget.successNum;
     total = successNum + inProgressNum + failedNum;
 
+    print('status=$status');
     successRate = total == 0 ? 0 : (successNum / total * 100).toInt();
     inProgressRate = total == 0 ? 0 : (inProgressNum / total * 100).toInt();
     failedRate = 100 - successRate - inProgressRate;
@@ -531,7 +532,8 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                   successPercentage: successRate, // int로 변환
                                   inProgressPercentage:
                                       inProgressRate, // int로 변환
-                                  failPercentage: failedRate),
+                                  failPercentage: failedRate,
+                                  color: color),
                             ),
                             Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
