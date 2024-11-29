@@ -119,7 +119,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     super.initState();
     String mandalartId = widget.id;
     color = widget.color;
-    print('color=$color');
+    final colorValue =
+        int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
+    print('colorValue=$colorValue');
 
     name = widget.name;
     dday = widget.dday;
