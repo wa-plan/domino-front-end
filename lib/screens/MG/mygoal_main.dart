@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/MG/mygoal_goal_detail.dart';
@@ -24,11 +26,9 @@ class _MyGoalState extends State<MyGoal> {
   String selectedImage = "assets/img/profile_smp4.png";
 
   late PageController _pageController; // PageController 추가
-  int dday = 0; // 추가: D-day
   int successNum = 0;
   String mandaDescription = '';
   bool bookmark = false;
-  String ddayString = '0';
   List<Map<String, String>> failedIDs = [];
   List<Map<String, String>> inProgressIDs = [];
   List<Map<String, String>> successIDs = [];
@@ -207,6 +207,8 @@ class _MyGoalState extends State<MyGoal> {
     final colorValue =
         int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
 
+    int ddayParsed = int.parse(dday);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -217,9 +219,8 @@ class _MyGoalState extends State<MyGoal> {
                     name: name,
                     status: status,
                     photoList: photoList,
-                    dday: int.parse(dday),
+                    dday: ddayParsed,
                     color: color,
-                    //successNum: int.parse(successNum)
                   )),
         );
       },
@@ -264,7 +265,7 @@ class _MyGoalState extends State<MyGoal> {
                     ),
                     const SizedBox(width: 15),
                     Text(
-                      int.parse(dday) < 0 ? 'D+${dday * -1}' : 'D-$dday',
+                      ddayParsed < 0 ? 'D+${ddayParsed * -1}' : 'D-$ddayParsed',
                       style: const TextStyle(
                         color: Color(0xff5C5C5C),
                         fontSize: 16,
@@ -296,17 +297,23 @@ class _MyGoalState extends State<MyGoal> {
                     child: CarouselSlider.builder(
                       itemCount: photoList.length.clamp(1, 3), // 최대 3개로 제한
                       itemBuilder: (context, index, realIndex) {
-                        final imagePath =
-                            photoList.isNotEmpty ? photoList[index] : '';
+                        final imagePath = photoList[index];
+                        ImageProvider imageProvider;
+
+                        // 로컬 파일 이미지 처리
+                        if (imagePath.startsWith('/data/user/')) {
+                          imageProvider = FileImage(File(imagePath));
+                        } else {
+                          // 기본 이미지 처리 (예: 유효하지 않은 경로)
+                          imageProvider =
+                              const AssetImage('assets/img/default_image.png');
+                        }
+
                         return Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: imagePath.isNotEmpty
-                                  ? NetworkImage(imagePath) // 유효한 URL만 사용
-                                  : const AssetImage(
-                                          'assets/img/default_image.png')
-                                      as ImageProvider, // 기본 이미지
+                              image: imageProvider,
                               fit: BoxFit.cover,
                             ),
                             borderRadius: BorderRadius.circular(5.0),
@@ -517,14 +524,6 @@ class _MyGoalState extends State<MyGoal> {
                             )['color'] ??
                             '';
 
-                        //String status =
-                        //    statusList[index]['status'] ?? ''; // status 값
-
-                        //String dday = ddayList[index]['dday'] ?? ''; // dday 값
-
-                        //String color =
-                        //    colorList[index]['color'] ?? ''; // color 값
-
                         int successNum = successNums.firstWhere(
                               (element) =>
                                   element['mandalartId'] ==
@@ -533,10 +532,6 @@ class _MyGoalState extends State<MyGoal> {
                                   {'successNum': 0}, // 일치하는 항목이 없을 경우 빈 문자열 반환
                             )['successNum'] ??
                             0;
-
-                        //int successNum = int.parse(successNums[index]
-                        //        ['successNum']
-                        //    .toString()); // successNum 값
 
                         List<String> photoList = (photos[mandalartId] ?? [])
                             .map<String>((photo) => photo['path'].toString())
@@ -575,6 +570,28 @@ class _MyGoalState extends State<MyGoal> {
                 Column(
                   children: [
                     ...successIDs.map((item) {
+                      String status = statusList.firstWhere(
+                            (element) =>
+                                element['mandalartId'] ==
+                                item['id'], // mandalartId와 비교
+                            orElse: () =>
+                                {'status': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
+                          )['status'] ??
+                          '';
+
+                      String dday = ddayList.firstWhere(
+                            (element) =>
+                                element['mandalartId'] ==
+                                item['id'], // mandalartId와 비교
+                            orElse: () =>
+                                {'dday': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
+                          )['dday'] ??
+                          '0';
+
+                      List<String> photoList = (photos[item['id']] ?? [])
+                          .map<String>((photo) => photo['path'].toString())
+                          .toList();
+
                       // id에 맞는 색상을 찾아서 적용
                       final color = colorList.firstWhere(
                           (element) => element['id'] == item['id'],
@@ -588,7 +605,20 @@ class _MyGoalState extends State<MyGoal> {
                           color!.replaceAll('Color(', '').replaceAll(')', '')));
 
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyGoalDetail(
+                                      id: item['id']!,
+                                      name: item['name']!,
+                                      status: status,
+                                      photoList: photoList,
+                                      dday: int.parse(dday),
+                                      color: color,
+                                    )),
+                          );
+                        },
                         child: Container(
                           decoration: BoxDecoration(color: colorValue),
                           width: MediaQuery.of(context).size.width * 0.9,
@@ -614,6 +644,27 @@ class _MyGoalState extends State<MyGoal> {
                 Column(
                   children: [
                     ...failedIDs.map((item) {
+                      String status = statusList.firstWhere(
+                            (element) =>
+                                element['mandalartId'] ==
+                                item['id'], // mandalartId와 비교
+                            orElse: () =>
+                                {'status': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
+                          )['status'] ??
+                          '';
+
+                      String dday = ddayList.firstWhere(
+                            (element) =>
+                                element['mandalartId'] ==
+                                item['id'], // mandalartId와 비교
+                            orElse: () =>
+                                {'dday': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
+                          )['dday'] ??
+                          '0';
+
+                      List<String> photoList = (photos[item['id']] ?? [])
+                          .map<String>((photo) => photo['path'].toString())
+                          .toList();
                       // id에 맞는 색상을 찾아서 적용
                       final color = colorList.firstWhere(
                           (element) => element['id'] == item['id'],
@@ -628,7 +679,19 @@ class _MyGoalState extends State<MyGoal> {
 
                       return GestureDetector(
                         onTap: () {
-                          print('colorValue=$colorValue');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyGoalDetail(
+                                      id: item['id']!,
+                                      name: item['name']!,
+                                      status: status,
+                                      photoList: photoList,
+                                      dday: int.parse(dday),
+                                      color: color,
+                                      //successNum: int.parse(successNum)
+                                    )),
+                          );
                         },
                         child: Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 0, 13),

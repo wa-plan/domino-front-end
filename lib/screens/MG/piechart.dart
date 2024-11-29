@@ -37,25 +37,30 @@ class PieChart extends CustomPainter {
       return;
     }
 
-    // 1. 노란색 아크 그리기
+    // 1. 성공률 아크 그리기
     double successArcAngle = 2 * pi * (successPercentage / 100); // 1% 줄이기
-    paint.color = Color(int.parse(color));
+    paint.color = Color(
+      int.parse(
+        color.replaceAll('Color(', '').replaceAll(')', ''),
+      ),
+    );
+    //paint.color = Colors.yellow;
+    //paint.color = Color(int.parse(color));
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         successArcAngle, false, paint);
 
-    // 2. 회색 아크 그리기
+    // 2. 진행 중 아크 그리기
     startAngle += successArcAngle;
     double inProgressArcAngle = 2 * pi * (inProgressPercentage / 100);
     //startAngle += separatorAngle;
+    //paint.color = Colors.grey;
     paint.color = const Color(0xffFEFFC4);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         inProgressArcAngle, false, paint);
 
-    // 3. 검정 아크 그리기
+    // 3. 실패율 아크 그리기
     startAngle += inProgressArcAngle;
     double failArcAngle = 2 * pi * (failPercentage / 100); // 1% 줄이기
-    //startAngle += separatorAngle;
-    //paint.color = const Color(0xff383838);
     paint.color = Colors.black;
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         failArcAngle, false, paint);
