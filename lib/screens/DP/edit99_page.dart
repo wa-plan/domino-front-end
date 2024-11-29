@@ -1,8 +1,10 @@
 //DP 수정 메인 페이지
+import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/screens/DP/edit_create_color_page.dart';
 import 'package:domino/screens/DP/edit_create_input1_page.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/edit_smallgrid_with_data.dart';
+import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -10,11 +12,13 @@ import 'package:domino/provider/DP/model.dart';
 class Edit99Page extends StatelessWidget {
   final String mandalart;
   final int mandalartId;
+  final String firstColor;
 
   const Edit99Page({
     super.key,
     required this.mandalart,
     required this.mandalartId,
+    required this.firstColor
   });
 
   @override
@@ -53,10 +57,12 @@ class Edit99Page extends StatelessWidget {
                     height: 43,
                     width: double.infinity,
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
-                      color: Color(0xffFCFF62),
-                      borderRadius: BorderRadius.all(Radius.circular(3)),
+                      color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
+                      borderRadius: const BorderRadius.all(Radius.circular(3)),
                     ),
                     child: Text(
                         textAlign: TextAlign.center,
@@ -76,10 +82,10 @@ class Edit99Page extends StatelessWidget {
                       crossAxisSpacing: 0.5,
                       mainAxisSpacing: 0.5),
                   children: [
-                    EditSmallgridwithdata(goalId: 0, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 1, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 2, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 3, mandalart: mandalart,),
+                    EditSmallgridwithdata(goalId: 0, mandalart: mandalart, firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 1, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 2, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 3, mandalart: mandalart,firstColor: firstColor,),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -87,6 +93,7 @@ class Edit99Page extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => EditInput1Page(
                                 mandalart: mandalart,
+                                firstColor: firstColor
                               ),
                             ));
                       },
@@ -235,7 +242,9 @@ class Edit99Page extends StatelessWidget {
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(3),
-                                color: const Color(0xffFCFF62),
+                                color: Color(int.parse(firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', '')))
                               ),
                               margin: const EdgeInsets.all(1.0),
                               child: Center(
@@ -386,10 +395,10 @@ class Edit99Page extends StatelessWidget {
                         ),
                       ),
                     ),
-                    EditSmallgridwithdata(goalId: 5, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 6, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 7, mandalart: mandalart,),
-                    EditSmallgridwithdata(goalId: 8, mandalart: mandalart,),
+                    EditSmallgridwithdata(goalId: 5, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 6, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 7, mandalart: mandalart,firstColor: firstColor,),
+                    EditSmallgridwithdata(goalId: 8, mandalart: mandalart,firstColor: firstColor,),
                   ],
                 )),
                 Row(
@@ -397,14 +406,82 @@ class Edit99Page extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          PopupDialog.show(
+                          context,
+                          '지금 취소하면,\n수정한 내용이 사라져!',
+                          true, // cancel
+                          false, // delete
+                          false, // signout
+                          true, //success
+                          onCancel: () {
+                            // 취소 버튼을 눌렀을 때 실행할 코드
+                            Navigator.pop(context);
+                          },
+
+                          
+                          onSuccess:() async {
+                            
+                            for (int i = 0; i < 9; i++) {
+                          context
+                              .read<SaveInputtedDetailGoalModel>()
+                              .updateDetailGoal(
+                                  i.toString(),
+                                  "");
+                        }
+                        
+                        for (int i = 0; i < 9; i++) {
+                        context
+                              .read<TestInputtedDetailGoalModel>()
+                              .updateTestDetailGoal(
+                                  i.toString(),
+                                  "");
+                        }
+
+                        
+
+                        for (int i = 0; i < 9; i++) {
+                          context.read<GoalColor>().updateGoalColor(
+                              i.toString(),
+                              const Color(0xff929292));
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          for (int j = 0; j < 9; j++) {
+                            context
+                                .read<SaveInputtedActionPlanModel>()
+                                .updateActionPlan(
+                                    i,
+                                    j.toString(),
+                                     "");
+                          }
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          for (int j = 0; j < 9; j++) {
+                            context
+                                .read< TestInputtedActionPlanModel>()
+                                .updateTestActionPlan(
+                                    i,
+                                    j.toString(),
+                                     "");
+                          }
+                        }
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DPMain(),
+                              ),
+                            );
+                          },
+                        );
                         },
                         style: TextButton.styleFrom(
                             backgroundColor: const Color(0xff131313),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6.0))),
                         child: const Text(
-                          '이전',
+                          '취소',
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ),
@@ -415,6 +492,7 @@ class Edit99Page extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => EditColorPage(
                                   mandalart: mandalart,
+                                  firstColor: firstColor,
                                 ),
                               ));
                         },

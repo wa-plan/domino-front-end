@@ -10,7 +10,8 @@ import 'package:domino/widgets/DP/color_option.dart';
 
 class DPcreateColorPage extends StatefulWidget {
   final String? mainGoalId;
-  const DPcreateColorPage({super.key, required this.mainGoalId});
+  final String firstColor;
+  const DPcreateColorPage({super.key, required this.mainGoalId, required this.firstColor,});
 
   @override
   DPcreateColorPageState createState() => DPcreateColorPageState();
@@ -275,7 +276,9 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(3),
-                                    color: const Color(0xffFCFF62),
+                                    color: Color(int.parse(widget.firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
                                   ),
                                   margin: const EdgeInsets.all(1.0),
                                   child: Center(
@@ -457,12 +460,38 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
 
                             // If both goals are added successfully, navigate to DPMain
                             if (thirdGoalSuccess) {
+                              for (int i = 0; i < 9; i++) {
+                          context
+                              .read<SaveInputtedDetailGoalModel>()
+                              .updateDetailGoal(
+                                  i.toString(),
+                                  "");
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          context.read<GoalColor>().updateGoalColor(
+                              i.toString(),
+                              const Color(0xff929292));
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          for (int j = 0; j < 9; j++) {
+                            context
+                                .read<SaveInputtedActionPlanModel>()
+                                .updateActionPlan(
+                                    i,
+                                    j.toString(),
+                                     "");
+                          }
+                        }
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => const DPMain()),
                               );
                             }
+
+                            
                           }
                         },
                         style: TextButton.styleFrom(

@@ -189,8 +189,8 @@ class _AccountManagementState extends State<AccountManagement> {
                     '이건 아니야.. \n정말 떠날거야...?',
                     true, // cancel
                     false, // delete
-                    true,
-                    true, // signout
+                    true, //signout
+                    false, // success
                     onCancel: () {
                       Navigator.of(context).pop();
                     },

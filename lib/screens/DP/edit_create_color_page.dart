@@ -10,8 +10,11 @@ import 'package:domino/widgets/DP/color_option.dart';
 
 class EditColorPage extends StatefulWidget {
   final String mandalart;
+  final String firstColor;
 
-  const EditColorPage({super.key, required this.mandalart});
+  const EditColorPage({super.key, 
+  required this.firstColor,
+  required this.mandalart});
 
   @override
   EditColorPageState createState() => EditColorPageState();
@@ -336,7 +339,9 @@ class EditColorPageState extends State<EditColorPage> {
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(3),
-                                    color: const Color(0xffFCFF62),
+                                    color: Color(int.parse(widget.firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
                                   ),
                                   margin: const EdgeInsets.all(1.0),
                                   child: Center(
@@ -515,6 +520,30 @@ class EditColorPageState extends State<EditColorPage> {
 
                           // If both are successful, navigate to DPlistPage
                           if (thirdGoalSuccess) {
+                            for (int i = 0; i < 9; i++) {
+                          context
+                              .read<SaveInputtedDetailGoalModel>()
+                              .updateDetailGoal(
+                                  i.toString(),
+                                  "");
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          context.read<GoalColor>().updateGoalColor(
+                              i.toString(),
+                              const Color(0xff929292));
+                        }
+
+                        for (int i = 0; i < 9; i++) {
+                          for (int j = 0; j < 9; j++) {
+                            context
+                                .read<SaveInputtedActionPlanModel>()
+                                .updateActionPlan(
+                                    i,
+                                    j.toString(),
+                                     "");
+                          }
+                        }
                             Navigator.push(
                               context,
                               MaterialPageRoute(

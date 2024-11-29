@@ -1,11 +1,8 @@
 import 'package:domino/apis/services/dp_services.dart';
-import 'package:domino/apis/services/td_services.dart';
-import 'package:domino/screens/TD/td_main.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/TD/add_page2.dart';
 import 'package:domino/widgets/DP/mandalart2.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -25,7 +22,8 @@ class _AddPage1State extends State<AddPage1> {
   int mandalartId = 1;
   String selectedGoalId = "";
   int thirdGoalId = 0;
-
+  List<Map<String, dynamic>> emptyMainGoals = [];
+  
   @override
   void initState() {
     super.initState();
@@ -33,51 +31,69 @@ class _AddPage1State extends State<AddPage1> {
     _mainGoalList();
   }
 
-  /*void mandalartInfo(context, int mandalartId) async {
-    final success = await MandalartInfoService.mandalartInfo(context,
-        mandalartId: mandalartId);
-    if (success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('도미노가 조회되었습니다.')),
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const TdMain(),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('도미노 조회에 실패했습니다.')),
-      );
-    }
-  }*/
-
   void _mainGoalList() async {
     List<Map<String, dynamic>>? goals =
         await MainGoalListService.mainGoalList(context);
     if (goals != null) {
+      List<Map<String, dynamic>> filteredGoals = [];
+      List<Map<String, dynamic>> emptySecondGoals =
+          []; // 비어 있는 secondGoals를 위한 리스트 추가
+
+      for (var goal in goals) {
+        final mandalartId = goal['id'].toString();
+        final name = goal['name']; // 목표의 이름 가져오기
+
+        // Fetch second goals to check their content
+        final data = await _fetchSecondGoals(mandalartId);
+        if (data != null) {
+          final secondGoals =
+              data[0]['secondGoals'] as List<Map<String, dynamic>>?;
+
+          // Only add the goal if secondGoals is not null and not empty
+          if (secondGoals != null && secondGoals.isNotEmpty && secondGoals != "") {
+            filteredGoals.add(goal);
+          } else {
+            // secondGoals가 비어있을 경우 mandalartId와 name을 emptySecondGoals 리스트에 추가
+            emptySecondGoals.add({
+              'mandalartId': mandalartId,
+              'name': name,
+            });
+            print('empty = $emptySecondGoals');
+          }
+        }
+      }
+
       setState(() {
-        mainGoals = goals;
+        mainGoals = filteredGoals;
+        emptyMainGoals = emptySecondGoals; // Update state with filtered goals
+        // 필요에 따라 emptySecondGoals 리스트를 다른 상태 변수에 저장할 수 있습니다.
+        // 예를 들어:
+        // this.emptyGoals = emptySecondGoals;
       });
     }
   }
 
-  void _fetchSecondGoals(String mandalartId) async {
-    List<Map<String, dynamic>>? result =
-        await SecondGoalListService.secondGoalList(context, mandalartId);
+  Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async {
+  // Fetch the result from the SecondGoalListService
+  List<Map<String, dynamic>>? result = await SecondGoalListService.secondGoalList(context, mandalartId);
 
-    if (result != null && result.isNotEmpty) {
-      setState(() {
-        secondGoals = result[0]['secondGoals'];
-      });
-    }
+  // Check if the result is not null and contains data
+  if (result != null && result.isNotEmpty) {
+    setState(() {
+      secondGoals = result[0]['secondGoals']; // Update the secondGoals state variable
+    });
   }
+
+  // Return the result (this allows you to use the result wherever you call this function)
+  return result;
+}
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    List<String> createdGoals =
-        context.watch<SaveMandalartCreatedGoal>().mandalartCreatedGoal;
     int thirdGoalId =
         int.tryParse(context.watch<SelectAPModel>().selectedAPID.toString()) ??
             0;
@@ -145,10 +161,8 @@ class _AddPage1State extends State<AddPage1> {
                         );
                       } else if (snapshot.hasData) {
                         // createdGoals에 있는 목표만 필터링
-                        List<Map<String, dynamic>> goals = snapshot.data!
-                            .where((goal) =>
-                                createdGoals.contains(goal['id'].toString()))
-                            .toList();
+                        List<Map<String, dynamic>> goals = mainGoals;
+                           
 
                         // 기본 옵션을 시작으로 추가
                         List<Map<String, dynamic>> options = [
@@ -244,11 +258,11 @@ class _AddPage1State extends State<AddPage1> {
               children: [
                 //취소버튼
                 Button(Colors.black, Colors.white, '취소',
-                    () => Navigator.pop(context)).button(),
+                    () { context.read<SelectAPModel>().selectAP("플랜선택없음", null); Navigator.pop(context);}).button(),
 
                 //다음버튼
                 Button(Colors.black, Colors.white, '다음', () {
-                  if (thirdGoalName != "플랜을 선택해주세요.") {
+                  if (thirdGoalName != '플랜선택없음') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
