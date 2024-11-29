@@ -6,12 +6,14 @@ class PieChart extends CustomPainter {
   final int inProgressPercentage;
   final int failPercentage;
   final double textScaleFactor;
+  final String color;
 
   PieChart(
       {required this.successPercentage,
       required this.inProgressPercentage,
       required this.failPercentage,
-      this.textScaleFactor = 1.0});
+      this.textScaleFactor = 1.0,
+      required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -24,47 +26,44 @@ class PieChart extends CustomPainter {
     Offset center = Offset(size.width / 2, size.height / 2);
     double startAngle = -pi / 2;
 
-    // 검은색 구분선 각도
-    double separatorAngle = 2 * pi * (1 / 100);
+    // 모든 퍼센티지가 0인 경우 회색으로 채움
+    if (successPercentage == 0 &&
+        inProgressPercentage == 0 &&
+        failPercentage == 0) {
+      paint.color = Colors.black;
+      canvas.drawArc(Rect.fromCircle(center: center, radius: radius), 0, 2 * pi,
+          false, paint);
+      drawText(canvas, size, "달성률\n  0%");
+      return;
+    }
 
-    // 1. 노란색 아크 그리기
-    double successArcAngle = 2 * pi * ((successPercentage - 1) / 100); // 1% 줄이기
-    paint.color = const Color(0xffFCFF62);
+    // 1. 성공률 아크 그리기
+    double successArcAngle = 2 * pi * (successPercentage / 100); // 1% 줄이기
+    paint.color = Color(
+      int.parse(
+        color.replaceAll('Color(', '').replaceAll(')', ''),
+      ),
+    );
+    //paint.color = Colors.yellow;
+    //paint.color = Color(int.parse(color));
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         successArcAngle, false, paint);
 
-    // 노란색과 회색 사이 검은색 구분선 추가
+    // 2. 진행 중 아크 그리기
     startAngle += successArcAngle;
-    paint.color = Colors.black;
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
-        separatorAngle, false, paint);
-
-    // 2. 회색 아크 그리기
-    double inProgressArcAngle =
-        2 * pi * ((inProgressPercentage - 1) / 100); // 1% 줄이기
-    startAngle += separatorAngle;
+    double inProgressArcAngle = 2 * pi * (inProgressPercentage / 100);
+    //startAngle += separatorAngle;
+    //paint.color = Colors.grey;
     paint.color = const Color(0xffFEFFC4);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         inProgressArcAngle, false, paint);
 
-    // 회색과 검정 사이 검은색 구분선 추가
+    // 3. 실패율 아크 그리기
     startAngle += inProgressArcAngle;
+    double failArcAngle = 2 * pi * (failPercentage / 100); // 1% 줄이기
     paint.color = Colors.black;
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
-        separatorAngle, false, paint);
-
-    // 3. 검정 아크 그리기
-    double failArcAngle = 2 * pi * ((failPercentage - 1) / 100); // 1% 줄이기
-    startAngle += separatorAngle;
-    paint.color = const Color(0xff383838);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         failArcAngle, false, paint);
-
-    // 마지막 검은색 구분선 추가
-    startAngle += failArcAngle;
-    paint.color = Colors.black;
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
-        separatorAngle, false, paint);
 
     // 달성률 텍스트 그리기
     drawText(canvas, size, "달성률\n  $successPercentage%");
