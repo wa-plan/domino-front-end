@@ -1,24 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/screens/DP/create_input2_page.dart';
 
 class Smallgridwithdata extends StatelessWidget {
   final int goalId;
+  final String firstColor;
 
-  const Smallgridwithdata({super.key, required this.goalId});
+  const Smallgridwithdata({
+    super.key,
+    required this.goalId,
+    required this.firstColor,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.read<SelectDetailGoal>().selectDetailGoal('$goalId');
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const DPcreateInput2Page(),
-            ));
-      },
+  final isDetailAllEmpty =
+      context.read<SaveInputtedDetailGoalModel>().isAllEmpty();
+  final emptyKeys = context.read<SaveInputtedDetailGoalModel>().getEmptyKeys();
+
+  if (isDetailAllEmpty) {
+    // 모든 값이 ''이면 메시지 표시
+    Fluttertoast.showToast(
+      msg: '세부 목표를 먼저 입력해 주세요.',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.white,
+      textColor: Colors.black,
+    );
+  } else {
+    // 비어있는 키가 goalId와 1을 뺀 값이 일치하는지 확인
+    final emptyKeyMinusOne = emptyKeys
+        .map((key) => int.parse(key)).toList();
+    for(int i=0; i < emptyKeyMinusOne.length; i++){
+    print(emptyKeyMinusOne[i]);
+    }
+    print(goalId);
+
+    if (emptyKeyMinusOne.contains(goalId)) {
+      
+      // goalId와 비어있는 key + 1이 일치하면 네비게이션 하지 않음
+      Fluttertoast.showToast(
+        msg: '세부 목표를 먼저 입력해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.white,
+        textColor: Colors.black,
+      );
+    } else {
+      for(int i=0; i < emptyKeyMinusOne.length; i++){
+    print(emptyKeyMinusOne[i]);
+    }
+    print(goalId);
+      // 조건을 만족하면 SelectDetailGoal 동작 후 페이지 이동
+      context.read<SelectDetailGoal>().selectDetailGoal('$goalId');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DPcreateInput2Page(
+            firstColor: firstColor,
+          ),
+        ),
+      );
+    }
+  }
+},
+
       child: SizedBox(
         width: 100,
         child: GridView.count(

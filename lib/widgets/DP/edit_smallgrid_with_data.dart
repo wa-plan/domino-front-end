@@ -5,6 +5,7 @@ import 'package:domino/provider/DP/model.dart';
 
 class EditSmallgridwithdata extends StatelessWidget {
   final String mandalart;
+  final String firstColor;
 
   final Map<Color, Color> colorPalette = {
     const Color(0xffFF7A7A): const Color(0xffFFC2C2),
@@ -25,7 +26,8 @@ class EditSmallgridwithdata extends StatelessWidget {
   
   final int goalId;
 
-  EditSmallgridwithdata({super.key, required this.goalId, required this.mandalart,});
+  EditSmallgridwithdata({super.key, required this.goalId, required this.mandalart,
+  required this.firstColor});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class EditSmallgridwithdata extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) =>  EditInput2Page(
+              firstColor: firstColor,
               mandalart: mandalart,
             ),
           ),
