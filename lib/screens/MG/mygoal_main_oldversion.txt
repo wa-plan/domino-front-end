@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/screens/MG/mygoal_goal_detail.dart';
@@ -12,34 +10,49 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:domino/widgets/MG/cheering_message.dart';
 
-class MyGoal extends StatefulWidget {
-  const MyGoal({super.key});
+class MyGoalOldVersion extends StatefulWidget {
+  const MyGoalOldVersion({super.key});
 
   @override
-  State<MyGoal> createState() => _MyGoalState();
+  State<MyGoalOldVersion> createState() => _MyGoalOldVersionState();
 }
 
-class _MyGoalState extends State<MyGoal> {
+class _MyGoalOldVersionState extends State<MyGoalOldVersion> {
   final String message = "";
   String nickname = '';
   String description = '';
   String selectedImage = "assets/img/profile_smp4.png";
 
   late PageController _pageController; // PageController 추가
-  int successNum = 0;
+  int successNum = 0; // 추가: 성공한 목표 수
+  int inProgressNum = 0; // 추가: 진행 중인 목표 수
+  int failed = 0; // 추가: 실패한 목표 수
+  int dday = 0; // 추가: D-day
+  String ddayString = '0';
+  List<Map<String, String>> failedIDList = [];
+  List<Map<String, String>> inProgressIDList = [];
+  List<Map<String, String>> successIDList = [];
+  List<Map<String, dynamic>> photoList = [];
   String mandaDescription = '';
   bool bookmark = false;
-  List<Map<String, String>> failedIDs = [];
-  List<Map<String, String>> inProgressIDs = [];
-  List<Map<String, String>> successIDs = [];
-  List<Map<String, String>> nameList = [];
-  List<Map<String, String>> statusList = [];
-  List<Map<String, String>> ddayList = [];
-  List<Map<String, String>> colorList = [];
-  List<Map<dynamic, dynamic>> successNums = [];
-  Map<String, List<Map<String, String>>> photos = {};
+  int parsedId = 0;
 
   List<Map<String, String>> mandalarts = [];
+  //List<int> ddayList = [];
+  List<Map<String, String>> ddayList = [];
+  List<Map<String, String>> mandaDescriptionList = [];
+  List<Map<String, String>> status = [];
+  List<Map<String, String>> failedList = [];
+  List<Map<String, String>> inProgressNumList = [];
+  List<Map<String, String>> successNumList = [];
+
+  //List<String> mandaDescriptionList = [];
+  //List<String> status = [];
+  //List<int> failedList = [];
+  //List<int> inProgressNumList = [];
+  //List<int> successNumList = [];
+
+  List<Map<String, String>> colorList = [];
 
   void userInfo() async {
     final data = await UserInfoService.userInfo();
@@ -48,118 +61,221 @@ class _MyGoalState extends State<MyGoal> {
         nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
         description = data['description'] ?? '프로필 편집을 통해 \n자신을 표현해주세요.';
       });
+      /*ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
+      );*/
     }
   }
 
-  Future<void> userMandaIdInfo() async {
-    if (mandalarts.isNotEmpty) return;
+  void userMandaIdInfo() async {
+    final data = await UserMandaIdService.userManda();
 
-    try {
-      final data = await UserMandaIdService.userManda();
+    if (data.isNotEmpty) {
+      setState(() {
+        mandalarts = data;
+        //ddayList = List.filled(mandalarts.length, 0); // dday 리스트 초기화
+        //failedList = List.filled(mandalarts.length, 0);
+        //inProgressNumList = List.filled(mandalarts.length, 0);
+        //successNumList = List.filled(mandalarts.length, 0);
+        //mandaDescriptionList = List.filled(mandalarts.length, '');
+      });
 
-      if (data.isNotEmpty) {
-        setState(() {
-          mandalarts = data;
-        });
-
-        // 비동기 작업 병렬 처리
-        final tasks = mandalarts.map((mandalart) async {
-          final String mandalartId = mandalart['id'] ?? '0';
-          await userMandaInfo(mandalartId);
-          await mandaColor(mandalartId);
-        });
-
-        await Future.wait(tasks); // 모든 작업 완료를 기다림
-        print('모든 mandalart 데이터가 성공적으로 로드되었습니다.');
-
-        // id 값을 기준으로 오름차순 정렬
-        failedIDs.sort((a, b) {
-          return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
-        });
-        inProgressIDs.sort((a, b) {
-          return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
-        });
-        successIDs.sort((a, b) {
-          return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
-        });
-
-        print('리스트 출력');
-        print('failedIDs=$failedIDs');
-        print('inProgressIDs=$inProgressIDs');
-        print('successIDs=$successIDs');
-        print('nameList=$nameList');
-        print('statusList=$statusList');
-        print('ddayList=$ddayList');
-        print('successNums=$successNums');
+      // mandalarts가 로드된 후에 userMandaInfo 호출
+      for (int i = 0; i < mandalarts.length; i++) {
+        final int mandalartId = int.tryParse(mandalarts[i]['id'] ?? '0') ?? 0;
+        userMandaInfo(context, mandalartId);
       }
-    } catch (e) {
-      // 에러 발생 시 처리
-      print('userMandaIdInfo 에러 발생: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('데이터 로드 중 오류가 발생했습니다: $e')),
-      );
+
+      // mandalarts가 로드된 후에 mandalartInfo 호출
+      for (var mandalart in mandalarts) {
+        final String mandalartId = mandalart["id"]!;
+        mandalartInfo(mandalartId); // id값 전달
+      }
     }
   }
 
-  Future<void> userMandaInfo(String mandalartId) async {
-    if (nameList.any((item) => item['mandalartId'] == mandalartId)) return;
+  void _mandaBookmark(int id, String bookmark) async {
+    final success = await MandaBookmarkService.MandaBookmark(
+      id: id,
+      bookmark: bookmark,
+    );
+    if (success) {
+      print('성공');
+    }
+  }
 
-    try {
-      final data = await UserMandaInfoService.userMandaInfo(context,
-          mandalartId: int.parse(mandalartId));
+  void userMandaInfo(context, int mandalartId) async {
+    final data = await UserMandaInfoService.userMandaInfo(context,
+        mandalartId: mandalartId);
+    if (data != null) {
+      setState(() {
+        for (int i = 0; i < mandalarts.length; i++) {
+          ddayList[i] = {
+            'mandalartId': mandalartId.toString(),
+            'dday':
+                data['dday']?.toString() ?? '0', // dday가 null인 경우 '0'을 기본값으로 설정
+          };
 
-      if (data != null) {
-        String id = mandalartId;
-        String name = data['name'] ?? '';
-        String status = data['status']?.toString() ?? '';
-        List<dynamic> photoList = data['photoList'] ?? [];
-        String dday = data['dday']?.toString() ?? '0';
-        int successNum = data['statusNum']?['successNum'] ?? 0;
+          mandaDescriptionList[i] = {
+            'mandalartId': mandalartId.toString(),
+            'description': data['description']?.toString() ??
+                '', // dday가 null인 경우 '0'을 기본값으로 설정
+          };
+          status[i] = {
+            'mandalartId': mandalartId.toString(),
+            'status': data['status']?.toString() ??
+                '', // dday가 null인 경우 '0'을 기본값으로 설정
+          };
+          //ddayList[i] = data['dday'] ?? 0;
+          //mandaDescriptionList[i] = data['description'];
+          //status[i] = data['status'];
+        }
 
-        setState(() {
-          if (status == "FAIL") failedIDs.add({"id": id, "name": name});
-          if (status == "IN_PROGRESS") {
-            inProgressIDs.add({"id": id, "name": name});
-          }
-          if (status == "SUCCESS") successIDs.add({"id": id, "name": name});
+        /*failedList[i] = data['statusNum']['failed'] ?? 0;
+          inProgressNumList[i] =
+              data['statusNum']['inProgressNum'] ?? 0;
+          successNumList[i] = data['statusNum']['successNum'] ?? 0;*/
 
-          nameList.add({'mandalartId': id, 'name': name});
-          statusList.add({'mandalartId': id, 'status': status});
-          //photoList.add({'mandalartId': id, 'photos': photos});
-          ddayList.add({'mandalartId': id, 'dday': dday});
-          successNums.add({'mandalartId': id, 'successNum': successNum});
+        // statusNum의 항목이 있을 경우만 처리
+        if (data['statusNum'] != null) {
+          failedList.add({
+            'mandalartId': mandalartId.toString(), // mandalartId 저장
+            'failed':
+                data['statusNum']['failed'].toString(), // 숫자를 문자열로 변환하여 저장
+          });
+          inProgressNumList.add({
+            'mandalartId': mandalartId.toString(), // mandalartId 저장
+            'inProgressNum': data['statusNum']['inProgressNum']
+                .toString(), // 숫자를 문자열로 변환하여 저장
+          });
+          successNumList.add({
+            'mandalartId': mandalartId.toString(), // mandalartId 저장
+            'successNum':
+                data['statusNum']['successNum'].toString(), // 숫자를 문자열로 변환하여 저장
+          });
+          /*List<int> failedListData =
+              List<int>.from(data['statusNum']['failed'] ?? []);
+          List<int> inProgressNumListData =
+              List<int>.from(data['statusNum']['inProgressNum'] ?? []);
+          List<int> successNumListData =
+              List<int>.from(data['statusNum']['successNum'] ?? []);*/
 
-          // 사진 리스트를 photos에 저장
-          if (photoList.isNotEmpty) {
-            photos[id] = [];
-            for (var photo in photoList) {
-              photos[id]?.add({
-                'path': photo['path'] ?? '',
-                'id': photo['id'].toString(),
+          // failedList, inProgressNumList, successNumList의 개수만큼 반복하여 값 할당
+          /*List<int> failedListData =
+              List<int>.from(data['statusNum']['failed'] ?? []);
+
+          for (int j = 0; j < failedListData.length; j++) {
+            if (j < mandalarts.length) {
+              // failedList에 mandalartId와 failed 값을 맵으로 저장
+              failedList.add({
+                'mandalartId': mandalartId.toString(),
+                'failed': failedListData[j].toString(), // 실패한 값
               });
             }
+          }*/
+
+          /*List<int> inProgressNumListData =
+              List<int>.from(data['statusNum']['inProgressNum'] ?? []);
+          for (int j = 0; j < inProgressNumListData.length; j++) {
+            inProgressNumList.add({
+              'mandalartId': mandalartId.toString(),
+              'failed': inProgressNumListData[j].toString(), // 실패한 값
+            });
           }
-        });
-        print('userMandaInfo 성공: $name ($id)');
-      } else {
-        print('userMandaInfo 실패: 데이터 없음 ($mandalartId)');
-      }
-    } catch (e) {
-      print('userMandaInfo 에러 발생: $e');
+
+          List<int> successNumListData =
+              List<int>.from(data['statusNum']['successNum'] ?? []);
+          for (int j = 0; j < inProgressNumListData.length; j++) {
+            successNumList.add({
+              'mandalartId': mandalartId.toString(),
+              'failed': successNumListData[j].toString(), // 실패한 값
+            });
+          }*/
+        }
+
+        String name = data['name']; // name을 가져오기
+        int id = data['id'];
+
+        if (status == "FAIL") {
+          failedIDList
+              .add({"id": id.toString(), "name": name}); // "FAIL" 상태의 name을 추가
+        } else if (status == "IN_PROGRESS") {
+          inProgressIDList.add({
+            "id": id.toString(),
+            "name": name
+          }); // "IN_PROGRESS" 상태의 name을 추가
+        } else if (status == "SUCCESS") {
+          successIDList.add({"id": id.toString(), "name": name});
+        }
+        if (data['photoList'] is List) {
+          photoList = List<Map<String, dynamic>>.from(data['photoList']);
+        } else {
+          photoList = [];
+        }
+      });
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('데이터 로드 실패: $e')),
+        const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
       );
     }
   }
 
-  Future<void> mandaColor(String mandalartId) async {
-// 중복 방지
-    if (colorList.any((item) => item['id'] == mandalartId)) return;
+  void notInProgressInfo(context, int mandalartId) async {
+    final data = await UserMandaInfoService.userMandaInfo(context,
+        mandalartId: mandalartId);
+    if (data != null) {
+      setState(() {
+        // 상세화면으로 전달할 때
+        int plusId = data['id'];
+        //String plusName = data['name'];
+        //int plusDday = data['dday'];
+        //String plusStatus = data['status'];
+        List<Map<String, dynamic>> plusPhotoList;
+        //String plusMandaDescription = data['description'];
+        //int plusFailedNum = data['statusNum']['failed'];
+        //int plusInProgressNum = data['statusNum']['inProgressNum'];
+        //int plusSuccessNum = data['statusNum']['successNum'];
+        String plusColor = colorList[plusId]["color"]!;
+        int plusColorValue =
+            int.parse(plusColor.replaceAll('Color(', '').replaceAll(')', ''));
 
+        if (data['photoList'] is List) {
+          plusPhotoList = List<Map<String, dynamic>>.from(data['photoList']);
+        } else {
+          plusPhotoList = [];
+        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MyGoalDetail(
+              id: plusId.toString(),
+              name: data['name'],
+              dday: data['dday'],
+              status: data['status'],
+              photoList: plusPhotoList
+                  .map((photo) => photo['path'] as String)
+                  .toList(),
+              mandaDescription: data['description'],
+              failedNum: data['statusNum']['failed'],
+              inProgressNum: data['statusNum']['inProgressNum'],
+              successNum: data['statusNum']['successNum'],
+              color: plusColorValue.toString(),
+            ),
+          ),
+        );
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('만다라트 조회에 실패했습니다.')),
+      );
+    }
+  }
+
+  void mandalartInfo(String mandalartId) async {
     try {
       // 서버에서 데이터 가져오기
-      final data = await MandalartInfoService.mandalartInfo(
-          mandalartId: int.parse(mandalartId));
+      int id = int.parse(mandalartId);
+      final data = await MandalartInfoService.mandalartInfo(mandalartId: id);
       if (data != null) {
         // 반환된 데이터를 colorList에 추가
         setState(() {
@@ -178,16 +294,6 @@ class _MyGoalState extends State<MyGoal> {
     }
   }
 
-  void _mandaBookmark(String mandalartId, String bookmark) async {
-    final success = await MandaBookmarkService.MandaBookmark(
-      id: int.parse(mandalartId),
-      bookmark: bookmark,
-    );
-    if (success) {
-      print('성공');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -202,12 +308,20 @@ class _MyGoalState extends State<MyGoal> {
     super.dispose();
   }
 
-  Widget _buildGoalCard(String manddalartId, String name, String status,
-      List<String> photoList, String dday, String color, int successNum) {
+  Widget _buildGoalCard(
+      Map<String, String> inProgressIdMap,
+      int mandalartId,
+      int dday,
+      String mandaDescription,
+      String failed,
+      String inProgressNum,
+      String successNum,
+      String color) {
+    final String name = inProgressIdMap['name'] ?? 'Goal';
+    final String id = inProgressIdMap['id'] ?? '';
+    int parsedId = int.parse(id);
     final colorValue =
         int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
-
-    int ddayParsed = int.parse(dday);
 
     return GestureDetector(
       onTap: () {
@@ -215,12 +329,18 @@ class _MyGoalState extends State<MyGoal> {
           context,
           MaterialPageRoute(
               builder: (context) => MyGoalDetail(
-                    id: manddalartId,
+                    id: id,
                     name: name,
-                    status: status,
-                    photoList: photoList,
-                    dday: ddayParsed,
-                    color: color,
+                    dday: dday,
+                    status: 'IN_PROGRESS',
+                    photoList: photoList
+                        .map((photo) => photo['path'] as String)
+                        .toList(),
+                    mandaDescription: mandaDescription,
+                    failedNum: int.parse(failed),
+                    inProgressNum: int.parse(inProgressNum),
+                    successNum: int.parse(successNum),
+                    color: colorValue.toString(),
                   )),
         );
       },
@@ -243,7 +363,7 @@ class _MyGoalState extends State<MyGoal> {
                           bookmark = !bookmark;
                           String bookmarkAction =
                               bookmark ? "BOOKMARK" : "UNBOOKMARK";
-                          _mandaBookmark('1', bookmarkAction);
+                          _mandaBookmark(parsedId, bookmarkAction);
                         });
                       },
                       icon: const Icon(
@@ -265,7 +385,7 @@ class _MyGoalState extends State<MyGoal> {
                     ),
                     const SizedBox(width: 15),
                     Text(
-                      ddayParsed < 0 ? 'D+${ddayParsed * -1}' : 'D-$ddayParsed',
+                      dday < 0 ? 'D+${dday * -1}' : 'D-$dday',
                       style: const TextStyle(
                         color: Color(0xff5C5C5C),
                         fontSize: 16,
@@ -297,23 +417,11 @@ class _MyGoalState extends State<MyGoal> {
                     child: CarouselSlider.builder(
                       itemCount: photoList.length.clamp(1, 3), // 최대 3개로 제한
                       itemBuilder: (context, index, realIndex) {
-                        final imagePath = photoList[index];
-                        ImageProvider imageProvider;
-
-                        // 로컬 파일 이미지 처리
-                        if (imagePath.startsWith('/data/user/')) {
-                          imageProvider = FileImage(File(imagePath));
-                        } else {
-                          // 기본 이미지 처리 (예: 유효하지 않은 경로)
-                          imageProvider =
-                              const AssetImage('assets/img/default_image.png');
-                        }
-
                         return Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: imageProvider,
+                              image: NetworkImage(photoList[index]['path']),
                               fit: BoxFit.cover,
                             ),
                             borderRadius: BorderRadius.circular(5.0),
@@ -344,7 +452,7 @@ class _MyGoalState extends State<MyGoal> {
                           ),
                         ),
                         Text(
-                          '$successNum개',
+                          '${successNumList[mandalartId]}개',
                           style: const TextStyle(
                               color: Color(0xffFCFF62),
                               fontWeight: FontWeight.w700,
@@ -353,7 +461,7 @@ class _MyGoalState extends State<MyGoal> {
                       ],
                     ),
                     const SizedBox(width: 25),
-                    /*if (colorValue == 4284190207 || colorValue == 4284340479)
+                    if (colorValue == 4284190207 || colorValue == 4284340479)
                       Image.asset('assets/img/MG_blue.png')
                     else if (colorValue == 4294933114)
                       Image.asset('assets/img/MG_red.png')
@@ -363,8 +471,8 @@ class _MyGoalState extends State<MyGoal> {
                       Image.asset('assets/img/MG_orange.png')
                     else if (colorValue == 4294933114)
                       Image.asset('assets/img/MG_red.png')
-                    else if (colorValue == 4294933114)*/
-                    Image.asset('assets/img/MG_red.png'),
+                    else if (colorValue == 4294933114)
+                      Image.asset('assets/img/MG_red.png'),
                   ],
                 ),
               ],
@@ -489,56 +597,75 @@ class _MyGoalState extends State<MyGoal> {
                     height: 220,
                     child: PageView.builder(
                       controller: _pageController,
-                      itemCount: inProgressIDs.length,
+                      itemCount: inProgressIDList.length,
                       itemBuilder: (context, index) {
-                        String mandalartId =
-                            inProgressIDs[index]['id'] ?? ''; // id 값
+                        final inProgressIdMap = inProgressIDList[index];
+                        final ddayEntry = ddayList.firstWhere(
+                          (entry) =>
+                              entry['mandalartId'] ==
+                              inProgressIdMap.toString(),
+                          orElse: () => {'dday': '0'},
+                        );
+                        final dday = ddayEntry['dday'];
 
-                        String name =
-                            inProgressIDs[index]['name'] ?? ''; // name 값
+                        final mandaDescriptionEntry =
+                            mandaDescriptionList.firstWhere(
+                          (entry) =>
+                              entry['mandalartId'] ==
+                              inProgressIdMap.toString(),
+                          orElse: () => {'mandaDescription': '0'},
+                        );
+                        final mandaDescription =
+                            mandaDescriptionEntry['mandaDescription'];
 
-                        String status = statusList.firstWhere(
-                              (element) =>
-                                  element['mandalartId'] ==
-                                  mandalartId, // mandalartId와 비교
-                              orElse: () =>
-                                  {'status': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
-                            )['status'] ??
-                            '';
+                        final colorEntry = colorList.firstWhere(
+                          (entry) =>
+                              entry['mandalartId'] ==
+                              inProgressIdMap.toString(),
+                          orElse: () => {'color': '0'},
+                        );
+                        final color = colorEntry['color'];
 
-                        String dday = ddayList.firstWhere(
-                              (element) =>
-                                  element['mandalartId'] ==
-                                  mandalartId, // mandalartId와 비교
-                              orElse: () =>
-                                  {'dday': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
-                            )['dday'] ??
-                            '0';
+                        final failedEntry = failedList.firstWhere(
+                          (entry) =>
+                              entry['mandalartId'] ==
+                              inProgressIdMap.toString(),
+                          orElse: () => {'failed': '0'},
+                        );
+                        final failed = failedEntry['failed'];
 
-                        String color = colorList.firstWhere(
-                              (element) =>
-                                  element['id'] ==
-                                  mandalartId, // mandalartId와 비교
-                              orElse: () =>
-                                  {'color': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
-                            )['color'] ??
-                            '';
+                        final inProgressNumEntry = inProgressNumList.firstWhere(
+                          (entry) =>
+                              entry['mandalartId'] ==
+                              inProgressIdMap.toString(),
+                          orElse: () => {'inProgressNum': '0'},
+                        );
+                        final inProgressNum =
+                            inProgressNumEntry['inProgressNum'];
 
-                        int successNum = successNums.firstWhere(
-                              (element) =>
-                                  element['mandalartId'] ==
-                                  mandalartId, // mandalartId와 비교
-                              orElse: () =>
-                                  {'successNum': 0}, // 일치하는 항목이 없을 경우 빈 문자열 반환
-                            )['successNum'] ??
-                            0;
+                        final successNumEntry = successNumList.firstWhere(
+                          (entry) =>
+                              entry['mandalartId'] ==
+                              inProgressIdMap.toString(),
+                          orElse: () => {'successNum': '0'},
+                        );
+                        final successNum = successNumEntry['successNum'];
 
-                        List<String> photoList = (photos[mandalartId] ?? [])
-                            .map<String>((photo) => photo['path'].toString())
-                            .toList();
-
-                        return _buildGoalCard(mandalartId, name, status,
-                            photoList, dday, color, successNum);
+                        //final dday = ddayList[inProgressIdMap.toString()][index];
+                        //final failed = failedList[index];
+                        //final inProgressNum = inProgressNumList[index];
+                        //final successNum = successNumList[index];
+                        //final mandaDescription = mandaDescriptionList[index];
+                        //final color = colorList[index]["color"];
+                        return _buildGoalCard(
+                            inProgressIdMap,
+                            index,
+                            int.parse(dday!),
+                            mandaDescription!,
+                            failed!,
+                            inProgressNum!,
+                            successNum!,
+                            color!);
                       },
                     ),
                   ),
@@ -546,7 +673,7 @@ class _MyGoalState extends State<MyGoal> {
                   Center(
                     child: SmoothPageIndicator(
                       controller: _pageController,
-                      count: inProgressIDs.length,
+                      count: inProgressIDList.length,
                       effect: const ColorTransitionEffect(
                         dotHeight: 7.0,
                         dotWidth: 7.0,
@@ -564,35 +691,13 @@ class _MyGoalState extends State<MyGoal> {
               const SizedBox(height: 40),
               MGSubTitle('쓰러뜨린 목표').mgSubTitle(context),
               const SizedBox(height: 15),
-              if (successIDs.isEmpty)
+              if (successIDList.isEmpty)
                 Image.asset('assets/img/completed_goals.png')
               else
                 Column(
                   children: [
-                    ...successIDs.map((item) {
-                      String status = statusList.firstWhere(
-                            (element) =>
-                                element['mandalartId'] ==
-                                item['id'], // mandalartId와 비교
-                            orElse: () =>
-                                {'status': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
-                          )['status'] ??
-                          '';
-
-                      String dday = ddayList.firstWhere(
-                            (element) =>
-                                element['mandalartId'] ==
-                                item['id'], // mandalartId와 비교
-                            orElse: () =>
-                                {'dday': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
-                          )['dday'] ??
-                          '0';
-
-                      List<String> photoList = (photos[item['id']] ?? [])
-                          .map<String>((photo) => photo['path'].toString())
-                          .toList();
-
-                      // id에 맞는 색상을 찾아서 적용
+                    ...successIDList.map((item) {
+// id에 맞는 색상을 찾아서 적용
                       final color = colorList.firstWhere(
                           (element) => element['id'] == item['id'],
                           orElse: () => {
@@ -606,18 +711,7 @@ class _MyGoalState extends State<MyGoal> {
 
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyGoalDetail(
-                                      id: item['id']!,
-                                      name: item['name']!,
-                                      status: status,
-                                      photoList: photoList,
-                                      dday: int.parse(dday),
-                                      color: color,
-                                    )),
-                          );
+                          notInProgressInfo(context, int.parse(item['id']!));
                         },
                         child: Container(
                           decoration: BoxDecoration(color: colorValue),
@@ -638,33 +732,12 @@ class _MyGoalState extends State<MyGoal> {
               const SizedBox(height: 40),
               MGSubTitle('쓰러뜨리지 못한 목표').mgSubTitle(context),
               const SizedBox(height: 15),
-              if (failedIDs.isEmpty)
+              if (failedIDList.isEmpty)
                 Image.asset('assets/img/failed_goals.png')
               else
                 Column(
                   children: [
-                    ...failedIDs.map((item) {
-                      String status = statusList.firstWhere(
-                            (element) =>
-                                element['mandalartId'] ==
-                                item['id'], // mandalartId와 비교
-                            orElse: () =>
-                                {'status': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
-                          )['status'] ??
-                          '';
-
-                      String dday = ddayList.firstWhere(
-                            (element) =>
-                                element['mandalartId'] ==
-                                item['id'], // mandalartId와 비교
-                            orElse: () =>
-                                {'dday': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
-                          )['dday'] ??
-                          '0';
-
-                      List<String> photoList = (photos[item['id']] ?? [])
-                          .map<String>((photo) => photo['path'].toString())
-                          .toList();
+                    ...failedIDList.map((item) {
                       // id에 맞는 색상을 찾아서 적용
                       final color = colorList.firstWhere(
                           (element) => element['id'] == item['id'],
@@ -679,19 +752,8 @@ class _MyGoalState extends State<MyGoal> {
 
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyGoalDetail(
-                                      id: item['id']!,
-                                      name: item['name']!,
-                                      status: status,
-                                      photoList: photoList,
-                                      dday: int.parse(dday),
-                                      color: color,
-                                      //successNum: int.parse(successNum)
-                                    )),
-                          );
+                          print('colorValue=$colorValue');
+                          notInProgressInfo(context, int.parse(item['id']!));
                         },
                         child: Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 0, 13),

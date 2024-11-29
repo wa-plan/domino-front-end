@@ -10,31 +10,28 @@ import 'package:domino/widgets/popup.dart';
 class MyGoalDetail extends StatefulWidget {
   final String id;
   final String name;
-  final int dday;
-  final String mandaDescription;
   final String status;
   final List<String> photoList;
-  final int failedNum;
-  final int inProgressNum;
-  final int successNum;
+  final int dday;
+  final String color;
 
-  const MyGoalDetail(
-      {super.key,
-      required this.id,
-      required this.name,
-      required this.dday,
-      required this.status,
-      required this.photoList,
-      required this.mandaDescription,
-      required this.failedNum,
-      required this.inProgressNum,
-      required this.successNum});
+  const MyGoalDetail({
+    super.key,
+    required this.id,
+    required this.name,
+    required this.status,
+    required this.photoList,
+    required this.dday,
+    required this.color,
+  });
 
   @override
   MyGoalDetailState createState() => MyGoalDetailState();
 }
 
 class MyGoalDetailState extends State<MyGoalDetail> {
+  //description, successNum
+
   final _status = ['달성 실패', '진행 중', '달성 완료'];
   String? _selectedStatus;
   // 선택된 파일 리스트를 관리할 변수 추가
@@ -61,6 +58,42 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   int inProgressRate = 0;
   int failedRate = 0;
 
+  Future<void> userMandaInfo(String mandalartId) async {
+    try {
+      final data = await UserMandaInfoService.userMandaInfo(context,
+          mandalartId: int.parse(mandalartId));
+
+      if (data != null) {
+        String description = data['description'] ?? '';
+        int failedNum = data['statusNum']?['failed'] ?? 0;
+        int inProgressNum = data['statusNum']?['inProgressNum'] ?? 0;
+        int successNum = data['statusNum']?['successNum'] ?? 0;
+
+        setState(() {
+          mandaDescription = description;
+          this.failedNum = failedNum;
+          this.inProgressNum = inProgressNum;
+          this.successNum = successNum;
+
+          total = this.successNum + this.inProgressNum + this.failedNum;
+          successRate =
+              total == 0 ? 0 : (this.successNum / total * 100).toInt();
+          inProgressRate =
+              total == 0 ? 0 : (this.inProgressNum / total * 100).toInt();
+          failedRate = 100 - successRate - inProgressRate;
+          print('total=$total');
+        });
+      } else {
+        print('userMandaInfo 실패: 데이터 없음 ($mandalartId)');
+      }
+    } catch (e) {
+      print('userMandaInfo 에러 발생: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('데이터 로드 실패: $e')),
+      );
+    }
+  }
+
   void _mandaBookmark(int id, String bookmark) async {
     final success = await MandaBookmarkService.MandaBookmark(
       id: id,
@@ -84,20 +117,16 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   @override
   void initState() {
     super.initState();
+    String mandalartId = widget.id;
+    color = widget.color;
+    print('color=$color');
 
     name = widget.name;
     dday = widget.dday;
     status = widget.status;
     photoList = widget.photoList;
-    mandaDescription = widget.mandaDescription;
-    failedNum = widget.failedNum;
-    inProgressNum = widget.inProgressNum;
-    successNum = widget.successNum;
-    total = successNum + inProgressNum + failedNum;
 
-    successRate = total == 0 ? 0 : (successNum / total * 100).toInt();
-    inProgressRate = total == 0 ? 0 : (inProgressNum / total * 100).toInt();
-    failedRate = 100 - successRate - inProgressRate;
+    userMandaInfo(mandalartId);
 
     goalImage = photoList.map((photo) => 'assets/img/$photo').toList();
     print('goalImage=$goalImage');
@@ -257,6 +286,37 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                   onSuccess: () {
                                     _mandaProgress(
                                         int.parse(widget.id), "SUCCESS");
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const MyGoal(),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                              if (_selectedStatus == '진행 중') {
+                                PopupDialog.show(
+                                  context,
+                                  '잘 생각했어! 다시 도전해보는거야?',
+                                  true, // cancel
+                                  false, // delete
+                                  false, // signout
+                                  true, //success
+                                  onCancel: () {
+                                    // 취소 버튼을 눌렀을 때 실행할 코드
+                                    Navigator.of(context).pop();
+                                  },
+
+                                  onDelete: () {
+                                    // 삭제 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSignOut: () {
+                                    // 탈퇴 버튼을 눌렀을 때 실행할 코드
+                                  },
+                                  onSuccess: () {
+                                    _mandaProgress(
+                                        int.parse(widget.id), "IN_PROGRESS");
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -500,7 +560,11 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                   successPercentage: successRate, // int로 변환
                                   inProgressPercentage:
                                       inProgressRate, // int로 변환
-                                  failPercentage: failedRate),
+                                  failPercentage: failedRate,
+                                  color: color),
+                            ),
+                            const SizedBox(
+                              width: 30,
                             ),
                             Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
