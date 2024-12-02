@@ -82,15 +82,6 @@ class _MyGoalState extends State<MyGoal> {
         successIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
-
-        //print('리스트 출력');
-        //print('failedIDs=$failedIDs');
-        //print('inProgressIDs=$inProgressIDs');
-        //print('successIDs=$successIDs');
-        //print('nameList=$nameList');
-        //print('statusList=$statusList');
-        //print('ddayList=$ddayList');
-        //print('successNums=$successNums');
       }
     } catch (e) {
       // 에러 발생 시 처리

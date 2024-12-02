@@ -283,7 +283,8 @@ class _EventCalendarState extends State<EventCalendar> {
                             value[index].thirdGoal,
                             value[index].switchValue,
                             value[index].interval,
-                            value[index].id);
+                            value[index].id,
+                            value[index].color);
                       },
                       child: Container(
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 14),
@@ -296,7 +297,7 @@ class _EventCalendarState extends State<EventCalendar> {
                         child: Row(
                           children: [
                             Container(
-                              width: 14,
+                              width: 17,
                               height: 50,
                               margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
                               decoration: BoxDecoration(
@@ -307,7 +308,7 @@ class _EventCalendarState extends State<EventCalendar> {
                                           'Color(', '') // 'Color(' 부분 제거
                                       .replaceAll(')', ''),
                                 )),
-                                borderRadius: BorderRadius.circular(2),
+                                borderRadius: BorderRadius.circular(3),
                               ),
                             ),
                             Column(
@@ -415,7 +416,7 @@ class _EventCalendarState extends State<EventCalendar> {
 }
 
 void editDialog(BuildContext context, DateTime date, String title,
-    String content, bool switchvalue, int interval, int goalId) {
+    String content, bool switchvalue, int interval, int goalId, String color) {
   String getIntervalText() {
     if (!switchvalue) {
       return 'X';
@@ -449,9 +450,13 @@ void editDialog(BuildContext context, DateTime date, String title,
             Container(
               width: 15,
               height: 140,
-              decoration: const BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.all(Radius.circular(3)),
+              decoration: BoxDecoration(
+                color: Color(int.parse(
+                  color
+                      .replaceAll('Color(', '') // 'Color(' 부분 제거
+                      .replaceAll(')', ''),
+                )),
+                borderRadius: const BorderRadius.all(Radius.circular(3)),
               ),
             ),
             const SizedBox(width: 20),
