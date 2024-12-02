@@ -1,5 +1,6 @@
 import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:domino/screens/MG/piechart.dart';
+import 'package:domino/screens/event_page.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data'; // Uint8List 사용을 위한 라이브러리 임포트
@@ -291,7 +292,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const MyGoal(),
+                                        builder: (context) => const EventPage(),
                                       ),
                                     );
                                   },
