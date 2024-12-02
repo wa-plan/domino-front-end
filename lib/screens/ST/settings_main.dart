@@ -24,8 +24,8 @@ class _SettingsMainState extends State<SettingsMain> {
   String? morningAlarm;
   String? nightAlarm;
   String? nickname;
-  bool isMorningAlarmOn = false;
-  bool isNightAlarmOn = false;
+  bool? isMorningAlarmOn;
+  bool? isNightAlarmOn;
 
   void userInfo() async {
     final data = await UserInfoService.userInfo();
@@ -41,16 +41,34 @@ class _SettingsMainState extends State<SettingsMain> {
         morningAlarm = data['morningAlarm'];
         nightAlarm = data['nightAlarm'];
         nickname = data['nickname'];
+
+        if (morningAlarm == 'ON') {
+          isMorningAlarmOn = true;
+        } else {
+          isMorningAlarmOn = false;
+        }
+        if (nightAlarm == 'ON') {
+          isNightAlarmOn = true;
+        } else {
+          isNightAlarmOn = false;
+        }
       });
+      print('morningAlarm=$morningAlarm');
+      print('nightAlarm=$nightAlarm');
       /*ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('사용자 정보가 조회되었습니다.')),
       );*/
     }
   }
 
-  void _updateMorningAlarm() async {
-    final success = await MorningAlertService.morningAlert(
-        alarm: isMorningAlarmOn.toString().toUpperCase());
+  void _updateMorningAlarm(bool isMorningAlarmOn) async {
+    if (isMorningAlarmOn) {
+      morningAlarm = "ON";
+    } else {
+      morningAlarm = "OFF";
+    }
+    final success =
+        await MorningAlertService.morningAlert(alarm: morningAlarm!);
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('아침알람이 업데이트되었습니다.')),
@@ -58,9 +76,13 @@ class _SettingsMainState extends State<SettingsMain> {
     }
   }
 
-  Future<bool> _updateNightAlarm() async {
-    final success =
-        await NightAlertService.nightAlert(context, isNightAlarmOn.toString());
+  Future<bool> _updateNightAlarm(bool isNightAlarmOn) async {
+    if (isNightAlarmOn) {
+      nightAlarm = "ON";
+    } else {
+      nightAlarm = "OFF";
+    }
+    final success = await NightAlertService.nightAlert(alarm: nightAlarm!);
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('저녁알람이 업데이트되었습니다.')),
@@ -73,8 +95,8 @@ class _SettingsMainState extends State<SettingsMain> {
   void initState() {
     super.initState();
     userInfo();
-    isMorningAlarmOn = morningAlarm == 'ON';
-    isNightAlarmOn = nightAlarm == 'ON';
+    //isMorningAlarmOn = morningAlarm == 'ON';
+    //isNightAlarmOn = nightAlarm == 'ON';
     //_loadSettings();
   }
 
@@ -299,13 +321,13 @@ class _SettingsMainState extends State<SettingsMain> {
                     activeTrackColor: const Color(0xff18AD00),
                     inactiveTrackColor: const Color(0xff5D5D5D),
                     inactiveThumbColor: Colors.white,
-                    value: isMorningAlarmOn,
+                    value: isMorningAlarmOn!,
                     onChanged: (value) async {
                       // isMorningAlarmOn 값을 업데이트하고 알람을 업데이트하는 비동기 작업 실행
                       setState(() {
                         isMorningAlarmOn = value;
                       });
-                      _updateMorningAlarm(); // 비동기 함수 호출
+                      _updateMorningAlarm(isMorningAlarmOn!); // 비동기 함수 호출
                     },
                   ),
                 ),
@@ -334,13 +356,13 @@ class _SettingsMainState extends State<SettingsMain> {
                     activeTrackColor: const Color(0xff18AD00),
                     inactiveTrackColor: const Color(0xff5D5D5D),
                     inactiveThumbColor: Colors.white,
-                    value: isNightAlarmOn,
+                    value: isNightAlarmOn!,
                     onChanged: (value) async {
                       // isMorningAlarmOn 값을 업데이트하고 알람을 업데이트하는 비동기 작업 실행
                       setState(() {
                         isNightAlarmOn = value;
                       });
-                      await _updateNightAlarm(); // 비동기 함수 호출
+                      await _updateNightAlarm(isMorningAlarmOn!); // 비동기 함수 호출
                     },
                   ),
                 ),

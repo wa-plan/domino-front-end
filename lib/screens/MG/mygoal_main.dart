@@ -82,15 +82,6 @@ class _MyGoalState extends State<MyGoal> {
         successIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
-
-        print('리스트 출력');
-        print('failedIDs=$failedIDs');
-        print('inProgressIDs=$inProgressIDs');
-        print('successIDs=$successIDs');
-        print('nameList=$nameList');
-        print('statusList=$statusList');
-        print('ddayList=$ddayList');
-        print('successNums=$successNums');
       }
     } catch (e) {
       // 에러 발생 시 처리
@@ -140,9 +131,9 @@ class _MyGoalState extends State<MyGoal> {
             }
           }
         });
-        print('userMandaInfo 성공: $name ($id)');
+        //print('userMandaInfo 성공: $name ($id)');
       } else {
-        print('userMandaInfo 실패: 데이터 없음 ($mandalartId)');
+        //print('userMandaInfo 실패: 데이터 없음 ($mandalartId)');
       }
     } catch (e) {
       print('userMandaInfo 에러 발생: $e');
@@ -353,7 +344,7 @@ class _MyGoalState extends State<MyGoal> {
                       ],
                     ),
                     const SizedBox(width: 25),
-                    /*if (colorValue == 4284190207 || colorValue == 4284340479)
+                    if (colorValue == 4284340479)
                       Image.asset('assets/img/MG_blue.png')
                     else if (colorValue == 4294933114)
                       Image.asset('assets/img/MG_red.png')
@@ -361,10 +352,9 @@ class _MyGoalState extends State<MyGoal> {
                       Image.asset('assets/img/MG_green.png')
                     else if (colorValue == 4294948909)
                       Image.asset('assets/img/MG_orange.png')
-                    else if (colorValue == 4294933114)
-                      Image.asset('assets/img/MG_red.png')
-                    else if (colorValue == 4294933114)*/
-                    Image.asset('assets/img/MG_red.png'),
+                    else if (colorValue == 4294967295 ||
+                        colorValue == 4294770530)
+                      Image.asset('assets/img/MG_white_yellow.png')
                   ],
                 ),
               ],
@@ -379,7 +369,7 @@ class _MyGoalState extends State<MyGoal> {
                 borderRadius: BorderRadius.circular(3.0),
               ),
               width: 15,
-              height: 150,
+              height: 135,
             ),
           ],
         ),
