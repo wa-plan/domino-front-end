@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,12 +9,11 @@ class MandalartGrid2 extends StatefulWidget {
   final List<Map<String, dynamic>> secondGoals;
   final String firstColor;
 
-  const MandalartGrid2({
-    super.key,
-    required this.mandalart,
-    required this.secondGoals,
-    required this.firstColor
-  });
+  const MandalartGrid2(
+      {super.key,
+      required this.mandalart,
+      required this.secondGoals,
+      required this.firstColor});
 
   @override
   State<MandalartGrid2> createState() => _MandalartGrid2();
@@ -200,19 +200,25 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     secondGoals: widget.secondGoals,
                   ),
                 Container(
+                  padding: const EdgeInsets.all(3),
                   margin: const EdgeInsets.all(1.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
                     color: Color(int.parse(widget.firstColor
-            .replaceAll('Color(', '')
-            .replaceAll(')', ''))),
+                        .replaceAll('Color(', '')
+                        .replaceAll(')', ''))),
                   ),
                   child: Center(
-                    child: Text(
-                      widget.mandalart,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: backgroundColor, fontWeight: FontWeight.w600, fontSize: 12)
-                    ),
+                    child: AutoSizeText(
+                        maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+                        minFontSize: 6, // 최소 글씨 크기
+                        overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
+                        widget.mandalart,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: backgroundColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12)),
                   ),
                 ),
                 for (int i = 5; i < 9; i++)
@@ -354,6 +360,7 @@ class MandalartBox1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(3),
       margin: const EdgeInsets.all(1.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(3),
@@ -365,14 +372,19 @@ class MandalartBox1 extends StatelessWidget {
                 : Colors.transparent,
       ),
       child: Center(
-        child: Text(
-          secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != ""
-              ? secondGoals[hintNum]['secondGoal']
-              : "",
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: backgroundColor, fontWeight: FontWeight.w600, fontSize: 12)
-        ),
-      ),
+        child: AutoSizeText(
+            secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != ""
+                ? secondGoals[hintNum]['secondGoal']
+                : "",
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+                color: backgroundColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 12),
+                maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+                        minFontSize: 6, // 최소 글씨 크기
+                        overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시),
+      ),)
     );
   }
 }
@@ -444,6 +456,7 @@ class _MandalartBox2State extends State<MandalartBox2> {
         // Call the onSelect callback
       },
       child: Container(
+        padding: const EdgeInsets.all(3),
         margin: const EdgeInsets.all(1.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3),
@@ -458,7 +471,8 @@ class _MandalartBox2State extends State<MandalartBox2> {
                       ""
               ? Colors.transparent
               : widget.colorPalette[color],
-          border: widget.isSelected && widget.secondGoals.isNotEmpty &&
+          border: widget.isSelected &&
+                  widget.secondGoals.isNotEmpty &&
                   widget
                       .secondGoals[widget.hintNum2]['thirdGoals'].isNotEmpty &&
                   widget.secondGoals[widget.hintNum2]['thirdGoals']
@@ -471,7 +485,7 @@ class _MandalartBox2State extends State<MandalartBox2> {
               : null,
         ),
         child: Center(
-          child: Text(
+          child: AutoSizeText(
             widget.secondGoals.isNotEmpty &&
                     widget.secondGoals[widget.hintNum2]['thirdGoals']
                         .isNotEmpty &&
@@ -482,7 +496,13 @@ class _MandalartBox2State extends State<MandalartBox2> {
                     [widget.hintNum3]['thirdGoal']
                 : "",
             textAlign: TextAlign.center,
-            style: const TextStyle(color: backgroundColor, fontWeight: FontWeight.w400, fontSize: 12),
+            style: const TextStyle(
+                color: backgroundColor,
+                fontWeight: FontWeight.w400,
+                fontSize: 12),
+                maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+                        minFontSize: 6, // 최소 글씨 크기
+                        overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
           ),
         ),
       ),
