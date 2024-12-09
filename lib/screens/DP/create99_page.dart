@@ -105,25 +105,12 @@ class _DPcreate99Page extends State<DPcreate99Page> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                    height: 43,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: Color(int.parse(widget.firstColor
-                          .replaceAll('Color(', '')
-                          .replaceAll(')', ''))),
-                      borderRadius: const BorderRadius.all(Radius.circular(3)),
-                    ),
-                    child: Text(
-                        textAlign: TextAlign.center,
+                DPMainGoal(
                         context.watch<SelectFinalGoalModel>().selectedFinalGoal,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ))),
+                        Color(int.parse(widget.firstColor
+                            .replaceAll('Color(', '')
+                            .replaceAll(')', ''))))
+                    .dpMainGoal(),
                 const SizedBox(
                   height: 20,
                 ),
@@ -224,78 +211,60 @@ class _DPcreate99Page extends State<DPcreate99Page> {
                       TextButton(
                         onPressed: () {
                           PopupDialog.show(
-                          context,
-                          '지금 취소하면,\n작성한 내용이 사라져!',
-                          true, // cancel
-                          false, // delete
-                          false, // signout
-                          true, //success
-                          onCancel: () {
-                            // 취소 버튼을 눌렀을 때 실행할 코드
-                            Navigator.pop(context);
-                          },
+                            context,
+                            '지금 취소하면,\n작성한 내용이 사라져!',
+                            true, // cancel
+                            false, // delete
+                            false, // signout
+                            true, //success
+                            onCancel: () {
+                              // 취소 버튼을 눌렀을 때 실행할 코드
+                              Navigator.pop(context);
+                            },
 
-                          
-                          onSuccess:() async {
-                            
-                            for (int i = 0; i < 9; i++) {
-                          context
-                              .read<SaveInputtedDetailGoalModel>()
-                              .updateDetailGoal(
-                                  i.toString(),
-                                  "");
-                        }
-                        
-                        for (int i = 0; i < 9; i++) {
-                        context
-                              .read<TestInputtedDetailGoalModel>()
-                              .updateTestDetailGoal(
-                                  i.toString(),
-                                  "");
-                        }
+                            onSuccess: () async {
+                              for (int i = 0; i < 9; i++) {
+                                context
+                                    .read<SaveInputtedDetailGoalModel>()
+                                    .updateDetailGoal(i.toString(), "");
+                              }
 
-                        
+                              for (int i = 0; i < 9; i++) {
+                                context
+                                    .read<TestInputtedDetailGoalModel>()
+                                    .updateTestDetailGoal(i.toString(), "");
+                              }
 
-                        for (int i = 0; i < 9; i++) {
-                          context.read<GoalColor>().updateGoalColor(
-                              i.toString(),
-                              const Color(0xff929292));
-                        }
+                              for (int i = 0; i < 9; i++) {
+                                context.read<GoalColor>().updateGoalColor(
+                                    i.toString(), const Color(0xff929292));
+                              }
 
-                        for (int i = 0; i < 9; i++) {
-                          for (int j = 0; j < 9; j++) {
-                            context
-                                .read<SaveInputtedActionPlanModel>()
-                                .updateActionPlan(
-                                    i,
-                                    j.toString(),
-                                     "");
-                          }
-                        }
+                              for (int i = 0; i < 9; i++) {
+                                for (int j = 0; j < 9; j++) {
+                                  context
+                                      .read<SaveInputtedActionPlanModel>()
+                                      .updateActionPlan(i, j.toString(), "");
+                                }
+                              }
 
-                        for (int i = 0; i < 9; i++) {
-                          for (int j = 0; j < 9; j++) {
-                            context
-                                .read< TestInputtedActionPlanModel>()
-                                .updateTestActionPlan(
-                                    i,
-                                    j.toString(),
-                                     "");
-                          }
-                        }
+                              for (int i = 0; i < 9; i++) {
+                                for (int j = 0; j < 9; j++) {
+                                  context
+                                      .read<TestInputtedActionPlanModel>()
+                                      .updateTestActionPlan(
+                                          i, j.toString(), "");
+                                }
+                              }
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const DPMain(),
-                              ),
-                            );
-                          },
-                        );
-                        
-                          
-
-                          
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const DPMain(),
+                                ),
+                              );
+                            },
+                          );
                         },
                         style: TextButton.styleFrom(
                             backgroundColor: const Color(0xff131313),
@@ -306,9 +275,10 @@ class _DPcreate99Page extends State<DPcreate99Page> {
                           style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          // isAllEmpty 검사를 실행
+
+                      Button(Colors.black, Colors.white, '다음', 
+                      (){
+                        // isAllEmpty 검사를 실행
                           final isAllEmpty = context
                               .read<SaveInputtedActionPlanModel>()
                               .isAllEmpty();
@@ -334,18 +304,8 @@ class _DPcreate99Page extends State<DPcreate99Page> {
                               ),
                             );
                           }
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: const Color(0xff131313),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
-                        ),
-                        child: const Text(
-                          '다음',
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                      )
+                      }).button(),
+                      
                     ]),
               ],
             )));
