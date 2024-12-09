@@ -23,6 +23,7 @@ class _AddPage1State extends State<AddPage1> {
   String selectedGoalId = "";
   int thirdGoalId = 0;
   List<Map<String, dynamic>> emptyMainGoals = [];
+  String firstColor = '0xff000000';
   
   @override
   void initState() {
@@ -65,10 +66,7 @@ class _AddPage1State extends State<AddPage1> {
 
       setState(() {
         mainGoals = filteredGoals;
-        emptyMainGoals = emptySecondGoals; // Update state with filtered goals
-        // 필요에 따라 emptySecondGoals 리스트를 다른 상태 변수에 저장할 수 있습니다.
-        // 예를 들어:
-        // this.emptyGoals = emptySecondGoals;
+        emptyMainGoals = emptySecondGoals; 
       });
     }
   }
@@ -81,6 +79,7 @@ class _AddPage1State extends State<AddPage1> {
   if (result != null && result.isNotEmpty) {
     setState(() {
       secondGoals = result[0]['secondGoals']; // Update the secondGoals state variable
+      firstColor = result[0]['color'];
     });
   }
 
@@ -244,6 +243,7 @@ class _AddPage1State extends State<AddPage1> {
                           child: MandalartGrid2(
                             mandalart: selectedGoalName,
                             secondGoals: secondGoals,
+                            firstColor: firstColor,
                           ),
                         ),
                       ),
