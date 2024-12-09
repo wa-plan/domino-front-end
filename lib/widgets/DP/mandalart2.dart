@@ -6,11 +6,13 @@ import 'package:domino/provider/DP/model.dart';
 class MandalartGrid2 extends StatefulWidget {
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
+  final String firstColor;
 
   const MandalartGrid2({
     super.key,
     required this.mandalart,
     required this.secondGoals,
+    required this.firstColor
   });
 
   @override
@@ -60,7 +62,7 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                   mandalart: widget.mandalart,
                   secondGoals: widget.secondGoals,
                 ),
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(
                     hintNum2: 0,
                     hintNum3: i,
@@ -97,7 +99,7 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                   mandalart: widget.mandalart,
                   secondGoals: widget.secondGoals,
                 ),
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(
                     hintNum2: 1,
                     hintNum3: i,
@@ -134,7 +136,7 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                   mandalart: widget.mandalart,
                   secondGoals: widget.secondGoals,
                 ),
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(
                     hintNum2: 2,
                     hintNum3: i,
@@ -171,7 +173,7 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                   mandalart: widget.mandalart,
                   secondGoals: widget.secondGoals,
                 ),
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(
                     hintNum2: 3,
                     hintNum3: i,
@@ -201,7 +203,9 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                   margin: const EdgeInsets.all(1.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(3),
-                    color: Colors.yellow,
+                    color: Color(int.parse(widget.firstColor
+            .replaceAll('Color(', '')
+            .replaceAll(')', ''))),
                   ),
                   child: Center(
                     child: Text(
@@ -244,7 +248,7 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                   mandalart: widget.mandalart,
                   secondGoals: widget.secondGoals,
                 ),
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(
                     hintNum2: 5,
                     hintNum3: i,
@@ -281,7 +285,7 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                   mandalart: widget.mandalart,
                   secondGoals: widget.secondGoals,
                 ),
-                for (int i = 4; i < 8; i++)
+                for (int i = 5; i < 9; i++)
                   MandalartBox2(
                     hintNum2: 6,
                     hintNum3: i,
@@ -290,6 +294,41 @@ class _MandalartGrid2 extends State<MandalartGrid2> {
                     isSelected:
                         _selectedBoxHintNum2 == 6 && _selectedBoxHintNum3 == i,
                     onSelect: () => _selectBox(6, i), // Pass selection callback
+                  ),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 100,
+            child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 1,
+              mainAxisSpacing: 1,
+              children: [
+                for (int i = 0; i < 4; i++)
+                  MandalartBox2(
+                    hintNum2: 7,
+                    hintNum3: i,
+                    mandalart: widget.mandalart,
+                    secondGoals: widget.secondGoals,
+                    isSelected:
+                        _selectedBoxHintNum2 == 7 && _selectedBoxHintNum3 == i,
+                    onSelect: () => _selectBox(7, i), // Pass selection callback
+                  ),
+                MandalartBox1(
+                  hintNum: 7,
+                  mandalart: widget.mandalart,
+                  secondGoals: widget.secondGoals,
+                ),
+                for (int i = 5; i < 9; i++)
+                  MandalartBox2(
+                    hintNum2: 7,
+                    hintNum3: i,
+                    mandalart: widget.mandalart,
+                    secondGoals: widget.secondGoals,
+                    isSelected:
+                        _selectedBoxHintNum2 == 7 && _selectedBoxHintNum3 == i,
+                    onSelect: () => _selectBox(7, i), // Pass selection callback
                   ),
               ],
             ),
