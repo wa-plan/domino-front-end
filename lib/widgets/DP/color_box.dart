@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -44,165 +45,62 @@ class ColorBox extends StatelessWidget {
         ? Colors.transparent
         : (context.watch<GoalColor>().selectedGoalColor['$goalColorId'] ?? const Color(0xff929292)); // Default color
 
-    return SizedBox(
-      width: 100,
-      child: GridView.count(
-        crossAxisCount: 3,
-        crossAxisSpacing: 1,
-        mainAxisSpacing: 1,
-        children: [
-          // Grid item 0
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['0']?.isEmpty == true
-                  ? const Color(0xff2A2A2A)
-                  : colorPalette[color1] ?? Colors.transparent,
-            ),
-            margin: const EdgeInsets.all(1.0),
-            child: Center(
-              child: Text(
-                inputtedActionPlan['0'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          // Grid item 1
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['1']?.isEmpty == true
-                  ? const Color(0xff2A2A2A)
-                  : colorPalette[color1] ?? Colors.transparent,
-            ),
-            margin: const EdgeInsets.all(1.0),
-            child: Center(
-              child: Text(
-                inputtedActionPlan['1'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          // Grid item 2
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['2']?.isEmpty == true
-                  ? const Color(0xff2A2A2A)
-                  : colorPalette[color1] ?? Colors.transparent,
-            ),
-            margin: const EdgeInsets.all(1.0),
-            child: Center(
-              child: Text(
-                inputtedActionPlan['2'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          // Grid item 3
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['3']?.isEmpty == true
-                  ? const Color(0xff2A2A2A)
-                  : colorPalette[color1] ?? Colors.transparent,
-            ),
-            margin: const EdgeInsets.all(1.0),
-            child: Center(
-              child: Text(
-                inputtedActionPlan['3'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          // Grid item 4 (center item)
-          Container(
+    // Build grid items
+    List<Widget> buildGridItems() {
+      return List.generate(9, (index) {
+        // Center item logic
+        if (index == 4) {
+          return Container(
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
               color: color1,
             ),
             margin: const EdgeInsets.all(1.0),
             child: Center(
-              child: Text(
+              child: AutoSizeText(
+                maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+            minFontSize: 6, // 최소 글씨 크기
+            overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
                 detailGoal,
                 style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
                 textAlign: TextAlign.center,
               ),
             ),
+          );
+        }
+
+        // Other grid items
+        return Container(
+          padding: const EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(3),
+            color: inputtedActionPlan['$index']?.isEmpty == true
+                ? const Color(0xff2A2A2A)
+                : colorPalette[color1] ?? Colors.transparent,
           ),
-          // Grid item 5
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['5']?.isEmpty == true
-                  ? const Color(0xff2A2A2A)
-                  : colorPalette[color1] ?? Colors.transparent,
-            ),
-            margin: const EdgeInsets.all(1.0),
-            child: Center(
-              child: Text(
-                inputtedActionPlan['5'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          // Grid item 6
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['6']?.isEmpty == true
-                  ? const Color(0xff2A2A2A)
-                  : colorPalette[color1] ?? Colors.transparent,
-            ),
-            margin: const EdgeInsets.all(1.0),
-            child: Center(
-              child: Text(
-                inputtedActionPlan['6'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center,
-              ),
+          margin: const EdgeInsets.all(1.0),
+          child: Center(
+            child: AutoSizeText(
+              maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+            minFontSize: 6, // 최소 글씨 크기
+            overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
+              inputtedActionPlan['$index'] ?? '',
+              style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+              textAlign: TextAlign.center,
             ),
           ),
-          // Grid item 7
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['7']?.isEmpty == true
-                  ? const Color(0xff2A2A2A)
-                  : colorPalette[color1] ?? Colors.transparent,
-            ),
-            margin: const EdgeInsets.all(1.0),
-            child: Center(
-              child: Text(
-                inputtedActionPlan['7'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          // Grid item 8
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: inputtedActionPlan['8']?.isEmpty == true
-                  ? const Color(0xff2A2A2A)
-                  : colorPalette[color1] ?? Colors.transparent,
-            ),
-            margin: const EdgeInsets.all(1.0),
-            child: Center(
-              child: Text(
-                inputtedActionPlan['8'] ?? '',
-                style: const TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-        ],
+        );
+      });
+    }
+
+    return SizedBox(
+      width: 100,
+      child: GridView.count(
+        crossAxisCount: 3,
+        crossAxisSpacing: 1,
+        mainAxisSpacing: 1,
+        children: buildGridItems(),
       ),
     );
   }
