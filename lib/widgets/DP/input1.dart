@@ -64,6 +64,7 @@ class _Input1State extends State<Input1> {
             );
           },
           textAlign: TextAlign.center,
+          maxLines: null,
           decoration: const InputDecoration(
             border: InputBorder.none,
           ),

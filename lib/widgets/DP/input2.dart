@@ -60,8 +60,7 @@ class _Input2State extends State<Input2> {
       width: 80,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        color: colorPalette[initialColor] ??
-            colorPalette[Colors.transparent],
+        color: colorPalette[initialColor] ?? colorPalette[Colors.transparent],
       ),
       margin: const EdgeInsets.all(1.0),
       child: Center(
@@ -76,6 +75,11 @@ class _Input2State extends State<Input2> {
                 );
           },
           textAlign: TextAlign.center,
+          textInputAction: TextInputAction.newline,
+          maxLines: null,
+          style: const TextStyle(
+            fontSize: 13, // 기본 폰트 크기
+          ),
           decoration: const InputDecoration(
             border: InputBorder.none,
           ),

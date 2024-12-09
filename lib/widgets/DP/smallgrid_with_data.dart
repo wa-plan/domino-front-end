@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -87,15 +88,17 @@ class Smallgridwithdata extends StatelessWidget {
 
             if (index == 4) {
               return Container(
+                padding: const EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(3),
                   color: const Color(0xff929292),
                 ),
                 margin: const EdgeInsets.all(1.0),
                 child: Center(
-                    child: Text(
-                  maxLines: 2, // 두 줄로 제한
-                  overflow: TextOverflow.ellipsis,
+                    child: AutoSizeText(
+                      maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+                        minFontSize: 6, // 최소 글씨 크기
+                        overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
                   context
                           .watch<SaveInputtedDetailGoalModel>()
                           .inputtedDetailGoal['$goalId'] ??
@@ -109,13 +112,17 @@ class Smallgridwithdata extends StatelessWidget {
               );
             } else {
               return Container(
+                padding: const EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(3),
                   color: const Color(0xff5C5C5C),
                 ),
                 margin: const EdgeInsets.all(1.0),
                 child: Center(
-                    child: Text(
+                    child: AutoSizeText(
+                      maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+                        minFontSize: 6, // 최소 글씨 크기
+                        overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
                   values.toString(),
                   style: const TextStyle(color: Colors.black, fontSize: 12),
                   textAlign: TextAlign.center,

@@ -1,4 +1,5 @@
 // DP 메인 페이지에 들어가는 만다라트
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -235,15 +236,19 @@ class MandalartGrid extends StatelessWidget {
                 MandalartBox1(
                     hintNum: 3, mandalart: mandalart, secondGoals: secondGoals),
                 Container(
+                    padding: const EdgeInsets.all(3),
                     margin: const EdgeInsets.all(1.0),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3),
-                      color: Color(int.parse(firstColor
-            .replaceAll('Color(', '')
-            .replaceAll(')', '')))
-                    ),
+                        borderRadius: BorderRadius.circular(3),
+                        color: Color(int.parse(firstColor
+                            .replaceAll('Color(', '')
+                            .replaceAll(')', '')))),
                     child: Center(
-                      child: Text(mandalart,
+                      child: AutoSizeText(
+                          maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+                          minFontSize: 6, // 최소 글씨 크기
+                          overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
+                          mandalart,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               color: backgroundColor,
@@ -477,6 +482,7 @@ class MandalartBox1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(3),
         margin: const EdgeInsets.all(1.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(2),
@@ -488,7 +494,7 @@ class MandalartBox1 extends StatelessWidget {
                   : Colors.transparent,
         ),
         child: Center(
-          child: Text(
+          child: AutoSizeText(
             secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != ""
                 ? secondGoals[hintNum]['secondGoal']
                 : "",
@@ -497,6 +503,9 @@ class MandalartBox1 extends StatelessWidget {
                 color: backgroundColor,
                 fontWeight: FontWeight.w400,
                 fontSize: 12),
+            maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+            minFontSize: 6, // 최소 글씨 크기
+            overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
           ),
         ));
   }
@@ -539,6 +548,7 @@ class MandalartBox2 extends StatelessWidget {
         : Colors.transparent;
 
     return Container(
+      padding: const EdgeInsets.all(3),
         margin: const EdgeInsets.all(1.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2),
@@ -553,7 +563,7 @@ class MandalartBox2 extends StatelessWidget {
                 ? Colors.transparent
                 : colorPalette[color]),
         child: Center(
-          child: Text(
+          child: AutoSizeText(
             secondGoals.isNotEmpty &&
                     secondGoals[hintNum2]['thirdGoals'].isNotEmpty &&
                     secondGoals[hintNum2]['thirdGoals']
@@ -566,6 +576,9 @@ class MandalartBox2 extends StatelessWidget {
                 color: backgroundColor,
                 fontWeight: FontWeight.w400,
                 fontSize: 12),
+            maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+            minFontSize: 6, // 최소 글씨 크기
+            overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
           ),
         ));
   }
