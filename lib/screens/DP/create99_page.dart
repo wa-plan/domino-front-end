@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/screens/DP/create_color_page.dart';
 import 'package:domino/screens/DP/create_input1_page.dart';
 import 'package:domino/screens/DP/dp_main.dart';
@@ -147,6 +148,7 @@ class _DPcreate99Page extends State<DPcreate99Page> {
                           children: List.generate(9, (index) {
                             if (index == 4) {
                               return Container(
+                                padding: const EdgeInsets.all(3),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(3),
                                   color: Color(int.parse(widget.firstColor
@@ -155,7 +157,10 @@ class _DPcreate99Page extends State<DPcreate99Page> {
                                 ),
                                 margin: const EdgeInsets.all(1.0),
                                 child: Center(
-                                    child: Text(
+                                    child: AutoSizeText(
+                                      maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+                        minFontSize: 6, // 최소 글씨 크기
+                        overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
                                   context
                                       .watch<SelectFinalGoalModel>()
                                       .selectedFinalGoal,

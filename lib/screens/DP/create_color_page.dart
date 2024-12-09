@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
@@ -162,24 +163,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                /*const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                    height: 43,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        shape: BoxShape.rectangle,
-                        color: const Color(0xffFCFF62)),
-                    child: Text(
-                        context.watch<SelectFinalGoalModel>().selectedFinalGoal,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ))),*/
+                
                 const SizedBox(
                   height: 20,
                 ),
@@ -274,6 +258,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                 const ColorBox2(keyNumber: 2),
                                 const ColorBox2(keyNumber: 3),
                                 Container(
+                                  padding: const EdgeInsets.all(2),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(3),
                                     color: Color(int.parse(widget.firstColor
@@ -282,7 +267,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                   ),
                                   margin: const EdgeInsets.all(1.0),
                                   child: Center(
-                                      child: Text(
+                                      child: AutoSizeText(
+                                        maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+            minFontSize: 6, // 최소 글씨 크기
+            overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
                                     context
                                         .watch<SelectFinalGoalModel>()
                                         .selectedFinalGoal,
