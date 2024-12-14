@@ -2,8 +2,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
-import 'package:domino/widgets/DP/color_box.dart';
-import 'package:domino/widgets/DP/color_box2.dart';
+import 'package:domino/widgets/DP/color_Grid23.dart';
+import 'package:domino/widgets/DP/color_Grid2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -196,7 +196,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                           color: selectIndex == 0
                                               ? Colors.white
                                               : const Color(0xff2A2A2A))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 0,
                                       goalColorId: 0,
                                       detailGoalId: 0))),
@@ -212,7 +212,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                           color: selectIndex == 1
                                               ? Colors.white
                                               : const Color(0xff2A2A2A))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 1,
                                       goalColorId: 1,
                                       detailGoalId: 1))),
@@ -228,7 +228,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                           color: selectIndex == 2
                                               ? Colors.white
                                               : const Color(0xff2A2A2A))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 2,
                                       goalColorId: 2,
                                       detailGoalId: 2))),
@@ -244,7 +244,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                           color: selectIndex == 3
                                               ? Colors.white
                                               : const Color(0xff2A2A2A))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 3,
                                       goalColorId: 3,
                                       detailGoalId: 3))),
@@ -300,7 +300,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                           color: selectIndex == 5
                                               ? Colors.white
                                               : const Color(0xff2A2A2A))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 5,
                                       goalColorId: 5,
                                       detailGoalId: 5))),
@@ -316,7 +316,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                           color: selectIndex == 6
                                               ? Colors.white
                                               : const Color(0xff2A2A2A))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 6,
                                       goalColorId: 6,
                                       detailGoalId: 6))),
@@ -332,7 +332,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                           color: selectIndex == 7
                                               ? Colors.white
                                               : const Color(0xff2A2A2A))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 7,
                                       goalColorId: 7,
                                       detailGoalId: 7))),
@@ -348,7 +348,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                           color: selectIndex == 8
                                               ? Colors.white
                                               : const Color(0xff2A2A2A))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 8,
                                       goalColorId: 8,
                                       detailGoalId: 8))),

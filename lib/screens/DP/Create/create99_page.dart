@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:domino/screens/DP/create_color_page.dart';
-import 'package:domino/screens/DP/create_input1_page.dart';
+import 'package:domino/screens/DP/Create/create_color_page.dart';
+import 'package:domino/screens/DP/Create/create_input1_page.dart';
 import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/smallgrid_with_data.dart';

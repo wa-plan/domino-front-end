@@ -1,6 +1,6 @@
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/styles.dart';
-import 'package:domino/widgets/DP/input1.dart';
+import 'package:domino/widgets/DP/Create/DP_input2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

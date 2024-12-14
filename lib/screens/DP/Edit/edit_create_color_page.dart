@@ -1,8 +1,8 @@
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
-import 'package:domino/widgets/DP/color_box.dart';
-import 'package:domino/widgets/DP/color_box2.dart';
+import 'package:domino/widgets/DP/color_Grid23.dart';
+import 'package:domino/widgets/DP/color_Grid2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -12,9 +12,8 @@ class EditColorPage extends StatefulWidget {
   final String mandalart;
   final String firstColor;
 
-  const EditColorPage({super.key, 
-  required this.firstColor,
-  required this.mandalart});
+  const EditColorPage(
+      {super.key, required this.firstColor, required this.mandalart});
 
   @override
   EditColorPageState createState() => EditColorPageState();
@@ -22,20 +21,6 @@ class EditColorPage extends StatefulWidget {
 
 class EditColorPageState extends State<EditColorPage> {
   int selectIndex = 0;
-  Map colorPalette = {
-    const Color(0xffFF7A7A): const Color(0xffFFC2C2),
-    const Color(0xffFFB82D): const Color(0xffFFD19B),
-    const Color(0xffFCFF62): const Color(0xffFEFFCD),
-    const Color(0xff72FF5B): const Color(0xffC1FFB7),
-    const Color(0xff5DD8FF): const Color(0xff94E5FF),
-    const Color(0xff929292): const Color(0xffC4C4C4),
-    const Color(0xffFF5794): const Color(0xffFF8EB7),
-    const Color(0xffAE7CFF): const Color(0xffD0B4FF),
-    const Color(0xffC77B7F): const Color(0xffEBB6B9),
-    const Color(0xff009255): const Color(0xff6DE1B0),
-    const Color(0xff3184FF): const Color(0xff8CBAFF),
-    const Color(0xff11D1C2): const Color(0xffAAF4EF),
-  };
 
   Future<bool> _editSecondGoal() async {
     List<int> secondGoalId =
@@ -218,7 +203,7 @@ class EditColorPageState extends State<EditColorPage> {
             padding: appBarPadding,
             child: Text(
               '플랜 수정하기',
-              style:Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           backgroundColor: backgroundColor,
@@ -236,20 +221,19 @@ class EditColorPageState extends State<EditColorPage> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                
                 const SizedBox(
                   height: 30,
                 ),
                 Center(
                   child: Container(
-                    height: 290,
-                        width: 290,
-                        padding: const EdgeInsets.symmetric(
-                                  vertical: 20, horizontal: 20),
-                              decoration: BoxDecoration(
-                                color: const Color(0xff2A2A2A),
-                                borderRadius: BorderRadius.circular(3),
-                              ),
+                      height: 290,
+                      width: 290,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: const Color(0xff2A2A2A),
+                        borderRadius: BorderRadius.circular(3),
+                      ),
                       child: GridView(
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -265,12 +249,13 @@ class EditColorPageState extends State<EditColorPage> {
                               },
                               child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
+                                      borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
                                           color: selectIndex == 0
-                                              ? const Color.fromARGB(255, 182, 182, 182)
+                                              ? const Color.fromARGB(
+                                                  255, 182, 182, 182)
                                               : const Color(0xff262626))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 0,
                                       goalColorId: 0,
                                       detailGoalId: 0))),
@@ -282,12 +267,13 @@ class EditColorPageState extends State<EditColorPage> {
                               },
                               child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
+                                      borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
                                           color: selectIndex == 1
-                                              ? const Color.fromARGB(255, 182, 182, 182)
+                                              ? const Color.fromARGB(
+                                                  255, 182, 182, 182)
                                               : const Color(0xff262626))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 1,
                                       goalColorId: 1,
                                       detailGoalId: 1))),
@@ -299,12 +285,13 @@ class EditColorPageState extends State<EditColorPage> {
                               },
                               child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
+                                      borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
                                           color: selectIndex == 2
-                                              ? const Color.fromARGB(255, 182, 182, 182)
+                                              ? const Color.fromARGB(
+                                                  255, 182, 182, 182)
                                               : const Color(0xff262626))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 2,
                                       goalColorId: 2,
                                       detailGoalId: 2))),
@@ -316,12 +303,13 @@ class EditColorPageState extends State<EditColorPage> {
                               },
                               child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
+                                      borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
                                           color: selectIndex == 3
-                                              ? const Color.fromARGB(255, 182, 182, 182)
+                                              ? const Color.fromARGB(
+                                                  255, 182, 182, 182)
                                               : const Color(0xff262626))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 3,
                                       goalColorId: 3,
                                       detailGoalId: 3))),
@@ -336,24 +324,9 @@ class EditColorPageState extends State<EditColorPage> {
                                 const ColorBox2(keyNumber: 1),
                                 const ColorBox2(keyNumber: 2),
                                 const ColorBox2(keyNumber: 3),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
-                                    color: Color(int.parse(widget.firstColor
-            .replaceAll('Color(', '')
-            .replaceAll(')', ''))),
-                                  ),
-                                  margin: const EdgeInsets.all(1.0),
-                                  child: Center(
-                                      child: Text(
-                                    widget.mandalart,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      fontSize: 12,),
-                                    textAlign: TextAlign.center,
-                                  )),
-                                ),
+                                DPGrid1(
+                                  widget.mandalart,
+                                  ColorTransform(widget.firstColor).colorTransform(), 8).dpGrid1(),
                                 const ColorBox2(keyNumber: 5),
                                 const ColorBox2(keyNumber: 6),
                                 const ColorBox2(keyNumber: 7),
@@ -369,12 +342,13 @@ class EditColorPageState extends State<EditColorPage> {
                               },
                               child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
+                                      borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
                                           color: selectIndex == 5
-                                              ? const Color.fromARGB(255, 182, 182, 182)
+                                              ? const Color.fromARGB(
+                                                  255, 182, 182, 182)
                                               : const Color(0xff262626))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 5,
                                       goalColorId: 5,
                                       detailGoalId: 5))),
@@ -386,12 +360,13 @@ class EditColorPageState extends State<EditColorPage> {
                               },
                               child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
+                                      borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
                                           color: selectIndex == 6
-                                              ? const Color.fromARGB(255, 182, 182, 182)
+                                              ? const Color.fromARGB(
+                                                  255, 182, 182, 182)
                                               : const Color(0xff262626))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 6,
                                       goalColorId: 6,
                                       detailGoalId: 6))),
@@ -403,12 +378,13 @@ class EditColorPageState extends State<EditColorPage> {
                               },
                               child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
+                                      borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
                                           color: selectIndex == 7
-                                              ? const Color.fromARGB(255, 182, 182, 182)
+                                              ? const Color.fromARGB(
+                                                  255, 182, 182, 182)
                                               : const Color(0xff262626))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 7,
                                       goalColorId: 7,
                                       detailGoalId: 7))),
@@ -420,12 +396,13 @@ class EditColorPageState extends State<EditColorPage> {
                               },
                               child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(3),
+                                      borderRadius: BorderRadius.circular(3),
                                       border: Border.all(
                                           color: selectIndex == 8
-                                              ? const Color.fromARGB(255, 182, 182, 182)
+                                              ? const Color.fromARGB(
+                                                  255, 182, 182, 182)
                                               : const Color(0xff262626))),
-                                  child: ColorBox(
+                                  child: const ColorBox(
                                       actionPlanId: 8,
                                       goalColorId: 8,
                                       detailGoalId: 8))),
@@ -435,14 +412,13 @@ class EditColorPageState extends State<EditColorPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                
                 Center(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3),
-                                ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                      ),
                       height: 120,
                       width: 330,
                       child: GridView(
@@ -452,109 +428,102 @@ class EditColorPageState extends State<EditColorPage> {
                                   crossAxisSpacing: 11,
                                   mainAxisSpacing: 11),
                           children: [
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xffFF7A7A)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xffFFB82D)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xffFCFF62)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xff72FF5B)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xff5DD8FF)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xff929292)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xffFF5794)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xffAE7CFF)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xffC77B7F)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xff009255)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xff3184FF)),
-                        ColorOption(
-                            selectIndex: selectIndex,
-                            colorCode: const Color(0xff11D1C2))
-                      ])),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xffFF7A7A)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xffFFB82D)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xffFCFF62)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xff72FF5B)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xff5DD8FF)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xff929292)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xffFF5794)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xffAE7CFF)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xffC77B7F)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xff009255)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xff3184FF)),
+                            ColorOption(
+                                selectIndex: selectIndex,
+                                colorCode: const Color(0xff11D1C2))
+                          ])),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Button(
-                  Colors.black,
-                  Colors.white,
-                  '이전',
-                  () {
-                    
-                    Navigator.pop(context);
-                  },
-                ).button(),
-                Button(Colors.black, Colors.white, '완료', 
-                () async {
-                      // Execute _addSecondGoal and wait for the result
-                      final secondGoalSuccess = await _editSecondGoal();
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Button(
+                        Colors.black,
+                        Colors.white,
+                        '이전',
+                        () {
+                          Navigator.pop(context);
+                        },
+                      ).button(),
+                      Button(Colors.black, Colors.white, '완료', () async {
+                        // Execute _addSecondGoal and wait for the result
+                        final secondGoalSuccess = await _editSecondGoal();
 
-                      // If _addSecondGoal was successful, proceed to _addThirdGoal
-                      /*if (secondGoalSuccess) {
+                        // If _addSecondGoal was successful, proceed to _addThirdGoal
+                        /*if (secondGoalSuccess) {
                         final thirdGoalSuccess = await _editThirdGoal();*/
 
-                      if (secondGoalSuccess) {
-                        final goalColorSuccess = await _editColor();
+                        if (secondGoalSuccess) {
+                          final goalColorSuccess = await _editColor();
 
-                        if (goalColorSuccess) {
-                          final thirdGoalSuccess = await _editThirdGoal();
+                          if (goalColorSuccess) {
+                            final thirdGoalSuccess = await _editThirdGoal();
 
-                          // If both are successful, navigate to DPlistPage
-                          if (thirdGoalSuccess) {
-                            for (int i = 0; i < 9; i++) {
-                          context
-                              .read<SaveInputtedDetailGoalModel>()
-                              .updateDetailGoal(
-                                  i.toString(),
-                                  "");
-                        }
+                            // If both are successful, navigate to DPlistPage
+                            if (thirdGoalSuccess) {
+                              for (int i = 0; i < 9; i++) {
+                                context
+                                    .read<SaveInputtedDetailGoalModel>()
+                                    .updateDetailGoal(i.toString(), "");
+                              }
 
-                        for (int i = 0; i < 9; i++) {
-                          context.read<GoalColor>().updateGoalColor(
-                              i.toString(),
-                              const Color(0xff929292));
-                        }
+                              for (int i = 0; i < 9; i++) {
+                                context.read<GoalColor>().updateGoalColor(
+                                    i.toString(), const Color(0xff929292));
+                              }
 
-                        for (int i = 0; i < 9; i++) {
-                          for (int j = 0; j < 9; j++) {
-                            context
-                                .read<SaveInputtedActionPlanModel>()
-                                .updateActionPlan(
-                                    i,
-                                    j.toString(),
-                                     "");
+                              for (int i = 0; i < 9; i++) {
+                                for (int j = 0; j < 9; j++) {
+                                  context
+                                      .read<SaveInputtedActionPlanModel>()
+                                      .updateActionPlan(i, j.toString(), "");
+                                }
+                              }
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const DPMain()),
+                              );
+                            }
                           }
                         }
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const DPMain()),
-                            );
-                          }
-                        }
-                      }
-                    }).button(),
-                    ]
-                ),
+                      }).button(),
+                    ]),
                 const SizedBox(
                   height: 20,
                 ),

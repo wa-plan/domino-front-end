@@ -1,5 +1,5 @@
 import 'package:domino/styles.dart';
-import 'package:domino/widgets/DP/input2.dart';
+import 'package:domino/widgets/DP/Create/DP_input3.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';

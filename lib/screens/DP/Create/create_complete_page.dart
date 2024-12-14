@@ -1,27 +1,12 @@
 import 'package:domino/screens/DP/dp_main.dart';
-import 'package:domino/widgets/DP/color_box.dart';
+import 'package:domino/widgets/DP/color_Grid23.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
-import 'package:domino/widgets/DP/color_box2.dart';
+import 'package:domino/widgets/DP/color_Grid2.dart';
 
 class DPcreateCompletePage extends StatelessWidget {
-  DPcreateCompletePage({super.key});
-
-  final Map colorPalette = {
-    const Color(0xffFF7A7A): const Color(0xffFFC2C2),
-    const Color(0xffFFB82D): const Color(0xffFFD19B),
-    const Color(0xffFCFF62): const Color(0xffFEFFCD),
-    const Color(0xff72FF5B): const Color(0xffC1FFB7),
-    const Color(0xff5DD8FF): const Color(0xff94E5FF),
-    const Color(0xff929292): const Color(0xffC4C4C4),
-    const Color(0xffFF5794): const Color(0xffFF8EB7),
-    const Color(0xffAE7CFF): const Color(0xffD0B4FF),
-    const Color(0xffC77B7F): const Color(0xffEBB6B9),
-    const Color(0xff009255): const Color(0xff6DE1B0),
-    const Color(0xff3184FF): const Color(0xff8CBAFF),
-    const Color(0xff11D1C2): const Color(0xffAAF4EF),
-  };
+  const DPcreateCompletePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +65,10 @@ class DPcreateCompletePage extends StatelessWidget {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3),
                   children: [
-                    ColorBox(actionPlanId: 0, goalColorId: 0, detailGoalId: 0),
-                    ColorBox(actionPlanId: 1, goalColorId: 1, detailGoalId: 1),
-                    ColorBox(actionPlanId: 2, goalColorId: 2, detailGoalId: 2),
-                    ColorBox(actionPlanId: 3, goalColorId: 3, detailGoalId: 3),
+                    const ColorBox(actionPlanId: 0, goalColorId: 0, detailGoalId: 0),
+                    const ColorBox(actionPlanId: 1, goalColorId: 1, detailGoalId: 1),
+                    const ColorBox(actionPlanId: 2, goalColorId: 2, detailGoalId: 2),
+                    const ColorBox(actionPlanId: 3, goalColorId: 3, detailGoalId: 3),
                     SizedBox(
                       width: 100,
                       child: GridView.count(crossAxisCount: 3, children: [
@@ -115,10 +100,10 @@ class DPcreateCompletePage extends StatelessWidget {
                         const ColorBox2(keyNumber: 8),
                       ]),
                     ),
-                    ColorBox(actionPlanId: 5, goalColorId: 5, detailGoalId: 5),
-                    ColorBox(actionPlanId: 6, goalColorId: 6, detailGoalId: 6),
-                    ColorBox(actionPlanId: 7, goalColorId: 7, detailGoalId: 7),
-                    ColorBox(actionPlanId: 8, goalColorId: 8, detailGoalId: 8),
+                    const ColorBox(actionPlanId: 5, goalColorId: 5, detailGoalId: 5),
+                    const ColorBox(actionPlanId: 6, goalColorId: 6, detailGoalId: 6),
+                    const ColorBox(actionPlanId: 7, goalColorId: 7, detailGoalId: 7),
+                    const ColorBox(actionPlanId: 8, goalColorId: 8, detailGoalId: 8),
                   ],
                 )),
                 Align(

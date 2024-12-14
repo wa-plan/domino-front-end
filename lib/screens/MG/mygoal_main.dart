@@ -300,7 +300,8 @@ class _MyGoalState extends State<MyGoal> {
                         final imagePath = photoList[index];
                         ImageProvider imageProvider;
 
-                        // 로컬 파일 이미지 처리
+                        print("Image Path: $imagePath"); // 경로 출력
+
                         if (imagePath.startsWith('/data/user/')) {
                           imageProvider = FileImage(File(imagePath));
                         } else {
@@ -519,10 +520,11 @@ class _MyGoalState extends State<MyGoal> {
                               (element) =>
                                   element['id'] ==
                                   mandalartId, // mandalartId와 비교
-                              orElse: () =>
-                                  {'color': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
+                              orElse: () => {
+                                'color': '0xff000000'
+                              }, // 일치하는 항목이 없을 경우 빈 문자열 반환
                             )['color'] ??
-                            '';
+                            '0xff000000';
 
                         int successNum = successNums.firstWhere(
                               (element) =>

@@ -4,7 +4,7 @@ import 'package:domino/provider/DP/model.dart';
 
 class ColorOption extends StatelessWidget {
   final int selectIndex;
-  final Color colorCode; // 타입을 명시적으로 지정
+  final Color colorCode;
 
   const ColorOption(
       {super.key, required this.selectIndex, required this.colorCode});

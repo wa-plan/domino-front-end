@@ -56,35 +56,13 @@ class _Input2State extends State<Input2> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 80,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: colorPalette[initialColor] ?? colorPalette[Colors.transparent],
-      ),
-      margin: const EdgeInsets.all(1.0),
-      child: Center(
-        child: TextFormField(
-          initialValue: initialValue, // 초기 값 표시
-          onChanged: (value) {
-            // 값 변경 시 Test 모델에 업데이트
-            context.read<TestInputtedActionPlanModel>().updateTestActionPlan(
+    return DPInput3(
+      colorPalette[initialColor] ?? colorPalette[Colors.transparent], 
+      (value){context.read<TestInputtedActionPlanModel>().updateTestActionPlan(
                   widget.selectedDetailGoalId,
                   widget.actionPlanId.toString(),
                   value.isEmpty ? "" : value,
-                );
-          },
-          textAlign: TextAlign.center,
-          textInputAction: TextInputAction.newline,
-          maxLines: null,
-          style: const TextStyle(
-            fontSize: 13, // 기본 폰트 크기
-          ),
-          decoration: const InputDecoration(
-            border: InputBorder.none,
-          ),
-        ),
-      ),
-    );
+                );}, 
+      initialValue).dpInput3();
   }
 }

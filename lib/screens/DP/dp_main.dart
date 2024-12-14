@@ -1,14 +1,14 @@
-// DP 메인 페이지 (사용자의 만다라트 리스트)
+// DP 메인 페이지
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/styles.dart';
-import 'package:domino/widgets/DP/mandalart.dart';
+import 'package:domino/widgets/DP/DP_main_mandalart.dart';
 import 'package:flutter/material.dart';
-import 'package:domino/screens/DP/create_select_page.dart';
+import 'package:domino/screens/DP/Create/create_select_page.dart';
 import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/apis/services/dp_services.dart';
-import 'package:domino/screens/DP/detail_page.dart';
+import 'package:domino/screens/DP/Detail/detail_9x9_page.dart';
 import 'package:provider/provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart'; // 추가
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class DPMain extends StatefulWidget {
   const DPMain({super.key});
@@ -20,7 +20,7 @@ class DPMain extends StatefulWidget {
 class _DPMainState extends State<DPMain> {
   List<Map<String, dynamic>> mainGoals = [];
   List<Map<String, dynamic>> emptyMainGoals = [];
-  final PageController _pageController = PageController(); // PageController 추가
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -62,10 +62,7 @@ class _DPMainState extends State<DPMain> {
 
       setState(() {
         mainGoals = filteredGoals;
-        emptyMainGoals = emptySecondGoals; // Update state with filtered goals
-        // 필요에 따라 emptySecondGoals 리스트를 다른 상태 변수에 저장할 수 있습니다.
-        // 예를 들어:
-        // this.emptyGoals = emptySecondGoals;
+        emptyMainGoals = emptySecondGoals;
       });
     }
   }
@@ -77,7 +74,7 @@ class _DPMainState extends State<DPMain> {
 
   @override
   void dispose() {
-    _pageController.dispose(); // PageController 해제
+    _pageController.dispose();
     super.dispose();
   }
 
