@@ -41,7 +41,7 @@ class MainGoalListService {
       print('서버 응답: ${response.body}');
 
       if (response.statusCode == 200) {
-        final List<dynamic> jsonResponse = json.decode(response.body);
+        final List<dynamic> jsonResponse = json.decode(utf8.decode(response.bodyBytes));
         List<Map<String, dynamic>> mainGoals = jsonResponse
             .map((item) => {
                   'id': item['id'],
@@ -189,7 +189,7 @@ class SecondGoalListService {
       print('서버 응답: ${response.body}');
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+        final Map<String, dynamic> jsonResponse = json.decode(utf8.decode(response.bodyBytes));
 
         // Parsing the response to match the desired structure
         final List<Map<String, dynamic>> mainGoals = [
@@ -713,7 +713,7 @@ class MainGoalDetailService {
       print('서버 응답: ${response.body}');
 
       if (response.statusCode == 200) {
-        final List<dynamic> jsonResponse = json.decode(response.body);
+        final List<dynamic> jsonResponse = json.decode(utf8.decode(response.bodyBytes));
         List<Map<String, dynamic>> mainGoalsDetail = jsonResponse
             .map((item) => {
                   'id': item['id'],

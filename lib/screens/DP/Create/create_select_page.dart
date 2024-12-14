@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:domino/screens/DP/create99_page.dart';
+import 'package:domino/screens/DP/Create/create99_page.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
-import 'package:domino/widgets/DP/smallgrid.dart';
+import 'package:domino/widgets/DP/Create/DP_dropdown_mandalart.dart';
 import 'package:domino/apis/services/dp_services.dart';
 
 class DPcreateSelectPage extends StatefulWidget {

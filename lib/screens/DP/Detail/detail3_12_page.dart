@@ -1,6 +1,6 @@
 //DP 디테일 페이지에서 이동한 3x3 만다라트 페이지 
 import 'package:domino/styles.dart';
-import 'package:domino/widgets/DP/mandalart5.dart';
+import 'package:domino/widgets/DP/Detail/Detail_12_mandalart.dart';
 import 'package:flutter/material.dart';
 
 class DPdetail3Page extends StatelessWidget {

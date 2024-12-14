@@ -1,5 +1,5 @@
 import 'package:domino/styles.dart';
-import 'package:domino/widgets/DP/mandalart4.dart';
+import 'package:domino/widgets/DP/Detail/Detail_23_mandalart.dart';
 import 'package:flutter/material.dart';
 
 class DPdetail2Page extends StatelessWidget {
