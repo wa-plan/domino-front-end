@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +46,7 @@ class Button {
     return TextButton(
       onPressed: () => function(),
       style: TextButton.styleFrom(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
         backgroundColor: buttonColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6.0),
@@ -54,7 +57,7 @@ class Button {
         style: TextStyle(
           color: textColor,
           fontSize: 14,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -71,7 +74,7 @@ class MGSubTitle {
     return Text(
       text,
       style: TextStyle(
-        color: Colors.white,
+        color: const Color.fromARGB(255, 178, 178, 178),
         fontSize: MediaQuery.of(context).size.width * 0.035,
         fontWeight: FontWeight.w400,
       ),
@@ -83,18 +86,61 @@ class MGSubTitle {
 class Message {
   final String text;
   final Color textColor;
-  final Color BgColor;
+  final Color bgColor;
+  final Color borderColor; // 테두리 색상 추가
+  final IconData? icon; // 아이콘 추가
 
-  Message(this.text, this.textColor, this.BgColor);
+  Message(
+    this.text,
+    this.textColor,
+    this.bgColor, {
+    this.borderColor = Colors.transparent, // 기본 테두리 색상
+    this.icon,
+  });
 
   Future<bool?> message(BuildContext context) {
-    return Fluttertoast.showToast(
-      msg: text,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: BgColor,
-      textColor: textColor,
+    FToast fToast = FToast();
+    fToast.init(context);
+
+    Completer<bool?> completer = Completer<bool?>();
+
+    // 커스텀 토스트 위젯
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: borderColor, width: 0.8), // 테두리 색상
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) Icon(icon, color: textColor), // 아이콘 추가
+          if (icon != null) const SizedBox(width: 8.0), // 아이콘과 텍스트 간격
+          Flexible(
+            child: Text(
+              text,
+              style: TextStyle(
+                  color: textColor, fontSize: 14, fontWeight: FontWeight.w400),
+            ),
+          ),
+        ],
+      ),
     );
+
+    // FToast를 통해 토스트를 표시
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 2),
+    );
+
+    // 반환 값을 임의로 완료
+    Future.delayed(const Duration(seconds: 2), () {
+      completer.complete(true); // 표시 완료 후 true 반환
+    });
+
+    return completer.future;
   }
 }
 
@@ -197,7 +243,8 @@ class DPGrid2 {
   final Border? border;
   final double maxFontSize;
 
-  const DPGrid2(this.hintNum, this.mandalart, this.secondGoals, this.maxFontSize, this.border);
+  const DPGrid2(this.hintNum, this.mandalart, this.secondGoals,
+      this.maxFontSize, this.border);
 
   Widget dpGrid2() {
     return Container(
@@ -274,8 +321,8 @@ class DPGrid3 {
   final Border? border;
   final double maxFontSize;
 
-  const DPGrid3(this.hintNum2, this.hintNum3, this.mandalart, this.secondGoals, this.maxFontSize,
-      this.border);
+  const DPGrid3(this.hintNum2, this.hintNum3, this.mandalart, this.secondGoals,
+      this.maxFontSize, this.border);
 
   Widget dpGrid3() {
     final color = secondGoals.isNotEmpty &&
@@ -443,9 +490,9 @@ class DPGrid1 {
               text,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                  color: backgroundColor,
-                  fontWeight: FontWeight.w600,
-                  )),
+                color: backgroundColor,
+                fontWeight: FontWeight.w600,
+              )),
         ));
   }
 }
@@ -460,3 +507,141 @@ class ColorTransform {
     return Color(int.parse(color.replaceAll('Color(', '').replaceAll(')', '')));
   }
 }
+
+//TextFormField
+class CustomTextField {
+  final String hintText;
+  final TextEditingController controller;
+  final FormFieldValidator<String?> validator;
+  final bool obscureText;
+  final int maxLines;
+
+  const CustomTextField(
+    this.hintText,
+    this.controller,
+    this.validator,
+    this.obscureText,
+    this.maxLines
+  );
+
+  Widget textField({
+    bool obscureText = false,
+    void Function()? onClear,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      maxLines: maxLines,
+      style: const TextStyle(color: Colors.white, fontSize: 14),
+      decoration: InputDecoration(
+        hintText: hintText,
+        contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+        hintStyle: const TextStyle(
+            color: Color.fromARGB(255, 113, 113, 113),
+            fontSize: 13,
+            fontWeight: FontWeight.w400),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(3),
+            borderSide: const BorderSide(
+                color: Color.fromARGB(255, 147, 147, 147), width: 0.5)),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(3),
+            borderSide: const BorderSide(
+                color: Color.fromARGB(255, 147, 147, 147), width: 0.5)),
+        suffixIcon: controller.text.isNotEmpty
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.start, // 아이콘 상단 정렬
+              children: [
+                GestureDetector(
+                  onTap: onClear ??
+                      () {
+                        controller.clear();
+                      },
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 13, 10, 10),
+                    child: const Icon(
+                      Icons.cancel,
+                      size: 14,
+                      color: Color.fromARGB(255, 98, 98, 98),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : null,
+    ),
+      validator: validator,
+    );
+  }
+}
+
+class Question extends StatelessWidget {
+  final String number;
+  final String question;
+
+  const Question({
+    super.key,
+    required this.number,
+    required this.question,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(number,
+            style: const TextStyle(
+                color: mainRed, fontWeight: FontWeight.w800, fontSize: 14)),
+        const SizedBox(
+          width: 8,
+        ),
+        Text(question,
+            style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 16)),
+      ],
+    );
+  }
+}
+
+
+
+class ColorOption2 extends StatelessWidget {
+  final Color colorCode;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const ColorOption2({
+    super.key,
+    required this.colorCode,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: colorCode,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: isSelected
+            ? const Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 24,
+              )
+            : null,
+      ),
+    );
+  }
+}
+
+
+
+

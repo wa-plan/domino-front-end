@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:domino/apis/services/mg_services.dart';
 import 'package:image_picker/image_picker.dart' as image_picker;
 import 'package:domino/styles.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class MyGoalAdd extends StatefulWidget {
   const MyGoalAdd({super.key});
@@ -110,14 +111,17 @@ class _MyGoalAddState extends State<MyGoalAdd> {
           padding: appBarPadding,
           child: Row(
             children: [
-              IconButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   Navigator.of(context).pop();
                 },
-                icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                color: const Color(0xffD4D4D4),
-                iconSize: 17,
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Color(0xffD4D4D4),
+                  size: 17,
+                ),
               ),
+              const SizedBox(width: 10),
               Text(
                 '목표 세우기',
                 style: Theme.of(context).textTheme.titleLarge,
@@ -134,336 +138,306 @@ class _MyGoalAddState extends State<MyGoalAdd> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 목표 설명
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: const Color(0xff2A2A2A),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('* 어떤 목표인가요?',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16)),
-                    const SizedBox(height: 13),
-                    SizedBox(
-                      height: 35,
-                      child: TextFormField(
-                          controller: _nameController,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(10.0),
-                            hintText: '예시 : 환상적인 세계여행',
-                            hintStyle: const TextStyle(
-                                color: Color.fromARGB(255, 128, 128, 128),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
-                                borderSide: const BorderSide(
-                                    color: Color(0xffBFBFBF), width: 0.5)),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(3),
-                                borderSide: const BorderSide(
-                                    color: Color(0xffBFBFBF), width: 0.5)),
-                          )),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 13),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Question(number: '1', question: '어떤 목표인가요?'),
+                      Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 13.0, vertical: 5.0),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff303030),
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
+                          color: const Color(0xff575757), width: 0.5), // 테두리 색상
                     ),
-                  ],
-                ),
+                    child: const Text(
+                          '필수',
+                          style:
+                              TextStyle(color: Color(0xff979797), fontSize: 11),
+                        )),
+                  
+                    ],
+                  ),
+                  const SizedBox(height: 13),
+                  SizedBox(
+                      height: 40,
+                      child: CustomTextField('Ex. 환상적인 세계여행', _nameController,
+                              (value) {
+                        return null;
+                      }, false, 1)
+                          .textField()),
+                ],
               ),
-              const SizedBox(height: 20),
 
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: const Color(0xff2A2A2A),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '* 언제까지 목표를 이루고 싶나요?',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
+              const SizedBox(height: 40),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Question(number: '2', question: '언제까지 목표를 이루고 싶나요?'),
+                      Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 13.0, vertical: 5.0),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff303030),
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
+                          color: const Color(0xff575757), width: 0.5), // 테두리 색상
                     ),
-                    Transform.scale(
-                      alignment: Alignment.center,
-                      scale: 0.9,
-                      child: DatePicker(
-                        initialDay: DateTime.now(),
-                        onDateChanged: (newDate) {
+                    child: const Text(
+                          '필수',
+                          style:
+                              TextStyle(color: Color(0xff979797), fontSize: 11),
+                        )),
+                      
+                    ],
+                  ),
+                  const SizedBox(height: 13),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: 280,
+                        height: 40,
+                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(3),
+                            border: Border.all(
+                                color: const Color.fromARGB(255, 147, 147, 147),
+                                width: 0.5)),
+                        child: Text(
+                          selectedDate != null
+                              ? DateFormat('yyyy년 MM월 dd일')
+                                  .format(selectedDate!)
+                              // 날짜만 포맷팅
+                              : '달력을 열어 날짜를 선택해주세요.', // null인 경우 출력
+                          style: TextStyle(
+                            color: selectedDate != null
+                                ? Colors.white // 날짜만 포맷팅
+                                : const Color.fromARGB(255, 113, 113, 113),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Button(Colors.black, Colors.white, '달력', () {
+                        _showCalendarPopup(context);
+                      }).button(),
+                    ],
+                  ),
+                  const SizedBox(height: 13),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                        checkColor: backgroundColor,
+                        activeColor: mainRed,
+                        visualDensity: VisualDensity.compact,
+                        value: _isChecked,
+                        onChanged: (value) {
                           setState(() {
-                            selectedDate = newDate;
+                            _isChecked = value!;
+                            if (_isChecked) {
+                              selectedDate =
+                                  DateTime.now(); //목표 날짜 확실하지 않은 경우, 오늘 날짜로 설정
+                            } else {
+                              selectedDate = null;
+                            }
                           });
                         },
                       ),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Checkbox(
-                          checkColor: backgroundColor,
-                          activeColor: mainRed,
-                          value: _isChecked,
-                          onChanged: (value) {
-                            setState(() {
-                              _isChecked = value!;
-                              if (_isChecked) {
-                                selectedDate = DateTime
-                                    .now(); //목표 날짜 확실하지 않은 경우, 오늘 날짜로 설정
-                              } else {
-                                selectedDate = null;
-                              }
-                            });
-                          },
-                        ),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "확실하지 않아요",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              '그럼 오늘부터 날짜를 세어나갈게요\n예시 : D + 1',
-                              style: TextStyle(
-                                  color: mainRed,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: const Color(0xff2A2A2A),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '목표에 대해서 더 알고 싶어요.',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
-                    ),
-                    const SizedBox(height: 13),
-                    SizedBox(
-                      height: 80,
-                      child: TextFormField(
-                        maxLines: 5,
-                        controller: _descriptionController,
-                        style: const TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(10.0),
-                          hintText:
-                              '예시 : 유럽, 아프리카, 아시아 등 전세계 구석구석을 배낭 하나로 여행하기!',
-                          hintStyle: const TextStyle(
-                              color: Color.fromARGB(255, 128, 128, 128),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(3),
-                              borderSide: const BorderSide(
-                                  color: Color(0xffBFBFBF), width: 0.5)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(3),
-                              borderSide: const BorderSide(
-                                  color: Color(0xffBFBFBF), width: 0.5)),
-                        ),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "확실하지 않아요",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            '그럼 오늘부터 날짜를 세어나갈게요\n예시 : D + 1',
+                            style: TextStyle(
+                                color: mainRed,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
+
+              const SizedBox(height: 40),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Question(number: '3', question: '목표에 대해서 더 알려주세요.'),
+                  const SizedBox(height: 13),
+                  SizedBox(
+                      height: 80,
+                      child: CustomTextField(
+                              'Ex. 유럽, 아프리카, 아시아 등 전세계 구석구석을 배낭 하나로 여행하기!',
+                              _descriptionController, (value) {
+                        return null;
+                      }, false, 5)
+                          .textField()),
+                ],
+              ),
+
+              const SizedBox(height: 40),
 
               // 목표 사진 선택
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: const Color(0xff2A2A2A),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '목표를 보여주는 사진이 있나요?',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
-                    ),
-                    const SizedBox(height: 13),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                ..._combinedImages.map((imagePath) {
-                                  return Stack(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10.0),
-                                        child: CircleAvatar(
-                                          radius: 40,
-                                          backgroundImage: File(imagePath)
-                                                  .existsSync()
-                                              ? FileImage(File(
-                                                  imagePath)) // For new images
-                                              : AssetImage(imagePath)
-                                                  as ImageProvider, // For existing images
-                                        ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Question(number: '4', question: '목표를 보여주는 사진이 있나요?'),
+                  const SizedBox(height: 13),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              ..._combinedImages.map((imagePath) {
+                                return Stack(
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: CircleAvatar(
+                                        radius: 40,
+                                        backgroundImage: File(imagePath)
+                                                .existsSync()
+                                            ? FileImage(File(
+                                                imagePath)) // For new images
+                                            : AssetImage(imagePath)
+                                                as ImageProvider, // For existing images
                                       ),
-                                      Positioned(
-                                        right: 0,
-                                        top: 0,
-                                        child: GestureDetector(
-                                          onTap: () => _deleteImage(
-                                              imagePath), // 이미지 삭제 함수 호출
-                                          child: const CircleAvatar(
-                                            radius: 12,
-                                            backgroundColor: Colors.black,
-                                            child: Icon(Icons.close,
-                                                size: 15, color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }),
-                                if (_combinedImages.length <
-                                    3) // 이미지가 3개 미만일 때만 CircleAvatar 버튼 표시
-                                  GestureDetector(
-                                    onTap: _getPhotoLibraryImage,
-                                    child: const CircleAvatar(
-                                      radius: 40,
-                                      backgroundColor:
-                                          Color.fromARGB(255, 79, 79, 79),
-                                      child: Icon(Icons.add_a_photo,
-                                          color: Color.fromARGB(
-                                              255, 173, 173, 173)),
                                     ),
+                                    Positioned(
+                                      right: 0,
+                                      top: 0,
+                                      child: GestureDetector(
+                                        onTap: () => _deleteImage(
+                                            imagePath), // 이미지 삭제 함수 호출
+                                        child: const CircleAvatar(
+                                          radius: 12,
+                                          backgroundColor: Colors.black,
+                                          child: Icon(Icons.close,
+                                              size: 15, color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                              if (_combinedImages.length <
+                                  3) // 이미지가 3개 미만일 때만 CircleAvatar 버튼 표시
+                                GestureDetector(
+                                  onTap: _getPhotoLibraryImage,
+                                  child: const CircleAvatar(
+                                    radius: 40,
+                                    backgroundColor:
+                                        Color.fromARGB(255, 79, 79, 79),
+                                    child: Icon(Icons.add_a_photo,
+                                        color:
+                                            Color.fromARGB(255, 173, 173, 173)),
                                   ),
-                              ],
-                            ),
+                                ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              /*GestureDetector(
-                  onTap: _getPhotoLibraryImage,
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.grey[300],
-                    backgroundImage: _pickedFile != null
-                        ? FileImage(File(_pickedFile!.path))
-                        : null,
-                    child: _pickedFile == null
-                        ? const Icon(Icons.add_a_photo, color: Colors.white)
-                        : null,
+                      ),
+                    ],
                   ),
-                ),*/
-              const SizedBox(height: 20),
+                ],
+              ),
+
+              const SizedBox(height: 40),
 
               // 목표 색상 선택
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: const Color(0xff2A2A2A),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '* 목표를 색깔로 표현해주세요.',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Question(number: '5', question: '목표를 색깔로 표현해주세요.'),
+                      Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 13.0, vertical: 5.0),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff303030),
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
+                          color: const Color(0xff575757), width: 0.5), // 테두리 색상
                     ),
-                    const SizedBox(
-                      height: 13,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ColorOption(
-                          colorCode: const Color(0xffFF7A7A),
-                          isSelected: _selectedColor == const Color(0xffFF7A7A),
-                          onTap: () =>
-                              _onColorSelected(const Color(0xffFF7A7A)),
-                        ),
-                        ColorOption(
-                          colorCode: const Color(0xffFFB82D),
-                          isSelected: _selectedColor == const Color(0xffFFB82D),
-                          onTap: () =>
-                              _onColorSelected(const Color(0xffFFB82D)),
-                        ),
-                        ColorOption(
-                          colorCode: const Color(0xffFCFF62),
-                          isSelected: _selectedColor == const Color(0xffFCFF62),
-                          onTap: () =>
-                              _onColorSelected(const Color(0xffFCFF62)),
-                        ),
-                        ColorOption(
-                          colorCode: const Color(0xff72FF5B),
-                          isSelected: _selectedColor == const Color(0xff72FF5B),
-                          onTap: () =>
-                              _onColorSelected(const Color(0xff72FF5B)),
-                        ),
-                        ColorOption(
-                          colorCode: const Color(0xff5DD8FF),
-                          isSelected: _selectedColor == const Color(0xff5DD8FF),
-                          onTap: () =>
-                              _onColorSelected(const Color(0xff5DD8FF)),
-                        ),
-                        ColorOption(
-                          colorCode: const Color(0xffffffff),
-                          isSelected: _selectedColor == const Color(0xffffffff),
-                          onTap: () =>
-                              _onColorSelected(const Color(0xffffffff)),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                    child: const Text(
+                          '필수',
+                          style:
+                              TextStyle(color: Color(0xff979797), fontSize: 11),
+                        )),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 13,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ColorOption2(
+                        colorCode: const Color(0xffFF7A7A),
+                        isSelected: _selectedColor == const Color(0xffFF7A7A),
+                        onTap: () => _onColorSelected(const Color(0xffFF7A7A)),
+                      ),
+                      ColorOption2(
+                        colorCode: const Color(0xffFFB82D),
+                        isSelected: _selectedColor == const Color(0xffFFB82D),
+                        onTap: () => _onColorSelected(const Color(0xffFFB82D)),
+                      ),
+                      ColorOption2(
+                        colorCode: const Color(0xffFCFF62),
+                        isSelected: _selectedColor == const Color(0xffFCFF62),
+                        onTap: () => _onColorSelected(const Color(0xffFCFF62)),
+                      ),
+                      ColorOption2(
+                        colorCode: const Color(0xff72FF5B),
+                        isSelected: _selectedColor == const Color(0xff72FF5B),
+                        onTap: () => _onColorSelected(const Color(0xff72FF5B)),
+                      ),
+                      ColorOption2(
+                        colorCode: const Color(0xff5DD8FF),
+                        isSelected: _selectedColor == const Color(0xff5DD8FF),
+                        onTap: () => _onColorSelected(const Color(0xff5DD8FF)),
+                      ),
+                      ColorOption2(
+                        colorCode: const Color(0xffffffff),
+                        isSelected: _selectedColor == const Color(0xffffffff),
+                        onTap: () => _onColorSelected(const Color(0xffffffff)),
+                      ),
+                    ],
+                  ),
+                ],
               ),
+
               const SizedBox(
-                height: 40,
+                height: 60,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -505,77 +479,110 @@ class _MyGoalAddState extends State<MyGoalAdd> {
       ),
     );
   }
-}
 
-class ColorOption extends StatelessWidget {
-  final Color colorCode;
-  final bool isSelected;
-  final VoidCallback onTap;
+  void _showCalendarPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        DateTime focusedDay = DateTime.now();
+        DateTime? tempSelectedDate;
 
-  const ColorOption({
-    super.key,
-    required this.colorCode,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: colorCode,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: isSelected
-            ? const Icon(
-                Icons.check,
-                color: Colors.black,
-                size: 24,
-              )
-            : null,
-      ),
-    );
-  }
-}
-
-class DatePicker extends StatelessWidget {
-  final DateTime initialDay;
-  final ValueChanged<DateTime> onDateChanged;
-
-  const DatePicker({
-    super.key,
-    required this.initialDay,
-    required this.onDateChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          '${initialDay.year} . ${initialDay.month} . ${initialDay.day}',
-          style: const TextStyle(color: Colors.white, fontSize: 20),
-        ),
-        IconButton(
-          icon: const Icon(Icons.calendar_today),
-          onPressed: () async {
-            final DateTime? dateTime = await showDatePicker(
-              context: context,
-              initialDate: initialDay,
-              firstDate: DateTime(2000),
-              lastDate: DateTime(3000),
-            );
-            if (dateTime != null) {
-              onDateChanged(dateTime);
-            }
-          },
-        ),
-      ],
+        return AlertDialog(
+          backgroundColor: const Color(0xff262626),
+          contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          content: StatefulBuilder(
+            builder: (context, setState) {
+              return SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                height: 350,
+                child: TableCalendar(
+                  locale: 'ko_KR',
+                  firstDay: DateTime(2024),
+                  lastDay: DateTime(2050),
+                  focusedDay: focusedDay,
+                  selectedDayPredicate: (day) =>
+                      isSameDay(tempSelectedDate, day),
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      tempSelectedDate = selectedDay; // 임시 선택 날짜 업데이트
+                      focusedDay = focusedDay; // 포커스된 날짜 업데이트
+                    });
+                  },
+                  calendarStyle: const CalendarStyle(
+                    selectedTextStyle: TextStyle(
+                      color: backgroundColor, // 선택된 날짜의 텍스트 색상
+                      fontWeight: FontWeight.w600, // 텍스트 굵기
+                    ),
+                    selectedDecoration: BoxDecoration(
+                      color: mainRed, // 선택된 날짜의 배경색
+                      shape: BoxShape.circle,
+                    ),
+                    todayTextStyle: TextStyle(
+                      color: backgroundColor, // 선택된 날짜의 텍스트 색상
+                      fontWeight: FontWeight.w600, // 텍스트 굵기
+                    ),
+                    todayDecoration: BoxDecoration(
+                      color: Color(0xFF5B5B5B), // 오늘 날짜의 배경색
+                      shape: BoxShape.circle,
+                    ),
+                    weekendTextStyle:
+                        TextStyle(color: Colors.grey), // 주말 텍스트 색상
+                  ),
+                  headerStyle: const HeaderStyle(
+                    formatButtonVisible: false, // 주/월 변경 버튼 숨기기
+                    titleCentered: true, // 헤더의 날짜 중앙 정렬
+                    leftChevronIcon: Icon(
+                      Icons.arrow_back_ios,
+                      color: Color(0xffD4D4D4),
+                      size: 17,
+                    ),
+                    rightChevronIcon: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Color(0xffD4D4D4),
+                      size: 17,
+                    ),
+                    titleTextStyle: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  daysOfWeekStyle: const DaysOfWeekStyle(
+                    weekdayStyle: TextStyle(color: Colors.grey),
+                    weekendStyle: TextStyle(color: Colors.grey),
+                  ),
+                ),
+              );
+            },
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Button(Colors.black, Colors.white, '취소', () {
+                  Navigator.pop(context); // 팝업 닫기
+                }).button(),
+                Button(
+                  Colors.black,
+                  Colors.white,
+                  '완료',
+                  () {
+                    if (tempSelectedDate != null) {
+                      setState(() {
+                        selectedDate = tempSelectedDate; // 상위 상태에 선택된 날짜 저장
+                      });
+                      print(selectedDate);
+                    }
+                    Navigator.pop(context); // 팝업 닫기
+                  },
+                ).button(),
+              ],
+            )
+          ],
+        );
+      },
     );
   }
 }

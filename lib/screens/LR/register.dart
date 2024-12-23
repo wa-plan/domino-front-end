@@ -1,7 +1,9 @@
+import 'dart:ui';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/LR/login.dart';
-import 'package:domino/apis/services/lr_services.dart'; // Import the new service
+import 'package:domino/apis/services/lr_services.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -52,50 +54,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildTextFormField({
-    required String hintText,
-    required TextEditingController controller,
-    required FormFieldValidator<String?> validator,
-    bool obscureText = false,
-    void Function()? onClear,
-  }) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      style: const TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-        hintText: hintText,
-        contentPadding: const EdgeInsets.all(10.0),
-        hintStyle: const TextStyle(
-            color: Color(0xffBFBFBF),
-            fontSize: 13,
-            fontWeight: FontWeight.w400),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(3),
-            borderSide: const BorderSide(
-                color: Color.fromARGB(255, 147, 147, 147), width: 0.5)),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(3),
-            borderSide: const BorderSide(
-                color: Color.fromARGB(255, 147, 147, 147), width: 0.5)),
-        suffixIcon: controller.text.isNotEmpty
-            ? IconButton(
-                onPressed: onClear ?? () {},
-                icon: const Icon(Icons.clear_outlined),
-              )
-            : null,
-      ),
-      validator: validator,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage('assets/img/BG_image.png'), // 배경 이미지
+          image: AssetImage('assets/img/BG_image2.png'), // 배경 이미지
         ),
       ),
       child: Scaffold(
@@ -107,20 +72,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 30),
-                /*Row(
+                Row(
                   children: [
-                    Image.asset('assets/img/LRDominho.png'),
-                    const SizedBox(width: 15),
+                    SizedBox(
+                        height: 25,
+                        child: Image.asset('assets/img/LRDominho.png')),
+                    const SizedBox(width: 10),
                     const Text(
-                      '도닦기에 오신 것을\n환영합니다.',
+                      '도닦기',
                       style: TextStyle(
                           color: Color.fromARGB(210, 255, 255, 255),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w300,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
                           height: 1.7),
                     )
                   ],
-                ),*/
+                ),
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -162,318 +129,290 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 const SizedBox(height: 15),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 17, horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(59, 56, 56, 56),
-                    borderRadius: BorderRadius.circular(3),
+                ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                    sigmaX: 8.0,
+                    sigmaY: 7.0,
                   ),
-                  child: Column(
-                    children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "본인확인 및 본인인증",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
+                    child: Container(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.03),
+                        borderRadius: BorderRadius.circular(6),
                       ),
-                      const SizedBox(height: 20.0),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        children: [
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'Email',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                  SizedBox(
-                                    width: 257,
-                                    height: 35,
-                                    child: _buildTextFormField(
-                                      hintText: '이메일을 입력해 주세요.',
-                                      controller: _emailController,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return '이메일을 입력해 주세요.';
-                                        }
-                                        final emailRegex =
-                                            RegExp(r'^[^@]+@[^@]+\.[^@]+$');
-                                        if (!emailRegex.hasMatch(value)) {
-                                          return '유효한 이메일을 입력해 주세요.';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                "본인확인 및 본인인증",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 13,
+                                ),
                               ),
-                              const SizedBox(height: 15.0),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                            ],
+                          ),
+                          const SizedBox(height: 20.0),
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Phone',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400),
-                                  ),
                                   Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(
-                                        height: 35,
-                                        width: 175,
-                                        child: _buildTextFormField(
-                                          hintText: '전화번호를 입력해 주세요.',
-                                          controller: _phoneController,
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return '올바른 전화번호를 입력해 주세요.';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            setState(() {
-                                              _isPhoneVerified =
-                                                  true; // 버튼 클릭 시 상태 변경
-                                            });
-                                          }
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          minimumSize: const Size(50, 35),
-                                          backgroundColor: Colors.black,
-                                          shape: BeveledRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(2),
-                                          ),
-                                        ),
-                                        child: const Text(
-                                          '확인',
-                                          style: TextStyle(
+                                      const Text(
+                                        'Email',
+                                        style: TextStyle(
                                             color: Colors.white,
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 13,
-                                          ),
-                                        ),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      SizedBox(
+                                        width: 257,
+                                        height: 35,
+                                        child: CustomTextField(
+                                                '이메일을 입력해 주세요.', _emailController,
+                                                (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return '이메일을 입력해 주세요.';
+                                          }
+                                          final emailRegex =
+                                              RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                                          if (!emailRegex.hasMatch(value)) {
+                                            return '유효한 이메일을 입력해 주세요.';
+                                          }
+                                          return null;
+                                        }, false, 1)
+                                            .textField(),
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
-                              if (_isPhoneVerified)
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          55, 15, 0, 15),
-                                      child: SizedBox(
-                                        height: 35,
-                                        width: 270,
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                            labelText: '인증번호 4자리를 입력해 주세요.',
-                                            labelStyle: const TextStyle(
-                                              color: Color(0xff5C5C5C),
-                                              fontSize: 13,
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              borderSide: const BorderSide(
-                                                color: Color(0xff5C5C5C),
-                                                width: 1.5,
+                                  const SizedBox(height: 15.0),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Phone',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 35,
+                                            width: 182,
+                                            child: CustomTextField('전화번호를 입력해 주세요.',
+                                                    _phoneController, (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return '올바른 전화번호를 입력해 주세요.';
+                                              }
+                                              return null;
+                                            }, false, 1)
+                                                .textField(),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                          Button(Colors.black, Colors.white, '확인',
+                                              () {
+                                            if (_formKey.currentState!.validate()) {
+                                              setState(() {
+                                                _isPhoneVerified =
+                                                    true; 
+                                              });
+                                            }
+                                          }).button()
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  if (_isPhoneVerified)
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              55, 15, 0, 15),
+                                          child: SizedBox(
+                                            height: 35,
+                                            width: 270,
+                                            child: TextField(
+                                              decoration: InputDecoration(
+                                                labelText: '인증번호 4자리를 입력해 주세요.',
+                                                labelStyle: const TextStyle(
+                                                  color: Color(0xff5C5C5C),
+                                                  fontSize: 13,
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  borderSide: const BorderSide(
+                                                    color: Color(0xff5C5C5C),
+                                                    width: 1.5,
+                                                  ),
+                                                ),
                                               ),
+                                              obscureText: true,
                                             ),
                                           ),
-                                          obscureText: true,
                                         ),
-                                      ),
+                                        ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.black,
+                                            shape: BeveledRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(2),
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            '인증',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w300,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.black,
-                                        shape: BeveledRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        '인증',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 13,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            ]),
+                                ]),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30.0),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 17, horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(162, 43, 43, 43),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                  child: Column(
-                    children: [
-                      const Row(
+                ClipRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: 7.0,
+                      sigmaY: 7.0,
+                    ),
+                    child: Container(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.03),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Column(
                         children: [
-                          Text(
-                            "아이디/비밀번호 생성",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 13,
-                            ),
+                          const Row(
+                            children: [
+                              Text(
+                                "아이디/비밀번호 생성",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'ID',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                height: 35,
+                                width: 257,
+                                child: CustomTextField(
+                                        '아이디를 만들어 주세요.', _idController, (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '아이디를 입력해 주세요.';
+                                  }
+                                  if (value.length < 3 || value.length > 15) {
+                                    return '아이디는 3~15자로 입력해 주세요.';
+                                  }
+                                  return null;
+                                }, false, 1)
+                                    .textField(),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'PW',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                height: 35,
+                                width: 257,
+                                child: CustomTextField(
+                                        '비밀번호를 만들어 주세요.', _pwController, (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '비밀번호를 입력해 주세요.';
+                                  }
+                                  if (value.length < 8 || value.length > 16) {
+                                    return '비밀번호는 8~16자로 입력해 주세요.';
+                                  }
+                                  return null;
+                                }, true, 1)
+                                    .textField(),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'PW',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                height: 35,
+                                width: 257,
+                                child: CustomTextField(
+                                        '비밀번호를 확인해 주세요.', _checkpwController,
+                                        (value) {
+                                  if (value == null ||
+                                      value != _pwController.text) {
+                                    return '비밀번호가 일치하지 않습니다.';
+                                  }
+                                  return null;
+                                }, true, 1)
+                                    .textField(),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 17.0),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: Button(Colors.black, Colors.white, '계정생성', 
+                            _register).button()
+                            
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'ID',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(
-                            height: 35,
-                            width: 257,
-                            child: _buildTextFormField(
-                              hintText: '아이디를 만들어 주세요.',
-                              controller: _idController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return '아이디를 입력해 주세요.';
-                                }
-                                if (value.length < 3 || value.length > 15) {
-                                  return '아이디는 3~15자로 입력해 주세요.';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'PW',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(
-                            height: 35,
-                            width: 257,
-                            child: _buildTextFormField(
-                              hintText: '비밀번호를 만들어 주세요.',
-                              controller: _pwController,
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return '비밀번호를 입력해 주세요.';
-                                }
-                                if (value.length < 8 || value.length > 16) {
-                                  return '비밀번호는 8~16자로 입력해 주세요.';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'PW',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(
-                            height: 35,
-                            width: 257,
-                            child: _buildTextFormField(
-                              hintText: '비밀번호를 확인해 주세요.',
-                              controller: _checkpwController,
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null ||
-                                    value != _pwController.text) {
-                                  return '비밀번호가 일치하지 않습니다.';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 17.0),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          onPressed: _register,
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(80, 35),
-                            backgroundColor: Colors.black,
-                            shape: BeveledRectangleBorder(
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                          ),
-                          child: const Text(
-                            '계정생성',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],

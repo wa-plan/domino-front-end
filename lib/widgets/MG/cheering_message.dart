@@ -54,22 +54,55 @@ class _CheeringMessageState extends State<CheeringMessage> {
     final String currentMessage = messages[messageIndex];
 
     return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(3),
-        border: Border.all(color: const Color(0xff5C5C5C), width: 1),
-      ),
-      padding: const EdgeInsets.all(10.0),
-      child: Center(
-        child: Text(
-          "\"$currentMessage\"",
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-          ),
+  width: double.infinity,
+  padding: const EdgeInsets.symmetric(
+                                horizontal: 23.0, vertical: 15.0),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff303030),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                          color: const Color(0xff575757), width: 0.5),
+                            ),
+  child: Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisSize: MainAxisSize.min, // 자식 위젯 크기만큼만 높이를 조정
+    children: [
+      const Text(
+        '"',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 19,
+          fontWeight: FontWeight.w500,
+          fontFamily: "NotoSansKR"
         ),
       ),
-    );
+      const SizedBox(width: 15),
+      Expanded(
+        child: Text(
+          currentMessage,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: FontWeight.w400,
+          ),
+          textAlign: TextAlign.center,
+          maxLines: 2, // 최대 두 줄로 제한
+          overflow: TextOverflow.ellipsis, // 텍스트가 넘칠 경우 말줄임표(...) 표시
+        ),
+      ),
+      const SizedBox(width: 15),
+      const Text(
+        '"',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 19,
+          fontWeight: FontWeight.w700,
+          fontFamily: "NotoSansKR"
+        ),
+      ),
+    ],
+  ),
+);
+
   }
 }

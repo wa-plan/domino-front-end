@@ -45,16 +45,19 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
           padding: appBarPadding,
           child: Row(
             children: [
-              IconButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   Navigator.of(context).pop();
                 },
-                icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                color: const Color(0xffD4D4D4),
-                iconSize: 17,
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Color(0xffD4D4D4),
+                  size: 17,
+                ),
               ),
+              const SizedBox(width: 10),
               Text(
-                '기본 이미지 선택',
+                '프로필 이미지',
                 style: Theme.of(context).textTheme.titleSmall,
               ),
             ],
@@ -69,13 +72,26 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
           children: [
             Center(
               child: Container(
-                width: imageSize,
-                height: imageSize,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage(_selectedImage), // 선택된 이미지를 표시
-                    fit: BoxFit.cover,
+                padding: const EdgeInsets.all(5),
+                              width: imageSize / 1.2, // CircleAvatar의 전체 크기
+                              height: imageSize / 1.2,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color.fromARGB(
+                                      255, 147, 147, 147), // 원하는 테두리 색
+                                  width: 0.5, // 테두리 두께
+                                ),
+                              ),
+                child: Container(
+                  width: imageSize,
+                  height: imageSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage(_selectedImage), // 선택된 이미지를 표시
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -92,18 +108,23 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                 child: Column(
                   children: [
                     const Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '기본 이미지',
+                          '도민호씨 갤러리',
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.grey,
                               fontSize: 14,
                               fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 10),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 0.3,
+                ),
+                const SizedBox(height: 10),
                     Expanded(
                       child: LayoutBuilder(
                         builder: (context, constraints) {
@@ -111,8 +132,8 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
-                              mainAxisSpacing: 17.0,
-                              crossAxisSpacing: 17.0,
+                              mainAxisSpacing: 20.0,
+                              crossAxisSpacing: 20.0,
                             ),
                             padding: const EdgeInsets.all(5.0),
                             itemCount: _imageUrls.length,
@@ -137,11 +158,19 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                         },
                       ),
                     ),
-                    Row(
+                    
+                    
+                  ],
+                ),
+              ),
+              
+            ),
+            const SizedBox(height: 10),
+            Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        TextButton(
-                          onPressed: () {
+                        Button(Colors.black, Colors.white, '완료', 
+                        () {
                             
                             Navigator.push(
                                     context,
@@ -151,22 +180,10 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                                        ),
                                      ),
                                    );
-                          },
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4))),
-                          child: const Text(
-                            '완료',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                          }).button()
+                        
                       ],
                     ),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),
