@@ -8,12 +8,13 @@ class PieChart extends CustomPainter {
   final double textScaleFactor;
   final String color;
 
-  PieChart(
-      {required this.successPercentage,
-      required this.inProgressPercentage,
-      required this.failPercentage,
-      this.textScaleFactor = 1.0,
-      required this.color});
+  PieChart({
+    required this.successPercentage,
+    required this.inProgressPercentage,
+    required this.failPercentage,
+    this.textScaleFactor = 1.0,
+    required this.color,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -31,36 +32,32 @@ class PieChart extends CustomPainter {
         inProgressPercentage == 0 &&
         failPercentage == 0) {
       paint.color = Colors.black;
-      canvas.drawArc(Rect.fromCircle(center: center, radius: radius), 0, 2 * pi,
-          false, paint);
+      canvas.drawArc(
+          Rect.fromCircle(center: center, radius: radius), 0, 2 * pi, false, paint);
       drawText(canvas, size, "달성률\n  0%");
       return;
     }
 
     // 1. 성공률 아크 그리기
-    double successArcAngle = 2 * pi * (successPercentage / 100); // 1% 줄이기
+    double successArcAngle = 2 * pi * (successPercentage / 100);
     paint.color = Color(
       int.parse(
         color.replaceAll('Color(', '').replaceAll(')', ''),
       ),
     );
-    //paint.color = Colors.yellow;
-    //paint.color = Color(int.parse(color));
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
-        successArcAngle, false, paint);
+    canvas.drawArc(
+        Rect.fromCircle(center: center, radius: radius), startAngle, successArcAngle, false, paint);
 
     // 2. 진행 중 아크 그리기
     startAngle += successArcAngle;
     double inProgressArcAngle = 2 * pi * (inProgressPercentage / 100);
-    //startAngle += separatorAngle;
-    //paint.color = Colors.grey;
     paint.color = const Color(0xffFEFFC4);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         inProgressArcAngle, false, paint);
 
     // 3. 실패율 아크 그리기
     startAngle += inProgressArcAngle;
-    double failArcAngle = 2 * pi * (failPercentage / 100); // 1% 줄이기
+    double failArcAngle = 2 * pi * (failPercentage / 100);
     paint.color = Colors.black;
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         failArcAngle, false, paint);
@@ -72,15 +69,25 @@ class PieChart extends CustomPainter {
   void drawText(Canvas canvas, Size size, String text) {
     double fontSize = getFontSize(size, text);
 
+    // 텍스트 스타일 적용
     TextSpan sp = TextSpan(
-      style: TextStyle(
-          fontSize: fontSize, fontWeight: FontWeight.w600, color: Colors.white),
+      style: const TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+        height: 1.5, // 줄 간격 조정
+      ),
       text: text,
     );
 
-    TextPainter tp = TextPainter(text: sp, textDirection: TextDirection.ltr);
+    TextPainter tp = TextPainter(
+      text: sp,
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.center, // 텍스트 정렬
+    );
     tp.layout();
 
+    // 텍스트 중앙 정렬
     double dx = size.width / 2 - tp.width / 2;
     double dy = size.height / 2 - tp.height / 2;
 
