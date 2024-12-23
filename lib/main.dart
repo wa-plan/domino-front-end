@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const LoginScreen(), 
       theme: ThemeData(
+        fontFamily: 'Pretendard',
         useMaterial3: true,
         textTheme: TextTheme(
           // all > appBar의 메뉴 텍스트 

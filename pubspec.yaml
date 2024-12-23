@@ -76,6 +76,7 @@ flutter:
   assets:
     - assets/img/Dominho.png
     - assets/img/BG_image.png
+    - assets/img/BG_image2.png
     - assets/img/LRDominho.png
     - assets/img/Dominho2.png
     - assets/img/vector1.png
@@ -107,7 +108,6 @@ flutter:
     - assets\img\MG_red.png
     - assets\img\MG_orange.png
     
-    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -134,3 +134,46 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard-Thin.otf
+          weight: 100
+        - asset: assets/fonts/Pretendard-ExtraLight.otf
+          weight: 200
+        - asset: assets/fonts/Pretendard-Light.otf
+          weight: 300
+        - asset: assets/fonts/Pretendard-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Pretendard-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Pretendard-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/Pretendard-Bold.otf
+          weight: 700
+        - asset: assets/fonts/Pretendard-ExtraBold.otf
+          weight: 800
+        - asset: assets/fonts/Pretendard-Black.otf
+          weight: 900
+
+    - family: NotoSansKR
+      fonts:
+        - asset: assets/fonts/NotoSansKR-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/NotoSansKR-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/NotoSansKR-Light.ttf
+          weight: 300
+        - asset: assets/fonts/NotoSansKR-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/NotoSansKR-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/NotoSansKR-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/NotoSansKR-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/NotoSansKR-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/NotoSansKR-Black.ttf
+          weight: 900

@@ -605,7 +605,8 @@ class MandalartInfoService {
       final decodedResponse =
           jsonDecode(utf8.decode(response.bodyBytes)); // UTF-8로 디코딩
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.statusCode >= 200) {
+        
         print('서버 응답 데이터: $decodedResponse');
         return decodedResponse; // 성공 시 데이터 반환
       } else if (response.statusCode >= 400) {
