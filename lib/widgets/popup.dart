@@ -32,7 +32,7 @@ class PopupDialog extends StatelessWidget {
     if (delete) {
       buttons.add(
         Button(
-          const Color.fromARGB(255, 255, 61, 47),
+          const Color.fromARGB(255, 255, 69, 56),
           Colors.black,
           '삭제',
           () => onDelete != null ? onDelete!() : Navigator.of(context).pop(),
@@ -42,7 +42,7 @@ class PopupDialog extends StatelessWidget {
     if (signout) {
       buttons.add(
         Button(
-          const Color.fromARGB(255, 255, 61, 47),
+          const Color.fromARGB(255, 255, 69, 56),
           Colors.black,
           '탈퇴',
           () => onSignOut != null ? onSignOut!() : Navigator.of(context).pop(),
@@ -61,20 +61,21 @@ class PopupDialog extends StatelessWidget {
     }
 
     return AlertDialog(
+      backgroundColor: Colors.transparent,
       contentPadding: const EdgeInsets.all(0),
-      elevation: 10.0,
+      elevation: 30.0,
       content: Container(
         padding: const EdgeInsets.fromLTRB(20, 30, 30, 0),
         decoration: const BoxDecoration(
-            color: Color(0xff262626),
-            borderRadius: BorderRadius.all(Radius.circular(8))),
-        height: 180,
+            color: Color.fromARGB(255, 26, 26, 26),
+            borderRadius: BorderRadius.all(Radius.circular(5))),
+        height: 170,
         width: 400,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Image.asset('assets/img/Dominho.png', width: 90, height: 120),
+            Image.asset('assets/img/Dominho2.png', width: 90, height: 120),
             const SizedBox(width: 30),
             Expanded(
               child: Column(
@@ -85,21 +86,11 @@ class PopupDialog extends StatelessWidget {
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 14,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 6),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox.shrink(), // Empty space on the left
-                      Text(
-                        "from 도민호",
-                        style: TextStyle(color: Color(0xffBDBDBD)),
-                      ),
-                    ],
+                        fontWeight: FontWeight.w500,
+                        height: 1.7),
                   ),
                   const SizedBox(
-                    height: 18,
+                    height: 25,
                   ),
                   Row(
                     children: [

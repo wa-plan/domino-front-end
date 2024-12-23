@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:domino/screens/TD/td_main.dart';
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,13 +41,13 @@ class LoginService {
             await prefs.setString('authToken', accessToken);
 
             if (context.mounted) {
-              Fluttertoast.showToast(
-                msg: '로그인 성공!',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-              );
+              /*Message(
+                "환영합니다. $userId님!",
+                const Color(0xff00FF2F), // 텍스트 색상
+                const Color(0xff00370A), // 배경 색상
+                borderColor: const Color(0xff00FF2F), // 테두리 색상
+                icon: Icons.check_circle, // 아이콘
+              ).message(context);*/
 
               Navigator.pushReplacement(
                 context,
@@ -79,13 +80,13 @@ class LoginService {
         }
       } else {
         if (context.mounted) {
-          Fluttertoast.showToast(
-            msg: '로그인 실패: ${response.body}',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-          );
+          Message(
+            "입력하신 정보가 올바르지 않습니다.",
+            const Color(0xffFF6767), // 텍스트 색상
+            const Color(0xff412C2C), // 배경 색상
+            borderColor: const Color(0xffFF6767), // 테두리 색상
+            icon: Icons.block, // 아이콘
+          ).message(context);
         }
       }
     } catch (e) {
