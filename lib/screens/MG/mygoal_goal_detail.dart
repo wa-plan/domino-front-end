@@ -15,16 +15,17 @@ class MyGoalDetail extends StatefulWidget {
   final List<String> photoList;
   final int dday;
   final String color;
+  final int colorValue;
 
-  const MyGoalDetail({
-    super.key,
-    required this.id,
-    required this.name,
-    required this.status,
-    required this.photoList,
-    required this.dday,
-    required this.color,
-  });
+  const MyGoalDetail(
+      {super.key,
+      required this.id,
+      required this.name,
+      required this.status,
+      required this.photoList,
+      required this.dday,
+      required this.color,
+      required this.colorValue});
 
   @override
   MyGoalDetailState createState() => MyGoalDetailState();
@@ -58,6 +59,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   int successRate = 0;
   int inProgressRate = 0;
   int failedRate = 0;
+  final GlobalKey _iconKey = GlobalKey(); // 아이콘 위치를 추적하기 위한 키
+  Offset _iconPosition = Offset.zero; // 아이콘의 위치
+  
 
   Future<void> userMandaInfo(String mandalartId) async {
     try {
@@ -128,6 +132,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     dday = widget.dday;
     status = widget.status;
     photoList = widget.photoList;
+    
 
     userMandaInfo(mandalartId);
 
@@ -171,22 +176,73 @@ class MyGoalDetailState extends State<MyGoalDetail> {
             padding: appBarPadding,
             child: Row(
               children: [
-                IconButton(
-                  onPressed: () {
+                GestureDetector(
+                  onTap: () {
                     Navigator.of(context).pop();
                   },
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                  color: const Color(0xffD4D4D4),
-                  iconSize: 17,
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Color(0xffD4D4D4),
+                    size: 17,
+                  ),
                 ),
+                const SizedBox(width: 10),
                 Text(
                   name,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
+                const SizedBox(width: 10),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 3.0),
+                  decoration: BoxDecoration(
+                    color: Color(widget.colorValue).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(
+                        color: Color(widget.colorValue), width: 0.5), // 테두리 색상
+                  ),
+                  child: Text(
+                    dday < 0 ? 'D+${dday * -1}' : 'D-$dday',
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 194, 194, 194),
+                      fontSize: 11,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 13.0, vertical: 5.0),
+                  decoration: BoxDecoration(
+                    color: const Color(0xff303030),
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(
+                        color: const Color(0xff575757), width: 0.5), // 테두리 색상
+                  ),
+                  child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MygoalEdit(
+                                    id: widget.id,
+                                    dday: dday,
+                                    name: name,
+                                    description: mandaDescription,
+                                    color: color,
+                                    goalImage: goalImage)));
+                      },
+                      child: const Text(
+                        '편집',
+                        style:
+                            TextStyle(color: Color(0xff979797), fontSize: 11),
+                      )),
+                ),
               ],
             ),
           ),
-          backgroundColor: backgroundColor), // Icon Theme 지정
+          backgroundColor: backgroundColor),
       body: SingleChildScrollView(
         child: Padding(
           padding: fullPadding,
@@ -197,53 +253,25 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    dday < 0 ? 'D + ${dday * -1}' : 'D - $dday',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: MediaQuery.of(context).size.width * 0.05,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MygoalEdit(
-                                  id: widget.id,
-                                  dday: dday,
-                                  name: name,
-                                  description: mandaDescription,
-                                  color: color,
-                                  goalImage: goalImage)));
-                    },
-                    icon: const Icon(Icons.edit),
-                    color: Colors.grey,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
                   Row(
                     children: [
                       const Text(
-                        "이 목표는   ",
+                        "이 목표는",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
+                      const SizedBox(width: 10),
                       Container(
-                        padding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
-                        height: 30,
-                        width: 100,
+                        padding: const EdgeInsets.fromLTRB(14, 5, 14, 5),
+                        height: 33,
+                        width: 106,
                         decoration: BoxDecoration(
                           border: Border.all(
-                              color: const Color(0xffBFBFBF), width: 0.5),
-                          borderRadius: BorderRadius.circular(3),
+                              color: const Color(0xff575757), width: 0.5),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                         child: DropdownButton<String>(
                           underline: const SizedBox.shrink(),
@@ -262,7 +290,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                               .toList(),
                           style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w500),
                           onChanged: (value) {
                             setState(() {
@@ -404,282 +432,309 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                   ),
                 ),
               ],
-              const SizedBox(
+              
+              mandaDescription.isNotEmpty
+                  ? Column(
+                    children: [
+                      const SizedBox(
                 height: 20,
               ),
-              Text(
-                mandaDescription,
-                style: const TextStyle(color: Colors.white, fontSize: 16),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Divider(color: Color(0xff5C5C5C), thickness: 1),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: const Color(0xff2A2A2A),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('할 일 달성 통계',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Row(
-                      children: [
-                        Text('나의 도미노',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14)),
-                        SizedBox(
-                          width: 80,
-                        ),
-                        Text('*동그라미로만 도미노를 만들 수 있어요.',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500)),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            color: Color(0xff313131),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                      Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 7.0),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 44, 44, 44),
+                            borderRadius: BorderRadius.circular(5),
                           ),
-                          width: MediaQuery.of(context).size.width / 3,
-                          height: MediaQuery.of(context).size.width / 3,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.circle_outlined,
-                                    color: Colors.yellow,
-                                    size: 20,
-                                  ),
-                                  Text(
-                                    ' = $successNum개',
-                                    style: const TextStyle(
-                                        color: Colors.yellow, fontSize: 18),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.change_history_outlined,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
-                                  Text(
-                                    ' = $inProgressNum개',
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 18),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.clear_outlined,
-                                    color: Colors.white,
-                                    size: 23,
-                                  ),
-                                  Text(
-                                    ' = $failedNum개',
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 18),
-                                  ),
-                                ],
-                              ),
-                            ],
+                          child: Text(
+                            mandaDescription,
+                            style: const TextStyle(
+                                height: 1.5,
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
-                        const Icon(
-                          Icons.arrow_forward_rounded,
-                          color: Colors.grey,
+                    ],
+                  )
+                  : const SizedBox.shrink(),
+              const SizedBox(
+                height: 20,
+              ),
+              const Divider(
+                color: Color.fromARGB(255, 114, 114, 114),
+                thickness: 0.3,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Question(number: '#', question: '할 일 달성 통계'),
+
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  const SizedBox(height: 60), // 아이콘과 다른 콘텐츠 사이의 간격 조정
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: CustomPaint(
+                          size: const Size(80, 80),
+                          painter: PieChart(
+                              successPercentage: successRate, // int로 변환
+                              inProgressPercentage: inProgressRate, // int로 변환
+                              failPercentage: failedRate,
+                              color: color),
                         ),
-                        Column(
-                          children: [
-                            Row(
+                      ),
+                      const SizedBox(
+                        height: 70,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Image.asset(
-                                  'assets/img/domino.png',
-                                  width: 50,
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.circle_outlined,
+                                      color: Color(widget.colorValue),
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '$successRate%',
+                                      style: TextStyle(
+                                          color: Color(widget.colorValue),
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '$successNum개',
+                                      style: TextStyle(
+                                          color: Color(widget.colorValue),
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  ' x $successNum',
-                                  style: const TextStyle(
-                                      color: Colors.yellow, fontSize: 18),
+                                const SizedBox(height: 9),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.change_history_outlined,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '$inProgressRate%',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '$inProgressNum개',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 9),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.clear_outlined,
+                                      color: Color(0xff626161),
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '${failedRate == 100 ? 0 : failedRate}%',
+                                      style: const TextStyle(
+                                          color: Color(0xff626161),
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '$failedNum개',
+                                      style: const TextStyle(
+                                          color: Color(0xff626161),
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                          Container(
+                            width: 200,
+                            height: 80,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 7.0),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff303030),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      '나의 도미노',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        _updateIconPosition();
+                                        print(_iconPosition);
+                                        _showPopupMessage(
+                                            context, '동그라미로만 도미노를 만들 수 있어요.');
+                                      },
+                                      child:  Icon(
+                                        Icons.help,
+                                        key: _iconKey,
+                                        color: const Color(0xff555555),
+                                        size: 17,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/img/domino.png',
+                                      width: 20,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    const Text(
+                                      'x',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      '$successNum',
+                                      style: TextStyle(
+                                          color: Color(widget.colorValue),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                            const Divider(
-                              color: Colors.white,
-                              thickness: 3, // 줄의 두께
-                              height: 1, // 줄과 Row 사이의 간격 조절
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 60), // 아이콘과 다른 콘텐츠 사이의 간격 조정
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text('할 일 달성 비율',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14)),
-                        const SizedBox(height: 60),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            CustomPaint(
-                              size: Size(MediaQuery.of(context).size.width / 5,
-                                  MediaQuery.of(context).size.width / 5),
-                              painter: PieChart(
-                                  successPercentage: successRate, // int로 변환
-                                  inProgressPercentage:
-                                      inProgressRate, // int로 변환
-                                  failPercentage: failedRate,
-                                  color: color),
-                            ),
-                            const SizedBox(
-                              width: 30,
-                            ),
-                            Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.circle_outlined,
-                                        color: Colors.yellow,
-                                        size: 20,
-                                      ),
-                                      Text(
-                                        ' = $successRate%',
-                                        style: const TextStyle(
-                                            color: Colors.yellow, fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.change_history_outlined,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                      Text(
-                                        ' = $inProgressRate%',
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.clear_outlined,
-                                        color: Color(0xff626161),
-                                        size: 23,
-                                      ),
-                                      Text(
-                                        ' = ${failedRate == 100 ? 0 : failedRate}%',
-                                        style: const TextStyle(
-                                            color: Color(0xff626161),
-                                            fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                ]),
-                            const SizedBox(
-                              height: 50,
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 50,
-                    )
-                    /*const Icon(
-                  Icons.arrow_downward,
-                  color: Colors.white,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  '전체 도미노',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(2)),
-                          color: Colors.yellow),
-                      width: 18, // 원하는 너비 설정
-                      height: 45, // 원하는 높이 설정
-                    ),
-                    Text(
-                      '   x ${successNum + inProgressNum * 1 / 2}',
-                      style: const TextStyle(
-                          color: Colors.yellow,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                //Image.asset('assets/img/domino_calculate.png'),*/
-                  ],
-                ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  )
+                ],
               ),
-              const SizedBox(
-                height: 30,
-              )
+
             ],
           ),
         ),
       ),
     );
   }
+  void _updateIconPosition() {
+    // 아이콘의 현재 위치를 계산
+    final RenderBox renderBox =
+        _iconKey.currentContext?.findRenderObject() as RenderBox;
+    final Offset position = renderBox.localToGlobal(Offset.zero);
+
+    setState(() {
+      _iconPosition = position; // 아이콘의 위치 업데이트
+    });
+  }
+// 팝업 메시지를 띄우는 함수
+void _showPopupMessage(BuildContext context, String message) {
+  final overlay = Overlay.of(context);
+  OverlayEntry? overlayEntry;
+
+  overlayEntry = OverlayEntry(
+    builder: (context) => GestureDetector(
+      onTap: () {
+        overlayEntry?.remove(); // 팝업 닫기
+        overlayEntry = null;
+      },
+      child: Stack(
+        children: [
+          // 투명한 배경으로 메시지 외부 클릭 감지
+          Positioned.fill(
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ),
+          // 팝업 메시지 위치 설정
+          Positioned(
+            top: _iconPosition.dy -40, // 아이콘 아래 위치
+            left: _iconPosition.dx -210,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(14, 6, 14, 6),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 64, 64, 64),
+                  borderRadius: BorderRadius.circular(4),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.03),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  message,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  // 오버레이에 추가
+  overlay.insert(overlayEntry!);
 }
+
+
+}
+
+
+
+
+

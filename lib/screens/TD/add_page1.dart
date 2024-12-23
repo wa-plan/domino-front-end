@@ -2,7 +2,7 @@ import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/TD/add_page2.dart';
-import 'package:domino/widgets/DP/mandalart2.dart';
+import 'package:domino/widgets/DP/TD_mandalart.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';

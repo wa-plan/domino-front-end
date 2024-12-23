@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:domino/screens/TD/add_page1.dart';
 import 'package:domino/screens/TD/edit_page.dart';
-import 'package:intl/intl.dart'; // 요일 변환을 위한 패키지
+import 'package:intl/intl.dart';
 import 'package:domino/styles.dart';
 
 class EventCalendar extends StatefulWidget {
@@ -443,83 +443,85 @@ void editDialog(BuildContext context, DateTime date, String title,
     barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
     builder: (BuildContext context) {
       return AlertDialog(
-        //title: const Text('팝업 메시지'),
-        backgroundColor: const Color(0xff262626),
-        content: Row(
-          children: [
-            Container(
-              width: 15,
-              height: 140,
-              decoration: BoxDecoration(
-                color: Color(int.parse(
-                  color
-                      .replaceAll('Color(', '') // 'Color(' 부분 제거
-                      .replaceAll(')', ''),
-                )),
-                borderRadius: const BorderRadius.all(Radius.circular(3)),
+
+        backgroundColor: Colors.transparent,
+        contentPadding: const EdgeInsets.all(0),
+        elevation: 30.0,
+        content: Container(
+          padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
+          decoration: const BoxDecoration(
+              color: Color.fromARGB(255, 26, 26, 26),
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+          height: 200,
+          width: 400,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 15,
+                height: 140,
+                decoration: const BoxDecoration(
+                  color: mainRed,
+                  borderRadius: BorderRadius.all(Radius.circular(3)),
+                ),
               ),
-            ),
-            const SizedBox(width: 20),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '환상적인 세계여행',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          content,
-                          style:
-                              const TextStyle(color: Colors.grey, fontSize: 13),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 80,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditPage(date, content, title,
-                                switchvalue, interval, goalId),
+              const SizedBox(width: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  
+                  const Text(
+                            '환상적인 세계여행',
+                            style: TextStyle(color: Colors.white),
                           ),
-                        );
-                      },
-                      icon: const Icon(Icons.edit),
-                    ),
-                  ],
-                ),
-                Text(
-                  title,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: Container(
-                    height: 1,
-                    width: 200,
-                    color: Colors.grey,
+                          const SizedBox(height: 5),
+                          Text(
+                            content,
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 13),
+                          ),
+                        
+                      
+                    
+                  
+                  const SizedBox(height: 5),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
                   ),
-                ),
-                const Text(
-                  '반복',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                Text(
-                  getIntervalText(),
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(height: 15),
+                 
+                  const Text(
+                    '반복',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Text(
+                    getIntervalText(),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
+              IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPage(date, content,
+                                  title, switchvalue, interval, goalId),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.edit),
+                        color: const Color.fromARGB(255, 98, 98, 98),
+                        padding: EdgeInsets.zero,
+                        iconSize: 25,
+                      ),
+            ],
+          ),
         ),
       );
     },
