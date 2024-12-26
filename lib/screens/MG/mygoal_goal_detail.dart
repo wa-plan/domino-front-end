@@ -61,7 +61,6 @@ class MyGoalDetailState extends State<MyGoalDetail> {
   int failedRate = 0;
   final GlobalKey _iconKey = GlobalKey(); // 아이콘 위치를 추적하기 위한 키
   Offset _iconPosition = Offset.zero; // 아이콘의 위치
-  
 
   Future<void> userMandaInfo(String mandalartId) async {
     try {
@@ -99,16 +98,6 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     }
   }
 
-  void _mandaBookmark(int id, String bookmark) async {
-    final success = await MandaBookmarkService.MandaBookmark(
-      id: id,
-      bookmark: bookmark,
-    );
-    if (success) {
-      print('성공');
-    }
-  }
-
   void _mandaProgress(int id, String status) async {
     final success = await MandaProgressService.MandaProgress(
       id: id,
@@ -124,15 +113,14 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     super.initState();
     String mandalartId = widget.id;
     color = widget.color;
-    final colorValue =
-        int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
-    print('colorValue=$colorValue');
+    //final colorValue =
+    //    int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
+    //print('colorValue=$colorValue');
 
     name = widget.name;
     dday = widget.dday;
     status = widget.status;
     photoList = widget.photoList;
-    
 
     userMandaInfo(mandalartId);
 
@@ -432,14 +420,13 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                   ),
                 ),
               ],
-              
               mandaDescription.isNotEmpty
                   ? Column(
-                    children: [
-                      const SizedBox(
-                height: 20,
-              ),
-                      Container(
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15.0, vertical: 7.0),
@@ -456,8 +443,8 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
-                    ],
-                  )
+                      ],
+                    )
                   : const SizedBox.shrink(),
               const SizedBox(
                 height: 20,
@@ -612,7 +599,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                         _showPopupMessage(
                                             context, '동그라미로만 도미노를 만들 수 있어요.');
                                       },
-                                      child:  Icon(
+                                      child: Icon(
                                         Icons.help,
                                         key: _iconKey,
                                         color: const Color(0xff555555),
@@ -657,13 +644,13 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                   )
                 ],
               ),
-
             ],
           ),
         ),
       ),
     );
   }
+
   void _updateIconPosition() {
     // 아이콘의 현재 위치를 계산
     final RenderBox renderBox =
@@ -674,67 +661,61 @@ class MyGoalDetailState extends State<MyGoalDetail> {
       _iconPosition = position; // 아이콘의 위치 업데이트
     });
   }
-// 팝업 메시지를 띄우는 함수
-void _showPopupMessage(BuildContext context, String message) {
-  final overlay = Overlay.of(context);
-  OverlayEntry? overlayEntry;
 
-  overlayEntry = OverlayEntry(
-    builder: (context) => GestureDetector(
-      onTap: () {
-        overlayEntry?.remove(); // 팝업 닫기
-        overlayEntry = null;
-      },
-      child: Stack(
-        children: [
-          // 투명한 배경으로 메시지 외부 클릭 감지
-          Positioned.fill(
-            child: Container(
-              color: Colors.transparent,
-            ),
-          ),
-          // 팝업 메시지 위치 설정
-          Positioned(
-            top: _iconPosition.dy -40, // 아이콘 아래 위치
-            left: _iconPosition.dx -210,
-            child: Material(
-              color: Colors.transparent,
+// 팝업 메시지를 띄우는 함수
+  void _showPopupMessage(BuildContext context, String message) {
+    final overlay = Overlay.of(context);
+    OverlayEntry? overlayEntry;
+
+    overlayEntry = OverlayEntry(
+      builder: (context) => GestureDetector(
+        onTap: () {
+          overlayEntry?.remove(); // 팝업 닫기
+          overlayEntry = null;
+        },
+        child: Stack(
+          children: [
+            // 투명한 배경으로 메시지 외부 클릭 감지
+            Positioned.fill(
               child: Container(
-                padding: const EdgeInsets.fromLTRB(14, 6, 14, 6),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 64, 64, 64),
-                  borderRadius: BorderRadius.circular(4),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.03),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                color: Colors.transparent,
+              ),
+            ),
+            // 팝업 메시지 위치 설정
+            Positioned(
+              top: _iconPosition.dy - 40, // 아이콘 아래 위치
+              left: _iconPosition.dx - 210,
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(14, 6, 14, 6),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 64, 64, 64),
+                    borderRadius: BorderRadius.circular(4),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    message,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
                     ),
-                  ],
-                ),
-                child: Text(
-                  message,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
+    );
 
-  // 오버레이에 추가
-  overlay.insert(overlayEntry!);
+    // 오버레이에 추가
+    overlay.insert(overlayEntry!);
+  }
 }
-
-
-}
-
-
-
-
-
