@@ -80,15 +80,6 @@ class _MyGoalState extends State<MyGoal> {
         successIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
-
-        print('리스트 출력');
-        print('failedIDs=$failedIDs');
-        print('inProgressIDs=$inProgressIDs');
-        print('successIDs=$successIDs');
-        print('nameList=$nameList');
-        print('statusList=$statusList');
-        print('ddayList=$ddayList');
-        print('successNums=$successNums');
       }
     } catch (e) {
       // 에러 발생 시 처리
@@ -138,9 +129,9 @@ class _MyGoalState extends State<MyGoal> {
             }
           }
         });
-        print('userMandaInfo 성공: $name ($id)');
+        //print('userMandaInfo 성공: $name ($id)');
       } else {
-        print('userMandaInfo 실패: 데이터 없음 ($mandalartId)');
+        //print('userMandaInfo 실패: 데이터 없음 ($mandalartId)');
       }
     } catch (e) {
       print('userMandaInfo 에러 발생: $e');
@@ -199,7 +190,6 @@ class _MyGoalState extends State<MyGoal> {
     _pageController.dispose(); // 메모리 누수 방지
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

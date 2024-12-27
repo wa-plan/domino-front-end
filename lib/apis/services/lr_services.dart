@@ -465,10 +465,7 @@ class MorningAlertService {
 }
 
 class NightAlertService {
-  static Future<bool> nightAlert(
-    BuildContext context,
-    String alarm,
-  ) async {
+  static Future<bool> nightAlert({required String alarm}) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
     print('저장된 토큰: $token');
