@@ -1,13 +1,6 @@
+import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: EventPage(),
-  ));
-}
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key});
@@ -17,7 +10,7 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
-  String domino = "30";  //도미노 개수 api 가져오기
+  String domino = "30"; //도미노 개수 api 가져오기
   String goal = "환상적인 세계여행"; //제1목표 title api 가져오기
   late VideoPlayerController _controller;
   late Future<void> _initializeVideoPlayerFuture;
@@ -32,11 +25,10 @@ class _EventPageState extends State<EventPage> {
     _controller.setLooping(false);
     _controller.setVolume(1.0);
 
-    
     _controller.addListener(() {
       if (_controller.value.position == _controller.value.duration) {
         setState(() {
-          _isVideoEnded = true; 
+          _isVideoEnded = true;
         });
       }
     });
@@ -63,8 +55,7 @@ class _EventPageState extends State<EventPage> {
                   height: double.infinity,
                   child: VideoPlayer(_controller),
                 ),
-                if (_isContentVisible &&
-                    !_isVideoEnded) 
+                if (_isContentVisible && !_isVideoEnded)
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 60, 30, 30),
                     child: Column(
@@ -115,8 +106,7 @@ class _EventPageState extends State<EventPage> {
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              _isContentVisible =
-                                  !_isContentVisible; 
+                              _isContentVisible = !_isContentVisible;
                               if (_controller.value.isPlaying) {
                                 _controller.pause();
                               } else {
@@ -137,7 +127,46 @@ class _EventPageState extends State<EventPage> {
                       ],
                     ),
                   ),
-                if (_isVideoEnded) 
+                if (_isVideoEnded)
+                  Align(
+                    alignment: const Alignment(0, -0.5),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '$goal\n쓰러뜨리기 성공!\n\n축하해요!',
+                          style: const TextStyle(
+                            height: 2,
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        // 화면이 렌더링된 후 2초 딜레이
+                        FutureBuilder(
+                          future: Future.delayed(const Duration(seconds: 2)),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              // MyGoal 페이지로 이동
+                              Future.microtask(() {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MyGoal(),
+                                  ),
+                                );
+                              });
+                            }
+                            return const SizedBox(); // 빈 위젯 반환
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+
+                /*if (_isVideoEnded)
                   Align(
                     alignment: const Alignment(0, -0.5),
                     child: Text(
@@ -150,7 +179,7 @@ class _EventPageState extends State<EventPage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                  ),
+                  ),*/
               ],
             );
           } else {
