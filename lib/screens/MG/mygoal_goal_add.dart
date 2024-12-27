@@ -25,6 +25,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
   final _descriptionController = TextEditingController();
   List<image_picker.XFile?> selectedImages = [];
   final List<String> _combinedImages = [];
+  String? uploadedImageResponse; // String? 타입으로 수정
 
   void _addGoal() async {
     final name = _nameController.text;
@@ -38,7 +39,15 @@ class _MyGoalAddState extends State<MyGoalAdd> {
       ..._combinedImages
     ];
 
-// 서버에 보낼 데이터들을 출력
+    // 서버에 이미지 업로드
+    uploadedImageResponse = (await AddProfileImage.addImage(image: picturePaths[0])) as String?; // 첫 번째 이미지 업로드
+    if (uploadedImageResponse != null) {
+      print('이미지 업로드 성공: $uploadedImageResponse');
+    } else {
+      print('이미지 업로드 실패');
+    }
+
+    // 서버에 보낼 데이터 출력
     print('Name: $name');
     print('Description: $description');
     print('Color: $color');
@@ -48,7 +57,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
     final success = await AddGoalService.addGoal(
       name: name,
       description: description,
-      color: color, // 색상 문자열로 전달
+      color: color,
       date: date!,
       pictures: picturePaths,
     );
