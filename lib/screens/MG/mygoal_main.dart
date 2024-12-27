@@ -80,10 +80,29 @@ class _MyGoalState extends State<MyGoal> {
         failedIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
+        /*inProgressIDs.sort((a, b) {
+          return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
+        });*/
+
         inProgressIDs.sort((a, b) {
+          // BOOKMARK 상태 확인
+          final aBookmark = bookmarks
+              .any((bm) => bm["id"] == a["id"] && bm["bookmark"] == "BOOKMARK");
+          final bBookmark = bookmarks
+              .any((bm) => bm["id"] == b["id"] && bm["bookmark"] == "BOOKMARK");
+
+          // BOOKMARK 상태 기준으로 정렬
+          if (aBookmark && !bBookmark)
+            return -1; // a가 BOOKMARK 상태이고, b는 UNBOOKMARK 상태
+          if (!aBookmark && bBookmark)
+            return 1; // b가 BOOKMARK 상태이고, a는 UNBOOKMARK 상태
+
+          // 같은 상태라면 id 값 기준 정렬 (오름차순)
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
+
         print('inProgressIDs=$inProgressIDs');
+
         successIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
