@@ -267,7 +267,6 @@ class _GoalCardState extends State<GoalCard> {
                           width: 13,
                           height: 36.0, // 네 번째 높이 (예: 30 추가)
                         ),
-                        
                       ],
                     )
                   ],

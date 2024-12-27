@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:domino/widgets/popup.dart';
+import 'package:domino/apis/services/mg_services.dart';
 
 class MygoalEdit extends StatefulWidget {
   final String name;
@@ -503,13 +504,20 @@ class _MygoalEditState extends State<MygoalEdit> {
                         onCancel: () {
                           Navigator.of(context).pop();
                         },
-                        onDelete: () {
-                          Navigator.push(
+                        onDelete: () async {
+                          bool isDeleted =
+                              await DeleteFirstGoalService.deleteFirstGoal(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => const MyGoal(),
-                            ),
+                            int.parse(widget.id),
                           );
+                          if (isDeleted) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MyGoal(),
+                              ),
+                            );
+                          }
                         },
                         onSignOut: () {},
                       );
