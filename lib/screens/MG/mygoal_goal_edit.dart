@@ -1,10 +1,12 @@
 import 'package:domino/apis/services/mg_services.dart';
+import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:domino/widgets/popup.dart';
 
 class MygoalEdit extends StatefulWidget {
   final String name;
@@ -491,20 +493,26 @@ class _MygoalEditState extends State<MygoalEdit> {
                   ),
                   TextButton(
                     onPressed: () {
-                      /*bool isDeleted =
-                            await DeleteMandalartService.deleteMandalart(
-                          context,
-                          mandalartId,
-                        );
-                        context.read<SaveMandalartCreatedGoal>().removeGoal(mandalartId.toString());
-                        if (isDeleted) {
+                      PopupDialog.show(
+                        context,
+                        '이건 아니야.. \n정말 떠날거야...?',
+                        true, // cancel
+                        true, // delete
+                        false, //signout
+                        false, // success
+                        onCancel: () {
+                          Navigator.of(context).pop();
+                        },
+                        onDelete: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const DPlistPage(),
+                              builder: (context) => const MyGoal(),
                             ),
                           );
-                        }*/
+                        },
+                        onSignOut: () {},
+                      );
                     },
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.red,
@@ -536,7 +544,7 @@ class _MygoalEditState extends State<MygoalEdit> {
                       } else {
                         // Show error or feedback if save fails
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('목표 저장에 실패했습니다.')),
+                          const SnackBar(content: Text('목표 저장에 실패했습니다.')),
                         );
                       }
 

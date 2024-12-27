@@ -32,8 +32,8 @@ class PieChart extends CustomPainter {
         inProgressPercentage == 0 &&
         failPercentage == 0) {
       paint.color = Colors.black;
-      canvas.drawArc(
-          Rect.fromCircle(center: center, radius: radius), 0, 2 * pi, false, paint);
+      canvas.drawArc(Rect.fromCircle(center: center, radius: radius), 0, 2 * pi,
+          false, paint);
       drawText(canvas, size, "달성률\n  0%");
       return;
     }
@@ -45,13 +45,17 @@ class PieChart extends CustomPainter {
         color.replaceAll('Color(', '').replaceAll(')', ''),
       ),
     );
-    canvas.drawArc(
-        Rect.fromCircle(center: center, radius: radius), startAngle, successArcAngle, false, paint);
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
+        successArcAngle, false, paint);
 
     // 2. 진행 중 아크 그리기
     startAngle += successArcAngle;
     double inProgressArcAngle = 2 * pi * (inProgressPercentage / 100);
-    paint.color = const Color(0xffFEFFC4);
+    paint.color = Color(
+      int.parse(
+        color.replaceAll('Color(', '').replaceAll(')', ''),
+      ),
+    ).withAlpha(178);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         inProgressArcAngle, false, paint);
 
