@@ -64,6 +64,7 @@ class _MyGoalState extends State<MyGoal> {
 
         print('로드된 mandalarts: $mandalarts');
         print('로드된 bookmarks: $bookmarks');
+        print('bookmarks리스트는 빠밤 $bookmarks');
 
         // 비동기 작업 병렬 처리
         final tasks = mandalarts.map((mandalart) async {
@@ -79,9 +80,10 @@ class _MyGoalState extends State<MyGoal> {
         failedIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
-        /*inProgressIDs.sort((a, b) {
+        inProgressIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
-        });*/
+        });
+        print('inProgressIDs=$inProgressIDs');
         successIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
@@ -172,7 +174,7 @@ class _MyGoalState extends State<MyGoal> {
     }
   }
 
-  void _mandaBookmark(String mandalartId, String bookmark) async {
+  /*void _mandaBookmark(String mandalartId, String bookmark) async {
     final success = await MandaBookmarkService.MandaBookmark(
       id: int.parse(mandalartId),
       bookmark: bookmark,
@@ -180,7 +182,7 @@ class _MyGoalState extends State<MyGoal> {
     if (success) {
       print('성공');
     }
-  }
+  }*/
 
   @override
   void initState() {
@@ -403,12 +405,15 @@ class _MyGoalState extends State<MyGoal> {
 
                         String bookmark = bookmarks.firstWhere(
                               (element) =>
-                                  element['mandalartId'] ==
+                                  element['id'] ==
                                   mandalartId, // mandalartId와 비교
-                              orElse: () =>
-                                  {'bookmark': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
+                              orElse: () => {
+                                'bookmark': 'UNBOOKMARK'
+                              }, // 일치하는 항목이 없을 경우 빈 문자열 반환
                             )['bookmark'] ??
-                            '';
+                            'UNBOOKMARK';
+
+                        print('$mandalartId $name의 북마크 상태는 $bookmark입니다');
 
                         return GoalCard(
                           mandalartId: mandalartId,
