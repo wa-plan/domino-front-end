@@ -2,8 +2,9 @@ import 'package:domino/screens/MG/mygoal_goal_detail.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domino/apis/services/mg_services.dart';
 
-class GoalCard extends StatelessWidget {
+class GoalCard extends StatefulWidget {
   final String mandalartId;
   final String name;
   final String status;
@@ -11,7 +12,7 @@ class GoalCard extends StatelessWidget {
   final String dday;
   final String color;
   final int successNum;
-  final bool bookmark;
+  final String bookmark;
   final Function(String id, String action) onBookmarkToggle;
 
   const GoalCard(
@@ -27,10 +28,51 @@ class GoalCard extends StatelessWidget {
       required this.onBookmarkToggle});
 
   @override
+  State<GoalCard> createState() => _GoalCardState();
+}
+
+class _GoalCardState extends State<GoalCard> {
+  late bool isBookmarked;
+  late Color starColor;
+
+  Future<void> _mandaBookmark(String mandalartId, String bookmark) async {
+    // 서버에 북마크 상태 전송
+    final success = await MandaBookmarkService.MandaBookmark(
+      id: int.parse(mandalartId),
+      bookmark: bookmark,
+    );
+    if (success) {
+      print('북마크 상태 업데이트 성공');
+    } else {
+      print('북마크 상태 업데이트 실패');
+    }
+  }
+
+  void _toggleBookmark() {
+    // 북마크 상태와 색상 토글
+    setState(() {
+      isBookmarked = !isBookmarked;
+      starColor =
+          isBookmarked ? mainGold : const Color.fromARGB(255, 62, 62, 62);
+    });
+    // 서버로 북마크 상태 전송
+    _mandaBookmark(
+        widget.mandalartId, isBookmarked ? 'BOOKMARK' : 'UNBOOKMARK');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // 초기 bookmark 상태에 따라 색상 설정
+    isBookmarked = widget.bookmark == 'BOOKMARK';
+    starColor = isBookmarked ? mainGold : const Color.fromARGB(255, 62, 62, 62);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colorValue =
-        int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
-    int ddayParsed = int.parse(dday);
+        int.parse(widget.color.replaceAll('Color(', '').replaceAll(')', ''));
+    int ddayParsed = int.parse(widget.dday);
     final List<Color> colors = _getColorsByCondition(Color(colorValue));
 
     return GestureDetector(
@@ -39,12 +81,12 @@ class GoalCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => MyGoalDetail(
-              id: mandalartId,
-              name: name,
-              status: status,
-              photoList: photoList,
+              id: widget.mandalartId,
+              name: widget.name,
+              status: widget.status,
+              photoList: widget.photoList,
               dday: ddayParsed,
-              color: color,
+              color: widget.color,
               colorValue: colorValue,
             ),
           ),
@@ -65,21 +107,16 @@ class GoalCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      onTap: () => onBookmarkToggle(
-                        mandalartId,
-                        bookmark ? "UNBOOKMARK" : "BOOKMARK",
-                      ),
+                      onTap: _toggleBookmark,
                       child: Icon(
                         Icons.star,
-                        color: bookmark
-                            ? mainGold
-                            : const Color.fromARGB(255, 62, 62, 62),
+                        color: starColor,
                         size: 23,
                       ),
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      name,
+                      widget.name,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -88,28 +125,29 @@ class GoalCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 3.0),
-                    decoration: BoxDecoration(
-                      color: Color(colorValue).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(
-                          color: Color(colorValue), width: 0.5), // 테두리 색상
-                    ),
-                    child:  Text(
-                      ddayParsed < 0 ? 'D+${ddayParsed * -1}' : 'D-$ddayParsed',
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 194, 194, 194),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w400,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 3.0),
+                      decoration: BoxDecoration(
+                        color: Color(colorValue).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(25),
+                        border: Border.all(
+                            color: Color(colorValue), width: 0.5), // 테두리 색상
                       ),
-                    ),),
-                  
-                    
+                      child: Text(
+                        ddayParsed < 0
+                            ? 'D+${ddayParsed * -1}'
+                            : 'D-$ddayParsed',
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 194, 194, 194),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                if (photoList.isEmpty)
+                if (widget.photoList.isEmpty)
                   Container(
                     decoration: BoxDecoration(
                       color: const Color(0xff303030),
@@ -129,7 +167,7 @@ class GoalCard extends StatelessWidget {
                     width: 250,
                     height: 85,
                     child: CarouselSlider.builder(
-                      itemCount: photoList.length.clamp(1, 3),
+                      itemCount: widget.photoList.length.clamp(1, 3),
                       itemBuilder: (context, index, realIndex) {
                         return Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -138,12 +176,13 @@ class GoalCard extends StatelessWidget {
                       options: CarouselOptions(
                         height: 85,
                         autoPlay: true,
-                        viewportFraction: photoList.length == 1 ? 1.0 : 0.9,
+                        viewportFraction:
+                            widget.photoList.length == 1 ? 1.0 : 0.9,
                         enlargeCenterPage: true,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     const SizedBox(width: 16),
@@ -157,7 +196,7 @@ class GoalCard extends StatelessWidget {
                               fontSize: 12),
                         ),
                         Text(
-                          '$successNum개',
+                          '${widget.successNum}개',
                           style: const TextStyle(
                             color: Color(0xffFCFF62),
                             fontWeight: FontWeight.w600,
@@ -220,7 +259,7 @@ class GoalCard extends StatelessWidget {
                         ),
                       ],
                     )
-],
+                  ],
                 ),
               ],
             ),
@@ -238,6 +277,7 @@ class GoalCard extends StatelessWidget {
       ),
     );
   }
+
   /// 조건에 따라 색상 배열 반환
   List<Color> _getColorsByCondition(Color colorValue) {
     if (colorValue == const Color(0xffFF7A7A)) {
@@ -249,12 +289,13 @@ class GoalCard extends StatelessWidget {
       ];
     } else if (colorValue == const Color(0xffFFAC2F)) {
       return const [
-        Color(0xffFF7A7A),        // 빨강
+        Color(0xffFF7A7A), // 빨강
         Color(0xff5DD8FF), // 파랑
         Color(0xff72FF5B),
-        Color(0xffFCFF62), 
+        Color(0xffFCFF62),
       ];
-    } else if (colorValue == const Color(0xffFCFF62) || colorValue == Colors.white) {
+    } else if (colorValue == const Color(0xffFCFF62) ||
+        colorValue == Colors.white) {
       return const [
         Color(0xffFF7A7A), // 빨강
         Color(0xffFFAC2F), // 주황
@@ -263,25 +304,23 @@ class GoalCard extends StatelessWidget {
       ];
     } else if (colorValue == const Color(0xff5DD8FF)) {
       return const [
-        Color(0xffFF7A7A),          // 빨강
+        Color(0xffFF7A7A), // 빨강
         Color(0xffFFAC2F), // 주황
         Color(0xffFCFF62),
         Color(0xff72FF5B), // 초록
       ];
     } else if (colorValue == const Color(0xff72FF5B)) {
       return const [
-        Color(0xffFF7A7A),          // 빨강
+        Color(0xffFF7A7A), // 빨강
         Color(0xffFFAC2F), // 주황
         Color(0xffFCFF62),
         Color(0xff5DD8FF), // 초록
       ];
     } else {
-    // Default case if no other conditions match
-    return [
-      const Color(0xffFFFFFF), // white
-    ];
-  }
-   
+      // Default case if no other conditions match
+      return [
+        const Color(0xffFFFFFF), // white
+      ];
+    }
   }
 }
-
