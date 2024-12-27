@@ -88,24 +88,25 @@ class GoalCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 3.0),
-                    decoration: BoxDecoration(
-                      color: Color(colorValue).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(
-                          color: Color(colorValue), width: 0.5), // 테두리 색상
-                    ),
-                    child:  Text(
-                      ddayParsed < 0 ? 'D+${ddayParsed * -1}' : 'D-$ddayParsed',
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 194, 194, 194),
-                        fontSize: 11,
-                        fontWeight: FontWeight.w400,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 3.0),
+                      decoration: BoxDecoration(
+                        color: Color(colorValue).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(25),
+                        border: Border.all(
+                            color: Color(colorValue), width: 0.5), // 테두리 색상
                       ),
-                    ),),
-                  
-                    
+                      child: Text(
+                        ddayParsed < 0
+                            ? 'D+${ddayParsed * -1}'
+                            : 'D-$ddayParsed',
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 194, 194, 194),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 10),
@@ -143,7 +144,7 @@ class GoalCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     const SizedBox(width: 16),
@@ -177,50 +178,61 @@ class GoalCard extends StatelessWidget {
                         const SizedBox(
                           width: 18,
                         ),
+                        // 첫 번째 색상
                         Container(
                           decoration: BoxDecoration(
-                            color: const Color(0xff5DD8FF),
+                            color: colors[0], // 첫 번째 색상
                             borderRadius: BorderRadius.circular(2.0),
                           ),
                           width: 13,
-                          height: 6,
+                          height: 6.0, // 첫 번째 높이 (6.0으로 고정)
                         ),
                         const SizedBox(
                           width: 18,
                         ),
+                        // 두 번째 색상
                         Container(
                           decoration: BoxDecoration(
-                            color: const Color(0xff72FF5B),
+                            color: colors.length > 1
+                                ? colors[1]
+                                : Colors.transparent, // 두 번째 색상
                             borderRadius: BorderRadius.circular(2.0),
                           ),
                           width: 13,
-                          height: 15,
+                          height: 16.0, // 두 번째 높이 (예: 10 추가)
                         ),
                         const SizedBox(
                           width: 18,
                         ),
+                        // 세 번째 색상
                         Container(
                           decoration: BoxDecoration(
-                            color: const Color(0xffFCFF62),
+                            color: colors.length > 2
+                                ? colors[2]
+                                : Colors.transparent, // 세 번째 색상
                             borderRadius: BorderRadius.circular(2.0),
                           ),
                           width: 13,
-                          height: 25,
+                          height: 26.0, // 세 번째 높이 (예: 20 추가)
                         ),
                         const SizedBox(
                           width: 18,
                         ),
+                        // 네 번째 색상
                         Container(
                           decoration: BoxDecoration(
-                            color: const Color(0xffFFAC2F),
+                            color: colors.length > 3
+                                ? colors[3]
+                                : Colors.transparent, // 네 번째 색상
                             borderRadius: BorderRadius.circular(2.0),
                           ),
                           width: 13,
-                          height: 33,
+                          height: 36.0, // 네 번째 높이 (예: 30 추가)
                         ),
+                        
                       ],
                     )
-],
+                  ],
                 ),
               ],
             ),
@@ -238,6 +250,7 @@ class GoalCard extends StatelessWidget {
       ),
     );
   }
+
   /// 조건에 따라 색상 배열 반환
   List<Color> _getColorsByCondition(Color colorValue) {
     if (colorValue == const Color(0xffFF7A7A)) {
@@ -247,14 +260,15 @@ class GoalCard extends StatelessWidget {
         Color(0xffFCFF62), // 노랑
         Color(0xffFFAC2F), // 주황
       ];
-    } else if (colorValue == const Color(0xffFFAC2F)) {
+    } else if (colorValue == const Color(0xffFFB82D)) {
       return const [
-        Color(0xffFF7A7A),        // 빨강
+        Color(0xffFF7A7A), // 빨강
         Color(0xff5DD8FF), // 파랑
         Color(0xff72FF5B),
-        Color(0xffFCFF62), 
+        Color(0xffFCFF62),
       ];
-    } else if (colorValue == const Color(0xffFCFF62) || colorValue == Colors.white) {
+    } else if (colorValue == const Color(0xffFCFF62) ||
+        colorValue == Colors.white) {
       return const [
         Color(0xffFF7A7A), // 빨강
         Color(0xffFFAC2F), // 주황
@@ -263,25 +277,23 @@ class GoalCard extends StatelessWidget {
       ];
     } else if (colorValue == const Color(0xff5DD8FF)) {
       return const [
-        Color(0xffFF7A7A),          // 빨강
+        Color(0xffFF7A7A), // 빨강
         Color(0xffFFAC2F), // 주황
         Color(0xffFCFF62),
         Color(0xff72FF5B), // 초록
       ];
     } else if (colorValue == const Color(0xff72FF5B)) {
       return const [
-        Color(0xffFF7A7A),          // 빨강
+        Color(0xffFF7A7A), // 빨강
         Color(0xffFFAC2F), // 주황
         Color(0xffFCFF62),
         Color(0xff5DD8FF), // 초록
       ];
     } else {
-    // Default case if no other conditions match
-    return [
-      const Color(0xffFFFFFF), // white
-    ];
-  }
-   
+      // Default case if no other conditions match
+      return [
+        const Color(0xffFFFFFF), // white
+      ];
+    }
   }
 }
-
