@@ -26,7 +26,7 @@ class _MyGoalState extends State<MyGoal> {
   late PageController _pageController; // PageController 추가
   int successNum = 0;
   String mandaDescription = '';
-  bool bookmark = false;
+  String bookmark = 'UNBOOKMARK';
   List<Map<String, String>> failedIDs = [];
   List<Map<String, String>> inProgressIDs = [];
   List<Map<String, String>> successIDs = [];
@@ -38,6 +38,7 @@ class _MyGoalState extends State<MyGoal> {
   Map<String, List<Map<String, String>>> photos = {};
 
   List<Map<String, String>> mandalarts = [];
+  List<Map<String, String>> bookmarks = [];
 
   void userInfo() async {
     final data = await UserInfoService.userInfo();
@@ -57,8 +58,12 @@ class _MyGoalState extends State<MyGoal> {
 
       if (data.isNotEmpty) {
         setState(() {
-          mandalarts = data;
+          mandalarts = data['mandalarts']!;
+          bookmarks = data['bookmarks']!;
         });
+
+        print('로드된 mandalarts: $mandalarts');
+        print('로드된 bookmarks: $bookmarks');
 
         // 비동기 작업 병렬 처리
         final tasks = mandalarts.map((mandalart) async {
@@ -74,9 +79,9 @@ class _MyGoalState extends State<MyGoal> {
         failedIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
-        inProgressIDs.sort((a, b) {
+        /*inProgressIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
-        });
+        });*/
         successIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
@@ -190,6 +195,7 @@ class _MyGoalState extends State<MyGoal> {
     _pageController.dispose(); // 메모리 누수 방지
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -263,7 +269,7 @@ class _MyGoalState extends State<MyGoal> {
                             child: Text(
                               description,
                               style: const TextStyle(
-                                height: 1.5,
+                                  height: 1.5,
                                   color: Colors.white,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w200),
@@ -277,7 +283,6 @@ class _MyGoalState extends State<MyGoal> {
                   Container(
                     width: 40,
                     height: 27,
-                    
                     decoration: BoxDecoration(
                       color: const Color(0xff303030),
                       borderRadius: BorderRadius.circular(25),
@@ -285,21 +290,22 @@ class _MyGoalState extends State<MyGoal> {
                           color: const Color(0xff575757), width: 0.5), // 테두리 색상
                     ),
                     child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfileEdit(
-                                selectedImage: selectedImage,
-                              ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfileEdit(
+                              selectedImage: selectedImage,
                             ),
-                          );
-                        },
-                        child: const Icon(
-                  Icons.edit,
-                  color: Color.fromARGB(255, 106, 106, 106),
-                  size: 17,
-                ),),
+                          ),
+                        );
+                      },
+                      child: const Icon(
+                        Icons.edit,
+                        color: Color.fromARGB(255, 106, 106, 106),
+                        size: 17,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -316,7 +322,6 @@ class _MyGoalState extends State<MyGoal> {
                   Container(
                     width: 40,
                     height: 27,
-                    
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 44, 44, 44),
                       borderRadius: BorderRadius.circular(25),
@@ -324,20 +329,20 @@ class _MyGoalState extends State<MyGoal> {
                           color: const Color(0xff575757), width: 0.5), // 테두리 색상
                     ),
                     child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MyGoalAdd()),
-                      );
-                        },
-                        child: const Icon(
-                  Icons.add,
-                  color: Color.fromARGB(255, 106, 106, 106),
-                  size: 22,
-                ),),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyGoalAdd()),
+                        );
+                      },
+                      child: const Icon(
+                        Icons.add,
+                        color: Color.fromARGB(255, 106, 106, 106),
+                        size: 22,
+                      ),
+                    ),
                   ),
-                  
                 ],
               ),
               const SizedBox(height: 30),
@@ -395,6 +400,15 @@ class _MyGoalState extends State<MyGoal> {
                         List<String> photoList = (photos[mandalartId] ?? [])
                             .map<String>((photo) => photo['path'].toString())
                             .toList();
+
+                        String bookmark = bookmarks.firstWhere(
+                              (element) =>
+                                  element['mandalartId'] ==
+                                  mandalartId, // mandalartId와 비교
+                              orElse: () =>
+                                  {'bookmark': ''}, // 일치하는 항목이 없을 경우 빈 문자열 반환
+                            )['bookmark'] ??
+                            '';
 
                         return GoalCard(
                           mandalartId: mandalartId,
@@ -502,9 +516,9 @@ class _MyGoalState extends State<MyGoal> {
                             child: Text(
                               item['name']!,
                               style: const TextStyle(
-                                color: backgroundColor,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.5),
+                                  color: backgroundColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12.5),
                             ),
                           ),
                         ),
@@ -585,9 +599,9 @@ class _MyGoalState extends State<MyGoal> {
                             child: Text(
                               item['name']!,
                               style: const TextStyle(
-                                color: backgroundColor,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12.5),
+                                  color: backgroundColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12.5),
                             ),
                           ),
                         ),
