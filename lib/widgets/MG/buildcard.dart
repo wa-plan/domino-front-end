@@ -2,8 +2,9 @@ import 'package:domino/screens/MG/mygoal_goal_detail.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:domino/apis/services/mg_services.dart';
 
-class GoalCard extends StatelessWidget {
+class GoalCard extends StatefulWidget {
   final String mandalartId;
   final String name;
   final String status;
@@ -11,7 +12,7 @@ class GoalCard extends StatelessWidget {
   final String dday;
   final String color;
   final int successNum;
-  final bool bookmark;
+  final String bookmark;
   final Function(String id, String action) onBookmarkToggle;
 
   const GoalCard(
@@ -27,10 +28,51 @@ class GoalCard extends StatelessWidget {
       required this.onBookmarkToggle});
 
   @override
+  State<GoalCard> createState() => _GoalCardState();
+}
+
+class _GoalCardState extends State<GoalCard> {
+  late bool isBookmarked;
+  late Color starColor;
+
+  Future<void> _mandaBookmark(String mandalartId, String bookmark) async {
+    // 서버에 북마크 상태 전송
+    final success = await MandaBookmarkService.MandaBookmark(
+      id: int.parse(mandalartId),
+      bookmark: bookmark,
+    );
+    if (success) {
+      print('북마크 상태 업데이트 성공');
+    } else {
+      print('북마크 상태 업데이트 실패');
+    }
+  }
+
+  void _toggleBookmark() {
+    // 북마크 상태와 색상 토글
+    setState(() {
+      isBookmarked = !isBookmarked;
+      starColor =
+          isBookmarked ? mainGold : const Color.fromARGB(255, 62, 62, 62);
+    });
+    // 서버로 북마크 상태 전송
+    _mandaBookmark(
+        widget.mandalartId, isBookmarked ? 'BOOKMARK' : 'UNBOOKMARK');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // 초기 bookmark 상태에 따라 색상 설정
+    isBookmarked = widget.bookmark == 'BOOKMARK';
+    starColor = isBookmarked ? mainGold : const Color.fromARGB(255, 62, 62, 62);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colorValue =
-        int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
-    int ddayParsed = int.parse(dday);
+        int.parse(widget.color.replaceAll('Color(', '').replaceAll(')', ''));
+    int ddayParsed = int.parse(widget.dday);
     final List<Color> colors = _getColorsByCondition(Color(colorValue));
 
     return GestureDetector(
@@ -39,12 +81,12 @@ class GoalCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => MyGoalDetail(
-              id: mandalartId,
-              name: name,
-              status: status,
-              photoList: photoList,
+              id: widget.mandalartId,
+              name: widget.name,
+              status: widget.status,
+              photoList: widget.photoList,
               dday: ddayParsed,
-              color: color,
+              color: widget.color,
               colorValue: colorValue,
             ),
           ),
@@ -65,21 +107,16 @@ class GoalCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      onTap: () => onBookmarkToggle(
-                        mandalartId,
-                        bookmark ? "UNBOOKMARK" : "BOOKMARK",
-                      ),
+                      onTap: _toggleBookmark,
                       child: Icon(
                         Icons.star,
-                        color: bookmark
-                            ? mainGold
-                            : const Color.fromARGB(255, 62, 62, 62),
+                        color: starColor,
                         size: 23,
                       ),
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      name,
+                      widget.name,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -110,7 +147,7 @@ class GoalCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                if (photoList.isEmpty)
+                if (widget.photoList.isEmpty)
                   Container(
                     decoration: BoxDecoration(
                       color: const Color(0xff303030),
@@ -130,7 +167,7 @@ class GoalCard extends StatelessWidget {
                     width: 250,
                     height: 85,
                     child: CarouselSlider.builder(
-                      itemCount: photoList.length.clamp(1, 3),
+                      itemCount: widget.photoList.length.clamp(1, 3),
                       itemBuilder: (context, index, realIndex) {
                         return Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -139,7 +176,8 @@ class GoalCard extends StatelessWidget {
                       options: CarouselOptions(
                         height: 85,
                         autoPlay: true,
-                        viewportFraction: photoList.length == 1 ? 1.0 : 0.9,
+                        viewportFraction:
+                            widget.photoList.length == 1 ? 1.0 : 0.9,
                         enlargeCenterPage: true,
                       ),
                     ),
@@ -158,7 +196,7 @@ class GoalCard extends StatelessWidget {
                               fontSize: 12),
                         ),
                         Text(
-                          '$successNum개',
+                          '${widget.successNum}개',
                           style: const TextStyle(
                             color: Color(0xffFCFF62),
                             fontWeight: FontWeight.w600,
@@ -229,7 +267,6 @@ class GoalCard extends StatelessWidget {
                           width: 13,
                           height: 36.0, // 네 번째 높이 (예: 30 추가)
                         ),
-                        
                       ],
                     )
                   ],
