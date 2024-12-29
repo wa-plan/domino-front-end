@@ -48,7 +48,7 @@ class _ProfileEditState extends State<ProfileEdit> {
 
   Future<bool> _editImage(String image) async {
     try {
-      final success = await AddProfileImage.addImage(image: image);
+      final success = await UploadImage.uploadImage(image: image);
       return success;
     } catch (e) {
       debugPrint('Error in _editImage: $e');
