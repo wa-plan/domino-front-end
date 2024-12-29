@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:domino/apis/services/mg_services.dart';
 import 'package:image_picker/image_picker.dart' as image_picker;
 import 'package:domino/styles.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:domino/widgets/MG/calender.dart';
 
 class MyGoalAdd extends StatefulWidget {
   const MyGoalAdd({super.key});
@@ -31,7 +31,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
     final name = _nameController.text;
     final description = _descriptionController.text;
     final color = _selectedColor.toString();
-    final date = selectedDate;
+    final DateTime date = _selectedDate!; // selectedDate를 그대로 DateTime 형식으로 처리
 
     // 이미지 파일 경로 추출
     final picturePaths = [
@@ -39,27 +39,65 @@ class _MyGoalAddState extends State<MyGoalAdd> {
       ..._combinedImages
     ];
 
-    // 서버에 이미지 업로드
-    uploadedImageResponse = (await AddProfileImage.addImage(image: picturePaths[0])) as String?; // 첫 번째 이미지 업로드
-    if (uploadedImageResponse != null) {
-      print('이미지 업로드 성공: $uploadedImageResponse');
+    print(picturePaths);
+
+    // 이미지 업로드 후 서버에 보낼 이미지 URL 리스트를 담을 변수
+    List<String> uploadedImageUrls = [];
+
+    // 이미지 업로드 함수
+    Future<void> uploadMultipleImages(List<String> imagePaths) async {
+  // The base URL of the server
+  const String baseUrl = 'http://13.124.78.26:8080/s3/upload';
+
+  // 각 이미지를 업로드한 후 응답을 받기 위한 Future 리스트
+  List<Future<String?>> uploadFutures = imagePaths.map((imagePath) async {
+    // Prepend the base URL to the image path
+    String fullImagePath = '$baseUrl/$imagePath'; 
+
+    // Upload logic with the full image path
+    bool uploadSuccess = await UploadImage.uploadImage(image: fullImagePath);
+
+    if (uploadSuccess) {
+      // 업로드 성공 시 응답을 반환
+      return UploadImage.responseBody; // 각 이미지의 응답 본문
+    } else {
+      // 실패 시 null 반환
+      return null;
+    }
+  }).toList();
+
+  // 모든 업로드가 완료될 때까지 기다림
+  List<String?> responses = await Future.wait(uploadFutures);
+
+  // 응답 결과 출력 및 업로드된 이미지 URL 리스트에 추가
+  for (var response in responses) {
+    if (response != null) {
+      print('이미지 업로드 성공: $response');
+      uploadedImageUrls.add(response); // 업로드된 이미지 URL을 추가
     } else {
       print('이미지 업로드 실패');
     }
+  }
+}
+
+
+    // 이미지 업로드 진행
+    await uploadMultipleImages(picturePaths);
 
     // 서버에 보낼 데이터 출력
     print('Name: $name');
     print('Description: $description');
     print('Color: $color');
     print('Date: $date');
-    print('Picture Paths: $picturePaths');
+    print('Uploaded Image URLs: $uploadedImageUrls');
 
+    // AddGoalService.addGoal API 호출, 업로드된 이미지 URL 리스트를 전달
     final success = await AddGoalService.addGoal(
       name: name,
       description: description,
       color: color,
-      date: date!,
-      pictures: picturePaths,
+      date: date,
+      pictures: uploadedImageUrls, // 업로드된 이미지 URL을 전달
     );
 
     if (success) {
@@ -89,10 +127,11 @@ class _MyGoalAddState extends State<MyGoalAdd> {
   }
 
   // 날짜 형식을 변환하는 메서드
-  String convertDateTimeDisplay(String date, String text) {
+  String convertDateTimeDisplay(String date) {
     final DateFormat displayFormatter = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
     final DateFormat serverFormatter = DateFormat('yyyy-MM-dd');
     final DateTime displayDate = displayFormatter.parse(date);
+
     return serverFormatter.format(displayDate);
   }
 
@@ -107,6 +146,8 @@ class _MyGoalAddState extends State<MyGoalAdd> {
       _combinedImages.remove(imagePath); // 이미지 리스트에서 제거
     });
   }
+
+  DateTime? _selectedDate; // 상위 화면에서 사용하는 상태 변수
 
   @override
   Widget build(BuildContext context) {
@@ -155,21 +196,9 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Question(number: '1', question: '어떤 목표인가요?'),
-                      Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 13.0, vertical: 5.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff303030),
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(
-                          color: const Color(0xff575757), width: 0.5), // 테두리 색상
-                    ),
-                    child: const Text(
-                          '필수',
-                          style:
-                              TextStyle(color: Color(0xff979797), fontSize: 11),
-                        )),
-                  
+                      const Tag(Color.fromARGB(255, 59, 59, 59),
+                              Colors.transparent, '필수')
+                          .tag()
                     ],
                   ),
                   const SizedBox(height: 13),
@@ -191,22 +220,11 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Question(number: '2', question: '언제까지 목표를 이루고 싶나요?'),
-                      Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 13.0, vertical: 5.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff303030),
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(
-                          color: const Color(0xff575757), width: 0.5), // 테두리 색상
-                    ),
-                    child: const Text(
-                          '필수',
-                          style:
-                              TextStyle(color: Color(0xff979797), fontSize: 11),
-                        )),
-                      
+                      const Question(
+                          number: '2', question: '언제까지 목표를 이루고 싶나요?'),
+                      const Tag(Color.fromARGB(255, 59, 59, 59),
+                              Colors.transparent, '필수')
+                          .tag()
                     ],
                   ),
                   const SizedBox(height: 13),
@@ -219,19 +237,20 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                         height: 40,
                         padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(3),
-                            border: Border.all(
-                                color: const Color.fromARGB(255, 147, 147, 147),
-                                width: 0.5)),
+                          borderRadius: BorderRadius.circular(3),
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 147, 147, 147),
+                            width: 0.5,
+                          ),
+                        ),
                         child: Text(
-                          selectedDate != null
+                          _selectedDate != null
                               ? DateFormat('yyyy년 MM월 dd일')
-                                  .format(selectedDate!)
-                              // 날짜만 포맷팅
+                                  .format(_selectedDate!) // 선택된 날짜 포맷팅
                               : '달력을 열어 날짜를 선택해주세요.', // null인 경우 출력
                           style: TextStyle(
-                            color: selectedDate != null
-                                ? Colors.white // 날짜만 포맷팅
+                            color: _selectedDate != null
+                                ? Colors.white
                                 : const Color.fromARGB(255, 113, 113, 113),
                             fontSize: 13,
                             fontWeight: FontWeight.w400,
@@ -239,9 +258,21 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Button(Colors.black, Colors.white, '달력', () {
-                        _showCalendarPopup(context);
-                      }).button(),
+                      Button(
+                        Colors.black,
+                        Colors.white,
+                        '달력',
+                        () {
+                          showCalendarPopup(context, (DateTime? selectedDate) {
+                            if (selectedDate != null) {
+                              setState(() {
+                                _selectedDate = selectedDate; // 상위 화면의 변수에 저장
+                              });
+                            }
+                            print(_selectedDate); // 선택된 날짜 확인
+                          });
+                        },
+                      ).button(),
                     ],
                   ),
                   const SizedBox(height: 13),
@@ -388,20 +419,9 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Question(number: '5', question: '목표를 색깔로 표현해주세요.'),
-                      Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 13.0, vertical: 5.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff303030),
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(
-                          color: const Color(0xff575757), width: 0.5), // 테두리 색상
-                    ),
-                    child: const Text(
-                          '필수',
-                          style:
-                              TextStyle(color: Color(0xff979797), fontSize: 11),
-                        )),
+                      const Tag(Color.fromARGB(255, 59, 59, 59),
+                              Colors.transparent, '필수')
+                          .tag()
                     ],
                   ),
                   const SizedBox(
@@ -467,7 +487,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('목표를 입력해 주세요.')),
                         );
-                      } else if (!_isChecked && selectedDate == null) {
+                      } else if (!_isChecked && _selectedDate == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('목표 날짜를 선택해 주세요.')),
                         );
@@ -486,112 +506,6 @@ class _MyGoalAddState extends State<MyGoalAdd> {
           ),
         ),
       ),
-    );
-  }
-
-  void _showCalendarPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        DateTime focusedDay = DateTime.now();
-        DateTime? tempSelectedDate;
-
-        return AlertDialog(
-          backgroundColor: const Color(0xff262626),
-          contentPadding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          content: StatefulBuilder(
-            builder: (context, setState) {
-              return SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: 350,
-                child: TableCalendar(
-                  locale: 'ko_KR',
-                  firstDay: DateTime(2024),
-                  lastDay: DateTime(2050),
-                  focusedDay: focusedDay,
-                  selectedDayPredicate: (day) =>
-                      isSameDay(tempSelectedDate, day),
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      tempSelectedDate = selectedDay; // 임시 선택 날짜 업데이트
-                      focusedDay = focusedDay; // 포커스된 날짜 업데이트
-                    });
-                  },
-                  calendarStyle: const CalendarStyle(
-                    selectedTextStyle: TextStyle(
-                      color: backgroundColor, // 선택된 날짜의 텍스트 색상
-                      fontWeight: FontWeight.w600, // 텍스트 굵기
-                    ),
-                    selectedDecoration: BoxDecoration(
-                      color: mainRed, // 선택된 날짜의 배경색
-                      shape: BoxShape.circle,
-                    ),
-                    todayTextStyle: TextStyle(
-                      color: backgroundColor, // 선택된 날짜의 텍스트 색상
-                      fontWeight: FontWeight.w600, // 텍스트 굵기
-                    ),
-                    todayDecoration: BoxDecoration(
-                      color: Color(0xFF5B5B5B), // 오늘 날짜의 배경색
-                      shape: BoxShape.circle,
-                    ),
-                    weekendTextStyle:
-                        TextStyle(color: Colors.grey), // 주말 텍스트 색상
-                  ),
-                  headerStyle: const HeaderStyle(
-                    formatButtonVisible: false, // 주/월 변경 버튼 숨기기
-                    titleCentered: true, // 헤더의 날짜 중앙 정렬
-                    leftChevronIcon: Icon(
-                      Icons.arrow_back_ios,
-                      color: Color(0xffD4D4D4),
-                      size: 17,
-                    ),
-                    rightChevronIcon: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Color(0xffD4D4D4),
-                      size: 17,
-                    ),
-                    titleTextStyle: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  daysOfWeekStyle: const DaysOfWeekStyle(
-                    weekdayStyle: TextStyle(color: Colors.grey),
-                    weekendStyle: TextStyle(color: Colors.grey),
-                  ),
-                ),
-              );
-            },
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Button(Colors.black, Colors.white, '취소', () {
-                  Navigator.pop(context); // 팝업 닫기
-                }).button(),
-                Button(
-                  Colors.black,
-                  Colors.white,
-                  '완료',
-                  () {
-                    if (tempSelectedDate != null) {
-                      setState(() {
-                        selectedDate = tempSelectedDate; // 상위 상태에 선택된 날짜 저장
-                      });
-                      print(selectedDate);
-                    }
-                    Navigator.pop(context); // 팝업 닫기
-                  },
-                ).button(),
-              ],
-            )
-          ],
-        );
-      },
     );
   }
 }

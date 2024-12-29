@@ -958,8 +958,10 @@ class CheeringService {
   }
 }*/
 
-class AddProfileImage {
-  static Future<bool> addImage({
+class UploadImage {
+  static String? responseBody; // response.body를 저장할 변수
+
+  static Future<bool> uploadImage({
     required String image,
   }) async {
     final prefs = await SharedPreferences.getInstance();
@@ -996,6 +998,8 @@ class AddProfileImage {
       print('서버 응답 상태 코드: ${response.statusCode}');
       print('서버 응답 본문: ${response.body}');
 
+      responseBody = response.body; // response.body 값을 저장
+
       if (response.statusCode >= 200 && response.statusCode < 300) {
         Fluttertoast.showToast(
           msg: '프로필 이미지가 성공적으로 저장되었습니다.',
@@ -1007,7 +1011,7 @@ class AddProfileImage {
         return true;
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(
-          msg: '인증 실패: ${response.body}',
+          msg: '인증 실패: $responseBody',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,
@@ -1015,7 +1019,7 @@ class AddProfileImage {
         );
       } else {
         Fluttertoast.showToast(
-          msg: '이미지 저장 실패: ${response.body}',
+          msg: '이미지 저장 실패: $responseBody',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.red,
@@ -1034,4 +1038,9 @@ class AddProfileImage {
       return false;
     }
   }
+
+  static String? getResponseBody() {
+    return responseBody; // response.body 값을 반환
+  }
 }
+

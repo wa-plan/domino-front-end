@@ -158,6 +158,7 @@ class DPMainGoal {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(3),
           color: color,
         ),
         child: Text(
@@ -516,13 +517,8 @@ class CustomTextField {
   final bool obscureText;
   final int maxLines;
 
-  const CustomTextField(
-    this.hintText,
-    this.controller,
-    this.validator,
-    this.obscureText,
-    this.maxLines
-  );
+  const CustomTextField(this.hintText, this.controller, this.validator,
+      this.obscureText, this.maxLines);
 
   Widget textField({
     bool obscureText = false,
@@ -549,27 +545,27 @@ class CustomTextField {
             borderSide: const BorderSide(
                 color: Color.fromARGB(255, 147, 147, 147), width: 0.5)),
         suffixIcon: controller.text.isNotEmpty
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.start, // 아이콘 상단 정렬
-              children: [
-                GestureDetector(
-                  onTap: onClear ??
-                      () {
-                        controller.clear();
-                      },
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(10, 13, 10, 10),
-                    child: const Icon(
-                      Icons.cancel,
-                      size: 14,
-                      color: Color.fromARGB(255, 98, 98, 98),
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start, // 아이콘 상단 정렬
+                children: [
+                  GestureDetector(
+                    onTap: onClear ??
+                        () {
+                          controller.clear();
+                        },
+                    child: Container(
+                      padding: const EdgeInsets.fromLTRB(10, 13, 10, 10),
+                      child: const Icon(
+                        Icons.cancel,
+                        size: 14,
+                        color: Color.fromARGB(255, 98, 98, 98),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            )
-          : null,
-    ),
+                ],
+              )
+            : null,
+      ),
       validator: validator,
     );
   }
@@ -604,8 +600,6 @@ class Question extends StatelessWidget {
     );
   }
 }
-
-
 
 class ColorOption2 extends StatelessWidget {
   final Color colorCode;
@@ -642,6 +636,28 @@ class ColorOption2 extends StatelessWidget {
   }
 }
 
+class Tag {
+  final Color bgColor;
+  final Color borderColor;
+  final String text;
 
+  const Tag(
+    this.bgColor,
+    this.borderColor,
+    this.text,
+  );
 
-
+  Widget tag() {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 5.0),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(25),
+          border: Border.all(color: borderColor, width: 0.5), // 테두리 색상
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(color: Color(0xff979797), fontSize: 11),
+        ));
+  }
+}
