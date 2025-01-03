@@ -20,9 +20,9 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
   //String Clicked = 'no';
   List<String> _subGoals = [];
   bool _isLoading = false;
-  String goal = "운동";
+  String goal = "의미있는 2025년 보내기";
   String prompt =
-      "핵심목표 '운동'을(를) 달성하기 위한 13글자 이내의 세부 목표 6가지를 추천해 주세요. 각각 간결한 구 형태로 작성해 주세요.";
+      "핵심목표 '의미있는 2025년 보내기'을(를) 달성하기 위한 13글자 이내의 세부 목표 6가지를 추천해 주세요. 각각 간결한 구 형태로 작성해 주세요.";
 
   Future<void> _fetchSubGoals() async {
     if (prompt.isEmpty) {

@@ -19,9 +19,9 @@ class DPcreateInput2Page extends StatefulWidget {
 class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
   List<String> _subGoals = [];
   bool _isLoading = false;
-  String goal = "의미있는 2025년 보내기";
+  String goal = "갓생살기";
   String prompt =
-      "핵심목표 '의미있는 2025년 보내기'을(를) 달성하기 위한 13글자 이내의 세부 목표 6가지를 추천해 주세요. 각각 간결한 구 형태로 작성해 주세요.";
+      "핵심목표 '갓생살기'을(를) 달성하기 위한 13글자 이내의 세부 목표 6가지를 추천해 주세요. 각각 간결한 구 형태로 작성해 주세요.";
   Future<void> _fetchSubGoals() async {
     setState(() {
       _isLoading = true; // 로딩 상태로 설정
