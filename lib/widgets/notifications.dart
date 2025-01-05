@@ -1,4 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 curl -X 'PUT' ;
   'http://13.124.78.26:8080/api/user/morning_alarm' ;
@@ -6,7 +10,7 @@ curl -X 'PUT' ;
   -H 'Content-Type: application/json' ;
   -d '{
   "alarm": "ON"
-}'
+};
 
 curl -X 'PUT' ;
   'http://13.124.78.26:8080/api/user/night_alarm' ;
@@ -14,52 +18,109 @@ curl -X 'PUT' ;
   -H 'Content-Type: application/json' ;
   -d '{
   "alarm": "ON"
-}'
-         
-showNotification() async {
-await flutterLocalNotificationsPlugin.zonedSchedule(
-0, //알림 id
-'도닦기',
-'오늘이 거의 끝나간다... 오늘의 도미노를 체크해줘 ! 
-From. 도민호',
+};
 
-NotificationDetails(
-android: AndroidNotificationDetails('channelId', 'channelName')),
-uiLocalNotificationDateInterpretation:
-UILocalNotificationDateInterpretation.absoluteTime,
-androidAllowWhileIdle: true,
+class Alarm extends Statefulwidget {
+}
+const AlarmPage({Key? key}): super(key: key);
+@override
+State<Alarm> createState() => _AlarmPageState();
+class _AlarmPageState extends State<AlarmPage> {
+final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin FlutterLocalNotificationsPlugin();
+
+@override
+void initState() {
+super.initState();
+_init();
+  }
+}
+
+Future<void> configureTime() async {
+tz.initializeTimeZones();
+final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone(); tz.setLocalLocation(tz.getLocation(timeZoneName!));
+Future<void> initializeNoti() async {
+const Android InitializationSettings initializationSettingsAndroid
+=
+AndroidInitializationSettings('@mipmap/ic_launcher');
+const InitializationSettings initializationSettings =
+InitializationSettings(
+android: initializationSettingsAndroid,
+await _flutterLocalNotificationsPlugin.initialize(initializationSettings);)
+}
+
+required int hour,
+Future<void> _MessasgeSetting({
+required int minutes,
+required message,
+}) async {
+final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+tz.TZDateTime scheduledDate = tz.TZDateTime(
+tz.local,
+now. year,
+now.month,
+now.day,
+hour, 
+minutes,
 );
-         
-/* 시간 설정 */
-makeDate(20h, 10m, 20s) {
-var now = tz.TZDateTime.now(tz.local);
-var when = tz.TZDateTime(tz.local, now.year, now.month, now.day, h, m, s);
-if (when.isBefore(now)) {
-return when.add(Duration(days: 1));
-} else {
-return when;
 
-showNotification() async {
-await flutterLocalNotificationsPlugin.zonedSchedule(
-0, //알림 id
-'오늘의 할일!'
-'오늘 해야하는 일은 총 [number]개야!'
-'그럼 오늘도 같이 열심히 수련하자 !!'
-
-[goalName]        
-
+await _flutterLocalNotificationsPlugin.zonedSchedule(
+'Push_notification',
+message,
+scheduledDate,
 NotificationDetails(
-android: AndroidNotificationDetails('channelId', 'channelName')),
+android: AndroidNotificationDetails(
+'channel id',
+'channel name'
+importance: Importance.max,
+priority: Priority.high,
+ongoing: true,
+styleInformation: BigTextStyleInformation (message),
+icon: 'assets/img/dominho.png',
+),
+
+androidAllowwhileIdle: true,
 uiLocalNotificationDateInterpretation:
-UILocalNotificationDateInterpretation.absoluteTime,
-androidAllowWhileIdle: true,
+UILocalNotificationDateInterpretation. absoluteTime,
+matchDateTimeComponents: DateTimeComponents.time,
 );
-         
-/* 시간 설정 */
-makeDate(10h, 00m, 00s) {
-var now = tz.TZDateTime.now(tz.local);
-var when = tz.TZDateTime(tz.local, now.year, now.month, now.day, h, m, s);
-if (when.isBefore(now)) {
-return when.add(Duration(days: 1));
-} else {
-return when;
+}
+Future<void> _init() async {
+await configureTime();
+await initializeNotice();
+}
+
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+body: Container(
+child: Center(
+child: ElevatedButton(
+onPressed: () async {
+final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+await _MessasgeSetting(
+message: '오늘의 도미노를 체크해줘!',
+);
+},
+child: Text('오늘이 거의 끝나간다... 오늘의 도미노를 체크해줘 !\nFrom. 도민호'),
+)),
+)
+)
+}
+
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+body: Container(
+child: Center(
+child: ElevatedButton(
+onPressed: () async {
+final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+await _MessasgeSetting(
+message: '오늘도 화이팅!',
+);
+},
+child: Text('상쾌한 마음으로 오늘 하루도 화이팅해보자!!\nFrom. 도민호'),
+)),
+)
+)
+}
