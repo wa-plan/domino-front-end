@@ -171,7 +171,7 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                       children: [
                         Button(Colors.black, Colors.white, '완료', 
                         () {
-                            
+                            print(_selectedImage);
                             Navigator.push(
                                     context,
                                     MaterialPageRoute(

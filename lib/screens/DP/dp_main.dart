@@ -22,11 +22,13 @@ class _DPMainState extends State<DPMain> {
   List<Map<String, dynamic>> emptyMainGoals = [];
   final PageController _pageController = PageController();
 
+
   @override
   void initState() {
     super.initState();
     _mainGoalList();
   }
+
 
   void _mainGoalList() async {
     List<Map<String, dynamic>>? goals =

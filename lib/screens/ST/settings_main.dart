@@ -1,4 +1,5 @@
 import 'package:domino/styles.dart';
+import 'package:domino/widgets/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/ST/account_management.dart';
 import 'package:domino/screens/ST/contact_us.dart';
@@ -228,7 +229,8 @@ class _SettingsMainState extends State<SettingsMain> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ContactUs(),
+                    //builder: (context) => const ContactUs(),
+                    builder: (context) => const HomeScreen(),
                   ),
                 );
               },
@@ -302,7 +304,7 @@ class _SettingsMainState extends State<SettingsMain> {
           const SizedBox(height: 9),
           Row(
             children: [
-              const Text('아침 알림',
+              const Text('동기부여 알림',
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w600)),
               const SizedBox(width: 13),
@@ -321,7 +323,7 @@ class _SettingsMainState extends State<SettingsMain> {
                     activeTrackColor: const Color(0xff18AD00),
                     inactiveTrackColor: const Color(0xff5D5D5D),
                     inactiveThumbColor: Colors.white,
-                    value: isMorningAlarmOn!,
+                    value: isMorningAlarmOn != false ? true : false,
                     onChanged: (value) async {
                       // isMorningAlarmOn 값을 업데이트하고 알람을 업데이트하는 비동기 작업 실행
                       setState(() {
@@ -337,7 +339,7 @@ class _SettingsMainState extends State<SettingsMain> {
           const SizedBox(height: 13),
           Row(
             children: [
-              const Text('밤 알림',
+              const Text('리마인드 알림',
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w600)),
               const SizedBox(width: 13),
@@ -356,7 +358,7 @@ class _SettingsMainState extends State<SettingsMain> {
                     activeTrackColor: const Color(0xff18AD00),
                     inactiveTrackColor: const Color(0xff5D5D5D),
                     inactiveThumbColor: Colors.white,
-                    value: isNightAlarmOn!,
+                    value: isNightAlarmOn != false ? true : false,
                     onChanged: (value) async {
                       // isMorningAlarmOn 값을 업데이트하고 알람을 업데이트하는 비동기 작업 실행
                       setState(() {
