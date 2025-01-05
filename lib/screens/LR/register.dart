@@ -58,10 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage('assets/img/BG_image2.png'), // 배경 이미지
-        ),
+        color: backgroundColor,
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,

@@ -345,10 +345,11 @@ class AddThirdGoalService {
   }
 }
 
+
 class DeleteMandalartService {
   static Future<bool> deleteMandalart(
     BuildContext context,
-    int mandalartId,
+    int secondGoalId,
   ) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
@@ -365,7 +366,7 @@ class DeleteMandalartService {
       return false;
     }
 
-    final url = Uri.parse('$baseUrl/api/mandalart/$mandalartId');
+    final url = Uri.parse('$baseUrl/api/secondgoal/$secondGoalId');
 
     try {
       final response = await http.delete(

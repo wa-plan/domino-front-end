@@ -74,46 +74,52 @@ class _MandalartGrid3 extends State<MandalartGrid3> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-        ),
-        itemCount: 9,
-        itemBuilder: (context, index) {
-          if (index == 4) {
-            return GestureDetector(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DPdetail3Page(
-                    mandalart: widget.mandalart,
-                    secondGoals: widget.secondGoals,
-                    mandalartId: widget.mandalartId,
-                    selectedSecondGoal: selectedSecondGoal,
-                    firstColor: widget.firstColor,
+    return InteractiveViewer(
+      panEnabled: true, // Allow panning (dragging)
+        scaleEnabled: true, // Allow zooming
+        minScale: 0.5, // Minimum zoom scale (50%)
+        maxScale: 3.0, // Maximum zoom scale (300%)
+      child: SizedBox(
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+          ),
+          itemCount: 9,
+          itemBuilder: (context, index) {
+            if (index == 4) {
+              return GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DPdetail3Page(
+                      mandalart: widget.mandalart,
+                      secondGoals: widget.secondGoals,
+                      mandalartId: widget.mandalartId,
+                      selectedSecondGoal: selectedSecondGoal,
+                      firstColor: widget.firstColor,
+                    ),
                   ),
                 ),
-              ),
-              child: SizedBox(
-                width: 100,
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  children: [
-                    for (int i = 0; i < 4; i++)
-                      DPGrid2(i, widget.mandalart, widget.secondGoals, 8, null).dpGrid2(),
-                    DPGrid1(widget.mandalart,
-                                ColorTransform(widget.firstColor).colorTransform(), 8)
-                            .dpGrid1(),
-                    for (int i = 5; i < 9; i++)
-                      DPGrid2(i, widget.mandalart, widget.secondGoals, 8, null).dpGrid2(),
-                  ],
+                child: SizedBox(
+                  width: 100,
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    children: [
+                      for (int i = 0; i < 4; i++)
+                        DPGrid2(i, widget.mandalart, widget.secondGoals, 8, null).dpGrid2(),
+                      DPGrid1(widget.mandalart,
+                                  ColorTransform(widget.firstColor).colorTransform(), 8)
+                              .dpGrid1(),
+                      for (int i = 5; i < 9; i++)
+                        DPGrid2(i, widget.mandalart, widget.secondGoals, 8, null).dpGrid2(),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
-          return buildGridCell(index);
-        },
+              );
+            }
+            return buildGridCell(index);
+          },
+        ),
       ),
     );
   }
