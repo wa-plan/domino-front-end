@@ -39,6 +39,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   url_launcher: ^6.1.10
   auto_size_text: ^3.0.0
+  flutter_native_splash: ^2.4.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -96,21 +97,22 @@ flutter:
     - assets/img/profile_smp6.png
     - assets/img/profile_smp7.png
     - assets/img/profile_smp8.png
-    - assets\img\completed_goals.png #쓰러뜨린 목표
-    - assets\img\failed_goals.png #쓰러뜨리지 못한 목표
-    - assets\img\if_no_img.png
-    - assets\img\domino_calculate.png
-    - assets\img\domino.png
-    - assets\img\MG_domino.png
+    - assets/img/completed_goals.png #쓰러뜨린 목표
+    - assets/img/failed_goals.png #쓰러뜨리지 못한 목표
+    - assets/img/if_no_img.png
+    - assets/img/domino_calculate.png
+    - assets/img/domino.png
+    - assets/img/MG_domino.png
     - assets/img/profile_smp9.png
     - assets/img/domino_final.mp4 #도미노 쓰러지는 영상
     - assets/img/confetti_final.mp4 #폭죽 터지는 영상
     - assets/config/.env
-    - assets\img\MG_white_yellow.png
-    - assets\img\MG_blue.png
-    - assets\img\MG_green.png
-    - assets\img\MG_red.png
-    - assets\img\MG_orange.png
+    - assets/img/MG_white_yellow.png
+    - assets/img/MG_blue.png
+    - assets/img/MG_green.png
+    - assets/img/MG_red.png
+    - assets/img/MG_orange.png
+    - assets/img/splash.png
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

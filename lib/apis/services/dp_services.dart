@@ -42,6 +42,7 @@ class MainGoalListService {
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+
         List<Map<String, dynamic>> mainGoals = jsonResponse
             .map((item) => {
                   'id': item['id'],
@@ -189,13 +190,14 @@ class SecondGoalListService {
       print('서버 응답: ${response.body}');
 
       if (response.statusCode == 200) {
+
         final Map<String, dynamic> jsonResponse = json.decode(utf8.decode(response.bodyBytes));
 
         // Parsing the response to match the desired structure
         final List<Map<String, dynamic>> mainGoals = [
           {
             "mandalart": jsonResponse["mandalart"],
-            "color" : jsonResponse["color"],
+            "color": jsonResponse["color"],
             "secondGoals": (jsonResponse["secondGoals"] as List<dynamic>)
                 .map((secondGoal) => {
                       "id": secondGoal["id"],
@@ -290,7 +292,6 @@ class AddThirdGoalService {
 
       for (int j = 0; j < currentThirdGoals.length; j++) {
         final thirdGoalName = currentThirdGoals[j];
-
 
         final body = json.encode({
           "secondGoalId": secondGoalId[i],
@@ -429,7 +430,8 @@ class EditSecondGoalService {
     final url = Uri.parse('http://13.124.78.26:8080/api/secondgoal');
 
     if (secondGoalId.length != newSecondGoal.length) {
-      throw Exception("Mismatch in the number of secondGoalId and newSecondGoal");
+      throw Exception(
+          "Mismatch in the number of secondGoalId and newSecondGoal");
     }
 
     bool allSuccess = true;
@@ -488,7 +490,6 @@ class EditSecondGoalService {
     return allSuccess;
   }
 }
-
 
 class EditGoalColorService {
   static Future<bool> editGoalColor({
@@ -571,7 +572,6 @@ class EditGoalColorService {
   }
 }
 
-
 class EditThirdGoalService {
   static Future<bool> editThirdGoal({
     required List<int> third0id,
@@ -583,7 +583,6 @@ class EditThirdGoalService {
     required List<int> third6id,
     required List<int> third7id,
     required List<int> third8id,
-    
     required List<String> third0,
     required List<String> third1,
     required List<String> third2,
@@ -614,11 +613,27 @@ class EditThirdGoalService {
 
     // List of all thirdGoalIds and corresponding goals
     List<List<int>> allThirdGoalIds = [
-      third0id, third1id, third2id, third3id, third4id, third5id, third6id, third7id, third8id
+      third0id,
+      third1id,
+      third2id,
+      third3id,
+      third4id,
+      third5id,
+      third6id,
+      third7id,
+      third8id
     ];
 
     List<List<String>> allThirdGoals = [
-      third0, third1, third2, third3, third4, third5, third6, third7, third8
+      third0,
+      third1,
+      third2,
+      third3,
+      third4,
+      third5,
+      third6,
+      third7,
+      third8
     ];
 
     // Loop through all the goal lists and send them one by one

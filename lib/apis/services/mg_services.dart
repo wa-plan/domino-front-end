@@ -505,7 +505,7 @@ class UserInfoService {
 }
 
 class UserMandaIdService {
-  static Future<List<Map<String, String>>> userManda() async {
+  static Future<Map<String, List<Map<String, String>>>> userManda() async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('authToken');
     print('저장된 토큰: $token');
@@ -518,7 +518,7 @@ class UserMandaIdService {
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
-      return [];
+      return {'mandalarts': [], 'bookmarks': []};
     }
 
     final url = Uri.parse('$baseUrl/api/mandalart');
@@ -537,21 +537,26 @@ class UserMandaIdService {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         final List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+
         List<Map<String, String>> mandaList = data.map((item) {
           String id = item['id'].toString();
           String name = item['name'];
           return {'id': id, 'name': name};
         }).toList();
 
-        /*Fluttertoast.showToast(
-          msg: '조회 성공',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );*/
+        List<Map<String, String>> bookmarkList = data.map((item) {
+          String id = item['id'].toString();
+          String bookmark = item['bookmark'];
+          return {'id': id, 'bookmark': bookmark};
+        }).toList();
 
-        return mandaList;
+        print('생성된 mandaList: $mandaList');
+        print('생성된 bookmarkList: $bookmarkList');
+
+        return {
+          'mandalarts': mandaList,
+          'bookmarks': bookmarkList,
+        };
       } else if (response.statusCode >= 400) {
         Fluttertoast.showToast(
           msg: '조회 실패: ${response.body}',
@@ -569,7 +574,7 @@ class UserMandaIdService {
           textColor: Colors.white,
         );
       }
-      return [];
+      return {'mandalarts': [], 'bookmarks': []};
     } catch (e) {
       Fluttertoast.showToast(
         msg: '오류 발생: $e',
@@ -578,7 +583,7 @@ class UserMandaIdService {
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
-      return [];
+      return {'mandalarts': [], 'bookmarks': []};
     }
   }
 }
@@ -1024,4 +1029,64 @@ class UploadImage {
   }
 }
 
+
+
+class DeleteFirstGoalService {
+  static Future<bool> deleteFirstGoal(
+    BuildContext context,
+    int mandalartId,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+
+    final url = Uri.parse('$baseUrl/api/mandalart/$mandalartId');
+
+    try {
+      final response = await http.delete(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답: ${response.body}');
+
+      if (response.statusCode == 204) {
+        // Handle successful deletion
+        return true;
+      } else {
+        Fluttertoast.showToast(
+          msg: '삭제 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        return false;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+  }
 }
