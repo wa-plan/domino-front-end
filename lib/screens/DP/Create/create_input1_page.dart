@@ -1,5 +1,6 @@
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/Create/DP_input2.dart';
+import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -139,9 +140,75 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
           titleSpacing: 0.0,
           title: Padding(
             padding: appBarPadding,
-            child: Text(
-              '플랜 만들기',
-              style: Theme.of(context).textTheme.titleLarge,
+            child:Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    PopupDialog.show(
+                        context,
+                        '지금 나가면,\n작성한 내용이 사라져!',
+                        true, // cancel
+                        false, // delete
+                        false, // signout
+                        true, //success
+                        onCancel: () {
+                      // 취소 버튼을 눌렀을 때 실행할 코드
+                      Navigator.pop(context);
+                    }, onSuccess: () async {
+                      for (int i = 0; i < 9; i++) {
+                        context
+                            .read<SaveInputtedDetailGoalModel>()
+                            .updateDetailGoal(i.toString(), "");
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        context
+                            .read<TestInputtedDetailGoalModel>()
+                            .updateTestDetailGoal(i.toString(), "");
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        context.read<GoalColor>().updateGoalColor(
+                            i.toString(), const Color(0xff929292));
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                          context
+                              .read<SaveInputtedActionPlanModel>()
+                              .updateActionPlan(i, j.toString(), "");
+                        }
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                          context
+                              .read<TestInputtedActionPlanModel>()
+                              .updateTestActionPlan(i, j.toString(), "");
+                        }
+                      }
+
+                      // 팝업 닫기
+                      Navigator.pop(context);
+
+                      // 이전 페이지로 이동
+                      Navigator.pop(context);
+
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Color(0xffD4D4D4),
+                    size: 17,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '플랜 만들기',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
             ),
           ),
           backgroundColor: backgroundColor,
@@ -154,6 +221,7 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
+
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
@@ -252,14 +320,16 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: const Color(0xff2A2A2A),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: Column(
+                  DPMainGoal(
+                                context.watch<SelectFinalGoalModel>().selectedFinalGoal,
+                                Color(int.parse(widget.firstColor
+                                    .replaceAll('Color(', '')
+                                    .replaceAll(')', ''))))
+                            .dpMainGoal(),
+                        const SizedBox(
+                          height: 45,
+                        ),
+                  Column(
                       children: [
                         Center(
                             child: SizedBox(
@@ -306,14 +376,14 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                                       const Input1(selectedDetailGoalId: 8),
                                     ]))),
                         const SizedBox(
-                          height: 5,
+                          height: 35,
                         ),
                         const Center(
                             child: Text(
                           '모든 칸을 다 채우지 않아도 괜찮아요:)',
                           style: TextStyle(
                               color: Color.fromARGB(255, 158, 158, 158),
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w300,
                               fontSize: 13),
                         )),
                         const SizedBox(
@@ -321,10 +391,9 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                         ),
                       ],
                     ),
-                  ),
                   const SizedBox(
-                    height: 10,
-                  ),
+                          height: 47,
+                        ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

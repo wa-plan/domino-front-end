@@ -3,11 +3,12 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 //color
-const backgroundColor = Color(0xff262626);
+const backgroundColor = Color(0xff222222);
 const mainRed = Color(0xffFF7A7A);
 const mainTextColor = Colors.white;
 const mainGold = Color(0xffF6C92B);
@@ -32,6 +33,7 @@ Map<Color, Color> colorPalette = {
   const Color(0xff11D1C2): const Color(0xffAAF4EF),
   Colors.transparent: const Color(0xff5C5C5C),
 };
+
 
 //Button
 class Button {
@@ -183,21 +185,32 @@ class DPInput3 {
   Widget dpInput3() {
     return Container(
       width: 80,
+      margin: const EdgeInsets.all(1.0),
+      padding: const EdgeInsets.all(5),
       decoration:
           BoxDecoration(borderRadius: BorderRadius.circular(4), color: color),
-      margin: const EdgeInsets.all(1.0),
       child: Center(
         child: TextFormField(
           initialValue: initialValue,
           onChanged: onChangedFunction,
           textAlign: TextAlign.center,
           textInputAction: TextInputAction.newline,
+          maxLength: 20, 
           maxLines: null,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(20), // 최대 15글자로 제한
+          ],
           style: const TextStyle(
             fontSize: 13,
+            fontWeight: FontWeight.w500
           ),
           decoration: const InputDecoration(
             border: InputBorder.none,
+            counterStyle: TextStyle(
+              height: 0.01,
+              fontSize: 10,
+              color: Color.fromARGB(255, 120, 120, 120)
+            )
           ),
         ),
       ),
@@ -217,6 +230,7 @@ class DPInput2 {
     return Container(
       width: 80,
       margin: const EdgeInsets.all(1.0),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(3),
         color: color,
@@ -225,10 +239,24 @@ class DPInput2 {
         child: TextFormField(
           controller: controller,
           onChanged: onChangedFunction,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 13,
+            fontWeight: FontWeight.w500
+          ),
           textAlign: TextAlign.center,
+          maxLength: 20, 
           maxLines: null,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(20), // 최대 15글자로 제한
+          ],
           decoration: const InputDecoration(
             border: InputBorder.none,
+            counterStyle: TextStyle(
+              height: 0.01,
+              fontSize: 10,
+              color: Color.fromARGB(255, 104, 104, 104)
+            )
           ),
         ),
       ),
@@ -302,10 +330,11 @@ class DPCreateGrid {
         child: AutoSizeText(
           maxLines: 3,
           minFontSize: 6,
+          maxFontSize: 10,
           overflow: TextOverflow.ellipsis,
           text,
           style: const TextStyle(
-              color: Colors.black, fontSize: 12, fontWeight: FontWeight.w400),
+              color: Colors.black, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
         ),
       ),

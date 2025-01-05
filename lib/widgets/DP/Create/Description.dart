@@ -16,7 +16,7 @@ class Description {
       collapsedIconColor: Colors.white,
       shape: const Border(),
       title: const Text(
-        '도미노 플랜 구조',
+        '도민호의 꿀팁!',
         style: TextStyle(
           color: Colors.white,
           fontSize: 14,

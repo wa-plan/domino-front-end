@@ -55,11 +55,11 @@ class _MyGoalAddState extends State<MyGoalAdd> {
     String fullImagePath = '$baseUrl/$imagePath'; 
 
     // Upload logic with the full image path
-    bool uploadSuccess = await UploadImage.uploadImage(image: fullImagePath);
+    bool uploadSuccess = await UploadImage.uploadImage(filePath: fullImagePath);
 
     if (uploadSuccess) {
       // 업로드 성공 시 응답을 반환
-      return UploadImage.responseBody; // 각 이미지의 응답 본문
+      return; // 각 이미지의 응답 본문
     } else {
       // 실패 시 null 반환
       return null;
