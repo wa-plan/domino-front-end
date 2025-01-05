@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -959,88 +960,68 @@ class CheeringService {
 }*/
 
 class UploadImage {
-  static String? responseBody; // response.body를 저장할 변수
-
   static Future<bool> uploadImage({
-    required String image,
-  }) async {
-    final prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('authToken');
-    print('저장된 토큰: $token');
+  required String filePath,
+}) async {
+  final prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString('authToken');
+  print('저장된 토큰: $token');
 
-    if (token == null) {
-      Fluttertoast.showToast(
-        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-      return false;
-    }
-
-    final url = Uri.parse('$baseUrl/s3/upload');
-
-    final body = jsonEncode({
-      'image': image,
-    });
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: body,
-      );
-
-      print('서버 응답 상태 코드: ${response.statusCode}');
-      print('서버 응답 본문: ${response.body}');
-
-      responseBody = response.body; // response.body 값을 저장
-
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        Fluttertoast.showToast(
-          msg: '프로필 이미지가 성공적으로 저장되었습니다.',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );
-        return true;
-      } else if (response.statusCode == 401) {
-        Fluttertoast.showToast(
-          msg: '인증 실패: $responseBody',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
-      } else {
-        Fluttertoast.showToast(
-          msg: '이미지 저장 실패: $responseBody',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
-      }
-      return false;
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: '오류 발생: $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-      return false;
-    }
+  if (token == null) {
+    Fluttertoast.showToast(
+      msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+    );
+    return false;
   }
 
-  static String? getResponseBody() {
-    return responseBody; // response.body 값을 반환
+  Dio dio = Dio();
+  dio.options.headers = {
+    "Authorization": "Bearer $token",
+    "Content-Type": "multipart/form-data",
+  };
+
+  String s3Url = '$baseUrl/s3/upload';
+
+  try {
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(filePath, filename: "profile_image.jpg"),
+    });
+
+    Response response = await dio.post(s3Url, data: formData);
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: '프로필 이미지가 성공적으로 업로드되었습니다.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+      return true;
+    } else {
+      Fluttertoast.showToast(
+        msg: '이미지 업로드 실패: ${response.data}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+  } on DioException catch (e) {
+    Fluttertoast.showToast(
+      msg: '업로드 중 오류 발생: ${e.response?.statusCode} - ${e.response?.data}',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+    );
+    return false;
   }
 }
 
+}

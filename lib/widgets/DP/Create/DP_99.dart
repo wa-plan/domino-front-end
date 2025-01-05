@@ -24,7 +24,7 @@ class Smallgridwithdata extends StatelessWidget {
 
   if (isDetailAllEmpty) {
     // 모든 값이 ''이면 메시지 표시
-    Message('중간의 최종목표를 먼저 입력해 주세요.', const Color(0xffFF6767),
+    Message('중간의 세부목표를 먼저 입력해 주세요.', const Color(0xffFF6767),
                             const Color(0xff412C2C),
                             borderColor: const Color(0xffFF6767),
                             icon: Icons.priority_high).message(context);
@@ -38,7 +38,7 @@ class Smallgridwithdata extends StatelessWidget {
     if (emptyKeyMinusOne.contains(goalId)) {
       
       // goalId와 비어있는 key + 1이 일치하면 네비게이션 하지 않음
-      Message('중간의 최종목표를 먼저 입력해 주세요.', const Color(0xffFF6767),
+      Message('중간의 세부목표를 먼저 입력해 주세요.', const Color(0xffFF6767),
                             const Color(0xff412C2C),
                             borderColor: const Color(0xffFF6767),
                             icon: Icons.priority_high).message(context);

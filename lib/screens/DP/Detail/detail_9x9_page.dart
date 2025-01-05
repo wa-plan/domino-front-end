@@ -104,22 +104,31 @@ class DPdetailPage extends StatelessWidget {
 
                           
                           onDelete:() async {
-                            bool isDeleted =
-                                await DeleteMandalartService.deleteMandalart(
-                              context,
-                              mandalartId,
-                            );
-                            context
-                                .read<SaveMandalartCreatedGoal>()
-                                .removeGoal(mandalartId.toString());
-                            if (isDeleted) {
-                              Navigator.pushReplacement(
+                            // secondGoals에서 id만 추출하여 삭제
+                            for (var goal in secondGoals) {
+                              int secondGoalId = goal['id'];
+                              bool isDeleted =
+                                  await DeleteMandalartService.deleteMandalart(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => const DPMain(),
-                                ),
+                                secondGoalId,
                               );
+                              
+                              if (isDeleted) {
+                                context
+                                    .read<SaveMandalartCreatedGoal>()
+                                    .removeGoal(secondGoalId.toString());
+                                print('Second goal with ID $secondGoalId deleted successfully.');
+                              } else {
+                                print('Failed to delete second goal with ID $secondGoalId.');
+                              }
                             }
+
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DPMain(),
+                              ),
+                            );
                           },
                         );
                         break;

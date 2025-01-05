@@ -4,6 +4,7 @@ import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/color_Grid23.dart';
 import 'package:domino/widgets/DP/color_Grid2.dart';
+import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -142,9 +143,75 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
           titleSpacing: 0.0,
           title: Padding(
             padding: appBarPadding,
-            child: Text(
-              '플랜 만들기',
-              style: Theme.of(context).textTheme.titleLarge,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    PopupDialog.show(
+                        context,
+                        '지금 나가면,\n작성한 내용이 사라져!',
+                        true, // cancel
+                        false, // delete
+                        false, // signout
+                        true, //success
+                        onCancel: () {
+                      // 취소 버튼을 눌렀을 때 실행할 코드
+                      Navigator.pop(context);
+                    }, onSuccess: () async {
+                      for (int i = 0; i < 9; i++) {
+                        context
+                            .read<SaveInputtedDetailGoalModel>()
+                            .updateDetailGoal(i.toString(), "");
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        context
+                            .read<TestInputtedDetailGoalModel>()
+                            .updateTestDetailGoal(i.toString(), "");
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        context.read<GoalColor>().updateGoalColor(
+                            i.toString(), const Color(0xff929292));
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                          context
+                              .read<SaveInputtedActionPlanModel>()
+                              .updateActionPlan(i, j.toString(), "");
+                        }
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                          context
+                              .read<TestInputtedActionPlanModel>()
+                              .updateTestActionPlan(i, j.toString(), "");
+                        }
+                      }
+
+                      // 팝업 닫기
+                      Navigator.pop(context);
+
+                      // 이전 페이지로 이동
+                      Navigator.pop(context);
+
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Color(0xffD4D4D4),
+                    size: 17,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '플랜 만들기',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
             ),
           ),
           backgroundColor: backgroundColor,
@@ -155,17 +222,67 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  '다양한 색으로\n플랜을 꾸밀 수 있어요.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      '나만의 스타일로 플랜을 꾸며요.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                const CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 4,
+                                ),
+                                const SizedBox(
+                                  width: 14,
+                                ),
+                                // 첫 번째 색상
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: mainRed, // 첫 번째 색상
+                                    borderRadius: BorderRadius.circular(2.0),
+                                  ),
+                                  width: 6,
+                                  height: 13, // 첫 번째 높이 (6.0으로 고정)
+                                ),
+                                const SizedBox(
+                                  width: 14,
+                                ),
+                                // 두 번째 색상
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: mainRed, // 두 번째 색상
+                                    borderRadius: BorderRadius.circular(2.0),
+                                  ),
+                                  width: 6,
+                                  height: 18, // 두 번째 높이 (예: 10 추가)
+                                ),
+                                const SizedBox(
+                                  width: 14,
+                                ),
+                                // 세 번째 색상
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: mainRed,
+                                    borderRadius: BorderRadius.circular(2.0),
+                                  ),
+                                  width: 6,
+                                  height: 23, // 세 번째 높이 (예: 20 추가)
+                                ),
+                              ],
+                            ),
+                  ],
                 ),
                 
                 const SizedBox(
-                  height: 20,
+                  height: 5,
                 ),
                 Center(
                   child: Container(

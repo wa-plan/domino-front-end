@@ -1,6 +1,5 @@
-//import 'package:flutter/foundation.dart';
 import 'dart:io';
-
+import 'package:dio/dio.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,8 +19,7 @@ class _ProfileEditState extends State<ProfileEdit> {
   final TextEditingController _nicknamecontroller = TextEditingController();
   final TextEditingController _explaincontroller = TextEditingController();
   XFile? _pickedFile;
-  final String _selectedProfileImage =
-      'assets/img/profile_smp4.png'; // 기본 이미지 경로
+  String defaultImage = 'assets/img/profile_smp4.png'; // 기본 이미지 경로
   String? nickname;
   String? description;
 
@@ -46,15 +44,9 @@ class _ProfileEditState extends State<ProfileEdit> {
     }
   }
 
-  Future<bool> _editImage(String image) async {
-    try {
-      final success = await UploadImage.uploadImage(image: image);
-      return success;
-    } catch (e) {
-      debugPrint('Error in _editImage: $e');
-      return false; // Return false if there's an error
-    }
-  }
+
+
+
 
   void userInfo() async {
     final data = await UserInfoService.userInfo();
@@ -121,7 +113,8 @@ class _ProfileEditState extends State<ProfileEdit> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(3),
@@ -153,7 +146,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                 radius: imageSize / 2.4,
                                 backgroundImage: _pickedFile != null
                                     ? FileImage(File(_pickedFile!.path))
-                                    : AssetImage(widget.selectedImage)
+                                    : AssetImage(defaultImage)
                                         as ImageProvider,
                                 backgroundColor: Colors.transparent,
                               ),
@@ -175,9 +168,10 @@ class _ProfileEditState extends State<ProfileEdit> {
               ),
               const SizedBox(height: 10),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
                 decoration: BoxDecoration(
-                  color: const Color(0xff2A2A2A),
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.circular(3),
                 ),
                 child: Column(
@@ -187,8 +181,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                     const SizedBox(height: 10),
                     SizedBox(
                         height: 40,
-                        child: CustomTextField('Ex. 꿈꾸는 마이클', _nicknamecontroller,
-                                (value) => null, false, 1)
+                        child: CustomTextField('Ex. 꿈꾸는 마이클',
+                                _nicknamecontroller, (value) => null, false, 1)
                             .textField()),
                     const SizedBox(height: 40),
                     const Question(number: '2', question: '당신은 어떤 사람인가요?'),
@@ -201,7 +195,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 35),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -219,36 +213,47 @@ class _ProfileEditState extends State<ProfileEdit> {
                     },
                   ).button(),
                   Button(
-                    Colors.black,
-                    Colors.white,
-                    '완료',
-                    () async {
-                      // 완료 버튼 기능 구현
-                      bool profileUpdated = false;
-        
-                      profileUpdated = await _editProfile(
-                        _nicknamecontroller.text,
-                        _selectedProfileImage, // 선택된 파일 경로
-                        _explaincontroller.text,
-                      );
-        
-                      if (profileUpdated) {
-                        // 프로필 수정이 성공하면 이미지 추가 요청 실행
-        
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MyGoal(),
-                          ),
-                        );
-                      } else {
-                        // 프로필 수정 실패 처리
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('프로필 수정에 실패했습니다.')),
-                        );
-                      }
-                    },
-                  ).button()
+  Colors.black,
+  Colors.white,
+  '완료',
+  () async {
+    try {
+      bool imageUrl;
+
+      if (_pickedFile != null) {
+        // Upload the image to S3
+        imageUrl = await UploadImage.uploadImage(
+         filePath: _pickedFile!.path);
+      } else {
+      }
+
+      // Call the edit profile service
+      final profileUpdated = await _editProfile(
+        _nicknamecontroller.text,
+        _pickedFile!.path,
+        _explaincontroller.text,
+      );
+
+      if (profileUpdated) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MyGoal(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('프로필 수정에 실패했습니다.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  },
+).button()
+
                 ],
               ),
             ],
@@ -390,8 +395,12 @@ class _ProfileEditState extends State<ProfileEdit> {
   }
 
   Future<void> _getCameraImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+    var pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      maxHeight: 75,
+      maxWidth: 75,
+      imageQuality: 30,
+    );
     if (pickedFile != null) {
       setState(() {
         _pickedFile = pickedFile;
@@ -400,8 +409,12 @@ class _ProfileEditState extends State<ProfileEdit> {
   }
 
   Future<void> _getPhotoLibraryImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 75,
+      maxWidth: 75,
+      imageQuality: 30,
+    );
     if (pickedFile != null) {
       setState(() {
         _pickedFile = pickedFile;
@@ -409,3 +422,5 @@ class _ProfileEditState extends State<ProfileEdit> {
     }
   }
 }
+
+
