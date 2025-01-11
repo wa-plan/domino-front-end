@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/apis/services/openai_services.dart';
+import 'package:domino/widgets/DP/ai_popup.dart';
 
 class DPcreateInput1Page extends StatefulWidget {
   final String firstColor;
@@ -21,7 +22,22 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
   //String Clicked = 'no';
   List<String> _subGoals = [];
   bool _isLoading = false;
-  String goal = "갓생살기";
+  String goal = "";
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // context.watch를 통해 goal 업데이트
+    final updatedGoal = context.watch<SelectFinalGoalModel>().selectedFinalGoal;
+
+    print("Updated Goal: $updatedGoal");
+
+    if (goal != updatedGoal) {
+      setState(() {
+        goal = updatedGoal; // goal 값을 업데이트
+      });
+    }
+  }
 
   Future<void> _fetchSubGoals() async {
     setState(() {
@@ -32,6 +48,7 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
       List<String> subGoals = await generateSubGoals(goal); // 변수 prompt 사용
       setState(() {
         _subGoals = subGoals; // 새로운 세부 목표로 업데이트
+        print('_subGoals=$_subGoals');
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -44,18 +61,60 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
     }
   }
 
-  Future<dynamic> _aiPopup(BuildContext context, List<String> subgoals) {
+  Future<void> _showAIPopup(BuildContext context) async {
+    if (_subGoals.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('세부 목표가 없습니다.')),
+      );
+      return;
+    }
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) => AIPopup(
+        subgoals: _subGoals,
+        onRefresh: () async {
+          await _fetchSubGoals();
+          Navigator.pop(context);
+          _showAIPopup(context); // 새 팝업 표시
+        },
+      ),
+    );
+  }
+
+  /*Future<dynamic> _aiPopup(BuildContext context, List<String> subgoals) {
     return showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Center(
-          child: Text(
-            '세부목표 추천',
-            style: TextStyle(color: Colors.white),
-          ),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Row(
+              children: [
+                ImageIcon(
+                  AssetImage('assets/img/AI_icon.png'),
+                  color: Color(0xFF4d00bb),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  'AI 세부목표 추천',
+                  style: TextStyle(
+                      color: Color(0xFF4d00bb), fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: const Icon(Icons.close),
+              color: const Color(0xFF4d00bb),
+            )
+          ],
         ),
         content: SizedBox(
-          height: 200,
+          height: MediaQuery.of(context).size.height * 0.35,
           child: Center(
             child: Column(
               children: [
@@ -100,9 +159,16 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                       children: [
                         Icon(
                           Icons.refresh,
-                          size: 24,
+                          color: Color(0xFFCFADFF),
+                          size: 20,
                         ),
-                        Text('새로고침'),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          '새로고침하기',
+                          style: TextStyle(color: Color(0xFFCFADFF)),
+                        ),
                       ],
                     ))
               ],
@@ -110,26 +176,29 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
           ),
         ),
         actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('뒤로')),
-              ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('적용')),
-            ],
-          ),
+          Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.6, // 화면 너비의 60%
+              height: 40,
+              child: TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(
+                      const Color(0xFF4D00BB)), // MaterialStateProperty 사용
+                ),
+                child: const Text(
+                  '지금 바로 적용하기',
+                  style: TextStyle(color: Color(0xFFede0ff)),
+                ),
+              ),
+            ),
+          )
         ],
         elevation: 10.0,
-        backgroundColor: Colors.black,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(32)),
-        ),
+        backgroundColor: const Color(0xFFe0cbff),
       ),
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +209,7 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
           titleSpacing: 0.0,
           title: Padding(
             padding: appBarPadding,
-            child:Row(
+            child: Row(
               children: [
                 GestureDetector(
                   onTap: () {
@@ -221,7 +290,6 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
@@ -241,7 +309,8 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                           setState(() {
                             _isLoading = false; // 로딩 종료
                           });
-                          _aiPopup(context, _subGoals);
+                          _showAIPopup(context);
+                          //_aiPopup(context, _subGoals);
                         },
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
@@ -321,79 +390,79 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                     height: 20,
                   ),
                   DPMainGoal(
-                                context.watch<SelectFinalGoalModel>().selectedFinalGoal,
-                                Color(int.parse(widget.firstColor
-                                    .replaceAll('Color(', '')
-                                    .replaceAll(')', ''))))
-                            .dpMainGoal(),
-                        const SizedBox(
-                          height: 45,
-                        ),
-                  Column(
-                      children: [
-                        Center(
-                            child: SizedBox(
-                                height: 300,
-                                width: 260,
-                                child: GridView(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            crossAxisSpacing: 5,
-                                            mainAxisSpacing: 5),
-                                    children: [
-                                      const Input1(selectedDetailGoalId: 0),
-                                      const Input1(selectedDetailGoalId: 1),
-                                      const Input1(selectedDetailGoalId: 2),
-                                      const Input1(selectedDetailGoalId: 3),
-                                      Container(
-                                        width: 80,
-                                        margin: const EdgeInsets.all(1.0),
-                                        padding: const EdgeInsets.all(7.0),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(3),
-                                          color: Color(int.parse(widget
-                                              .firstColor
-                                              .replaceAll('Color(', '')
-                                              .replaceAll(')', ''))),
-                                        ),
-                                        child: Center(
-                                            child: Text(
-                                          context
-                                              .watch<SelectFinalGoalModel>()
-                                              .selectedFinalGoal,
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
-                                          textAlign: TextAlign.center,
-                                        )),
-                                      ),
-                                      const Input1(selectedDetailGoalId: 5),
-                                      const Input1(selectedDetailGoalId: 6),
-                                      const Input1(selectedDetailGoalId: 7),
-                                      const Input1(selectedDetailGoalId: 8),
-                                    ]))),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        const Center(
-                            child: Text(
-                          '모든 칸을 다 채우지 않아도 괜찮아요:)',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 158, 158, 158),
-                              fontWeight: FontWeight.w300,
-                              fontSize: 13),
-                        )),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
+                          context
+                              .watch<SelectFinalGoalModel>()
+                              .selectedFinalGoal,
+                          Color(int.parse(widget.firstColor
+                              .replaceAll('Color(', '')
+                              .replaceAll(')', ''))))
+                      .dpMainGoal(),
                   const SizedBox(
-                          height: 47,
-                        ),
+                    height: 45,
+                  ),
+                  Column(
+                    children: [
+                      Center(
+                          child: SizedBox(
+                              height: 300,
+                              width: 260,
+                              child: GridView(
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3,
+                                          crossAxisSpacing: 5,
+                                          mainAxisSpacing: 5),
+                                  children: [
+                                    const Input1(selectedDetailGoalId: 0),
+                                    const Input1(selectedDetailGoalId: 1),
+                                    const Input1(selectedDetailGoalId: 2),
+                                    const Input1(selectedDetailGoalId: 3),
+                                    Container(
+                                      width: 80,
+                                      margin: const EdgeInsets.all(1.0),
+                                      padding: const EdgeInsets.all(7.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(3),
+                                        color: Color(int.parse(widget.firstColor
+                                            .replaceAll('Color(', '')
+                                            .replaceAll(')', ''))),
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                        context
+                                            .watch<SelectFinalGoalModel>()
+                                            .selectedFinalGoal,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                    ),
+                                    const Input1(selectedDetailGoalId: 5),
+                                    const Input1(selectedDetailGoalId: 6),
+                                    const Input1(selectedDetailGoalId: 7),
+                                    const Input1(selectedDetailGoalId: 8),
+                                  ]))),
+                      const SizedBox(
+                        height: 35,
+                      ),
+                      const Center(
+                          child: Text(
+                        '모든 칸을 다 채우지 않아도 괜찮아요:)',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 158, 158, 158),
+                            fontWeight: FontWeight.w300,
+                            fontSize: 13),
+                      )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 47,
+                  ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -435,7 +504,7 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
   }
 }
 
-class AICard extends StatefulWidget {
+/*class AICard extends StatefulWidget {
   final String goal;
   const AICard({super.key, required this.goal});
 
@@ -455,35 +524,45 @@ class _AICardState extends State<AICard> {
         });
       },
       child: Stack(
+        alignment: Alignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Container(
+              alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 0.2,
-              height: MediaQuery.of(context).size.width * 0.1,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              child: Center(
-                child: Text(
-                  widget.goal,
-                  style: const TextStyle(color: Colors.black, fontSize: 16),
-                ),
+              height: MediaQuery.of(context).size.width * 0.2,
+              decoration: BoxDecoration(
+                  color: isChecked
+                      ? const Color(0xFF4d00bb)
+                      : const Color(0xFFe0cbff),
+                  border: Border.all(color: const Color(0xFFCFADFF)),
+                  borderRadius: BorderRadius.circular(5)),
+              child: Text(
+                widget.goal,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: isChecked
+                        ? const Color(0xFFEDE0FF)
+                        : const Color(0xFF4D00BB),
+                    fontSize: 16),
               ),
             ),
           ),
-          if (isChecked)
-            const Positioned(
-              top: 5,
-              right: 10,
-              child: Icon(
-                Icons.check, // 테두리가 있는 체크 아이콘
-                color: Colors.red, // 체크 부분 색상
-                size: 24, // 아이콘 크기
-              ),
+          Positioned(
+            top: 15,
+            right: 15,
+            child: Icon(
+              isChecked
+                  ? Icons.circle
+                  : Icons.circle_outlined, // 테두리가 있는 체크 아이콘
+              color: const Color(0xFFede0ff), // 체크 부분 색상
+              size: 18, // 아이콘 크기
             ),
+          ),
         ],
       ),
     );
   }
 }
+*/
