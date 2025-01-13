@@ -59,7 +59,8 @@ Future<List<String>> generateSubGoals(String coreGoal) async {
       .toList();
 }
 
-Future<List<String>> generateThirdGoals(String coreGoal) async {
+Future<List<String>> generateThirdGoals(
+    String coreGoal, String secondGoal) async {
   final response = await http.post(
     Uri.parse(apiUrl),
     headers: {
@@ -77,7 +78,7 @@ Future<List<String>> generateThirdGoals(String coreGoal) async {
         {
           "role": "user",
           "content":
-              "만다라트를 작성하려고 해. 세부목표가 '$coreGoal'(이)라고 할 때, 세부목표를 달성하기 위해 해야하는 실행계획 6가지를 13글자 이내로 추천해줘. 실행계획은 명사나 간결한 구 형태이면 좋겠어. 예를 들어, 세부목표가 '스펙 쌓기'라면 '동아리/학회 활동하기', '공모전 준비하기' 등이 있을 것 같아. 구체적이고 개인적인 내용이어도 좋으니 20대 여성 그중에서도 대학생이 많이 공감할만한 내용으로 추천해줘. 답변으로는 너가 추천하는 6가지 항목만 작성해줘."
+              "만다라트를 작성하려고 해. 최종목표는 '$coreGoal'이고, 세부목표가 '$secondGoal'(이)라고 할 때, 세부목표를 달성하기 위해 해야하는 실행계획 6가지를 추천해줘. 각 실행계획은 명사나 간결한 구 형태로 작성해주고 13글자 이내였으면 좋겠어. 예를 들어, 세부목표가 '스펙 쌓기'라면 '동아리/학회 활동하기', '공모전 준비하기' 등이 있을 것 같아. 구체적이고 개인적인 내용이어도 좋으니 20대 여성 그중에서도 대학생이 많이 공감할만한 내용으로 추천해줘. 답변으로는 추가 문장이나 기호 등 어떠한 것도 덧붙이지 말고, 너가 추천하는 6가지 항목만 탭으로 구분해서 작성해줘."
         }
       ],
       "max_tokens": 150,
