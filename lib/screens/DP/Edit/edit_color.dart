@@ -3,6 +3,7 @@ import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/color_Grid23.dart';
 import 'package:domino/widgets/DP/color_Grid2.dart';
+import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -201,9 +202,75 @@ class EditColorPageState extends State<EditColorPage> {
           titleSpacing: 0.0,
           title: Padding(
             padding: appBarPadding,
-            child: Text(
-              '플랜 수정하기',
-              style: Theme.of(context).textTheme.titleLarge,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    PopupDialog.show(
+                        context,
+                        '지금 나가면,\n작성한 내용이 사라져!',
+                        true, // cancel
+                        false, // delete
+                        false, // signout
+                        true, //success
+                        onCancel: () {
+                      // 취소 버튼을 눌렀을 때 실행할 코드
+                      Navigator.pop(context);
+                    }, onSuccess: () async {
+                      for (int i = 0; i < 9; i++) {
+                        context
+                            .read<SaveInputtedDetailGoalModel>()
+                            .updateDetailGoal(i.toString(), "");
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        context
+                            .read<TestInputtedDetailGoalModel>()
+                            .updateTestDetailGoal(i.toString(), "");
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        context.read<GoalColor>().updateGoalColor(
+                            i.toString(), const Color(0xff929292));
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                          context
+                              .read<SaveInputtedActionPlanModel>()
+                              .updateActionPlan(i, j.toString(), "");
+                        }
+                      }
+
+                      for (int i = 0; i < 9; i++) {
+                        for (int j = 0; j < 9; j++) {
+                          context
+                              .read<TestInputtedActionPlanModel>()
+                              .updateTestActionPlan(i, j.toString(), "");
+                        }
+                      }
+
+                      // 팝업 닫기
+                      Navigator.pop(context);
+
+                      // 이전 페이지로 이동
+                      Navigator.pop(context);
+
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Color(0xffD4D4D4),
+                    size: 17,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '플랜 수정하기',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
             ),
           ),
           backgroundColor: backgroundColor,
@@ -254,7 +321,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 0
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff262626))),
+                                              : const Color(0xff2A2A2A))),
                                   child: const ColorBox(
                                       actionPlanId: 0,
                                       goalColorId: 0,
@@ -272,7 +339,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 1
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff262626))),
+                                              : const Color(0xff2A2A2A))),
                                   child: const ColorBox(
                                       actionPlanId: 1,
                                       goalColorId: 1,
@@ -290,7 +357,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 2
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff262626))),
+                                              : const Color(0xff2A2A2A))),
                                   child: const ColorBox(
                                       actionPlanId: 2,
                                       goalColorId: 2,
@@ -308,7 +375,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 3
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff262626))),
+                                              : const Color(0xff2A2A2A))),
                                   child: const ColorBox(
                                       actionPlanId: 3,
                                       goalColorId: 3,
@@ -347,7 +414,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 5
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff262626))),
+                                              : const Color(0xff2A2A2A))),
                                   child: const ColorBox(
                                       actionPlanId: 5,
                                       goalColorId: 5,
@@ -365,7 +432,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 6
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff262626))),
+                                              : const Color(0xff2A2A2A))),
                                   child: const ColorBox(
                                       actionPlanId: 6,
                                       goalColorId: 6,
@@ -383,7 +450,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 7
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff262626))),
+                                              : const Color(0xff2A2A2A))),
                                   child: const ColorBox(
                                       actionPlanId: 7,
                                       goalColorId: 7,
@@ -401,7 +468,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 8
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff262626))),
+                                              : const Color(0xff2A2A2A))),
                                   child: const ColorBox(
                                       actionPlanId: 8,
                                       goalColorId: 8,
@@ -467,7 +534,7 @@ class EditColorPageState extends State<EditColorPage> {
                           ])),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 50,
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -480,6 +547,7 @@ class EditColorPageState extends State<EditColorPage> {
                           Navigator.pop(context);
                         },
                       ).button(),
+
                       Button(Colors.black, Colors.white, '완료', () async {
                         // Execute _addSecondGoal and wait for the result
                         final secondGoalSuccess = await _editSecondGoal();
@@ -489,6 +557,7 @@ class EditColorPageState extends State<EditColorPage> {
                         final thirdGoalSuccess = await _editThirdGoal();*/
 
                         if (secondGoalSuccess) {
+                          print('제2목표 저장 성공');
                           final goalColorSuccess = await _editColor();
 
                           if (goalColorSuccess) {
@@ -496,6 +565,7 @@ class EditColorPageState extends State<EditColorPage> {
 
                             // If both are successful, navigate to DPlistPage
                             if (thirdGoalSuccess) {
+                              print('제3목표 저장 성공');
                               for (int i = 0; i < 9; i++) {
                                 context
                                     .read<SaveInputtedDetailGoalModel>()
@@ -524,9 +594,7 @@ class EditColorPageState extends State<EditColorPage> {
                         }
                       }).button(),
                     ]),
-                const SizedBox(
-                  height: 20,
-                ),
+                
               ],
             )));
   }

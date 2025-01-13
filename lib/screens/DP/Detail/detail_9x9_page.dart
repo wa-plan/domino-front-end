@@ -1,7 +1,7 @@
 //DP 만다라트 9X9 상세 페이지
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/provider/DP/model.dart';
-import 'package:domino/screens/DP/Edit/edit99_page.dart';
+import 'package:domino/screens/DP/Edit/edit99.dart';
 import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/Detail/Detail_99_mandalart.dart';

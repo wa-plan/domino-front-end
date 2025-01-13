@@ -427,7 +427,7 @@ class EditSecondGoalService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/secondgoal');
+    final url = Uri.parse('$baseUrl/api/secondgoal');
 
     if (secondGoalId.length != newSecondGoal.length) {
       throw Exception(
@@ -511,7 +511,7 @@ class EditGoalColorService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/secondgoal/color');
+    final url = Uri.parse('$baseUrl/api/secondgoal/color');
 
     if (secondGoalId.length != color.length) {
       throw Exception("Mismatch in the number of secondGoalId and color");
@@ -608,7 +608,7 @@ class EditThirdGoalService {
       return false;
     }
 
-    final url = Uri.parse('http://13.124.78.26:8080/api/thirdgoal');
+    final url = Uri.parse('$baseUrl/api/thirdgoal');
     bool allSuccess = true;
 
     // List of all thirdGoalIds and corresponding goals

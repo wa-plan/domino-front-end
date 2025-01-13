@@ -39,7 +39,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   url_launcher: ^6.1.10
   auto_size_text: ^3.0.0
-  flutter_native_splash: ^2.4.3
+  flutter_native_splash: ^2.4.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -51,7 +51,6 @@ dependencies:
   percent_indicator: ^4.2.3
   smooth_page_indicator: ^1.2.0+3
   carousel_slider: ^5.0.0
-  flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
   permission_handler: ^11.3.1
 
@@ -95,6 +94,7 @@ flutter:
     - assets/img/profile_smp4.png
     - assets/img/profile_smp5.png
     - assets/img/profile_smp6.png
+    - assets/config/.env
     - assets/img/profile_smp7.png
     - assets/img/profile_smp8.png
     - assets/img/completed_goals.png #쓰러뜨린 목표
@@ -106,7 +106,6 @@ flutter:
     - assets/img/profile_smp9.png
     - assets/img/domino_final.mp4 #도미노 쓰러지는 영상
     - assets/img/confetti_final.mp4 #폭죽 터지는 영상
-    - assets/config/.env
     - assets/img/MG_white_yellow.png
     - assets/img/MG_blue.png
     - assets/img/MG_green.png

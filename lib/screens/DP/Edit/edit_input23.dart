@@ -1,5 +1,6 @@
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/Create/DP_input3.dart';
+import 'package:domino/widgets/DP/Edit/Edit_Input23.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -22,25 +23,37 @@ class EditInput2Page extends StatelessWidget {
     final selectedDetailGoal = int.tryParse(selectedDetailGoalString) ?? 0;
 
     return Scaffold(
-      backgroundColor: const Color(0xff262626),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff262626),
+        titleSpacing: 0.0,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Text(
-            '플랜 만들기',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: MediaQuery.of(context).size.width * 0.06,
-              fontWeight: FontWeight.w600,
+          padding: appBarPadding,
+          child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Color(0xffD4D4D4),
+                    size: 17,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '플랜 만들기',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
             ),
-          ),
         ),
+        backgroundColor: backgroundColor,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(38.0, 10.0, 38.0, 0.0),
+          padding: fullPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -53,27 +66,12 @@ class EditInput2Page extends StatelessWidget {
                   letterSpacing: 1.1,
                 ),
               ),
-              const SizedBox(height: 20),
-              Container(
-                height: 43,
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration:  BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: const BorderRadius.all(Radius.circular(3)),
-                  color: Color(int.parse(firstColor
-            .replaceAll('Color(', '')
-            .replaceAll(')', ''))),
-                ),
-                child: Text(
-                  mandalart,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              const SizedBox(height: 15),
+
+              DPMainGoal(
+                mandalart, 
+                ColorTransform(firstColor).colorTransform()).dpMainGoal(),
+
               const SizedBox(height: 40),
               Center(
                 child: SizedBox(
@@ -88,66 +86,49 @@ class EditInput2Page extends StatelessWidget {
                     ),
                     children: [
                       // Index 0
-                      Input2(
+                      EditInput2(
                         actionPlanId: 0,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 1
-                      Input2(
+                      EditInput2(
                         actionPlanId: 1,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 2
-                      Input2(
+                      EditInput2(
                         actionPlanId: 2,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 3
-                      Input2(
+                      EditInput2(
                         actionPlanId: 3,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 4 (Special handling)
-                      Container(
-                        width: 80,
-                        color: context.watch<GoalColor>().selectedGoalColor['$selectedDetailGoal'] ==
-                                Colors.transparent
-                            ? const Color(0xff929292)
-                            : context.watch<GoalColor>().selectedGoalColor['$selectedDetailGoal'],
-                        margin: const EdgeInsets.all(1.0),
-                        child: Center(
-                          child: Text(
-                            context
+                      DPGrid3_E(context
                                         .watch<SaveInputtedDetailGoalModel>()
                                         .inputtedDetailGoal[
                                     selectedDetailGoal.toString()] ??
-                                '',
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
+                                '', const Color(0xff929292), 15).dpGrid3_E(),
+                      
                       // Index 5
-                      Input2(
+                      EditInput2(
                         actionPlanId: 5,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 6
-                      Input2(
+                      EditInput2(
                         actionPlanId: 6,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 7
-                      Input2(
+                      EditInput2(
                         actionPlanId: 7,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
                       // Index 8
-                      Input2(
+                      EditInput2(
                         actionPlanId: 8,
                         selectedDetailGoalId: selectedDetailGoal,
                       ),
@@ -155,7 +136,7 @@ class EditInput2Page extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 70),
+              const SizedBox(height: 130),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Button(
                   Colors.black,

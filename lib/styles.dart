@@ -34,7 +34,6 @@ Map<Color, Color> colorPalette = {
   Colors.transparent: const Color(0xff5C5C5C),
 };
 
-
 //Button
 class Button {
   final Color buttonColor;
@@ -195,23 +194,18 @@ class DPInput3 {
           onChanged: onChangedFunction,
           textAlign: TextAlign.center,
           textInputAction: TextInputAction.newline,
-          maxLength: 20, 
+          maxLength: 20,
           maxLines: null,
           inputFormatters: [
             LengthLimitingTextInputFormatter(20), // 최대 15글자로 제한
           ],
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500
-          ),
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
           decoration: const InputDecoration(
-            border: InputBorder.none,
-            counterStyle: TextStyle(
-              height: 0.01,
-              fontSize: 10,
-              color: Color.fromARGB(255, 120, 120, 120)
-            )
-          ),
+              border: InputBorder.none,
+              counterStyle: TextStyle(
+                  height: 0.01,
+                  fontSize: 10,
+                  color: Color.fromARGB(255, 120, 120, 120))),
         ),
       ),
     );
@@ -240,24 +234,19 @@ class DPInput2 {
           controller: controller,
           onChanged: onChangedFunction,
           style: const TextStyle(
-            color: Colors.black,
-            fontSize: 13,
-            fontWeight: FontWeight.w500
-          ),
+              color: Colors.black, fontSize: 13, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
-          maxLength: 20, 
+          maxLength: 20,
           maxLines: null,
           inputFormatters: [
             LengthLimitingTextInputFormatter(20), // 최대 15글자로 제한
           ],
           decoration: const InputDecoration(
-            border: InputBorder.none,
-            counterStyle: TextStyle(
-              height: 0.01,
-              fontSize: 10,
-              color: Color.fromARGB(255, 104, 104, 104)
-            )
-          ),
+              border: InputBorder.none,
+              counterStyle: TextStyle(
+                  height: 0.01,
+                  fontSize: 10,
+                  color: Color.fromARGB(255, 104, 104, 104))),
         ),
       ),
     );
@@ -333,8 +322,8 @@ class DPCreateGrid {
           maxFontSize: 10,
           overflow: TextOverflow.ellipsis,
           text,
-          style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w500),
+          style:
+              const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
         ),
       ),
@@ -688,5 +677,38 @@ class Tag {
           text,
           style: const TextStyle(color: Color(0xff979797), fontSize: 11),
         ));
+  }
+}
+
+//Grid for Editing
+class DPGrid3_E {
+  final String text;
+  final Color? color;
+  final double maxFontSize;
+
+  const DPGrid3_E(this.text, this.color, this.maxFontSize);
+
+  Widget dpGrid3_E() {
+    return Container(
+      padding: const EdgeInsets.all(3),
+        margin: const EdgeInsets.all(1.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3),
+        color: color,
+      ),
+      child: Center(
+        child: AutoSizeText(
+            maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+            minFontSize: 6,
+            maxFontSize: maxFontSize, // 최소 글씨 크기
+            overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
+            text,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: backgroundColor,
+              fontWeight: FontWeight.w600,
+            )),
+      ),
+    );
   }
 }

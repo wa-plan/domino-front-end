@@ -1,6 +1,7 @@
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/Create/DP_input2.dart';
+import 'package:domino/widgets/DP/Edit/Edit_Input12.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,24 +17,37 @@ class EditInput1Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xff262626),
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xff262626),
+          titleSpacing: 0.0,
+          backgroundColor: backgroundColor,
           title: Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-            child: Text(
-              '플랜 만들기',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * 0.06,
-                  fontWeight: FontWeight.w600),
+            padding: appBarPadding,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: Color(0xffD4D4D4),
+                    size: 17,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  '플랜 만들기',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
             ),
           ),
         ),
         body: SingleChildScrollView(
             child: Padding(
-                padding: const EdgeInsets.fromLTRB(38.0, 10.0, 38.0, 0.0),
+                padding: fullPadding,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -44,25 +58,11 @@ class EditInput1Page extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                             letterSpacing: 1.1)),
                     const SizedBox(
-                      height: 20,
+                      height: 15,
                     ),
-                    Container(
-                        height: 43,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        decoration:  BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: const BorderRadius.all(Radius.circular(3)),
-                            color: Color(int.parse(firstColor
-            .replaceAll('Color(', '')
-            .replaceAll(')', '')))),
-                        child: Text(
-                            mandalart,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                            ))),
+                    DPMainGoal(
+                      mandalart, 
+                      ColorTransform(firstColor).colorTransform()).dpMainGoal(),
                     const SizedBox(
                       height: 40,
                     ),
@@ -77,45 +77,24 @@ class EditInput1Page extends StatelessWidget {
                                         crossAxisSpacing: 5,
                                         mainAxisSpacing: 5),
                                 children: [
-                                   const Input1(selectedDetailGoalId: 0),
-                                   const Input1(selectedDetailGoalId: 1),
-                                   const Input1(selectedDetailGoalId: 2),
-                                   const Input1(selectedDetailGoalId: 3),
-                                  Container(
-                                    width: 80,
-                                    margin: const EdgeInsets.all(1.0),
-                                    padding: const EdgeInsets.all(7.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(3),
-                                      color: Color(int.parse(firstColor
-            .replaceAll('Color(', '')
-            .replaceAll(')', '')))
-                                    ),
-                                    child: Center(
-                                        child: Text(
-                                      mandalart,
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    )),
-                                  ),
-                                   const Input1(selectedDetailGoalId: 5),
-                                   const Input1(selectedDetailGoalId: 6),
-                                   const Input1(selectedDetailGoalId: 7),
-                                   const Input1(selectedDetailGoalId: 8),
+                                   const EditInput1(selectedDetailGoalId: 0),
+                                   const EditInput1(selectedDetailGoalId: 1),
+                                   const EditInput1(selectedDetailGoalId: 2),
+                                   const EditInput1(selectedDetailGoalId: 3),
+
+                                   DPGrid3_E(
+                                    mandalart, 
+                                    ColorTransform(firstColor).colorTransform(), 
+                                    13).dpGrid3_E(),
+                                 
+                                   const EditInput1(selectedDetailGoalId: 5),
+                                   const EditInput1(selectedDetailGoalId: 6),
+                                   const EditInput1(selectedDetailGoalId: 7),
+                                   const EditInput1(selectedDetailGoalId: 8),
                                 ]))),
+                    
                     const SizedBox(
-                      height: 15,
-                    ),
-                    const Center(
-                        child: Text(
-                      '모든 칸을 다 채우지 않아도 괜찮아요 :)',
-                      style: TextStyle(color: Color(0xff5c5c5c)),
-                    )),
-                    const SizedBox(
-                      height: 42,
+                      height: 130,
                     ),
                     Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

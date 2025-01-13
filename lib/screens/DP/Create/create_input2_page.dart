@@ -313,7 +313,7 @@ class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
               const SizedBox(height: 20),
               DPMainGoal(
                                 context.watch<SelectFinalGoalModel>().selectedFinalGoal,
-                                Color(int.parse(firstColor
+                                Color(int.parse(widget.firstColor
                                     .replaceAll('Color(', '')
                                     .replaceAll(')', ''))))
                             .dpMainGoal(),
