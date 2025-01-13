@@ -966,50 +966,15 @@ class CheeringService {
 
 class UploadImage {
   static Future<bool> uploadImage({
-  required String filePath,
-}) async {
-  final prefs = await SharedPreferences.getInstance();
-  String? token = prefs.getString('authToken');
-  print('저장된 토큰: $token');
+    required String filePath,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
 
-  if (token == null) {
-    Fluttertoast.showToast(
-      msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-    );
-    return false;
-  }
-
-  Dio dio = Dio();
-  dio.options.headers = {
-    "Authorization": "Bearer $token",
-    "Content-Type": "multipart/form-data",
-  };
-
-  String s3Url = '$baseUrl/s3/upload';
-
-  try {
-    FormData formData = FormData.fromMap({
-      "file": await MultipartFile.fromFile(filePath, filename: "profile_image.jpg"),
-    });
-
-    Response response = await dio.post(s3Url, data: formData);
-
-    if (response.statusCode == 200) {
+    if (token == null) {
       Fluttertoast.showToast(
-        msg: '프로필 이미지가 성공적으로 업로드되었습니다.',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-      );
-      return true;
-    } else {
-      Fluttertoast.showToast(
-        msg: '이미지 업로드 실패: ${response.data}',
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
@@ -1017,19 +982,54 @@ class UploadImage {
       );
       return false;
     }
-  } on DioException catch (e) {
-    Fluttertoast.showToast(
-      msg: '업로드 중 오류 발생: ${e.response?.statusCode} - ${e.response?.data}',
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-    );
-    return false;
+
+    Dio dio = Dio();
+    dio.options.headers = {
+      "Authorization": "Bearer $token",
+      "Content-Type": "multipart/form-data",
+    };
+
+    String s3Url = '$baseUrl/s3/upload';
+
+    try {
+      FormData formData = FormData.fromMap({
+        "file": await MultipartFile.fromFile(filePath,
+            filename: "profile_image.jpg"),
+      });
+
+      Response response = await dio.post(s3Url, data: formData);
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: '프로필 이미지가 성공적으로 업로드되었습니다.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+        return true;
+      } else {
+        Fluttertoast.showToast(
+          msg: '이미지 업로드 실패: ${response.data}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        return false;
+      }
+    } on DioException catch (e) {
+      Fluttertoast.showToast(
+        msg: '업로드 중 오류 발생: ${e.response?.statusCode} - ${e.response?.data}',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
   }
 }
-
-
 
 class DeleteFirstGoalService {
   static Future<bool> deleteFirstGoal(

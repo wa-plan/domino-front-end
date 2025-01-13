@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/apis/services/openai_services.dart';
+import 'package:domino/widgets/DP/ai_popup.dart';
 
 class DPcreateInput2Page extends StatefulWidget {
   final String firstColor;
@@ -21,14 +22,47 @@ class DPcreateInput2Page extends StatefulWidget {
 class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
   List<String> _subGoals = [];
   bool _isLoading = false;
-  String goal = "자기관리하기";
+  String secondGoal = "";
+  String coreGoal = "";
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // context.watch를 통해 goal 업데이트
+    final selectedDetailGoalString =
+        context.watch<SelectDetailGoal>().selectedDetailGoal;
+    final selectedDetailGoal = int.tryParse(selectedDetailGoalString) ?? 0;
+    final updatedSecondGoal = context
+        .watch<SaveInputtedDetailGoalModel>()
+        .inputtedDetailGoal[selectedDetailGoal.toString()];
+
+    final updatedCoreGoal = context
+        .watch<SelectFinalGoalModel>()
+        .selectedFinalGoal; // coreGoal 업데이트
+
+    //print("Updated Goal: $updatedSecondGoal");
+
+    if (secondGoal != updatedSecondGoal) {
+      setState(() {
+        secondGoal = updatedSecondGoal ?? ""; // goal 값을 업데이트
+      });
+    }
+
+    if (coreGoal != updatedCoreGoal) {
+      setState(() {
+        coreGoal = updatedCoreGoal; // goal 값을 업데이트
+      });
+    }
+  }
+
   Future<void> _fetchSubGoals() async {
     setState(() {
       _isLoading = true; // 로딩 상태로 설정
     });
 
     try {
-      List<String> subGoals = await generateThirdGoals(goal); // 변수 prompt 사용
+      List<String> subGoals =
+          await generateThirdGoals(coreGoal, secondGoal); // 변수 prompt 사용
       setState(() {
         _subGoals = subGoals; // 새로운 세부 목표로 업데이트
       });
@@ -43,7 +77,27 @@ class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
     }
   }
 
-  Future<dynamic> _aiPopup(BuildContext context, subgoals) {
+  Future<void> _showAIPopup(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) => AIPopup(
+        subgoals: _subGoals,
+        onRefresh: () async {
+          await _fetchSubGoals();
+          if (_subGoals.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('데이터를 가져오지 못했습니다.')),
+            );
+          } else {
+            Navigator.pop(context);
+            _showAIPopup(context);
+          }
+        },
+      ),
+    );
+  }
+
+  /*Future<dynamic> _aiPopup(BuildContext context, subgoals) {
     return showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -121,7 +175,7 @@ class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
         ),
       ),
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -138,75 +192,75 @@ class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
         title: Padding(
           padding: appBarPadding,
           child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    PopupDialog.show(
-                        context,
-                        '지금 나가면,\n작성한 내용이 사라져!',
-                        true, // cancel
-                        false, // delete
-                        false, // signout
-                        true, //success
-                        onCancel: () {
-                      // 취소 버튼을 눌렀을 때 실행할 코드
-                      Navigator.pop(context);
-                    }, onSuccess: () async {
-                      for (int i = 0; i < 9; i++) {
+            children: [
+              GestureDetector(
+                onTap: () {
+                  PopupDialog.show(
+                      context,
+                      '지금 나가면,\n작성한 내용이 사라져!',
+                      true, // cancel
+                      false, // delete
+                      false, // signout
+                      true, //success
+                      onCancel: () {
+                    // 취소 버튼을 눌렀을 때 실행할 코드
+                    Navigator.pop(context);
+                  }, onSuccess: () async {
+                    for (int i = 0; i < 9; i++) {
+                      context
+                          .read<SaveInputtedDetailGoalModel>()
+                          .updateDetailGoal(i.toString(), "");
+                    }
+
+                    for (int i = 0; i < 9; i++) {
+                      context
+                          .read<TestInputtedDetailGoalModel>()
+                          .updateTestDetailGoal(i.toString(), "");
+                    }
+
+                    for (int i = 0; i < 9; i++) {
+                      context.read<GoalColor>().updateGoalColor(
+                          i.toString(), const Color(0xff929292));
+                    }
+
+                    for (int i = 0; i < 9; i++) {
+                      for (int j = 0; j < 9; j++) {
                         context
-                            .read<SaveInputtedDetailGoalModel>()
-                            .updateDetailGoal(i.toString(), "");
+                            .read<SaveInputtedActionPlanModel>()
+                            .updateActionPlan(i, j.toString(), "");
                       }
+                    }
 
-                      for (int i = 0; i < 9; i++) {
+                    for (int i = 0; i < 9; i++) {
+                      for (int j = 0; j < 9; j++) {
                         context
-                            .read<TestInputtedDetailGoalModel>()
-                            .updateTestDetailGoal(i.toString(), "");
+                            .read<TestInputtedActionPlanModel>()
+                            .updateTestActionPlan(i, j.toString(), "");
                       }
+                    }
 
-                      for (int i = 0; i < 9; i++) {
-                        context.read<GoalColor>().updateGoalColor(
-                            i.toString(), const Color(0xff929292));
-                      }
+                    // 팝업 닫기
+                    Navigator.pop(context);
 
-                      for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 9; j++) {
-                          context
-                              .read<SaveInputtedActionPlanModel>()
-                              .updateActionPlan(i, j.toString(), "");
-                        }
-                      }
+                    // 이전 페이지로 이동
+                    Navigator.pop(context);
 
-                      for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 9; j++) {
-                          context
-                              .read<TestInputtedActionPlanModel>()
-                              .updateTestActionPlan(i, j.toString(), "");
-                        }
-                      }
-
-                      // 팝업 닫기
-                      Navigator.pop(context);
-
-                      // 이전 페이지로 이동
-                      Navigator.pop(context);
-
-                      Navigator.pop(context);
-                    });
-                  },
-                  child: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Color(0xffD4D4D4),
-                    size: 17,
-                  ),
+                    Navigator.pop(context);
+                  });
+                },
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Color(0xffD4D4D4),
+                  size: 17,
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  '플랜 만들기',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                '플랜 만들기',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ],
+          ),
         ),
         backgroundColor: backgroundColor,
       ),
@@ -218,7 +272,6 @@ class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
-
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
@@ -238,7 +291,7 @@ class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
                       setState(() {
                         _isLoading = false; // 로딩 종료
                       });
-                      _aiPopup(context, _subGoals);
+                      _showAIPopup(context);
                     },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -312,78 +365,75 @@ class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
               ),
               const SizedBox(height: 20),
               DPMainGoal(
-                                context.watch<SelectFinalGoalModel>().selectedFinalGoal,
-                                Color(int.parse(firstColor
-                                    .replaceAll('Color(', '')
-                                    .replaceAll(')', ''))))
-                            .dpMainGoal(),
-                        const SizedBox(
-                          height: 45,
-                        ),
+                      context.watch<SelectFinalGoalModel>().selectedFinalGoal,
+                      Color(int.parse(widget.firstColor
+                          .replaceAll('Color(', '')
+                          .replaceAll(')', ''))))
+                  .dpMainGoal(),
+              const SizedBox(
+                height: 45,
+              ),
               Column(
-                  children: [
-                    Center(
-                      child: SizedBox(
-                        height: 300,
-                        width: 260,
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 1,
-                            mainAxisSpacing: 1,
-                          ),
-                          itemCount: 9,
-                          itemBuilder: (context, index) {
-                            if (index == 4) {
-                              // 안전한 null 처리
-                              final inputtedDetailGoal = context
-                                          .watch<SaveInputtedDetailGoalModel>()
-                                          .inputtedDetailGoal[
-                                      '$selectedDetailGoal'] ??
-                                  '';
-
-                              return 
-                              Container(
-                                width: 80,
-                                
-                                margin: const EdgeInsets.all(1.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(3),
-                                  color: const Color(0xff929292),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    inputtedDetailGoal,
-                                    style: const TextStyle(
-                                      color: backgroundColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return Input2(
-                                actionPlanId: index,
-                                selectedDetailGoalId: selectedDetailGoal,
-                              );
-                            }
-                          },
+                children: [
+                  Center(
+                    child: SizedBox(
+                      height: 300,
+                      width: 260,
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 1,
+                          mainAxisSpacing: 1,
                         ),
+                        itemCount: 9,
+                        itemBuilder: (context, index) {
+                          if (index == 4) {
+                            // 안전한 null 처리
+                            final inputtedDetailGoal = context
+                                        .watch<SaveInputtedDetailGoalModel>()
+                                        .inputtedDetailGoal[
+                                    '$selectedDetailGoal'] ??
+                                '';
+
+                            return Container(
+                              width: 80,
+                              margin: const EdgeInsets.all(1.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3),
+                                color: const Color(0xff929292),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  inputtedDetailGoal,
+                                  style: const TextStyle(
+                                    color: backgroundColor,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Input2(
+                              actionPlanId: index,
+                              selectedDetailGoalId: selectedDetailGoal,
+                            );
+                          }
+                        },
                       ),
                     ),
-                    
-                      SMART().smart(),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
+                  ),
+                  SMART().smart(),
                   const SizedBox(
-                          height: 45,
-                        ),
+                    height: 20,
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 45,
+              ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Button(
                   Colors.black,
