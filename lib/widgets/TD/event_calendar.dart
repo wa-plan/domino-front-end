@@ -249,13 +249,6 @@ class _EventCalendarState extends State<EventCalendar> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        print(
-                          value[index]
-                              .color
-                              .replaceAll('Color(', '') // 'Color(' 부분 제거
-                              .replaceAll(')', ''),
-                        );
-
                         // 롱 프레스 이벤트 처리
                         if (value[index].repetition != 'NONE') {
                           value[index].switchValue = true;
@@ -443,7 +436,6 @@ void editDialog(BuildContext context, DateTime date, String title,
     barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
     builder: (BuildContext context) {
       return AlertDialog(
-
         backgroundColor: Colors.transparent,
         contentPadding: const EdgeInsets.all(0),
         elevation: 30.0,
@@ -470,31 +462,24 @@ void editDialog(BuildContext context, DateTime date, String title,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  
                   const Text(
-                            '환상적인 세계여행',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            content,
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 13),
-                          ),
-                        
-                      
-                    
-                  
+                    '환상적인 세계여행',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    content,
+                    style: const TextStyle(color: Colors.grey, fontSize: 13),
+                  ),
                   const SizedBox(height: 5),
                   Text(
                     title,
                     style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500),
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 15),
-                 
                   const Text(
                     '반복',
                     style: TextStyle(color: Colors.grey),
@@ -506,20 +491,20 @@ void editDialog(BuildContext context, DateTime date, String title,
                 ],
               ),
               IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditPage(date, content,
-                                  title, switchvalue, interval, goalId),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.edit),
-                        color: const Color.fromARGB(255, 98, 98, 98),
-                        padding: EdgeInsets.zero,
-                        iconSize: 25,
-                      ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditPage(
+                          date, content, title, switchvalue, interval, goalId),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.edit),
+                color: const Color.fromARGB(255, 98, 98, 98),
+                padding: EdgeInsets.zero,
+                iconSize: 25,
+              ),
             ],
           ),
         ),

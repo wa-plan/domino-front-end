@@ -1,11 +1,11 @@
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/Create/DP_input2.dart';
+import 'package:domino/widgets/DP/ai_popup.dart';
 import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/apis/services/openai_services.dart';
-import 'package:domino/widgets/DP/ai_popup.dart';
 
 class DPcreateInput1Page extends StatefulWidget {
   final String firstColor;
@@ -23,6 +23,7 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
   List<String> _subGoals = [];
   bool _isLoading = false;
   String goal = "";
+  int howMany = 9;
 
   @override
   void didChangeDependencies() {
@@ -80,125 +81,6 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
       ),
     );
   }
-
-  /*Future<dynamic> _aiPopup(BuildContext context, List<String> subgoals) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Row(
-              children: [
-                ImageIcon(
-                  AssetImage('assets/img/AI_icon.png'),
-                  color: Color(0xFF4d00bb),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  'AI 세부목표 추천',
-                  style: TextStyle(
-                      color: Color(0xFF4d00bb), fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.close),
-              color: const Color(0xFF4d00bb),
-            )
-          ],
-        ),
-        content: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.35,
-          child: Center(
-            child: Column(
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AICard(goal: subgoals[0]),
-                        AICard(goal: subgoals[1]),
-                        AICard(goal: subgoals[2])
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AICard(goal: subgoals[3]),
-                        AICard(goal: subgoals[4]),
-                        AICard(goal: subgoals[5])
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextButton(
-                    onPressed: () async {
-                      await _fetchSubGoals(); // 새로운 데이터를 받아옴
-                      if (_subGoals.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('데이터를 가져오지 못했습니다.')),
-                        );
-                      } else {
-                        Navigator.pop(context);
-                        _aiPopup(context, _subGoals);
-                        print('_subGoals=$_subGoals');
-                      }
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.refresh,
-                          color: Color(0xFFCFADFF),
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          '새로고침하기',
-                          style: TextStyle(color: Color(0xFFCFADFF)),
-                        ),
-                      ],
-                    ))
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          Center(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.6, // 화면 너비의 60%
-              height: 40,
-              child: TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(
-                      const Color(0xFF4D00BB)), // MaterialStateProperty 사용
-                ),
-                child: const Text(
-                  '지금 바로 적용하기',
-                  style: TextStyle(color: Color(0xFFede0ff)),
-                ),
-              ),
-            ),
-          )
-        ],
-        elevation: 10.0,
-        backgroundColor: const Color(0xFFe0cbff),
-      ),
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -303,6 +185,12 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                       TextButton(
                         onPressed: () async {
                           setState(() {
+                            int howMany =
+                                Provider.of<TestInputtedDetailGoalModel>(
+                                        context,
+                                        listen: false)
+                                    .countEmptyKeys();
+                            print(howMany);
                             _isLoading = true; // 로딩 시작
                           });
                           await _fetchSubGoals();
@@ -362,30 +250,6 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                      height: 43,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(3)),
-                        color: Color(int.parse(widget.firstColor
-                            .replaceAll('Color(', '')
-                            .replaceAll(')', ''))),
-                      ),
-                      child: Text(
-                          context
-                              .watch<SelectFinalGoalModel>()
-                              .selectedFinalGoal,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                          ))),
                   const SizedBox(
                     height: 20,
                   ),
@@ -503,66 +367,3 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
         ));
   }
 }
-
-/*class AICard extends StatefulWidget {
-  final String goal;
-  const AICard({super.key, required this.goal});
-
-  @override
-  _AICardState createState() => _AICardState();
-}
-
-class _AICardState extends State<AICard> {
-  bool isChecked = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isChecked = !isChecked;
-        });
-      },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.2,
-              height: MediaQuery.of(context).size.width * 0.2,
-              decoration: BoxDecoration(
-                  color: isChecked
-                      ? const Color(0xFF4d00bb)
-                      : const Color(0xFFe0cbff),
-                  border: Border.all(color: const Color(0xFFCFADFF)),
-                  borderRadius: BorderRadius.circular(5)),
-              child: Text(
-                widget.goal,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: isChecked
-                        ? const Color(0xFFEDE0FF)
-                        : const Color(0xFF4D00BB),
-                    fontSize: 16),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 15,
-            right: 15,
-            child: Icon(
-              isChecked
-                  ? Icons.circle
-                  : Icons.circle_outlined, // 테두리가 있는 체크 아이콘
-              color: const Color(0xFFede0ff), // 체크 부분 색상
-              size: 18, // 아이콘 크기
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-*/
