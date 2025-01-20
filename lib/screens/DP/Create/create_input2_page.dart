@@ -44,7 +44,7 @@ class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
     }
   }
 
- Future<void> _showAIPopup(BuildContext context) async {
+  Future<void> _showAIPopup(BuildContext context) async {
     if (_subGoals.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('세부 목표가 없습니다.')),
@@ -371,3 +371,4 @@ class _DPcreateInput2PageState extends State<DPcreateInput2Page> {
     );
   }
 }
+
