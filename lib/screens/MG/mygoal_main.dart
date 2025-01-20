@@ -1,5 +1,6 @@
 import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/apis/services/td_services.dart';
+import 'package:domino/provider/DP/model.dart';
 import 'package:domino/screens/MG/mygoal_goal_detail.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/MG/buildcard.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:domino/screens/MG/mygoal_profile_edit.dart';
 import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/screens/MG/mygoal_goal_add.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:domino/widgets/MG/cheering_message.dart';
 
@@ -92,16 +94,21 @@ class _MyGoalState extends State<MyGoal> {
               .any((bm) => bm["id"] == b["id"] && bm["bookmark"] == "BOOKMARK");
 
           // BOOKMARK 상태 기준으로 정렬
-          if (aBookmark && !bBookmark)
+          if (aBookmark && !bBookmark) {
             return -1; // a가 BOOKMARK 상태이고, b는 UNBOOKMARK 상태
-          if (!aBookmark && bBookmark)
+          }
+          if (!aBookmark && bBookmark) {
             return 1; // b가 BOOKMARK 상태이고, a는 UNBOOKMARK 상태
+          }
 
           // 같은 상태라면 id 값 기준 정렬 (오름차순)
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
 
         print('inProgressIDs=$inProgressIDs');
+
+        context.read<GoalOrder>().saveGoalOrder(inProgressIDs);
+        print(inProgressIDs);
 
         successIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
