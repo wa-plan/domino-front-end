@@ -8,6 +8,7 @@ import 'package:domino/widgets/popup.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:domino/apis/services/lr_services.dart'; // Import the new service
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AccountManagement extends StatefulWidget {
   final String email;
@@ -25,6 +26,9 @@ class AccountManagement extends StatefulWidget {
 }
 
 class _AccountManagementState extends State<AccountManagement> {
+  static const storage = FlutterSecureStorage();
+  //데이터를 이전 페이지에서 전달 받은 정보를 저장하기 위한 변수
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,6 +163,7 @@ class _AccountManagementState extends State<AccountManagement> {
                       color: Colors.white, fontWeight: FontWeight.w600)),
               GestureDetector(
                 onTap: () {
+                  storage.delete(key: "login");
                   _logout();
                   Navigator.pushReplacement(
                     context,

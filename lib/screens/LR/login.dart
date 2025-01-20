@@ -18,14 +18,56 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _idcontroller = TextEditingController();
   final TextEditingController _pwcontroller = TextEditingController();
   final storage = const FlutterSecureStorage();
+  String userInfo = ""; //user의 정보를 저장하기 위한 변수
 
   final LoginService _loginService = LoginService();
 
-  _asyncMethod() async {
+  /*_asyncMethod() async {
     if (await storage.read(key: "token") != null) {
       if (!mounted) return;
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const TdMain()));
+    }
+  }*/
+  _asyncMethod() async {
+    // 저장된 로그인 정보 읽기
+    final String? storedUserInfo = await storage.read(key: "login");
+
+    // null 체크 후 할당 (null이면 빈 문자열로 초기화)
+    userInfo = storedUserInfo ?? "";
+    print("Stored User Info: $userInfo");
+
+    if (userInfo.isNotEmpty) {
+      // userInfo에서 userId와 password 추출
+      final parts = userInfo.split(' ');
+      final userIdIndex = parts.indexOf('id');
+      final passwordIndex = parts.indexOf('password');
+
+      String? userId;
+      String? password;
+
+      if (userIdIndex != -1 && userIdIndex + 1 < parts.length) {
+        userId = parts[userIdIndex + 1];
+      }
+      if (passwordIndex != -1 && passwordIndex + 1 < parts.length) {
+        password = parts[passwordIndex + 1];
+      }
+
+      print("UserID: $userId");
+      print("Password: $password");
+
+      // userId와 password가 모두 있으면 로그인 처리
+      if (userId != null && password != null) {
+        _loginService.login(context, userId, password);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const TdMain()),
+        );
+      } else {
+        print("로그인 정보가 불완전합니다.");
+      }
+    } else {
+      print("저장된 로그인 정보가 없습니다.");
     }
   }
 
@@ -50,7 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _asyncMethod(); // SecureStorage에서 로그인 유무 확인
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
   }
 
   @override
@@ -129,12 +173,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ClipRect(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
-                    sigmaX: 7.0,
-                    sigmaY: 7.0,
-                  ),
+                      sigmaX: 7.0,
+                      sigmaY: 7.0,
+                    ),
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 25, horizontal: 20),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.03),
                         borderRadius: BorderRadius.circular(6),
@@ -156,16 +200,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   height: 37,
                                   width: 280,
                                   child: CustomTextField(
-                                    '아이디를 입력해 주세요.',
-                                    _idcontroller,
-                                    (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return '아이디를 입력해 주세요.';
-                                      }
-                                      return null;
-                                    },
-                                    false, 1
-                                  ).textField(),
+                                          '아이디를 입력해 주세요.', _idcontroller,
+                                          (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return '아이디를 입력해 주세요.';
+                                    }
+                                    return null;
+                                  }, false, 1)
+                                      .textField(),
                                 )
                               ]),
                           const SizedBox(height: 20.0),
@@ -183,13 +225,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                   height: 37,
                                   width: 280,
                                   child: CustomTextField(
-                                      '비밀번호를 입력해 주세요.', _pwcontroller, (value) {
+                                          '비밀번호를 입력해 주세요.', _pwcontroller,
+                                          (value) {
                                     if (value == null || value.isEmpty) {
                                       return '비밀번호를 입력해 주세요.';
                                     }
                                     return null;
-                                  },
-                                  false, 1).textField(),
+                                  }, false, 1)
+                                      .textField(),
                                 )
                               ]),
                           const SizedBox(height: 20.0),
@@ -197,7 +240,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       TextButton(
                                         onPressed: () {
@@ -210,9 +254,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                           );
                                         },
                                         style: TextButton.styleFrom(
-                                          padding: const EdgeInsets.fromLTRB(15, 10.5, 15, 10.5),
-                                          backgroundColor:
-                                              const Color.fromARGB(255, 33, 33, 33),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 10.5, 15, 10.5),
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 33, 33, 33),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(6.0),
@@ -228,8 +273,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                       )
                                     ]),
-                                Button(Colors.black, Colors.white, '로그인', _login)
-                                    .button(),
+                                Button(
+                                  Colors.black,
+                                  Colors.white,
+                                  '로그인',
+                                  () async {
+                                    // SecureStorage에 데이터 저장
+                                    await storage.write(
+                                      key: "login",
+                                      value:
+                                          "id ${_idcontroller.text} password ${_pwcontroller.text}",
+                                    );
+                                    _login();
+
+                                    // LogOutPage로 화면 이동
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const TdMain()),
+                                    );
+                                  },
+                                ).button()
                               ]),
                         ],
                       ),

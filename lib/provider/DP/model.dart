@@ -94,8 +94,12 @@ class TestInputtedDetailGoalModel with ChangeNotifier {
     _testinputtedDetailGoal.updateAll((key, value) => '');
     notifyListeners();
   }
-}
 
+  /// 비어있는 값 (empty string)을 가진 key의 개수 반환
+  int countEmptyKeys() {
+    return _testinputtedDetailGoal.values.where((value) => value == "").length;
+  }
+}
 
 class SaveInputtedActionPlanModel with ChangeNotifier {
   final List<Map<String, String>> _inputtedActionPlan = List.generate(9, (_) {
@@ -138,7 +142,8 @@ class SaveInputtedActionPlanModel with ChangeNotifier {
 }
 
 class TestInputtedActionPlanModel with ChangeNotifier {
-  final List<Map<String, String>> _testinputtedActionPlan = List.generate(9, (_) {
+  final List<Map<String, String>> _testinputtedActionPlan =
+      List.generate(9, (_) {
     return {
       '0': '',
       '1': '',
@@ -173,7 +178,6 @@ class TestInputtedActionPlanModel with ChangeNotifier {
     notifyListeners();
   }
 }
-
 
 class SelectDetailGoal with ChangeNotifier {
   String _selectedDetailGoal = "";
@@ -262,21 +266,18 @@ class SaveEditedActionPlanIdModel with ChangeNotifier {
   }
 }
 
-
 class SaveMandalartCreatedGoal with ChangeNotifier {
   final List<String> _mandalartCreatedGoal = [];
 
   List<String> get mandalartCreatedGoal => _mandalartCreatedGoal;
 
   void updateMandalartCreatedGoal(String goalId) {
-    _mandalartCreatedGoal.add(goalId);  
-    notifyListeners();  
+    _mandalartCreatedGoal.add(goalId);
+    notifyListeners();
   }
 
   void removeGoal(String goalId) {
     _mandalartCreatedGoal.remove(goalId);
     notifyListeners();
   }
-
 }
-

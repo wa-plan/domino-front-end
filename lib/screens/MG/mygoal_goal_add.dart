@@ -46,40 +46,39 @@ class _MyGoalAddState extends State<MyGoalAdd> {
 
     // 이미지 업로드 함수
     Future<void> uploadMultipleImages(List<String> imagePaths) async {
-  // The base URL of the server
-  const String baseUrl = 'http://13.124.78.26:8080/s3/upload';
+      // The base URL of the server
 
-  // 각 이미지를 업로드한 후 응답을 받기 위한 Future 리스트
-  List<Future<String?>> uploadFutures = imagePaths.map((imagePath) async {
-    // Prepend the base URL to the image path
-    String fullImagePath = '$baseUrl/$imagePath'; 
+      // 각 이미지를 업로드한 후 응답을 받기 위한 Future 리스트
+      List<Future<String?>> uploadFutures = imagePaths.map((imagePath) async {
+        // Prepend the base URL to the image path
+        String fullImagePath = '$baseUrl/$imagePath';
 
-    // Upload logic with the full image path
-    bool uploadSuccess = await UploadImage.uploadImage(filePath: fullImagePath);
+        // Upload logic with the full image path
+        bool uploadSuccess =
+            await UploadImage.uploadImage(filePath: fullImagePath);
 
-    if (uploadSuccess) {
-      // 업로드 성공 시 응답을 반환
-      return; // 각 이미지의 응답 본문
-    } else {
-      // 실패 시 null 반환
-      return null;
+        if (uploadSuccess) {
+          // 업로드 성공 시 응답을 반환
+          return; // 각 이미지의 응답 본문
+        } else {
+          // 실패 시 null 반환
+          return null;
+        }
+      }).toList();
+
+      // 모든 업로드가 완료될 때까지 기다림
+      List<String?> responses = await Future.wait(uploadFutures);
+
+      // 응답 결과 출력 및 업로드된 이미지 URL 리스트에 추가
+      for (var response in responses) {
+        if (response != null) {
+          print('이미지 업로드 성공: $response');
+          uploadedImageUrls.add(response); // 업로드된 이미지 URL을 추가
+        } else {
+          print('이미지 업로드 실패');
+        }
+      }
     }
-  }).toList();
-
-  // 모든 업로드가 완료될 때까지 기다림
-  List<String?> responses = await Future.wait(uploadFutures);
-
-  // 응답 결과 출력 및 업로드된 이미지 URL 리스트에 추가
-  for (var response in responses) {
-    if (response != null) {
-      print('이미지 업로드 성공: $response');
-      uploadedImageUrls.add(response); // 업로드된 이미지 URL을 추가
-    } else {
-      print('이미지 업로드 실패');
-    }
-  }
-}
-
 
     // 이미지 업로드 진행
     await uploadMultipleImages(picturePaths);
