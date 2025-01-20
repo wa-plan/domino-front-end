@@ -1,10 +1,10 @@
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/Create/DP_input3.dart';
-import 'package:domino/widgets/DP/Create/ai_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/apis/services/openai_services.dart';
+import 'package:domino/widgets/DP/ai_popup.dart';
 
 class EditInput2Page extends StatefulWidget {
   final String mandalart;
@@ -53,7 +53,7 @@ class _EditInput2PageState extends State<EditInput2Page> {
     try {
       final coreGoal = widget.mandalart; // coreGoal 업데이트
       List<String> subGoals =
-          await generateThirdGoals(coreGoal); // 변수 prompt 사용
+          await generateThirdGoals(coreGoal, goal); // 변수 prompt 사용
       setState(() {
         _subGoals = subGoals; // 새로운 세부 목표로 업데이트
       });
