@@ -8,6 +8,8 @@ import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
+import 'package:domino/widgets/DP/Create/Description.dart';
+
 
 class Edit99Page extends StatelessWidget {
   final String mandalart;
@@ -194,6 +196,11 @@ class Edit99Page extends StatelessWidget {
                       EditSmallgridwithdata(goalId: i, mandalart: mandalart,firstColor: firstColor,),
                   ],
                 )),
+                
+                        Description(firstColor).description(),
+                        const SizedBox(
+                          height: 20,
+                        ),
              
                        
 

@@ -9,14 +9,14 @@ class Description {
   Widget description() {
     return ExpansionTile(
       backgroundColor: const Color(0xff2A2A2A),
-      collapsedBackgroundColor: const Color(0xff2A2A2A),
+      collapsedBackgroundColor: backgroundColor,
       childrenPadding: const EdgeInsets.fromLTRB(30, 0, 30, 20),
       tilePadding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
       iconColor: Colors.white,
       collapsedIconColor: Colors.white,
       shape: const Border(),
-      title: const Text(
-        '도민호의 꿀팁!',
+      title:  const Text(
+        '도민호의 꿀팁',
         style: TextStyle(
           color: Colors.white,
           fontSize: 14,

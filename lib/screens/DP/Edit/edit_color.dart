@@ -298,7 +298,7 @@ class EditColorPageState extends State<EditColorPage> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 20),
                       decoration: BoxDecoration(
-                        color: const Color(0xff2A2A2A),
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(3),
                       ),
                       child: GridView(
@@ -321,7 +321,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 0
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff2A2A2A))),
+                                              : const Color(0xff222222))),
                                   child: const ColorBox(
                                       actionPlanId: 0,
                                       goalColorId: 0,
@@ -339,7 +339,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 1
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff2A2A2A))),
+                                              : const Color(0xff222222))),
                                   child: const ColorBox(
                                       actionPlanId: 1,
                                       goalColorId: 1,
@@ -357,7 +357,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 2
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff2A2A2A))),
+                                              : const Color(0xff222222))),
                                   child: const ColorBox(
                                       actionPlanId: 2,
                                       goalColorId: 2,
@@ -375,7 +375,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 3
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff2A2A2A))),
+                                              : const Color(0xff222222))),
                                   child: const ColorBox(
                                       actionPlanId: 3,
                                       goalColorId: 3,
@@ -414,7 +414,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 5
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff2A2A2A))),
+                                              : const Color(0xff222222))),
                                   child: const ColorBox(
                                       actionPlanId: 5,
                                       goalColorId: 5,
@@ -432,7 +432,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 6
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff2A2A2A))),
+                                              : const Color(0xff222222))),
                                   child: const ColorBox(
                                       actionPlanId: 6,
                                       goalColorId: 6,
@@ -450,7 +450,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 7
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff2A2A2A))),
+                                              : const Color(0xff222222))),
                                   child: const ColorBox(
                                       actionPlanId: 7,
                                       goalColorId: 7,
@@ -468,7 +468,7 @@ class EditColorPageState extends State<EditColorPage> {
                                           color: selectIndex == 8
                                               ? const Color.fromARGB(
                                                   255, 182, 182, 182)
-                                              : const Color(0xff2A2A2A))),
+                                              : const Color(0xff222222))),
                                   child: const ColorBox(
                                       actionPlanId: 8,
                                       goalColorId: 8,

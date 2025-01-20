@@ -20,6 +20,16 @@ class SelectFinalGoalId with ChangeNotifier {
   }
 }
 
+class GoalOrder with ChangeNotifier {
+  List<Map<String, String>> _goalOrder = []; // 초기값 설정
+  List<Map<String, String>> get goalOrder => _goalOrder;
+
+  void saveGoalOrder(List<Map<String, String>> value) {
+    _goalOrder = value;
+    notifyListeners();
+  }
+}
+
 class SelectAPModel with ChangeNotifier {
   String _selectedAPName = "플랜선택없음"; // 초기값 설정
   String get selectedAPName => _selectedAPName;
@@ -93,6 +103,11 @@ class TestInputtedDetailGoalModel with ChangeNotifier {
   void resetDetailGoals() {
     _testinputtedDetailGoal.updateAll((key, value) => '');
     notifyListeners();
+  }
+
+  /// 비어있는 값 (empty string)을 가진 key의 개수 반환
+  int countEmptyKeys() {
+    return _testinputtedDetailGoal.values.where((value) => value == "").length;
   }
 }
 

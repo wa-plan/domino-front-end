@@ -21,6 +21,7 @@ class _DPMainState extends State<DPMain> {
   List<Map<String, dynamic>> mainGoals = [];
   List<Map<String, dynamic>> emptyMainGoals = [];
   final PageController _pageController = PageController();
+  List<Map<String, String>> inProgressID = [];
 
 
   @override
@@ -37,8 +38,12 @@ class _DPMainState extends State<DPMain> {
       List<Map<String, dynamic>> filteredGoals = [];
       List<Map<String, dynamic>> emptySecondGoals =
           []; // 비어 있는 secondGoals를 위한 리스트 추가
+      List<Map<String, String>> inProgressID = Provider.of<GoalOrder>(context, listen: false).goalOrder;
 
-      for (var goal in goals) {
+      print('inProgressIDs : $inProgressID'); //쓰러뜨릴목표
+      print('goals : $goals'); //전체목표
+
+      for (var goal in inProgressID) {
         final mandalartId = goal['id'].toString();
         final name = goal['name']; // 목표의 이름 가져오기
 
@@ -221,7 +226,7 @@ class _DPMainState extends State<DPMain> {
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 15, horizontal: 20),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xff2A2A2A),
+                                    color: Colors.transparent,
                                     borderRadius: BorderRadius.circular(3),
                                   ),
                                   child: Column(

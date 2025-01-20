@@ -46,7 +46,7 @@ class ColorBox extends StatelessWidget {
         return DPCreateGrid(
           inputtedActionPlan['$index'] ?? '', 
           inputtedActionPlan['$index']?.isEmpty == true
-                ? const Color(0xff2A2A2A)
+                ? const Color(0xff222222)
                 : colorPalette[color1] ?? Colors.transparent,
                 null).dPCreateGrid();
       });

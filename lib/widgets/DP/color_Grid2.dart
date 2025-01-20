@@ -18,7 +18,7 @@ class ColorBox2 extends StatelessWidget {
                     .watch<SaveInputtedDetailGoalModel>()
                     .inputtedDetailGoal['$keyNumber']!
                     .isEmpty
-                ? const Color(0xff2A2A2A)
+                ? const Color(0xff222222)
                 : context.watch<GoalColor>().selectedGoalColor['$keyNumber'],
                 null)
         .dPCreateGrid();

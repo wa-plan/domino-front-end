@@ -271,9 +271,7 @@ class DPGrid2 {
         borderRadius: BorderRadius.circular(3),
         color:
             secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != ""
-                ? Color(int.parse(secondGoals[hintNum]['color']
-                    .replaceAll('Color(', '')
-                    .replaceAll(')', '')))
+                ? ColorTransform(secondGoals[hintNum]['color']).colorTransform()
                 : Colors.transparent,
         border: border,
       ),
