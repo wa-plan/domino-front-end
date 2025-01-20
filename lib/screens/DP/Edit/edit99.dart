@@ -1,7 +1,7 @@
 //DP 수정 메인 페이지
 import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/screens/DP/Edit/edit_color.dart';
-import 'package:domino/screens/DP/Edit/edit_input12.dart';
+import 'package:domino/screens/DP/Edit/edit_create_input1.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/Edit/Edit_Grid23.dart';
 import 'package:domino/widgets/popup.dart';

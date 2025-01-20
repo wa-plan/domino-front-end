@@ -1,4 +1,4 @@
-import 'package:domino/screens/DP/Edit/edit_input23.dart';
+import 'package:domino/screens/DP/Edit/edit_create_input2_page.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
