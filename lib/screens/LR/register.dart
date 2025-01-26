@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:domino/screens/LR/login.dart';
 import 'package:domino/apis/services/lr_services.dart';
 
-
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -129,12 +128,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ClipRect(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(
-                    sigmaX: 8.0,
-                    sigmaY: 7.0,
-                  ),
+                      sigmaX: 8.0,
+                      sigmaY: 7.0,
+                    ),
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 20),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.03),
                         borderRadius: BorderRadius.circular(6),
@@ -174,9 +173,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       SizedBox(
                                         width: 257,
                                         height: 35,
-                                        child: CustomTextField(
-                                                '이메일을 입력해 주세요.', _emailController,
-                                                (value) {
+                                        child: CustomTextField('이메일을 입력해 주세요.',
+                                                _emailController, (value) {
                                           if (value == null || value.isEmpty) {
                                             return '이메일을 입력해 주세요.';
                                           }
@@ -191,97 +189,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 15.0),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Text(
-                                        'Phone',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 35,
-                                            width: 182,
-                                            child: CustomTextField('전화번호를 입력해 주세요.',
-                                                    _phoneController, (value) {
-                                              if (value == null || value.isEmpty) {
-                                                return '올바른 전화번호를 입력해 주세요.';
-                                              }
-                                              return null;
-                                            }, false, 1)
-                                                .textField(),
-                                          ),
-                                          const SizedBox(width: 10.0),
-                                          Button(Colors.black, Colors.white, '확인',
-                                              () {
-                                            if (_formKey.currentState!.validate()) {
-                                              setState(() {
-                                                _isPhoneVerified =
-                                                    true; 
-                                              });
-                                            }
-                                          }).button()
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  if (_isPhoneVerified)
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              55, 15, 0, 15),
-                                          child: SizedBox(
-                                            height: 35,
-                                            width: 270,
-                                            child: TextField(
-                                              decoration: InputDecoration(
-                                                labelText: '인증번호 4자리를 입력해 주세요.',
-                                                labelStyle: const TextStyle(
-                                                  color: Color(0xff5C5C5C),
-                                                  fontSize: 13,
-                                                ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                  borderSide: const BorderSide(
-                                                    color: Color(0xff5C5C5C),
-                                                    width: 1.5,
-                                                  ),
-                                                ),
-                                              ),
-                                              obscureText: true,
-                                            ),
-                                          ),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {},
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.black,
-                                            shape: BeveledRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(2),
-                                            ),
-                                          ),
-                                          child: const Text(
-                                            '인증',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 13,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                 ]),
                           ),
                         ],
@@ -297,8 +204,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       sigmaY: 7.0,
                     ),
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 20),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.03),
                         borderRadius: BorderRadius.circular(6),
@@ -332,7 +239,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 35,
                                 width: 257,
                                 child: CustomTextField(
-                                        '아이디를 만들어 주세요.', _idController, (value) {
+                                        '아이디를 만들어 주세요.', _idController,
+                                        (value) {
                                   if (value == null || value.isEmpty) {
                                     return '아이디를 입력해 주세요.';
                                   }
@@ -360,7 +268,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 35,
                                 width: 257,
                                 child: CustomTextField(
-                                        '비밀번호를 만들어 주세요.', _pwController, (value) {
+                                        '비밀번호를 만들어 주세요.', _pwController,
+                                        (value) {
                                   if (value == null || value.isEmpty) {
                                     return '비밀번호를 입력해 주세요.';
                                   }
@@ -402,11 +311,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           const SizedBox(height: 17.0),
                           Container(
-                            alignment: Alignment.centerRight,
-                            child: Button(Colors.black, Colors.white, '계정생성', 
-                            _register).button()
-                            
-                          ),
+                              alignment: Alignment.centerRight,
+                              child: Button(Colors.black, Colors.white, '계정생성',
+                                      _register)
+                                  .button()),
                         ],
                       ),
                     ),

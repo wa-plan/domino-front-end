@@ -26,10 +26,10 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
     void Function()? onClear,
   }) {
     return TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          hintText: hintText,
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        hintText: hintText,
         contentPadding: const EdgeInsets.all(10.0),
         hintStyle: const TextStyle(
             color: Color(0xffBFBFBF),
@@ -52,9 +52,9 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
                 icon: const Icon(Icons.clear_outlined),
               )
             : null,
-        ),
-        validator: validator,
-      );
+      ),
+      validator: validator,
+    );
   }
 
   void _idFind() async {
@@ -82,210 +82,185 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
   }
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    backgroundColor: backgroundColor,
-    appBar: AppBar(
-      automaticallyImplyLeading: false,
-      titleSpacing: 0.0,
-      title: Padding(
-        padding: appBarPadding,
-        child: Row(
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        titleSpacing: 0.0,
+        title: Padding(
+          padding: appBarPadding,
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                color: const Color(0xffD4D4D4),
+                iconSize: 17,
+              ),
+              Text(
+                '아이디/비밀번호 찾기',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: backgroundColor,
+      ),
+      body: Padding(
+        padding: fullPadding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(Icons.arrow_back_ios_new_rounded),
-              color: const Color(0xffD4D4D4),
-              iconSize: 17,
+            const SizedBox(height: 15),
+            // 아이디 찾기 영역
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              decoration: BoxDecoration(
+                color: const Color(0xff2A2A2A),
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "아이디 찾기",
+                    style: TextStyle(
+                      color: Color(0xff949494),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Email',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(
+                        height: 35,
+                        width: 240,
+                        child: _buildTextFormField(
+                          hintText: '이메일을 입력해 주세요.',
+                          controller: _idEmailController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '이메일을 입력해 주세요.';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        _responseId,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(width: 20),
+                      Button(Colors.black, Colors.white, '찾기', _idFind)
+                          .button(),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            Text(
-              '아이디/비밀번호 찾기',
-              style: Theme.of(context).textTheme.titleLarge,
+            const SizedBox(height: 20),
+            // 비밀번호 찾기 영역
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              decoration: BoxDecoration(
+                color: const Color(0xff2A2A2A),
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "비밀번호 찾기",
+                    style: TextStyle(
+                      color: Color(0xff949494),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'ID',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(
+                        height: 35,
+                        width: 240,
+                        child: _buildTextFormField(
+                          hintText: '아이디를 입력해 주세요.',
+                          controller: _userIdController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '아이디를 입력해 주세요.';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Email',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(
+                        height: 35,
+                        width: 240,
+                        child: _buildTextFormField(
+                          hintText: '이메일을 입력해 주세요.',
+                          controller: _pwEmailController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '이메일을 입력해 주세요.';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Button(Colors.black, Colors.white, '찾기', _pwFind)
+                          .button(),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
-      backgroundColor: backgroundColor,
-    ),
-    body: Padding(
-      padding: fullPadding,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 15),
-          // 아이디 찾기 영역
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            decoration: BoxDecoration(
-              color: const Color(0xff2A2A2A),
-              borderRadius: BorderRadius.circular(3),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "아이디 찾기",
-                  style: TextStyle(
-                    color: Color(0xff949494),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Phone',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      height: 35,
-                      width: 240,
-                      child: _buildTextFormField(
-                        hintText: '전화번호를 입력해 주세요.',
-                        controller: _phoneController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '전화번호를 입력해 주세요.';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Email',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      height: 35,
-                      width: 240,
-                      child: _buildTextFormField(
-                        hintText: '이메일을 입력해 주세요.',
-                        controller: _idEmailController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '이메일을 입력해 주세요.';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      _responseId,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(width: 20),
-                    Button(Colors.black, Colors.white, '찾기', _idFind).button(),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          // 비밀번호 찾기 영역
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            decoration: BoxDecoration(
-              color: const Color(0xff2A2A2A),
-              borderRadius: BorderRadius.circular(3),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "비밀번호 찾기",
-                  style: TextStyle(
-                    color: Color(0xff949494),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'ID',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      height: 35,
-                      width: 240,
-                      child: _buildTextFormField(
-                        hintText: '아이디를 입력해 주세요.',
-                        controller: _userIdController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '아이디를 입력해 주세요.';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Email',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      height: 35,
-                      width: 240,
-                      child: _buildTextFormField(
-                        hintText: '이메일을 입력해 주세요.',
-                        controller: _pwEmailController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return '이메일을 입력해 주세요.';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Button(Colors.black, Colors.white, '찾기', _pwFind).button(),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+    );
+  }
 }

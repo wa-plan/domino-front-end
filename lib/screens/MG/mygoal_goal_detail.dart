@@ -388,7 +388,12 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                 height: 20,
               ),
               if (goalImage.isEmpty) ...[
-                Image.asset('assets/img/if_no_img.png'),
+                Image.asset(
+                  'assets/img/if_no_img.png', // 로컬 기본 이미지
+                  fit: BoxFit.cover,
+                  width: 100,
+                  height: 100,
+                )
               ] else ...[
                 SizedBox(
                   height: 140,
@@ -400,7 +405,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
                     ),
-                    itemCount: 3,
+                    itemCount: goalImage.length.clamp(0, 3),
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
@@ -408,13 +413,23 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                         return ClipRRect(
                           borderRadius:
                               BorderRadius.circular(15), // 둥근 네모 형태로 설정
-                          child: Image.asset(
+                          child: Image.network(
                             goalImage[index],
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Text(
+                                  '이미지 로드 실패',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              );
+                            },
                           ),
                         );
                       } else {
-                        return Container(); // 빈 자리를 유지
+                        return Container(
+                          color: Colors.grey[200], // 빈 자리 회색 처리
+                        );
                       }
                     },
                   ),

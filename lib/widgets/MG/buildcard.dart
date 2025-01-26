@@ -66,6 +66,7 @@ class _GoalCardState extends State<GoalCard> {
     // 초기 bookmark 상태에 따라 색상 설정
     isBookmarked = widget.bookmark == 'BOOKMARK';
     starColor = isBookmarked ? mainGold : const Color.fromARGB(255, 62, 62, 62);
+    print(widget.photoList);
   }
 
   @override
@@ -167,18 +168,37 @@ class _GoalCardState extends State<GoalCard> {
                     width: 250,
                     height: 85,
                     child: CarouselSlider.builder(
-                      itemCount: widget.photoList.length.clamp(1, 3),
+                      itemCount:
+                          widget.photoList.length.clamp(1, 3), // 최대 3개로 제한
                       itemBuilder: (context, index, realIndex) {
+                        final String imagePath =
+                            widget.photoList[index].toString(); // URL 가져오기
+
                         return Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: Image.network(
+                            imagePath,
+                            fit: BoxFit.cover,
+                            width: 250,
+                            height: 85,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Text(
+                                  '이미지 로드 실패',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              );
+                            },
+                          ),
                         );
                       },
                       options: CarouselOptions(
                         height: 85,
-                        autoPlay: true,
-                        viewportFraction:
-                            widget.photoList.length == 1 ? 1.0 : 0.9,
-                        enlargeCenterPage: true,
+                        autoPlay: false,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 1.0,
+                        enlargeCenterPage: false,
+                        scrollPhysics: const NeverScrollableScrollPhysics(),
                       ),
                     ),
                   ),
