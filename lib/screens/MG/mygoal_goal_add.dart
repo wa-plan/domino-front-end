@@ -1,13 +1,15 @@
-import 'package:domino/screens/MG/mygoal_main.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:domino/apis/services/mg_services.dart';
 import 'package:image_picker/image_picker.dart' as image_picker;
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/MG/calender.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:domino/apis/services/image_services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:domino/apis/services/mg_services.dart';
+import 'package:domino/screens/MG/mygoal_main.dart';
 
 class MyGoalAdd extends StatefulWidget {
   const MyGoalAdd({super.key});
@@ -18,83 +20,76 @@ class MyGoalAdd extends StatefulWidget {
 
 class _MyGoalAddState extends State<MyGoalAdd> {
   bool _isChecked = false;
-  XFile? _pickedFile;
+  //XFile? _pickedFile;
   Color? _selectedColor;
   DateTime? selectedDate;
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   List<image_picker.XFile?> selectedImages = [];
-  final List<String> _combinedImages = [];
-  String? uploadedImageResponse; // String? 타입으로 수정
+  String? uploadedImageResponse;
+  final List<String> _imageFiles = [];
+
+  Future<void> _pickImages() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: true,
+        type: FileType.image,
+        withData: kIsWeb, // 웹에서는 true, 모바일에서는 false
+      );
+
+      if (result != null) {
+        // 파일 업로드 서비스 호출
+        String uploadedUrl = await UploadFileService.uploadFiles(result.files);
+
+        if (uploadedUrl.isNotEmpty) {
+          print('업로드된 파일 URL: $uploadedUrl');
+          setState(() {
+            _imageFiles.add(uploadedUrl); // URL을 _imageFiles에 추가
+          });
+          print('_imageFiles=$_imageFiles');
+        } else {
+          print('파일 업로드 실패');
+        }
+      }
+    } catch (e) {
+      print('이미지 선택 오류: $e');
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
+
+  /// 이미지 삭제 함수
+  void _deleteImage(int index) {
+    setState(() {
+      _imageFiles.removeAt(index);
+    });
+  }
 
   void _addGoal() async {
     final name = _nameController.text;
     final description = _descriptionController.text;
-    final color = _selectedColor.toString();
-    final DateTime date = _selectedDate!; // selectedDate를 그대로 DateTime 형식으로 처리
 
-    // 이미지 파일 경로 추출
-    final picturePaths = [
-      ...selectedImages.map((image) => image!.path),
-      ..._combinedImages
-    ];
+    final colorHex = _selectedColor != null
+        ? '0x${_selectedColor!.value.toRadixString(16)}'
+        : '0xffffffff'; // 기본값으로 흰색 (Color(0xffffffff))
 
-    print(picturePaths);
+    final String date = selectedDate != null
+        ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+        : DateFormat('yyyy-MM-dd').format(DateTime.now()); // null일 경우 현재 날짜를 사용
 
-    // 이미지 업로드 후 서버에 보낼 이미지 URL 리스트를 담을 변수
-    List<String> uploadedImageUrls = [];
-
-    // 이미지 업로드 함수
-    Future<void> uploadMultipleImages(List<String> imagePaths) async {
-      // The base URL of the server
-
-      // 각 이미지를 업로드한 후 응답을 받기 위한 Future 리스트
-      List<Future<String?>> uploadFutures = imagePaths.map((imagePath) async {
-        // Prepend the base URL to the image path
-        String fullImagePath = '$baseUrl/$imagePath';
-
-        // Upload logic with the full image path
-        bool uploadSuccess =
-            await UploadImage.uploadImage(filePath: fullImagePath);
-
-        if (uploadSuccess) {
-          // 업로드 성공 시 응답을 반환
-          return; // 각 이미지의 응답 본문
-        } else {
-          // 실패 시 null 반환
-          return null;
-        }
-      }).toList();
-
-      // 모든 업로드가 완료될 때까지 기다림
-      List<String?> responses = await Future.wait(uploadFutures);
-
-      // 응답 결과 출력 및 업로드된 이미지 URL 리스트에 추가
-      for (var response in responses) {
-        if (response != null) {
-          print('이미지 업로드 성공: $response');
-          uploadedImageUrls.add(response); // 업로드된 이미지 URL을 추가
-        } else {
-          print('이미지 업로드 실패');
-        }
-      }
-    }
-
-    // 이미지 업로드 진행
-    await uploadMultipleImages(picturePaths);
-
-    // 서버에 보낼 데이터 출력
-    print('Name: $name');
-    print('Description: $description');
-    print('Color: $color');
-    print('Date: $date');
-    print('Uploaded Image URLs: $uploadedImageUrls');
+    // 이미지 업로드
+    List<String> uploadedImageUrls = _imageFiles;
 
     // AddGoalService.addGoal API 호출, 업로드된 이미지 URL 리스트를 전달
     final success = await AddGoalService.addGoal(
       name: name,
       description: description,
-      color: color,
+      color: colorHex,
       date: date,
       pictures: uploadedImageUrls, // 업로드된 이미지 URL을 전달
     );
@@ -106,22 +101,6 @@ class _MyGoalAddState extends State<MyGoalAdd> {
           builder: (context) => const MyGoal(),
         ),
       );
-    }
-  }
-
-  // 이미지 픽커로부터 이미지를 선택하는 메서드
-  Future<void> _getPhotoLibraryImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _pickedFile = pickedFile;
-        _combinedImages.add(pickedFile.path);
-      });
-    } else {
-      if (kDebugMode) {
-        print('선택 안 함');
-      }
     }
   }
 
@@ -140,11 +119,11 @@ class _MyGoalAddState extends State<MyGoalAdd> {
     });
   }
 
-  void _deleteImage(String imagePath) {
+  /*void _deleteImage(String imagePath) {
     setState(() {
       _combinedImages.remove(imagePath); // 이미지 리스트에서 제거
     });
-  }
+  }*/
 
   DateTime? _selectedDate; // 상위 화면에서 사용하는 상태 변수
 
@@ -353,43 +332,49 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              ..._combinedImages.map((imagePath) {
-                                return Stack(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 10.0),
-                                      child: CircleAvatar(
-                                        radius: 40,
-                                        backgroundImage: File(imagePath)
-                                                .existsSync()
-                                            ? FileImage(File(
-                                                imagePath)) // For new images
-                                            : AssetImage(imagePath)
-                                                as ImageProvider, // For existing images
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      top: 0,
-                                      child: GestureDetector(
-                                        onTap: () => _deleteImage(
-                                            imagePath), // 이미지 삭제 함수 호출
-                                        child: const CircleAvatar(
-                                          radius: 12,
-                                          backgroundColor: Colors.black,
-                                          child: Icon(Icons.close,
-                                              size: 15, color: Colors.white),
+                              ..._imageFiles.asMap().entries.map((entry) {
+                                int index = entry.key;
+                                var imageData = entry.value;
+
+                                // 이미지 데이터 타입 출력
+                                print('imageData 타입: ${imageData.runtimeType}');
+
+                                // 이미지가 Uint8List가 맞는지 확인하고 유효한지 체크
+                                if (imageData.isNotEmpty) {
+                                  return Stack(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10.0),
+                                        child: CircleAvatar(
+                                          radius: 40,
+                                          backgroundImage:
+                                              NetworkImage(imageData),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                );
+                                      Positioned(
+                                        right: 0,
+                                        top: 0,
+                                        child: GestureDetector(
+                                          onTap: () =>
+                                              _deleteImage(index), // 이미지 삭제
+                                          child: const CircleAvatar(
+                                            radius: 12,
+                                            backgroundColor: Colors.black,
+                                            child: Icon(Icons.close,
+                                                size: 15, color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return Container(); // 잘못된 데이터 타입 처리
+                                }
                               }),
-                              if (_combinedImages.length <
-                                  3) // 이미지가 3개 미만일 때만 CircleAvatar 버튼 표시
+                              if (_imageFiles.length < 3)
                                 GestureDetector(
-                                  onTap: _getPhotoLibraryImage,
+                                  onTap: _pickImages, // 이미지 선택 함수 호출
                                   child: const CircleAvatar(
                                     radius: 40,
                                     backgroundColor:
@@ -482,6 +467,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                     () {
                       print('selectedDate=$selectedDate');
                       print('_isChecked=$_isChecked');
+
                       if (_nameController.text == '') {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('목표를 입력해 주세요.')),
