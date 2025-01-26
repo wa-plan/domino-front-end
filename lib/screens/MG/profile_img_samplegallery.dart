@@ -73,16 +73,16 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
             Center(
               child: Container(
                 padding: const EdgeInsets.all(5),
-                              width: imageSize / 1.2, // CircleAvatar의 전체 크기
-                              height: imageSize / 1.2,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: const Color.fromARGB(
-                                      255, 147, 147, 147), // 원하는 테두리 색
-                                  width: 0.5, // 테두리 두께
-                                ),
-                              ),
+                width: imageSize / 1.2, // CircleAvatar의 전체 크기
+                height: imageSize / 1.2,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color:
+                        const Color.fromARGB(255, 147, 147, 147), // 원하는 테두리 색
+                    width: 0.5, // 테두리 두께
+                  ),
+                ),
                 child: Container(
                   width: imageSize,
                   height: imageSize,
@@ -120,11 +120,11 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.3,
-                ),
-                const SizedBox(height: 10),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 0.3,
+                    ),
+                    const SizedBox(height: 10),
                     Expanded(
                       child: LayoutBuilder(
                         builder: (context, constraints) {
@@ -158,32 +158,27 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                         },
                       ),
                     ),
-                    
-                    
                   ],
                 ),
               ),
-              
             ),
             const SizedBox(height: 10),
             Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Button(Colors.black, Colors.white, '완료', 
-                        () {
-                            print(_selectedImage);
-                            Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ProfileEdit(
-                                        selectedImage: _selectedImage,
-                                       ),
-                                     ),
-                                   );
-                          }).button()
-                        
-                      ],
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Button(Colors.black, Colors.white, '완료', () {
+                  print(_selectedImage);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileEdit(
+                        selectedImage: _selectedImage,
+                      ),
                     ),
+                  );
+                }).button()
+              ],
+            ),
           ],
         ),
       ),

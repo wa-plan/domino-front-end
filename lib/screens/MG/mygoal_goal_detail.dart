@@ -116,7 +116,6 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     //final colorValue =
     //    int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
     //print('colorValue=$colorValue');
-
     name = widget.name;
     dday = widget.dday;
     status = widget.status;
@@ -124,7 +123,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
 
     userMandaInfo(mandalartId);
 
-    goalImage = photoList.map((photo) => 'assets/img/$photo').toList();
+    goalImage = photoList.map((photo) => photo).toList();
     print('goalImage=$goalImage');
 
     if (status == 'FAIL') {
@@ -410,6 +409,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       if (index < goalImage.length) {
+                        print('goalImage=$goalImage');
                         return ClipRRect(
                           borderRadius:
                               BorderRadius.circular(15), // 둥근 네모 형태로 설정
