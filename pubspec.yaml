@@ -54,6 +54,8 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
   permission_handler: ^11.3.1
+  file_picker: ^8.1.7
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
@@ -114,6 +116,11 @@ flutter:
     - assets/img/MG_orange.png
     - assets/img/splash.png
     - assets/img/AI_icon.png
+    - assets/img/new_splash.png
+    - assets/img/new1_splash.png
+    - assets/img/new2_splash.png
+    - assets/img/new3_splash.png
+    - assets/img/new4_splash.png
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -410,6 +410,9 @@ class _EventCalendarState extends State<EventCalendar> {
 
 void editDialog(BuildContext context, DateTime date, String title,
     String content, bool switchvalue, int interval, int goalId, String color) {
+  color = color.replaceAll('Color(', '').replaceAll(')', '');
+  Color colorValue = Color(int.parse(color));
+
   String getIntervalText() {
     if (!switchvalue) {
       return 'X';
@@ -445,48 +448,53 @@ void editDialog(BuildContext context, DateTime date, String title,
               color: Color.fromARGB(255, 26, 26, 26),
               borderRadius: BorderRadius.all(Radius.circular(5))),
           height: 200,
-          width: 400,
+          width: 350,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 15,
-                height: 140,
-                decoration: const BoxDecoration(
-                  color: mainRed,
-                  borderRadius: BorderRadius.all(Radius.circular(3)),
-                ),
-              ),
-              const SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  const Text(
-                    '환상적인 세계여행',
-                    style: TextStyle(color: Colors.white),
+                  Container(
+                    width: 15,
+                    height: 140,
+                    decoration: BoxDecoration(
+                      color: colorValue,
+                      borderRadius: const BorderRadius.all(Radius.circular(3)),
+                    ),
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    content,
-                    style: const TextStyle(color: Colors.grey, fontSize: 13),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    '반복',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  Text(
-                    getIntervalText(),
-                    style: const TextStyle(color: Colors.white),
+                  const SizedBox(width: 30),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '환상적인 세계여행',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        content,
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 13),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        title,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        '반복',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      Text(
+                        getIntervalText(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ],
                   ),
                 ],
               ),

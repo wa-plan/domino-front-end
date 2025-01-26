@@ -13,7 +13,7 @@ class AddGoalService {
     required String name,
     required String description,
     required String color,
-    required DateTime date,
+    required String date,
     required List<String> pictures,
   }) async {
     final prefs = await SharedPreferences.getInstance();
@@ -37,7 +37,7 @@ class AddGoalService {
       'name': name,
       'description': description,
       'color': color, // 색상은 이제 문자열로 전달됨
-      'date': date.toIso8601String(), // 날짜는 ISO 8601 형식 문자열로 변환됨
+      'date': date,
       'picture': pictures,
     });
 
