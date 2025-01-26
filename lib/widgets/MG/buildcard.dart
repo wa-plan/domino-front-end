@@ -66,7 +66,6 @@ class _GoalCardState extends State<GoalCard> {
     // 초기 bookmark 상태에 따라 색상 설정
     isBookmarked = widget.bookmark == 'BOOKMARK';
     starColor = isBookmarked ? mainGold : const Color.fromARGB(255, 62, 62, 62);
-    print(widget.photoList);
   }
 
   @override
