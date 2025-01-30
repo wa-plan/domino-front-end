@@ -1,0 +1,133 @@
+name: domino
+description: "A new Flutter project."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.19.0
+  shared_preferences: ^2.2.3
+  dio: ^5.5.0+1
+  image_picker: ^1.1.2
+  video_player: ^2.9.1
+  flutter_dotenv: ^5.0.2
+  flutter_secure_storage: ^9.2.2
+  url_launcher: ^6.1.10
+  auto_size_text: ^3.0.0
+  cupertino_icons: ^1.0.6
+  table_calendar: ^3.0.9
+  provider: ^6.1.2
+  http: ^1.2.2
+  fluttertoast: ^8.2.8
+  percent_indicator: ^4.2.3
+  smooth_page_indicator: ^1.2.0+3
+  carousel_slider: ^5.0.0
+  timezone: ^0.10.0
+  permission_handler: ^11.3.1
+  flutter_native_splash: ^2.4.0
+
+flutter_native_splash:
+  color: "#FFFFFF" # 스플래시 화면의 배경색 설정 (흰색)
+  image: "assets/img/splash(2).png" # 스플래시 화면에 표시될 이미지 설정 (앱 로고)
+  android: true # 안드로이드 플랫폼에 스플래시 화면 적용
+  ios: true # iOS 플랫폼에 스플래시 화면 적용
+  android_12: # Android 12 이상을 위한 추가 설정
+    color: "#FFFFFF" # Android 12 이상 스플래시 화면의 배경색 (흰색)
+    image: "assets/img/splash(2).png" # Android 12 이상 스플래시 화면에 표시될 이미지
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/img/Dominho.png
+    - assets/img/BG_image.png
+    - assets/img/BG_image2.png
+    - assets/img/LRDominho.png
+    - assets/img/Dominho2.png
+    - assets/img/vector1.png
+    - assets/img/vector2.png
+    - assets/img/vector3.png
+    - assets/img/vector4.png
+    - assets/img/Dominho_mono.png
+    - assets/img/Tutorial2.png
+    - assets/img/profile_smp1.png
+    - assets/img/profile_smp2.png
+    - assets/img/profile_smp3.png
+    - assets/img/profile_smp4.png
+    - assets/img/profile_smp5.png
+    - assets/img/profile_smp6.png
+    - assets/img/emptyDominho.png
+    - assets/config/.env
+    - assets/img/profile_smp7.png
+    - assets/img/profile_smp8.png
+    - assets/img/completed_goals.png #쓰러뜨린 목표
+    - assets/img/failed_goals.png #쓰러뜨리지 못한 목표
+    - assets/img/if_no_img.png
+    - assets/img/domino_calculate.png
+    - assets/img/domino.png
+    - assets/img/MG_domino.png
+    - assets/img/profile_smp9.png
+    - assets/img/domino_final.mp4 #도미노 쓰러지는 영상
+    - assets/img/confetti_final.mp4 #폭죽 터지는 영상
+    - assets/img/MG_white_yellow.png
+    - assets/img/MG_blue.png
+    - assets/img/MG_green.png
+    - assets/img/MG_red.png
+    - assets/img/MG_orange.png
+    - assets/img/splash.png
+    - assets/img/AI_icon.png
+    - assets/img/splash(2).png
+    - assets/img/newBG.png
+
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard-Thin.otf
+          weight: 100
+        - asset: assets/fonts/Pretendard-ExtraLight.otf
+          weight: 200
+        - asset: assets/fonts/Pretendard-Light.otf
+          weight: 300
+        - asset: assets/fonts/Pretendard-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Pretendard-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Pretendard-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/Pretendard-Bold.otf
+          weight: 700
+        - asset: assets/fonts/Pretendard-ExtraBold.otf
+          weight: 800
+        - asset: assets/fonts/Pretendard-Black.otf
+          weight: 900
+
+    - family: NotoSansKR
+      fonts:
+        - asset: assets/fonts/NotoSansKR-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/NotoSansKR-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/NotoSansKR-Light.ttf
+          weight: 300
+        - asset: assets/fonts/NotoSansKR-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/NotoSansKR-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/NotoSansKR-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/NotoSansKR-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/NotoSansKR-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/NotoSansKR-Black.ttf
+          weight: 900

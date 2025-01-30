@@ -1,0 +1,2222 @@
+[33mcommit af3bcaa6e1b171fbc2037e8ce763fef8679d29dd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mYujinPark3[m[33m, [m[1;31morigin/YujinPark3[m[33m)[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Jan 26 21:52:10 2025 +0900
+
+    yujinnn
+
+[33mcommit 98448db31804a6c3c3a0c3107b2076660d7342fc[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Jan 26 21:44:49 2025 +0900
+
+    yujin
+
+[33mcommit ce8b9a5fdf64e5cff519b39dc7bf89297066677d[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Jan 26 21:34:57 2025 +0900
+
+    yujion2
+
+[33mcommit 8a62f847c90c1854010a91477198eae4bb6c1b64[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Jan 26 21:32:09 2025 +0900
+
+    yujin
+
+[33mcommit 5e10ffd42d833e3987c3af6774894af15d0adaf1[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Jan 22 14:17:24 2025 +0900
+
+    ai랑 만다라트 연결
+
+[33mcommit 3df199ae23a9748137eaaa30db6e3980b53f5878[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Tue Jan 21 01:11:37 2025 +0900
+
+    please
+
+[33mcommit be47ef64c10a651c309592000c0347ca37e61212[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Tue Jan 21 00:47:01 2025 +0900
+
+    유진
+
+[33mcommit 6622ba2ca6922922437aaf07b7dcab29ea2451c0[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Tue Jan 21 00:40:49 2025 +0900
+
+    제발
+
+[33mcommit 8a9e46954c56082511f634a4743624a3f44d914e[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Tue Jan 21 00:09:21 2025 +0900
+
+    dbwls
+
+[33mcommit 93fa41d0340774d284eeed1ca63546bed5f47d91[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Jan 20 23:57:43 2025 +0900
+
+    유진
+
+[33mcommit 147a0931dcd8115fa0c4dc0c759a4d6877a3eaa5[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Tue Jan 14 02:27:17 2025 +0900
+
+    editedit
+
+[33mcommit bc0000fd454fa03e3b96d89ae3f9236334496821[m
+Merge: cbb7e76 4b58089
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Jan 5 21:22:29 2025 +0900
+
+    Merge pull request #97 from wa-plan/YujinPark3
+    
+    yujin
+
+[33mcommit 4b5808901157b543bd5ada5d70c2116af9eb269c[m
+Merge: ff92b92 cbb7e76
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Jan 5 21:22:22 2025 +0900
+
+    Merge branch 'dev' into YujinPark3
+
+[33mcommit ff92b92f4050a1fb424ea80356a4857f1a221413[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Jan 5 21:12:48 2025 +0900
+
+    yujin
+
+[33mcommit cbb7e763782384723751c615594d0a1ac61bd923[m
+Merge: 4d18aef b6c99b3
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sat Jan 4 02:58:24 2025 +0900
+
+    Merge pull request #96 from wa-plan/TD
+    
+    프롬프트 수정
+
+[33mcommit b6c99b3b3e82470c013ffe52275cc282348af27a[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Jan 4 02:57:17 2025 +0900
+
+    프롬프트 수정
+
+[33mcommit 4d18aeffe8cc79a118bb472f749543e3bb1d5c82[m
+Merge: f8028dc 8b809fc
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sat Jan 4 02:27:21 2025 +0900
+
+    Merge pull request #95 from wa-plan/TD
+    
+    AI 추천기능 추가
+
+[33mcommit 8b809fcc1cb07ce705123db033c5b60fd9e97880[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Jan 4 02:26:20 2025 +0900
+
+    goal 수정
+
+[33mcommit cd25027ce708887239866ee15414193ae61af706[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Jan 4 02:25:08 2025 +0900
+
+    Remove .env file from tracking
+
+[33mcommit f8028dc23029031eaf87d92cc8df199e10bc4b44[m
+Merge: bf04bda f2eb565
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Dec 29 22:43:47 2024 +0900
+
+    Merge pull request #93 from wa-plan/YujinPark3
+    
+    yujin
+
+[33mcommit f2eb565687d6777ae9e0771cd255bcfa4766ab43[m
+Merge: 9e220ac bf04bda
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Dec 29 22:43:34 2024 +0900
+
+    Merge branch 'dev' into YujinPark3
+
+[33mcommit 9e220ac32d6c996bc606fdcbdbbcffeffacb8285[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Dec 29 22:39:55 2024 +0900
+
+    yujin
+
+[33mcommit bf04bda92581ce315a83dd6093237798c40533a2[m
+Merge: 3a4430c 98845e9
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sat Dec 28 01:55:26 2024 +0900
+
+    Merge pull request #92 from wa-plan/TD
+    
+    Td
+
+[33mcommit 98845e975e82a39dfe60e855a31d2c81ff507589[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Dec 28 01:50:24 2024 +0900
+
+    1목표 삭제 api 연결
+
+[33mcommit 41b2810857c32b22a11eefa869686d6581fe6720[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Dec 28 01:42:33 2024 +0900
+
+    bookmark 순서 정렬 수정
+
+[33mcommit eb43f2961b9319b121cc49a7ed03f75cf7a2e92f[m
+Author: chaemd <new7932@naver.com>
+Date:   Fri Dec 27 14:03:32 2024 +0900
+
+    북마크 api 연결 및 색 연동
+
+[33mcommit 3a4430cb7cdfb273e83bcc52cedcb5cc9ecf7094[m
+Merge: 00cec06 b9efced
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Fri Dec 27 12:39:35 2024 +0900
+
+    Merge pull request #91 from wa-plan/TD
+    
+    Td
+
+[33mcommit b9efced94fc4d1b3219969e8f8700ed54ffe8d21[m
+Author: chaemd <new7932@naver.com>
+Date:   Fri Dec 27 12:37:44 2024 +0900
+
+    북마크 설정
+
+[33mcommit 00cec0620f24560607975ac6e5449390b84aafda[m
+Merge: ea840db fcbcd3c
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Fri Dec 27 10:25:54 2024 +0900
+
+    Merge pull request #90 from wa-plan/YujinPark3
+    
+    Yujin park3
+
+[33mcommit fcbcd3c87ac34b2e6627504ff13089cecee36d06[m
+Merge: 8d08f5b 83d0e02
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Fri Dec 27 10:14:54 2024 +0900
+
+    Merge branch 'YujinPark3' of https://github.com/wa-plan/dodakki-front-end into YujinPark3
+
+[33mcommit 8d08f5b584363ec9b1ebd8e199cf31d4301263c2[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Fri Dec 27 10:13:39 2024 +0900
+
+    squid
+
+[33mcommit 6c67acbcf2f9d93dc5d94a8e62467ef5280e38be[m
+Author: chaemd <new7932@naver.com>
+Date:   Fri Dec 27 04:04:37 2024 +0900
+
+    스플래시 화면 연결
+
+[33mcommit ea840db4d2db2c7535b91b782ba2fb0da0dfb975[m
+Merge: 771f808 240632e
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Dec 23 16:58:02 2024 +0900
+
+    Merge pull request #89 from wa-plan/TD
+    
+    버전세팅변경
+
+[33mcommit 240632e4be4262e0b8edbac82481516f848e1872[m
+Merge: e29e270 771f808
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Dec 23 16:57:53 2024 +0900
+
+    Merge branch 'dev' into TD
+
+[33mcommit 771f8080ba59df0b240f245218ee2f5f8bc42e0d[m
+Merge: 1000386 83d0e02
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Dec 23 16:56:01 2024 +0900
+
+    Merge pull request #88 from wa-plan/YujinPark3
+    
+    Yujin park3
+
+[33mcommit 83d0e029a0fc0222b340f4a37b1f3d057ce87da9[m
+Merge: 41a0a45 1000386
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Dec 23 16:55:52 2024 +0900
+
+    Merge branch 'dev' into YujinPark3
+
+[33mcommit e29e2703200e2cb661c5b67b0ed9c71b5f72f233[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Dec 23 16:48:25 2024 +0900
+
+    버전세팅변경
+
+[33mcommit 41a0a45fa8026d6c05dc6836f974f901e3c065f3[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Dec 23 11:33:40 2024 +0900
+
+    yujin
+
+[33mcommit 335757374a2dd638edb9bbb982e2c14524f5b956[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sat Dec 14 12:25:16 2024 +0900
+
+    Today's work
+
+[33mcommit 10003860d05788e5fee6112a01f0ef8cd9406298[m
+Merge: dd73d03 116944e
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Tue Dec 10 00:08:08 2024 +0900
+
+    Merge pull request #86 from wa-plan/YujinPark3
+    
+    자동글씨크기
+
+[33mcommit 116944ec62ee867440b0b8d7514d2b04bcfb6d9b[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Tue Dec 10 00:07:12 2024 +0900
+
+    자동글씨크기
+
+[33mcommit dd73d030726732ca4191cfca5b9ff8e008fa0d23[m
+Merge: d67c4cf 04ec111
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Dec 9 23:26:13 2024 +0900
+
+    Merge pull request #85 from wa-plan/YujinPark3
+    
+    yujin1209
+
+[33mcommit 04ec111b86229c2e1d959e9d487271d85c5d2c30[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Dec 9 23:25:33 2024 +0900
+
+    yujin1209
+
+[33mcommit d67c4cfd4fdb1cebaae6ba92244672fecac10d78[m
+Merge: f8952fe fc3d918
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Tue Dec 3 00:37:38 2024 +0900
+
+    Merge pull request #84 from wa-plan/TD
+    
+    알림 수정/이벤트 페이지 연결
+
+[33mcommit fc3d918b3fb834444c023b4d39c02748a6acce0f[m
+Author: chaemd <new7932@naver.com>
+Date:   Tue Dec 3 00:35:09 2024 +0900
+
+    이벤트 페이지 연결
+
+[33mcommit 9c2162cb72857cb65b3b5862dc7824dede887dd5[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Nov 30 15:39:37 2024 +0900
+
+    알림 스위치 api 연결
+
+[33mcommit 446bbc70b03823524e0f20866efd1e225b4f605d[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Nov 30 01:59:05 2024 +0900
+
+    onTap으로 수정
+
+[33mcommit f8952fea5a1a3ccbd5821d5d40f4b3b6ae71a2ad[m
+Merge: 3018e15 b0585d1
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sat Nov 30 01:01:25 2024 +0900
+
+    Merge pull request #81 from wa-plan/TD
+    
+    MG main 화면 구조 수정
+
+[33mcommit b0585d1f643571bd19d097051a08fa7fb1356da2[m
+Merge: ce58de6 3018e15
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sat Nov 30 01:01:15 2024 +0900
+
+    Merge branch 'dev' into TD
+
+[33mcommit ce58de6288d3a53ff1f81ea5d39011e375659412[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Nov 30 00:56:15 2024 +0900
+
+    photoList 제외 MG구조 수정 완료
+
+[33mcommit b719ea44004093b6b9ce3d9e4fa0495db4db906e[m
+Author: chaemd <new7932@naver.com>
+Date:   Fri Nov 29 13:37:50 2024 +0900
+
+    MG main화면 구조 수정
+
+[33mcommit 3018e157529fcfef19e0e0afe1791cd9bd11eca1[m
+Merge: 1d64c60 0291497
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Fri Nov 29 00:02:40 2024 +0900
+
+    Merge pull request #80 from wa-plan/YujinPark3
+    
+    Yujin park3
+
+[33mcommit 029149717cbd2958e24ed85465dd965f1ec68a1d[m
+Merge: 84f4156 b81023c
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Thu Nov 28 23:59:08 2024 +0900
+
+    Merge branch 'YujinPark3' of https://github.com/wa-plan/dodakki-front-end into YujinPark3
+
+[33mcommit 84f415603f07d8f03762e0607cc3c3ff514b512f[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Thu Nov 28 23:53:10 2024 +0900
+
+    yujin_11/28
+
+[33mcommit 1d64c6022b06b2a89112a0a8134ba33773c51cff[m
+Merge: 85160c6 b81023c
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Thu Nov 28 17:20:47 2024 +0900
+
+    Merge pull request #79 from wa-plan/YujinPark3
+    
+    11/24
+
+[33mcommit b81023c1941c1b19e5b167285a994926a549173d[m
+Merge: c388c03 85160c6
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Thu Nov 28 17:20:39 2024 +0900
+
+    Merge branch 'dev' into YujinPark3
+
+[33mcommit c388c03daa28743351744c431fe8b23f01c0e526[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Nov 24 11:46:10 2024 +0900
+
+    11/24
+
+[33mcommit 643e403a9b7248b744ebec5e52e11e198d75baf4[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Nov 20 17:25:32 2024 +0900
+
+    color 가져오기/비밀번호 변경
+
+[33mcommit 85160c6fcb69089e1cd98ceadfc1c826a0dad6ff[m
+Merge: 6c23c19 aeaf281
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Tue Nov 19 15:18:37 2024 +0900
+
+    Merge pull request #77 from wa-plan/TD
+    
+    event calendar 복구/profile edit 수정
+
+[33mcommit aeaf2815877c452e171b1033623bbdccb1205fce[m
+Author: chaemd <new7932@naver.com>
+Date:   Tue Nov 19 15:17:41 2024 +0900
+
+    event calendar 복구/profile edit 수정
+
+[33mcommit 6c23c19f71c1b0bfe4673661047fe286596ec1aa[m
+Merge: 186682e b381a14
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Nov 18 21:37:15 2024 +0900
+
+    Merge pull request #76 from wa-plan/YujinPark3
+    
+    유진
+
+[33mcommit b381a14bd3023955c9c0c72419ac035805668189[m
+Merge: 0f95651 186682e
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Nov 18 21:37:08 2024 +0900
+
+    Merge branch 'dev' into YujinPark3
+
+[33mcommit 0f956512ac5e4418a4bd0fa829e197decc591aaf[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Nov 18 21:36:00 2024 +0900
+
+    유진
+
+[33mcommit 186682eb35179972ea0591b9e728107e1e6eca4d[m
+Merge: 7f97752 f10bcd0
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Nov 18 21:33:43 2024 +0900
+
+    Merge pull request #75 from wa-plan/TD
+    
+    디테일 수정
+
+[33mcommit f10bcd03bab211085080ddc13d0590716fd699e8[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Nov 18 21:33:02 2024 +0900
+
+    디테일 수정
+
+[33mcommit 7f977521d1c8bb0f767970f616d29245fc0e1d4c[m
+Merge: 2e2c318 d873a2e
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Nov 17 21:04:14 2024 +0900
+
+    Merge pull request #73 from wa-plan/YujinPark3
+    
+    11/17 yujin
+
+[33mcommit d873a2e19ce60a4d9cc167c5777f01f96374854e[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Nov 17 20:57:49 2024 +0900
+
+    11/17 yujin
+
+[33mcommit 2e2c318dc1a92f68aaf1ea2e6b15aad1831a5ef7[m
+Merge: 9b8f952 5f9434c
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sat Nov 16 20:22:14 2024 +0900
+
+    Merge pull request #72 from wa-plan/YujinPark3
+    
+    2024_11_16
+
+[33mcommit 5f9434cd1c18d3b5b011550ee2361f1fef9c2b48[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sat Nov 16 20:21:27 2024 +0900
+
+    2024_11_16
+
+[33mcommit 9b8f9526353d067c83fde80ee81201804a5f13ad[m
+Merge: 73bec83 f59f551
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sat Nov 16 17:55:45 2024 +0900
+
+    Merge pull request #71 from wa-plan/YujinPark3
+    
+    추가 수정
+
+[33mcommit f59f551f62468ef15daaf9b097c9b7a561108108[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sat Nov 16 17:55:07 2024 +0900
+
+    추가 수정
+
+[33mcommit 73bec83d546e86b3d3e06dbce19a5c1cde9a24bc[m
+Merge: f0571f2 87930fa
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sat Nov 16 15:22:28 2024 +0900
+
+    Merge pull request #70 from wa-plan/YujinPark3
+    
+    오류해결2
+
+[33mcommit 87930fa850e2f09e5b166266510ef790094ac6c3[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sat Nov 16 15:21:45 2024 +0900
+
+    오류해결2
+
+[33mcommit f0571f24c4b829fc457d478f3df1590e2214be4f[m
+Merge: 9763e62 5d2df4b
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sat Nov 16 14:18:05 2024 +0900
+
+    Merge pull request #69 from wa-plan/YujinPark3
+    
+    오류수정
+
+[33mcommit 5d2df4bb3865e65669bb224648d7d764181c6599[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sat Nov 16 14:16:58 2024 +0900
+
+    오류수정
+
+[33mcommit 9763e62323e09b580037915bde4477c3786d2175[m
+Merge: 60e6d57 7a9a4d3
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sat Nov 16 14:12:58 2024 +0900
+
+    Merge pull request #68 from wa-plan/YujinPark3
+    
+    style_yujin
+
+[33mcommit 7a9a4d3a83b9d4edeee130b52068aae343da2910[m
+Merge: 965b75c 60e6d57
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sat Nov 16 14:12:53 2024 +0900
+
+    Merge branch 'dev' into YujinPark3
+
+[33mcommit 965b75c55960e5683aff4565a9d1c8c42ca90409[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sat Nov 16 14:07:28 2024 +0900
+
+    style_yujin
+
+[33mcommit 60e6d57ea4d91936ea93e2673eeb35fd87f9fc32[m
+Merge: aa4000e cdbbe10
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Thu Nov 14 22:14:48 2024 +0900
+
+    Merge pull request #67 from wa-plan/TD
+    
+    디테일 기능 수정
+
+[33mcommit cdbbe109eeda99d932f9a1f656015afea249785d[m
+Merge: 46f7a41 aa4000e
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Thu Nov 14 22:14:01 2024 +0900
+
+    Merge branch 'dev' into TD
+
+[33mcommit 46f7a41d76fa78c904887257dee5d4e0137af0ec[m
+Author: chaemd <new7932@naver.com>
+Date:   Thu Nov 14 22:10:37 2024 +0900
+
+    디테일 기능 수정
+
+[33mcommit aa4000e0a104fdb7c7017d838335ae77dca54ce3[m
+Merge: 7d563b2 13bff05
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Nov 10 21:38:27 2024 +0900
+
+    Merge pull request #66 from wa-plan/YujinPark3
+    
+    yujin
+
+[33mcommit 13bff055dc7daa8d255116d7d10f2aeee7d58bfd[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Nov 10 21:29:26 2024 +0900
+
+    yujin
+
+[33mcommit 7d563b20fb3c384792c5b4f0873b3aaa30b52547[m
+Merge: 4ce9f4d 358ec24
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Tue Nov 5 20:04:32 2024 +0900
+
+    Merge pull request #65 from wa-plan/YujinPark3
+    
+    11/5
+
+[33mcommit 358ec24f67e7ebae10f70f42e1b90798b31b92e4[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Tue Nov 5 20:03:54 2024 +0900
+
+    11/5
+
+[33mcommit 4ce9f4d8bc43e80a94ab358ad6b2bb76802a7b3b[m
+Merge: 0230faf 0f78785
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Nov 4 21:42:09 2024 +0900
+
+    Merge pull request #64 from wa-plan/YujinPark3
+    
+    11/4
+
+[33mcommit 0f78785c68b4938fa5daef6d4f8542a7b4b08691[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Nov 4 21:41:22 2024 +0900
+
+    11/4
+
+[33mcommit 0230faf016ccf8eca12f0becb653f690dbe36dbf[m
+Merge: f1a5450 8877885
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Nov 4 21:34:21 2024 +0900
+
+    Merge pull request #63 from wa-plan/TD
+    
+    Td 컬러 연결
+
+[33mcommit 887788508c3164ec0624ab451e99b021df1d89b0[m
+Merge: bc16411 f1a5450
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Nov 4 21:33:58 2024 +0900
+
+    Merge branch 'dev' into TD
+
+[33mcommit f1a54509020de41eab955a691ad5b408b758050b[m
+Merge: 3cc1795 dfd68ee
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Nov 4 21:05:22 2024 +0900
+
+    Merge pull request #62 from wa-plan/YujinPark3
+    
+    yujin
+
+[33mcommit dfd68ee29a85fef2eb7ca94c3b9b79ebdeae3915[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Nov 4 21:04:17 2024 +0900
+
+    yujin
+
+[33mcommit bc16411848f055f3a28f412c039dbe1f91918212[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Nov 4 20:52:14 2024 +0900
+
+    td 컬러 연결
+
+[33mcommit 3cc179513fef68cddfeb570818753ee7b9acb208[m
+Merge: 3014586 19ccae5
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Nov 4 20:34:58 2024 +0900
+
+    Merge pull request #61 from wa-plan/YujinPark3
+    
+    Yujin park3
+
+[33mcommit 19ccae52b24ab4362f09d1eede5072be2c2ae738[m
+Merge: ecaf595 3014586
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Nov 4 20:34:38 2024 +0900
+
+    Merge branch 'dev' into YujinPark3
+
+[33mcommit eebfc723fc7b82969b257f6ac05d1b98e8b6af1a[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Nov 4 11:27:23 2024 +0900
+
+    MG 쓰러뜨리지 못한 목표, 쓰러뜨린 목표 페이지 연결
+
+[33mcommit ecaf595d5232eb4782eaea680c2e307be493a9d9[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Nov 3 00:37:40 2024 +0900
+
+    GUI EDIT 2
+
+[33mcommit 611c6a1a4705ea3829caac2ede6957ec0d7868a0[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Nov 3 00:24:06 2024 +0900
+
+    GUI EDIT
+
+[33mcommit 58ede1c47334d615185119b3a284feb6c5256afe[m
+Author: chaemd <new7932@naver.com>
+Date:   Thu Oct 31 01:06:49 2024 +0900
+
+    쓰러트린 목표, 쓰러트리지못한 목표 추가
+
+[33mcommit 3014586886b24c5fb03beb81ce247c446dbc3d2c[m
+Merge: c2d254a 57d26f7
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Wed Oct 30 23:58:27 2024 +0900
+
+    Merge pull request #60 from wa-plan/TD
+    
+    TD 오류 수정
+
+[33mcommit 57d26f7a0258b2d51ed31fd53e7f43b13ddfc8d3[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Oct 30 23:57:45 2024 +0900
+
+    TD 오류 수정
+
+[33mcommit c2d254a319d426b0adc032b4cdaa190674a6dec4[m
+Merge: 85b73a9 09a8e85
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Wed Oct 30 21:12:40 2024 +0900
+
+    Merge pull request #59 from wa-plan/TD
+    
+    mg 수정
+
+[33mcommit 09a8e8558e0d496b053f050ab2f3ef58c0cd3e03[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Oct 30 21:11:39 2024 +0900
+
+    mg 수정
+
+[33mcommit 85b73a94aa33f5390268e8eb788e7852d219ba15[m
+Merge: 58a9bed bb8a332
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sun Oct 20 17:36:21 2024 +0900
+
+    Merge pull request #58 from wa-plan/TD
+    
+    MG 화면 간 데이터 전달
+
+[33mcommit bb8a332d304aa0b6bbd94e69cfd100669d3e3331[m
+Author: chaemd <new7932@naver.com>
+Date:   Sun Oct 20 17:34:54 2024 +0900
+
+    MG 화면 간 데이터 전달
+
+[33mcommit 58a9bed8ddb76e612a1a6061421df0de356b35b0[m
+Merge: baf4845 8ebe6c6
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sun Oct 20 16:20:46 2024 +0900
+
+    Merge pull request #57 from wa-plan/TD
+    
+    mygoal 수정
+
+[33mcommit 8ebe6c6aa26c5c197349ac4920730d4410eda93d[m
+Author: chaemd <new7932@naver.com>
+Date:   Sun Oct 20 16:17:43 2024 +0900
+
+    mygoal 수정
+
+[33mcommit 960191789e2b4a5d6e570a904e31f8f036e58d46[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Oct 14 02:36:03 2024 +0900
+
+    MG 수정
+
+[33mcommit baf4845c8c16f94a7d2efe69de92c2000381b15d[m
+Merge: 48d403e cd3f5f6
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sun Oct 13 17:41:54 2024 +0900
+
+    Merge pull request #55 from wa-plan/TD
+    
+    MG main화면 수정
+
+[33mcommit cd3f5f69be9776fa17d8118c0e209350cf8e210a[m
+Merge: d3da7cf 48d403e
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sun Oct 13 17:41:44 2024 +0900
+
+    Merge branch 'dev' into TD
+
+[33mcommit 48d403ee56c96f9279f60c986a34d1e29c564ba4[m
+Merge: 7f43e1a ee7838d
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Oct 13 17:39:15 2024 +0900
+
+    Merge pull request #56 from wa-plan/YujinPark3
+    
+    new3
+
+[33mcommit ee7838d29b6de486ca710e195fc1da8bf3879968[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Oct 13 17:38:05 2024 +0900
+
+    new3
+
+[33mcommit d3da7cff1d0cf0b2b5b39fdb88cf477ed88e2f88[m
+Author: chaemd <new7932@naver.com>
+Date:   Sun Oct 13 17:34:40 2024 +0900
+
+    MG main화면 수정
+
+[33mcommit 7f43e1a0a6fca2bb34fe5ac4ff3b089dbda604f4[m[33m ([m[1;32mdev[m[33m)[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Oct 13 16:56:47 2024 +0900
+
+    new2
+
+[33mcommit b2aece2fee181b668e62c8a16ae6aea257bf14da[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Oct 13 16:06:40 2024 +0900
+
+    new
+
+[33mcommit 9795d642043dc7113589ac36e52cba320ee83193[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Fri Oct 11 18:23:27 2024 +0900
+
+    Yujin
+
+[33mcommit 23c4c7f86d998e2c84507e8d6136ab228d86420f[m
+Merge: a02e8d2 108b3d3
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Thu Oct 10 00:53:22 2024 +0900
+
+    Merge pull request #52 from wa-plan/TD
+    
+    MYGOAL 메뉴 API 연결
+
+[33mcommit 108b3d3627446e53c9976e7d2d2fb8fec2c2ae63[m
+Author: chaemd <new7932@naver.com>
+Date:   Thu Oct 10 00:51:44 2024 +0900
+
+    mygoal 수정
+
+[33mcommit 8852a8fddc8aba523957a92a88cc44e5c9448cee[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Oct 9 03:52:38 2024 +0900
+
+    MyGoal 메뉴  api 연결
+
+[33mcommit fd83e85f9681f7be24447dd3c9a5793bced42094[m
+Merge: fc7c78d a02e8d2
+Author: chaemd <new7932@naver.com>
+Date:   Sun Oct 6 20:54:27 2024 +0900
+
+    Merge branch 'dev' of https://github.com/wa-plan/test-rep into TD
+
+[33mcommit fc7c78d25191f75783ae8f27c9cb802267a07c75[m
+Author: chaemd <new7932@naver.com>
+Date:   Sun Oct 6 20:54:19 2024 +0900
+
+    commit
+
+[33mcommit a02e8d217db0e06f34d5c7b59b29f07b81ec4c81[m
+Merge: c7b8fbd 3d17d30
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Oct 6 18:00:38 2024 +0900
+
+    Merge pull request #51 from wa-plan/YujinPark2
+    
+    TD mandalart selection
+
+[33mcommit 3d17d30c7f170e2fb55add63a1acc758f2f3d86a[m
+Merge: 672cb5e c7b8fbd
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Oct 6 18:00:31 2024 +0900
+
+    Merge branch 'dev' into YujinPark2
+
+[33mcommit 672cb5ef880bb2b068070180676ba49872957b69[m[33m ([m[1;31morigin/YujinPark[m[33m, [m[1;32mYujinPark[m[33m)[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Oct 6 17:55:16 2024 +0900
+
+    TD mandalart selection
+
+[33mcommit c7b8fbd000bb8fdf10d04d2212cf4db2b3473f28[m
+Merge: a8ca25f 9e355cd
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Oct 6 14:52:33 2024 +0900
+
+    Merge pull request #50 from wa-plan/YujinPark
+    
+    mandalart api connect
+
+[33mcommit 9e355cd3dd54cbbe11127d757d0fe285e02cf6ce[m
+Merge: ccdb6b6 a8ca25f
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Sun Oct 6 14:52:26 2024 +0900
+
+    Merge branch 'dev' into YujinPark
+
+[33mcommit ccdb6b6805a59b113aee33b543917f84a4510822[m[33m ([m[1;32mYujin[m[33m)[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Fri Oct 4 03:42:35 2024 +0900
+
+    mandalart api connect
+
+[33mcommit a8ca25fe691f13af7aaf80a4b52a3f1fa0b6b425[m
+Merge: dc4d794 49443be
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Thu Oct 3 22:18:54 2024 +0900
+
+    Merge pull request #49 from wa-plan/TD
+    
+    오늘의 도미노 수정
+
+[33mcommit 49443be1c3def01d0cc173836987e98ad7d543c4[m
+Author: chaemd <new7932@naver.com>
+Date:   Thu Oct 3 22:18:07 2024 +0900
+
+    오늘의 도미노 수정
+
+[33mcommit dc4d794d2e07ececd743e1e0c9c4d8f9f52e62fa[m
+Merge: cc5e7ef c7e48c6
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Thu Oct 3 02:18:11 2024 +0900
+
+    Merge pull request #48 from wa-plan/Yujin
+    
+    MG yujin
+
+[33mcommit c7e48c629d8f303ec62a50ca7bb20457eb4766fe[m
+Merge: c50f230 cc5e7ef
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Thu Oct 3 02:18:02 2024 +0900
+
+    Merge branch 'dev' into Yujin
+
+[33mcommit c50f23004eae5be6c373a2ab701b916d7e00171a[m[33m ([m[1;31morigin/Yujin[m[33m)[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Thu Oct 3 02:13:51 2024 +0900
+
+    MG yujin
+
+[33mcommit cc5e7ef8e613bed425031a4094edceb480fccd0f[m
+Merge: 0e9eeaf a9d8d78
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Thu Oct 3 01:09:13 2024 +0900
+
+    Merge pull request #47 from wa-plan/Yujin
+    
+    yujin commit
+
+[33mcommit a9d8d780ccd4c7920bb95f8522a3385ada679545[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Thu Oct 3 01:04:07 2024 +0900
+
+    yujin commit
+
+[33mcommit 0e9eeaf77ad9d13faf698f50879c51f353e9b7f8[m
+Merge: b31e9f5 f08a240
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Wed Oct 2 17:20:10 2024 +0900
+
+    Merge pull request #46 from wa-plan/TD
+    
+    MYGOAL 프로필 수정
+
+[33mcommit f08a2408e322c1b83542bb3b22116c3dde842cf2[m
+Merge: a7e2c5b b31e9f5
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Wed Oct 2 17:19:44 2024 +0900
+
+    Merge branch 'dev' into TD
+
+[33mcommit a7e2c5b8bea8b8b5a9a45f5ed3a7d1b549e5a8dc[m
+Merge: 23ad90f 6183060
+Author: chaemd <new7932@naver.com>
+Date:   Wed Oct 2 17:16:42 2024 +0900
+
+    Merge branch 'TD' of origin into TD
+
+[33mcommit 23ad90f22fd1fb247c5ab37fd902221fc2e93d03[m
+Merge: c0f748d 330f77f
+Author: chaemd <new7932@naver.com>
+Date:   Wed Oct 2 17:09:16 2024 +0900
+
+    commit
+
+[33mcommit b31e9f5c103c0350bd4d82507eab1d9ed528488f[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sun Sep 29 00:24:55 2024 +0900
+
+    변경사항 삭제(InseoChoi 브랜치로 이동)
+
+[33mcommit 20b699cd7f967f3878d998342b5f9685b064aae4[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sun Sep 29 00:03:29 2024 +0900
+
+    bookmark add
+
+[33mcommit b758e959ed738a33c2f2fecb2b36040616faacf7[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sun Sep 22 13:49:46 2024 +0900
+
+    detail page add
+
+[33mcommit 6183060a126e416a8fd7e715663cdbed69c594a2[m
+Merge: c0f748d 330f77f
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sat Sep 21 22:01:04 2024 +0900
+
+    Merge branch 'dev' into TD
+
+[33mcommit c0f748d734bc2f36fbcd2436c6390f590ec17581[m
+Merge: c7beafe be8333d
+Author: chaemd <new7932@naver.com>
+Date:   Sat Sep 21 21:59:07 2024 +0900
+
+    mygoal 프로필 수정
+
+[33mcommit 330f77fc8815f8132601ab1d723e9fbc8c190f4d[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Sat Sep 21 10:51:41 2024 +0900
+
+    TD mandalart
+
+[33mcommit c7beafe2de8698aaa36ec7c9cef8245d05c5e8d8[m
+Author: chaemd <new7932@naver.com>
+Date:   Fri Sep 20 18:55:13 2024 +0900
+
+    commit
+
+[33mcommit be8333d75741169bde05e98595db472e9535f7d7[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Sep 18 15:58:00 2024 +0900
+
+    mandalart color add
+
+[33mcommit b95cfaab17a6e580f6e12d344697752796224e10[m
+Author: chaemd <new7932@naver.com>
+Date:   Fri Sep 13 20:28:28 2024 +0900
+
+    README 작성
+
+[33mcommit 2d901c993774ed11f7145171a6d67804ff266f47[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Thu Sep 12 01:00:55 2024 +0900
+
+    9/12
+
+[33mcommit 6631c6dbcc090aef6a74c8f5489ed2165445e15d[m
+Author: chaemd <new7932@naver.com>
+Date:   Sun Sep 8 21:08:28 2024 +0900
+
+    url 수정
+
+[33mcommit 0f4f1eafc63fefbfc69e979412a412af139de472[m
+Merge: acca8ee a22310a
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sun Sep 8 20:00:03 2024 +0900
+
+    Merge pull request #45 from wa-plan/TD
+    
+    url 숨기기/.env 파일 추기
+
+[33mcommit a22310a0a33c1c24326dd4bb84c9b66b3769fc41[m
+Author: chaemd <new7932@naver.com>
+Date:   Sun Sep 8 19:59:10 2024 +0900
+
+    url 숨기기/.env 파일 추기
+
+[33mcommit acca8ee8577d10c3cc04fab06e8aed8c5f6d526d[m
+Merge: 53ba084 109fd1c
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sun Sep 8 18:05:19 2024 +0900
+
+    Merge pull request #44 from wa-plan/TD
+    
+    오늘의 도미노 API 연결
+
+[33mcommit 109fd1cddaff55212d17ec765154b64f343905ad[m
+Author: chaemd <new7932@naver.com>
+Date:   Sun Sep 8 18:00:57 2024 +0900
+
+    오늘의 도미노 api 연결
+
+[33mcommit 53ba084ad262c362c27df7550603e802ec0d322f[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sat Sep 7 22:53:08 2024 +0900
+
+    앱 개요
+
+[33mcommit e426100dbf8f3bf3807d60cbb0bd389911098bdf[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Sep 4 01:23:34 2024 +0900
+
+    이벤트캘린더 api 연결
+
+[33mcommit ed52250ed81af7ce72941291b95ca93f8ef24e16[m
+Merge: 3fd0086 514869a
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Sep 2 17:14:08 2024 +0900
+
+    Merge pull request #43 from wa-plan/TD
+    
+    datelist provider 추가
+
+[33mcommit 514869a67cc2a945f487873c21d90f6f89f91c5d[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Sep 2 17:13:05 2024 +0900
+
+    datelist provider 추가
+
+[33mcommit 3fd00864185a3ca88bcafd1221271f755b43614e[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Fri Aug 30 00:12:25 2024 +0900
+
+    Create mandalart.dart
+
+[33mcommit 0cc0022f93d6ce00ef8d7ad243be0fb5b3a5418e[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Fri Aug 30 00:11:42 2024 +0900
+
+    Update detail_page.dart
+
+[33mcommit 0a2284c42a5500e488ea7bad678e0694e93cbf0f[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Fri Aug 30 00:11:12 2024 +0900
+
+    Update list_page.dart
+
+[33mcommit b19cbafc647c8134e9271c6bd2762e59d89d03e0[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Fri Aug 30 00:10:22 2024 +0900
+
+    Update dp_services.dart
+
+[33mcommit 5d2a566e28d9ed338b63bd6a070dd7ac58dc3e74[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 28 23:31:36 2024 +0900
+
+    Update list_page.dart
+
+[33mcommit d8a543887c26f32f676c01f556c66d8384e4b6d8[m
+Merge: 1a4c43f f3e5941
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Wed Aug 28 21:18:09 2024 +0900
+
+    Merge pull request #42 from wa-plan/TD
+    
+    date 타입 string으로 변경
+
+[33mcommit f3e5941fd9b7cdf980af085ce7a31f183e7c8b33[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Aug 28 21:16:56 2024 +0900
+
+    date타입 string으로 변경
+
+[33mcommit 1a4c43fcc17e413e11b7de972ee214a4706aec6f[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 28 17:08:48 2024 +0900
+
+    Update list_page.dart
+
+[33mcommit 185e750ec2b61df73383da5f541b8fabe237828a[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 28 17:08:21 2024 +0900
+
+    Update dp_services.dart
+
+[33mcommit b4a07ff4335de6daa5be2b395af88ed8a713af0f[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 28 14:33:59 2024 +0900
+
+    DP api
+
+[33mcommit d2d7f77a33a561648d1e3ec563387a5ae99ee03f[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 28 14:33:13 2024 +0900
+
+    DP api
+
+[33mcommit 19d611186ef6738bb860d89b7146c1aac34665fc[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 28 14:32:13 2024 +0900
+
+    DP api
+
+[33mcommit 70f9d3f39d48658d841158e74e6ec5b9ece7cbab[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 28 14:31:13 2024 +0900
+
+    DP api
+
+[33mcommit 68f2f6efe9ec17eda86281a142d5e1141a74b8eb[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 28 14:30:23 2024 +0900
+
+    DP api
+
+[33mcommit 148f370c9a08840bdfa8dab781bab64f66731293[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 28 14:29:43 2024 +0900
+
+    DP api
+
+[33mcommit 79087b1c77b1df8e85a26eba8b109538ed72cb64[m
+Merge: 3bdbf6d 23857fb
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Aug 26 00:38:13 2024 +0900
+
+    Merge pull request #41 from wa-plan/TD
+    
+    td메뉴 api 연결
+
+[33mcommit 23857fb747c620609357d2d4b4f9a27af48c6a02[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Aug 26 00:34:59 2024 +0900
+
+    td메뉴 api 연결
+
+[33mcommit a23c18f7c763af1697aaef7e4bd85355de7d8350[m
+Author: chaemd <new7932@naver.com>
+Date:   Thu Aug 22 22:52:14 2024 +0900
+
+    commit
+
+[33mcommit 3bdbf6d6869f80ffdefd54aeffee46406716305a[m
+Merge: b4d0efe eba5107
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Thu Aug 22 19:29:49 2024 +0900
+
+    Merge pull request #40 from wa-plan/TD
+    
+    maingoal 리스트 서버에서 불러오기
+
+[33mcommit eba510734a4c41e8fb82728f9193f5147be51c47[m
+Author: chaemd <new7932@naver.com>
+Date:   Thu Aug 22 19:28:48 2024 +0900
+
+    maingoal 리스트 서버에서 불러오기
+
+[33mcommit c108c65112281db40f33c0b6688a4b42eb00dfe1[m
+Author: chaemd <new7932@naver.com>
+Date:   Thu Aug 22 19:23:18 2024 +0900
+
+    maingoal 리스트 서버에서 불러오기
+
+[33mcommit b4d0efeebd6a2f98d86a74a65c237fa878c61f9c[m
+Merge: f4abc4b caf09d3
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Thu Aug 22 15:23:23 2024 +0900
+
+    Merge pull request #39 from wa-plan/Event_Page
+    
+    Event page
+
+[33mcommit f4abc4bc118e74afad5c7c8b0b5aa4b79d6b8746[m
+Merge: 2cada21 c9ffac4
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Wed Aug 21 21:25:49 2024 +0900
+
+    Merge pull request #38 from wa-plan/TD
+    
+    도미노플랜 3x3화면에서 9x9로 변경
+
+[33mcommit c9ffac44058abc4e5d2c06634f2fed18dda74115[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Aug 21 21:24:51 2024 +0900
+
+    도미노플랜 3x3화면에서 9x9로 변경
+
+[33mcommit caf09d3b4aa121ea2428ec9258586fbfcaf5d5b0[m[33m ([m[1;31morigin/Event_Page[m[33m)[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 21 21:09:09 2024 +0900
+
+    Delete assets/img/domino_1.mp4
+
+[33mcommit fa7b39b7412af7669504afad2065c3f0789a6347[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 21 21:08:16 2024 +0900
+
+    Add files via upload
+
+[33mcommit 9370c332d695201fd9e88317037100cb97899f69[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 21 21:07:42 2024 +0900
+
+    Update pubspec.yaml
+
+[33mcommit 6b59c4b44498fb495a17f95d4f18d06318946fa7[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 21 21:07:04 2024 +0900
+
+    Update event_page.dart
+
+[33mcommit 2cada216d12db09aa0ba7dc2f9195649a37e9e8e[m
+Merge: ad09f45 955e142
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Wed Aug 21 15:29:16 2024 +0900
+
+    Merge pull request #37 from wa-plan/TD
+    
+    제1목표 api 연결
+
+[33mcommit 955e1423cce9085d60e72bdc00a96f17f61471e4[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Aug 21 15:28:17 2024 +0900
+
+    제1목표 api 연결
+
+[33mcommit 4fe3df9f6796d3f74d7c2dc2843baaaf53429554[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 21 00:15:37 2024 +0900
+
+    Update pubspec.yaml
+
+[33mcommit 4ea915c70791d8356df685df936ecad2b84318e5[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 21 00:14:13 2024 +0900
+
+    Create event_page.dart
+
+[33mcommit 79498cf2b8c376b16c818e5f20368349e3729d70[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 21 00:11:57 2024 +0900
+
+    Add files via upload
+
+[33mcommit ad09f45649c9d348be3ecaba27123ef3de9793ed[m
+Merge: 259f575 f8e7597
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Tue Aug 20 16:31:54 2024 +0900
+
+    Merge pull request #36 from wa-plan/TD
+    
+    나의 목표 GUI 수정
+
+[33mcommit f8e7597a697939fbff31167e53e2966766be5823[m
+Author: chaemd <new7932@naver.com>
+Date:   Tue Aug 20 16:31:00 2024 +0900
+
+    나의 목표 GUI 수정
+
+[33mcommit 259f5752862c97c4d5cfa5128bb3aedab87446c1[m
+Merge: 05eecda 826edbf
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sat Aug 17 02:22:41 2024 +0900
+
+    Merge pull request #35 from wa-plan/TD
+    
+    goal 생성 api 연결
+
+[33mcommit 826edbfcc6bb2e124ac8fb53260ea23a9ef4e85d[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Aug 17 02:21:45 2024 +0900
+
+    goal 생성 api 연결
+
+[33mcommit 05eecdac40bfbe7d741ef584f1de232c6eb5c4ce[m
+Merge: 02a3c40 5840642
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Fri Aug 16 16:59:40 2024 +0900
+
+    Merge pull request #34 from wa-plan/TD
+    
+    로그인 관련 api 연결
+
+[33mcommit 58406422d1b7def005ff2953b5e538d1d8fd6374[m
+Author: chaemd <new7932@naver.com>
+Date:   Thu Aug 15 06:24:15 2024 +0900
+
+    api 연결
+
+[33mcommit 02a3c408c03b1ef9f9bd1359c786861df73cf100[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Wed Aug 14 07:52:21 2024 +0900
+
+    MyGoal API function
+
+[33mcommit 5f78fb0d94ba6b30a6eca16640430d855316fd0a[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Wed Aug 14 07:52:18 2024 +0900
+
+    MyGoal api model
+
+[33mcommit c615308d64fec6ce1f71e8b6399f575d2eee01b4[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Wed Aug 14 07:42:34 2024 +0900
+
+    Update mygoal_main.dart
+
+[33mcommit 1d7477e545283e6103f014e63ca5919ffe6cdf1b[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Wed Aug 14 07:33:46 2024 +0900
+
+    gui 수정
+
+[33mcommit b228caa81356706a071321d2a1d13a64e8836682[m
+Merge: 1b3b282 414a299
+Author: chaemd <new7932@naver.com>
+Date:   Wed Aug 14 05:16:01 2024 +0900
+
+    commit
+
+[33mcommit 1b3b28221fe1ff38a8b56b24a42e8b517eba6118[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Aug 14 05:09:25 2024 +0900
+
+    비밀번호 변경 api 연결
+
+[33mcommit 414a299d03c71e4968aaef4b30113708eed99135[m
+Merge: de6c6cf b7bafd2
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Wed Aug 14 03:52:45 2024 +0900
+
+    Merge pull request #33 from wa-plan/LR
+    
+    로그인 api 연결
+
+[33mcommit b7bafd2f02dfeaf2fa1bef772ada1878ab9b4280[m[33m ([m[1;31morigin/LR[m[33m)[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Aug 14 02:27:43 2024 +0900
+
+    로그인 api 연결
+
+[33mcommit de6c6cff8c3cdb17c83049abec149655ea138e5d[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Wed Aug 14 01:30:54 2024 +0900
+
+    목표 세부 내용 파일명 변경
+
+[33mcommit 805c3189f8a435ebab33177469a47578e970aea2[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Wed Aug 14 01:30:25 2024 +0900
+
+    나의 목표 상세보기 with 퍼센트 표시
+
+[33mcommit 4043f7de976968992e348c091df18f2ad6fc79d6[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Tue Aug 13 23:00:56 2024 +0900
+
+    Update mygoal_profile_edit.dart
+
+[33mcommit f3d3ae23feb570dfbf20faff9476afee0c06c145[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Tue Aug 13 22:47:55 2024 +0900
+
+    Update mygoal_profile_edit.dart
+
+[33mcommit 03c50548f020bcba5401acef99a10504f47875a6[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Tue Aug 13 22:45:29 2024 +0900
+
+    Update mygoal_profile_edit.dart
+
+[33mcommit 817409e3a31d4aa70bedd60d93b88d4d3a7d5a13[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Tue Aug 13 21:50:54 2024 +0900
+
+    스플래시 화면
+
+[33mcommit 86420403d08da6442f55bdaf93c939196c282a59[m
+Merge: c91b10a bff05dd
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Aug 12 22:30:25 2024 +0900
+
+    Merge pull request #32 from wa-plan/TD
+    
+    image 수정
+
+[33mcommit bff05ddeb4c56d81cf312ff3baa42f65bb42ba79[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Aug 12 22:27:41 2024 +0900
+
+    image 수정
+
+[33mcommit c91b10afcd41ea0a4c58b7fa7de21af7b13c27d4[m
+Merge: 097e19c 28a3fa3
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Aug 12 22:22:28 2024 +0900
+
+    Merge pull request #31 from wa-plan/TD
+    
+    assets 폴더에 nav 이미지 추가
+
+[33mcommit 28a3fa3bc005ba2a4af905386dcd0d1b0db12924[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Aug 12 22:21:39 2024 +0900
+
+    nav 이미지 추가
+
+[33mcommit 097e19cfd700b50fddae323f4aa38ef5c74586f4[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 22:13:56 2024 +0900
+
+    Update profile_img_samplegallery.dart
+
+[33mcommit 8959922feaa3af95ca78216252d0fb2989f7d344[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 22:08:58 2024 +0900
+
+    Update README.txt
+
+[33mcommit 5f06824e89cedb634f19810a5d10c336365047a5[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 22:08:36 2024 +0900
+
+    이미지별 디렉토리 목차
+
+[33mcommit 3f9dc9404e8325152c3ed5165dde3220088e6dad[m
+Merge: a4bfb2f 725fa0a
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Aug 12 21:18:37 2024 +0900
+
+    Merge pull request #30 from wa-plan/TD
+    
+    nav 이미지 추가
+
+[33mcommit 725fa0adb9b1ff187dd1e3f168843a550eaf7306[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Aug 12 21:17:46 2024 +0900
+
+    nav 이미지 추가
+
+[33mcommit a4bfb2f8b1bc9ede7f95108b40bc3fb714c32ea2[m
+Merge: ba15cf7 bd137ca
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Aug 12 21:07:52 2024 +0900
+
+    Merge pull request #29 from wa-plan/YujinPark
+    
+    로그인, 회원가입 인증번호 입력칸 추가
+
+[33mcommit bd137ca21d1c7b20b1115ee0a6b74d657aa9b701[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Aug 12 21:06:38 2024 +0900
+
+    회원가입, 찾기 화면 인증번호 칸 추가
+
+[33mcommit 14441b87f53c7f59736c2c8a04583ca64f9b56a7[m
+Merge: 1a18281 ba15cf7
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Aug 12 20:51:06 2024 +0900
+
+    Merge branch 'dev' of https://github.com/wa-plan/domino-front-end into YujinPark
+
+[33mcommit 1a182817a4f10cd568a116d2d2f917669675a858[m
+Merge: e223258 33eaa89
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Aug 12 20:47:36 2024 +0900
+
+    Merge branch 'YujinPark' of https://github.com/wa-plan/domino-front-end into YujinPark
+
+[33mcommit ba15cf7ae66f0ca6af53cab0af3500796981fa71[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 17:22:53 2024 +0900
+
+    중복파일 삭제
+
+[33mcommit 065b107578431678ab9d61a692fc8d086f2fe348[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 17:22:04 2024 +0900
+
+    screens 목차
+
+[33mcommit 96b95bab00fc9827a378bb762bf954846adcbde7[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 17:20:45 2024 +0900
+
+    Update mygoal_profile_edit.dart
+
+[33mcommit 8f5ff8a19357392c2f1d93fd5ce9d13e1983dfe7[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 17:19:27 2024 +0900
+
+    목표 세우기
+
+[33mcommit a9df380fcf1de3695bdf3a10dc0893e546a773b7[m
+Merge: 64cc8e5 33eaa89
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Aug 12 17:14:40 2024 +0900
+
+    Merge pull request #28 from wa-plan/YujinPark
+    
+    로그인, 계정생성, 찾기 화면 GUI 수정
+
+[33mcommit 33eaa892b9dbcd28c0c2f96c4b88eab3cc338a43[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Aug 12 17:13:50 2024 +0900
+
+    Update member_register_page.dart
+
+[33mcommit 4f13020f43e675cc4a4f541ac5b1afd9aa9e4cc6[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Aug 12 17:13:24 2024 +0900
+
+    Update loginregister_find_password.dart
+
+[33mcommit 91be77c5efaa7a9a6375886cf176c75d45a649eb[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Aug 12 17:12:58 2024 +0900
+
+    Update login.dart
+
+[33mcommit 64cc8e5bf57601de8737a978b488f285ac078bf9[m
+Merge: a6ba897 45c5850
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Aug 12 17:06:47 2024 +0900
+
+    Merge pull request #27 from wa-plan/YujinPark
+    
+    Login GUI 수정
+
+[33mcommit e2232588415aa82664ba2d08fc0a15ee48a2c321[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Aug 12 17:03:25 2024 +0900
+
+    로그인, 계정생성, 아이디/비밀번호 찾기 화면 GUI 수정
+
+[33mcommit 45c58502f5c5e14be6192e42d662d3c8af5cf100[m
+Merge: 332747e a6ba897
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Mon Aug 12 15:44:12 2024 +0900
+
+    Merge branch 'dev' into YujinPark
+
+[33mcommit 332747e267e6ed348d62434a7decce3ca8f040bc[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Mon Aug 12 15:40:45 2024 +0900
+
+    login GUI 수정
+
+[33mcommit a6ba897a8906107af73a73f2701667ab241e3c98[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 12:56:30 2024 +0900
+
+    기본 이미지 위젯 수정
+
+[33mcommit f7dfa4be354b0730ac5e99152f7a602094ee6592[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 12:54:49 2024 +0900
+
+    Delete assets/img/vector4.png
+
+[33mcommit ce2bf73ec16c59736911508a6a0ee63bc13e1b84[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 12:54:38 2024 +0900
+
+    Delete assets/img/vector3.png
+
+[33mcommit 9e975fdcfe005acf1de809fd1a705f76996940e6[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 12:54:22 2024 +0900
+
+    Delete assets/img/vector2.png
+
+[33mcommit 16b56dbf079e05b0dee2900cbb63c3ce0392f986[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 12:54:12 2024 +0900
+
+    Delete assets/img/vector1.png
+
+[33mcommit abbb6614ec90e47a00c1f4eca8966ea3ada57978[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 12:53:17 2024 +0900
+
+    Update pubspec.yaml
+
+[33mcommit 2667ab71e63bb5b7f23d5ae7d63a3ef993dce5a4[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Mon Aug 12 12:52:13 2024 +0900
+
+    Delete img directory
+
+[33mcommit f2bd698f9aed49fd85f2c7d02c215680257a39cd[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sat Aug 10 20:58:22 2024 +0900
+
+    프로필 이미지 재추가
+
+[33mcommit 49c90389426c8ad912db278405fcf09807c62310[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sat Aug 10 20:56:19 2024 +0900
+
+    asset/img 프로필 이미지 파일 재추가
+
+[33mcommit 78dbf73b7ec43564a62145619b93925e0ee265e2[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sat Aug 10 20:54:26 2024 +0900
+
+    MG 프로필 기본 이미지 위젯
+
+[33mcommit 3d56beb045c92b663c71c809a04f2ae66bb018a0[m
+Merge: e355243 19ae203
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sat Aug 10 15:30:38 2024 +0900
+
+    Merge pull request #24 from wa-plan/TD
+    
+    로그인 후 토큰 저장
+
+[33mcommit 19ae20334895a22876511e02b5de63e2b5f140a7[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Aug 10 03:00:15 2024 +0900
+
+    로그아웃 구현
+
+[33mcommit 4dcc812ac5be0db07c8ad9b0534de8693c7aed6e[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Aug 10 02:03:16 2024 +0900
+
+    임포트 파일 코드 수정
+
+[33mcommit 44bd9ab7f44a650d1bcac6dfc37784627d1e99fc[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Aug 10 01:58:24 2024 +0900
+
+    네비게이션 바 수정
+
+[33mcommit 8cc1a67d62fcc4bdbac0bf7a485775d6881493c3[m
+Author: chaemd <new7932@naver.com>
+Date:   Sat Aug 10 01:56:40 2024 +0900
+
+    네비게이션 바 수정
+
+[33mcommit 79641193dd165724e1dda963e5547c878ee3a15c[m
+Merge: a46cc78 e355243
+Author: chaemd <new7932@naver.com>
+Date:   Sat Aug 10 01:28:02 2024 +0900
+
+    로그인 후 토큰 저장
+
+[33mcommit e355243099fddebd48eb0f0722c1472d5e03ed11[m
+Merge: 829b48b e2456f5
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 7 16:56:13 2024 +0900
+
+    Merge pull request #23 from wa-plan/YujinPark
+    
+    로그인 경로 수정
+
+[33mcommit e2456f503f7a72e5cadd4ab5a9dbc86a78945675[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Aug 7 16:55:03 2024 +0900
+
+    로그인 경로 수정
+
+[33mcommit 829b48bfbc39efe5bb227cf36d1106fa1f918c78[m
+Merge: 2371511 b0a5832
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 7 16:42:17 2024 +0900
+
+    Merge pull request #22 from wa-plan/YujinPark
+    
+    login 수정
+
+[33mcommit 237151115824b030d1ed736dbdbea5af42a7fcbb[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 7 16:41:28 2024 +0900
+
+    Update login.dart
+
+[33mcommit deb8e43bdf59df4bf5e6131bfad618598673788c[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Aug 7 16:40:09 2024 +0900
+
+    Update login.dart
+
+[33mcommit b0a58323b54f078d6b0ee0b3c97c648153f63cc9[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Aug 7 16:34:21 2024 +0900
+
+    login 수정
+
+[33mcommit 45ac46c7a103d9f9caba63eefa3c4ee900a55fbe[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Wed Aug 7 14:55:38 2024 +0900
+
+    로그인 페이지(회원가입과 tabbar 형식으로 정렬)
+
+[33mcommit a46cc78d44c52735c2042f9af1de824538470a7a[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Aug 7 14:31:31 2024 +0900
+
+    디테일 수정 완료
+
+[33mcommit 8a3218a06b93c5cf92f011c7d2147729a29dd81e[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Aug 7 02:15:39 2024 +0900
+
+    레이아웃 변경
+
+[33mcommit 8bafee8b8c7da294a3fcebad959da8cfc1ccb907[m
+Merge: e61d5ce 960ca11
+Author: chaemd <new7932@naver.com>
+Date:   Tue Aug 6 23:35:33 2024 +0900
+
+    Merge branch 'dev' of https://github.com/wa-plan/test-rep into TD
+
+[33mcommit 960ca1188897a14e6157c7986c98e24dbee93988[m
+Merge: 974fb48 d1f24d8
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Tue Aug 6 23:35:11 2024 +0900
+
+    Merge pull request #21 from wa-plan/TD
+    
+    화면 이동시 비밀번호 provider 초기화
+
+[33mcommit e61d5cef0565609007ee1977eeff4f322462c163[m
+Merge: d1f24d8 974fb48
+Author: chaemd <new7932@naver.com>
+Date:   Tue Aug 6 23:32:48 2024 +0900
+
+    Merge branch 'dev' of https://github.com/wa-plan/test-rep into TD
+
+[33mcommit d1f24d8d1adb44b7c7dcb5bb56989231dda4085f[m
+Author: chaemd <new7932@naver.com>
+Date:   Tue Aug 6 03:33:28 2024 +0900
+
+    화면 이동시 비밀번호 provider 초기화
+
+[33mcommit 974fb48f72985c0effcabea0eadd143b3d2bf682[m
+Merge: f0829a8 d385801
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Tue Aug 6 03:03:22 2024 +0900
+
+    Merge pull request #20 from wa-plan/TD
+    
+    비밀번호 변경 화면 수정
+
+[33mcommit d3858017dbb6881838e0f8a6d6d14b5e4a45fe7a[m
+Author: chaemd <new7932@naver.com>
+Date:   Tue Aug 6 03:01:27 2024 +0900
+
+    비밀번호 번경 버튼 수정
+
+[33mcommit b1f180904d6b16b25dd8f8874f558e1b19507781[m
+Author: chaemd <new7932@naver.com>
+Date:   Tue Aug 6 02:39:35 2024 +0900
+
+    드롭다운버튼 및 비밀번호변경화면 수정정
+
+[33mcommit 007453b79424be40263f14046c38723b808c30e2[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Aug 5 18:30:05 2024 +0900
+
+    탈퇴 버튼 클릭 시 팝업창
+
+[33mcommit f0829a863ce2510f3024a150aee978ae4997c72f[m
+Merge: 89b2402 3c03d96
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Aug 5 18:16:41 2024 +0900
+
+    Merge pull request #17 from wa-plan/InseoChoi
+    
+    main.dart 파일명 변경
+
+[33mcommit 3c03d9697e23a3d2e8c0d0bf4b28a0a09d58e55a[m
+Merge: c2c2d3e 89b2402
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Aug 5 18:14:51 2024 +0900
+
+    Merge branch 'dev' into InseoChoi
+
+[33mcommit 89b24023e04248418f8095b634117a009a4be41a[m
+Merge: c180e8f 796b5c8
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Mon Aug 5 18:10:27 2024 +0900
+
+    Merge pull request #18 from wa-plan/TD
+    
+    팝업창 위젯 구현
+
+[33mcommit 796b5c8f873598ea82896035a131ddb81802cb3d[m
+Author: chaemd <new7932@naver.com>
+Date:   Mon Aug 5 18:05:29 2024 +0900
+
+    팝업창 위젯 구현
+
+[33mcommit c2c2d3e9de5072f4a0dd4a5144e762267136f3be[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sat Aug 3 22:40:14 2024 +0900
+
+    mygoal_main.dart
+
+[33mcommit 8fcc38d968306a128afa9481bc2f4e7c352b6420[m
+Merge: dd92c61 c180e8f
+Author: chaemd <new7932@naver.com>
+Date:   Sat Aug 3 20:13:23 2024 +0900
+
+    Merge branch 'dev' of https://github.com/wa-plan/test-rep into TD
+
+[33mcommit 08884c4dc7a6481bb0edffcc561e53049bd9f471[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sat Aug 3 19:53:51 2024 +0900
+
+    commit main.dart
+
+[33mcommit 4a0f4ca9f75468a27e1b57f0dd7541f74468469d[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sat Aug 3 19:53:07 2024 +0900
+
+    commit profile_setting.dart
+
+[33mcommit c180e8f0d7566adb07c00755c6a7d605f9920cd7[m
+Merge: e455fb6 8b7f339
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 14:57:20 2024 +0900
+
+    Merge pull request #16 from wa-plan/YujinPark
+    
+    Yujin park
+
+[33mcommit 8b7f339977da8488fc7481272a6978e3388c298c[m
+Merge: da8c249 e455fb6
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Fri Aug 2 14:57:00 2024 +0900
+
+    Merge branch 'dev' into YujinPark
+
+[33mcommit da8c2497dce9396bb597d0a3bd9302503b0c6a95[m
+Merge: a640347 b41905a
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Fri Aug 2 14:50:58 2024 +0900
+
+    TD에 만다라트 추가
+
+[33mcommit a640347b948499881f6e0108b8f931a485d9f1ab[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Fri Aug 2 14:45:45 2024 +0900
+
+    add page 1에 만다라트 위젯 추가
+
+[33mcommit 27b57a85bddf355577dd193bda97adc21aece462[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 14:34:06 2024 +0900
+
+    commit profile_edit.dart
+
+[33mcommit dd92c611a61bfc14960cb914d5bf0d0dc992797d[m
+Merge: 3a9cfcd e455fb6
+Author: chaemd <new7932@naver.com>
+Date:   Fri Aug 2 14:29:28 2024 +0900
+
+    Merge branch 'dev' of https://github.com/wa-plan/test-rep into TD
+
+[33mcommit e455fb60a4835e79d5872894fb50fb3809381f7e[m
+Author: chaemd <new7932@naver.com>
+Date:   Fri Aug 2 14:26:43 2024 +0900
+
+    main함수 수정
+
+[33mcommit 116a0e291a791d48e15238f786f3980d5466a9a3[m
+Merge: 3350e9f b41905a
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Fri Aug 2 14:15:09 2024 +0900
+
+    Merge pull request #13 from wa-plan/YujinPark
+    
+    pubspec.lock 수정
+
+[33mcommit 3350e9fe3fea6fff2a0988f55d3490018818ebfb[m
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Fri Aug 2 14:14:34 2024 +0900
+
+    Update member_register_page.dart
+
+[33mcommit b41905a420d7bb8c894adf300c434303282e2b3d[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Fri Aug 2 14:12:56 2024 +0900
+
+    Update pubspec.lock
+
+[33mcommit ed79368de61af4f550f7e650be356253ca934e7a[m
+Author: chaemd <new7932@naver.com>
+Date:   Fri Aug 2 13:52:45 2024 +0900
+
+    LR 코드 main에 합치기
+
+[33mcommit 28e7c9bf81183b3dfcabbb64d6719862ac8d67b7[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 13:40:11 2024 +0900
+
+    rename member_register_page.dart
+
+[33mcommit e5a7927d1c7bc908116b4c4243a9ac213690de75[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 13:37:05 2024 +0900
+
+    rename user_provider.dart
+
+[33mcommit 70df798ca8d83f4d0c041144daae36ce00718aa7[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 13:31:30 2024 +0900
+
+    commit member_register_page.dart
+
+[33mcommit 085c335ae6d4685c41b1e6331a2b4202d389cd19[m
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Fri Aug 2 13:31:19 2024 +0900
+
+    LD provider 추가
+
+[33mcommit 090016c12779c87c2d99193f44ea2329bc4ce195[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 13:31:08 2024 +0900
+
+    commit loginregister_find_password.dart
+
+[33mcommit 3074249f8fd55fd9393d51526557afb4b25e12ff[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 13:16:59 2024 +0900
+
+    memberRegisterPage.dart 버튼 네비게이션 수정
+
+[33mcommit 6af25918ec163766510a912271332f257edb369a[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 13:15:54 2024 +0900
+
+    memberRegisterPage.dart 수정
+
+[33mcommit 15d0e77c5e6d6ee29c02d7617ee3295c96b02d48[m
+Merge: 5ec9aa1 1dee56f
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Fri Aug 2 13:11:28 2024 +0900
+
+    Merge pull request #10 from wa-plan/InseoChoi
+    
+    UserProvider 별개 생성
+
+[33mcommit 1dee56fbcfb3c5fde217975573a3545f68de7969[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 13:08:48 2024 +0900
+
+    commit UserProvider
+
+[33mcommit 958fe031e965afed6db31bed5339ce4e9026eba8[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 12:47:25 2024 +0900
+
+    add apis
+
+[33mcommit 5ec9aa1c3b8c719a2115a194a761828ba5fd491a[m
+Merge: 5cdeba3 c1d8967
+Author: chaemd <new7932@naver.com>
+Date:   Fri Aug 2 12:44:45 2024 +0900
+
+    Merge branch 'dev' of https://github.com/wa-plan/test-rep into dev
+
+[33mcommit c1d8967d5e800803641e1744c62d4f5487dbade1[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 12:43:22 2024 +0900
+
+    check email 삭제
+
+[33mcommit 5cdeba3cd0728199f87d59226093c21e7c4fdd79[m
+Author: chaemd <new7932@naver.com>
+Date:   Fri Aug 2 12:42:49 2024 +0900
+
+    폴더 추가
+
+[33mcommit 9f793dbba591b4930e36b68c2391f5efbb621ebe[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Fri Aug 2 12:41:08 2024 +0900
+
+    commit memberRegisterPage.dart
+
+[33mcommit 064b641569ff3798656547bb479639409d8a7a8c[m
+Merge: 206b894 cb6c766
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Fri Aug 2 00:02:01 2024 +0900
+
+    Merge pull request #7 from wa-plan/TD
+    
+    드롭다운버튼 수정
+
+[33mcommit cb6c7661bd8d37c25d47aeabaff10134bcacc561[m
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Fri Aug 2 00:01:11 2024 +0900
+
+    드롭다운버튼 수정
+
+[33mcommit 25bb8064b095954373d195e20595fde0966c590e[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Thu Aug 1 11:41:06 2024 +0900
+
+    api 코드 추가
+
+[33mcommit 3c063c302128992538014e0f1530990b7e33698e[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Jul 31 16:03:21 2024 +0900
+
+    DP GUI 수정
+
+[33mcommit 206b894a437984a5c8506ff1a17db4a6f14cdb1e[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sat Jul 27 23:17:38 2024 +0900
+
+    commit 비밀번호 찾기
+
+[33mcommit 7d26eb01a2b1493e04a159cd6c12a8e4f7959c03[m
+Merge: 34e6f13 f59a459
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Jul 24 22:19:46 2024 +0900
+
+    Merge branch 'dev' of https://github.com/wa-plan/test-rep into dev
+
+[33mcommit 34e6f13d89f3c8f5f49f6dc8275b6c50633f22d0[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Jul 24 22:17:13 2024 +0900
+
+    DP GUI 수정2
+
+[33mcommit f59a459704db251336e2e03810d1ce3ba46385e3[m
+Author: bomul0304 <118335212+bomul0304@users.noreply.github.com>
+Date:   Wed Jul 24 22:12:39 2024 +0900
+
+    Delete domino directory
+
+[33mcommit ec55b83660301a1f2483e4dcd5ea19bbe538d51f[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Jul 24 22:11:56 2024 +0900
+
+    화살표 없애기
+
+[33mcommit 9cbdb4e8da08689c3f7e0820289423aed6e58669[m
+Merge: d8d110d 4f5936b
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Jul 24 22:02:43 2024 +0900
+
+    Merge branch 'dev' of https://github.com/wa-plan/test-rep into dev
+
+[33mcommit d8d110dbb651a583006fc1424d35d90ffea96c0c[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Jul 24 21:51:12 2024 +0900
+
+    DP GUI 수정
+
+[33mcommit 9da7772acbcb5eb05e1e9964ec00e3d4939886dc[m
+Author: bomul0304 <bomulphs@naver.com>
+Date:   Wed Jul 24 20:48:10 2024 +0900
+
+    도미노 플랜 GUI 수정
+
+[33mcommit 4f5936b9b955291a5f3e43f22eb0ce19aeb15415[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Jul 24 03:13:40 2024 +0900
+
+    test 폴더 안의 web 폴더 삭제
+
+[33mcommit 3a9cfcd207283b5533eff5d15819101c45d1bf83[m
+Author: chaemd <new7932@naver.com>
+Date:   Wed Jul 24 03:11:14 2024 +0900
+
+    test 폴더 안의 web 폴더 삭제
+
+[33mcommit 649d07d5483e32424f25472edc44deddd9a6a81f[m
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sun Jul 21 23:17:45 2024 +0900
+
+    Update README.txt
+    
+    제가 커밋하면서 인서님이 커밋해주셨던 내용이 삭제되어서 다시 수정합니다
+
+[33mcommit 8e6ea82505ad9c5aca4c2a1ff5d46acb427c6d1d[m
+Merge: 20c1e6c f523420
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sun Jul 21 23:10:07 2024 +0900
+
+    Merge pull request #3 from wa-plan/TD
+    
+    dialog 반복 텍스트 수정
+
+[33mcommit f523420d0fea97a7f1cf1b08209da098518b1816[m
+Merge: a122a0e 20c1e6c
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Sun Jul 21 23:09:26 2024 +0900
+
+    Merge branch 'dev' into TD
+
+[33mcommit a122a0ef4f6e85fa7bcf8789194347ce7b33e62c[m
+Author: chaemd <new7932@naver.com>
+Date:   Sun Jul 21 23:05:43 2024 +0900
+
+    dialog 반복 텍스트 수정
+
+[33mcommit 20c1e6c1875e20e74039da3a986d7171f5897c96[m
+Author: luenechoi <156325695+luenechoi@users.noreply.github.com>
+Date:   Sun Jul 21 22:35:03 2024 +0900
+
+    Update README.txt
+
+[33mcommit 4d334a6bbcd12cfccff2d63ef4213599c5d204d8[m
+Author: chaemd <new7932@naver.com>
+Date:   Thu Jul 18 13:52:44 2024 +0900
+
+    ??
+
+[33mcommit a748d3f28cdd8f27d4495d52c34235efe78ac306[m
+Author: Chaimin Jang <new7932@naver.com>
+Date:   Thu Jul 18 13:50:47 2024 +0900
+
+    commit
+
+[33mcommit bf16de9214b7c4505be65b284fb385eb124a9d6a[m
+Author: wa-plan <new7932@naver.com>
+Date:   Thu Jul 18 13:48:35 2024 +0900
+
+    test
+
+[33mcommit 6eceda11ad55f204825c9172bb6da4879a76bf8a[m[33m ([m[1;31morigin/ChaeminJang[m[33m)[m
+Merge: d97d699 22fd00e
+Author: wa-plan <new7932@naver.com>
+Date:   Thu Jul 18 12:00:35 2024 +0900
+
+    first commit
+
+[33mcommit d97d699e5025001ca826d9542d11111f6d6f6de2[m
+Author: wa-plan <new7932@naver.com>
+Date:   Thu Jul 18 11:39:16 2024 +0900
+
+    commit
+
+[33mcommit 1bb8c031559022172fcae17d59c9859f882412f7[m
+Author: Chaimin Jang <new7932@naver.com>
+Date:   Thu Jul 18 11:20:07 2024 +0900
+
+    all menus
+
+[33mcommit 22fd00e25aa0115c64fd9981edc2ffc14bf2767e[m
+Author: chaemd <127921476+chaemd@users.noreply.github.com>
+Date:   Thu Jul 18 11:11:21 2024 +0900
+
+    Initial commit
