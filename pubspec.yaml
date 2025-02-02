@@ -116,11 +116,8 @@ flutter:
     - assets/img/MG_orange.png
     - assets/img/splash.png
     - assets/img/AI_icon.png
-    - assets/img/new_splash.png
-    - assets/img/new1_splash.png
     - assets/img/new2_splash.png
-    - assets/img/new3_splash.png
-    - assets/img/new4_splash.png
+
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

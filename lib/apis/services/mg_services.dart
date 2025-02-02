@@ -171,6 +171,83 @@ class EditGoalNameService {
   }
 }
 
+class EditGoalDateService {
+  static Future<bool> editGoalDate({
+    required String newDate,
+    required int mandalartId,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('authToken');
+    print('저장된 토큰: $token');
+
+    if (token == null) {
+      Fluttertoast.showToast(
+        msg: '로그인 토큰이 없습니다. 다시 로그인해 주세요.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+
+    final url = Uri.parse('$baseUrl/api/mandalart/date');
+
+    final body = jsonEncode({'newDate': newDate, 'mandalartId': mandalartId});
+
+    try {
+      final response = await http.patch(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: body,
+      );
+
+      print('서버 응답 상태 코드: ${response.statusCode}');
+      print('서버 응답 본문: ${response.body}');
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        Fluttertoast.showToast(
+          msg: '목표가 성공적으로 수정되었습니다.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+        return true;
+      } else if (response.statusCode == 401) {
+        Fluttertoast.showToast(
+          msg: '인증 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: '목표 생성 실패: ${response.body}',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+      return false;
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: '오류 발생: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+  }
+}
+
 class EditGoalDescriptionService {
   static Future<bool> editGoalDescription({
     required String description,
@@ -448,7 +525,7 @@ class UserInfoService {
         String email = data['email'];
         String phoneNum = data['phoneNum'];
         String description = data['description'] ?? '프로필 편집을 통해 \n자신을 표현해주세요.';
-
+        String profile = data['profile'];
         String role = data['role'];
         String morningAlarm = data['morningAlarm'];
         String nightAlarm = data['nightAlarm'];
@@ -472,6 +549,7 @@ class UserInfoService {
           'morningAlarm': morningAlarm,
           'nightAlarm': nightAlarm,
           'nickname': nickname,
+          'profile': profile
         };
       } else if (response.statusCode >= 400) {
         Fluttertoast.showToast(
