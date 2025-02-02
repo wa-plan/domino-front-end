@@ -167,12 +167,13 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Button(Colors.black, Colors.white, '완료', () {
-                  print(_selectedImage);
+                  print('갤러리선택이미지=$_selectedImage');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProfileEdit(
                         selectedImage: _selectedImage,
+                        profileImage: "",
                       ),
                     ),
                   );

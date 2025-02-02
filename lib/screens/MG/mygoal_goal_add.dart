@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart' as image_picker;
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/MG/calender.dart';
 import 'package:file_picker/file_picker.dart';
@@ -25,7 +24,6 @@ class _MyGoalAddState extends State<MyGoalAdd> {
   DateTime? selectedDate;
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
-  List<image_picker.XFile?> selectedImages = [];
   String? uploadedImageResponse;
   final List<String> _imageFiles = [];
 
@@ -465,9 +463,6 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                     Colors.white,
                     '완료',
                     () {
-                      print('selectedDate=$selectedDate');
-                      print('_isChecked=$_isChecked');
-
                       if (_nameController.text == '') {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('목표를 입력해 주세요.')),
