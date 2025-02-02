@@ -8,7 +8,6 @@ import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/screens/DP/Detail/detail_9x9_page.dart';
 import 'package:provider/provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class DPMain extends StatefulWidget {
   const DPMain({super.key});
@@ -100,35 +99,29 @@ class _DPMainState extends State<DPMain> {
         backgroundColor: backgroundColor,
       ),
       bottomNavigationBar: const NavBar(),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(25.0, 10, 25.0, 20.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  color: const Color(0xffD4D4D4),
-                  iconSize: 30,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  visualDensity: VisualDensity.compact,
-                  onPressed: () {
-                    //여기에 Provider 초기화 코드 삽입
-                    //먼저 secondGoal 초기화 코드
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: fullPadding,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  //만다라트 추가 버튼
+                  CustomIconButton(() {
+                    //기존 Create 기능에 저장된 secondGoal 초기화
                     for (int i = 0; i < 9; i++) {
                       context
                           .read<SaveInputtedDetailGoalModel>()
                           .updateDetailGoal("$i", "");
                     }
-                    //다음 color 초기화 코드
+                    //color 초기화
                     for (int i = 0; i < 9; i++) {
                       context
                           .read<GoalColor>()
                           .updateGoalColor("$i", const Color(0xff929292));
                     }
-                    //마지막으로 thirdGoal 초기화 코드
+                    //thirdGoal 초기화
                     for (int i = 0; i < 9; i++) {
                       for (int j = 0; j < 9; j++) {
                         context
@@ -145,134 +138,188 @@ class _DPMainState extends State<DPMain> {
                         ),
                       ),
                     );
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Expanded(
-              child: mainGoals.isEmpty
+                  }, Icons.add)
+                      .customIconButton(),
+                ],
+              ),
+              const SizedBox(height: 10),
+              mainGoals.isEmpty
                   ? Container(
+                      height: 300,
                       decoration: BoxDecoration(
-                        color: const Color(0xff2A2A2A),
-                        borderRadius: BorderRadius.circular(3),
+                        color: const Color(0xff2D2D2D),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Center(
-                        child: Text(
-                          '목표를 달성하기 위한\n플랜을 만들어봐요.',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 146, 146, 146),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
+                      child: Stack(
+                        children: [
+                          // 텍스트: 좌측 상단 정렬
+                          Positioned(
+                            top: 30, // 텍스트의 상단 여백
+                            left: 30, // 텍스트의 좌측 여백
+                            child: Text(
+                              '아직 플랜이 없어요.\n목표를 이루려면\n철저한 계획은 필수!',
+                              style: TextStyle(
+                                  color: const Color(0xff464646),
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.04,
+                                  fontWeight: FontWeight.w700,
+                                  height: 1.7),
+                            ),
                           ),
-                          textAlign: TextAlign.center,
-                        ),
+                          // 이미지: 우측 하단 정렬
+                          Positioned(
+                            bottom: 0, // 이미지의 하단 여백
+                            right: 0, // 이미지의 우측 여백
+                            child: Image.asset(
+                              'assets/img/emptyDominho.png',
+                              height: 230, // 이미지 크기 유지
+                            ),
+                          ),
+                        ],
                       ),
                     )
-                  : PageView.builder(
-                      controller: _pageController,
-                      itemCount: mainGoals.length,
-                      itemBuilder: (context, index) {
-                        final goal = mainGoals[index];
-                        final mandalartId = goal['id'].toString();
+                  : SizedBox(
+                      height: 800,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        itemCount: mainGoals.length,
+                        itemBuilder: (context, index) {
+                          final goal = mainGoals[index];
+                          final mandalartId = goal['id'].toString();
 
-                        return FutureBuilder<List<Map<String, dynamic>>?>(
-                          future: _fetchSecondGoals(mandalartId),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return const Center(
-                                child: Text(
-                                  '데이터를 불러오는 데 실패했습니다.',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              );
-                            } else if (!snapshot.hasData ||
-                                snapshot.data!.isEmpty) {
-                              return const Center(
-                                child: Text(
-                                  '목표가 없습니다.',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              );
-                            } else {
-                              final data = snapshot.data!;
-                              final firstColor = data[0]['color'];
-                              final mandalart = data[0]['mandalart'];
-                              final secondGoals = data[0]['secondGoals']
-                                  as List<Map<String, dynamic>>?;
-
-                              if (secondGoals == null || secondGoals.isEmpty) {
-                                return const SizedBox.shrink();
-                              }
-
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DPdetailPage(
-                                        mandalart: mandalart,
-                                        secondGoals: secondGoals,
-                                        mandalartId: int.parse(mandalartId),
-                                        firstColor: firstColor,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 20),
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(3),
+                          return FutureBuilder<List<Map<String, dynamic>>?>(
+                            future: _fetchSecondGoals(mandalartId),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return const Center(
+                                  child: Text(
+                                    '데이터를 불러오는 데 실패했습니다.',
+                                    style: TextStyle(color: Colors.white),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(height: 15),
-                                      Text(
-                                        mandalart,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
+                                );
+                              } else if (!snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
+                                return const Center(
+                                  child: Text(
+                                    '목표가 없습니다.',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              } else {
+                                final data = snapshot.data!;
+                                final firstColor = data[0]['color'];
+                                final mandalart = data[0]['mandalart'];
+                                final secondGoals = data[0]['secondGoals']
+                                    as List<Map<String, dynamic>>?;
+
+                                if (secondGoals == null ||
+                                    secondGoals.isEmpty) {
+                                  return const SizedBox.shrink();
+                                }
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DPdetailPage(
+                                          mandalart: mandalart,
+                                          secondGoals: secondGoals,
+                                          mandalartId: int.parse(mandalartId),
+                                          firstColor: firstColor,
                                         ),
                                       ),
-                                      const SizedBox(height: 30),
-                                      MandalartGrid(
-                                        mandalart: mandalart,
-                                        firstColor: firstColor,
-                                        secondGoals: secondGoals,
-                                        mandalartId: int.parse(mandalartId),
-                                      ),
-                                    ],
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 15),
+                                        Container(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 7, 0, 7),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff2B2B2B),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          width: double.infinity,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                width: 7,
+                                                height: 18,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      ColorTransform(firstColor).colorTransform(),
+                                                  borderRadius:
+                                                      BorderRadius.circular(1),
+                                                ),
+                                              ),
+                                              Text(
+                                                mandalart,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 7,
+                                                height: 18,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      Colors.transparent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(1),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Container(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              40, 20, 40, 40),
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: MandalartGrid(
+                                            mandalart: mandalart,
+                                            firstColor: firstColor,
+                                            secondGoals: secondGoals,
+                                            mandalartId: int.parse(mandalartId),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
-                          },
-                        );
-                      },
+                                );
+                              }
+                            },
+                          );
+                        },
+                      ),
                     ),
-            ),
-
-            const SizedBox(height: 40),
-            SmoothPageIndicator(
-              // PageIndicator 추가
-              controller: _pageController, // PageController 연결
-              count: mainGoals.length, // 총 페이지 수
-              effect: const ColorTransitionEffect(
-                  // 스타일 설정
-                  dotHeight: 8.0,
-                  dotWidth: 8.0,
-                  activeDotColor: Color(0xffFF6767),
-                  dotColor: Colors.grey),
-            ),
-            const SizedBox(height: 20), // 간격 조절
-          ],
+              const SizedBox(height: 40),
+              if (mainGoals.length != 1)
+                PageIndicator(_pageController, mainGoals).pageIndicator(),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

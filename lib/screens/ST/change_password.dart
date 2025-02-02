@@ -264,6 +264,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       obscureText: obscureText,
       textAlign: TextAlign.start,
       textAlignVertical: TextAlignVertical.center,
+      style: const TextStyle(color: Colors.white), // 입력 텍스트 흰색
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(10.0),
         hintText: hintText,

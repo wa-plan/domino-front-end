@@ -18,51 +18,58 @@ class Input2 extends StatefulWidget {
 }
 
 class _Input2State extends State<Input2> {
-  late String initialValue;
+  TextEditingController? controller; // 초기 null 허용
   late Color initialColor;
 
   @override
   void initState() {
     super.initState();
 
-    // Save 모델에서 초기값 가져오기
-    final saveModel = context.read<SaveInputtedActionPlanModel>();
-    initialValue = saveModel.inputtedActionPlan[widget.selectedDetailGoalId]
-            ['${widget.actionPlanId}'] ??
-        ''; // 초기 값이 없으면 빈 문자열로 설정
+    // Test 모델에서 초기값 가져오기
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final testModel = context.read<TestInputtedActionPlanModel>();
+      setState(() {
+        controller = TextEditingController(
+          text: testModel.inputtedActionPlan[widget.selectedDetailGoalId]
+                  [widget.actionPlanId.toString()] ??
+              '', // 초기 값이 없으면 빈 문자열로 설정
+        );
+      });
+    });
 
     // 초기 색상 가져오기
     initialColor = context
             .read<GoalColor>()
             .selectedGoalColor['${widget.selectedDetailGoalId}'] ??
         Colors.transparent;
+  }
 
-    // Test 모델에 초기화 반영
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      for (int detailGoalId = 0;
-          detailGoalId < saveModel.inputtedActionPlan.length;
-          detailGoalId++) {
-        final actionPlanData = saveModel.inputtedActionPlan[detailGoalId];
-        actionPlanData.forEach((actionPlanId, value) {
-          context.read<TestInputtedActionPlanModel>().updateTestActionPlan(
-                detailGoalId,
-                actionPlanId, // actionPlanId를 int로 변환
-                value,
-              );
-        });
-      }
-    });
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final testModel = context.watch<TestInputtedActionPlanModel>();
+
+    // controller가 초기화되기 전에는 로딩 위젯 표시
+    if (controller == null) {
+      return const CircularProgressIndicator();
+    }
+
     return DPInput3(
-      colorPalette[initialColor] ?? colorPalette[Colors.transparent], 
-      (value){context.read<TestInputtedActionPlanModel>().updateTestActionPlan(
-                  widget.selectedDetailGoalId,
-                  widget.actionPlanId.toString(),
-                  value.isEmpty ? "" : value,
-                );}, 
-      initialValue).dpInput3();
+      colorPalette[initialColor] ?? colorPalette[Colors.transparent],
+      (value) {
+        // 입력값 변경 시 Test 모델에 바로 반영
+        testModel.updateTestActionPlan(
+          widget.selectedDetailGoalId,
+          widget.actionPlanId.toString(),
+          value.isEmpty ? '' : value,
+        );
+      },
+      controller!.text,
+    ).dpInput3();
   }
 }

@@ -1,91 +1,130 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/apis/services/dp_services.dart';
-import 'package:domino/screens/DP/Create/complete_page.dart';
 import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/color_Grid23.dart';
 import 'package:domino/widgets/DP/color_Grid2.dart';
 import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
+import 'package:domino/widgets/DP/color_option.dart';
 
-class DPcreateColorPage extends StatefulWidget {
-  final String? mainGoalId;
+class EditColorPage extends StatefulWidget {
+  final String mandalart;
   final String firstColor;
-  const DPcreateColorPage({
-    super.key,
-    required this.mainGoalId,
-    required this.firstColor,
-  });
+
+  const EditColorPage(
+      {super.key, required this.firstColor, required this.mandalart});
 
   @override
-  DPcreateColorPageState createState() => DPcreateColorPageState();
+  EditColorPageState createState() => EditColorPageState();
 }
 
-class DPcreateColorPageState extends State<DPcreateColorPage> {
+class EditColorPageState extends State<EditColorPage> {
   int selectIndex = 0;
-  int selectColorIndex = -1;
   bool isDetailGoalEmpty = false; // 상태 추가
-  Map colorPalette = {
-    const Color(0xffFF7A7A): const Color(0xffFFC2C2),
-    const Color(0xffFFB82D): const Color(0xffFFD19B),
-    const Color(0xffFCFF62): const Color(0xffFEFFCD),
-    const Color(0xff72FF5B): const Color(0xffC1FFB7),
-    const Color(0xff5DD8FF): const Color(0xff94E5FF),
-    const Color(0xff929292): const Color(0xffC4C4C4),
-    const Color(0xffFF5794): const Color(0xffFF8EB7),
-    const Color(0xffAE7CFF): const Color(0xffD0B4FF),
-    const Color(0xffC77B7F): const Color(0xffEBB6B9),
-    const Color(0xff009255): const Color(0xff6DE1B0),
-    const Color(0xff3184FF): const Color(0xff8CBAFF),
-    const Color(0xff11D1C2): const Color(0xffAAF4EF),
-  };
+  int selectColorIndex = -1;
 
-  String colorToHex(Color color) {
-    return '#${color.value.toRadixString(16).padLeft(8, '0')}';
-  }
-
-  Future<bool> _addSecondGoal() async {
-    final mandalartId = Provider.of<SelectFinalGoalId>(context, listen: false)
-        .selectedFinalGoalId;
-    List<String> name =
+  Future<bool> _editSecondGoal() async {
+    List<int> secondGoalId =
+        Provider.of<SaveEditedDetailGoalIdModel>(context, listen: false)
+            .editedDetailGoalId
+            .values
+            .toList();
+    List<String> newSecondGoal =
         Provider.of<SaveInputtedDetailGoalModel>(context, listen: false)
             .inputtedDetailGoal
             .values
             .toList();
+
+    final success = await EditSecondGoalService.editSecondGoal(
+      secondGoalId: secondGoalId,
+      newSecondGoal: newSecondGoal,
+    );
+
+    return success; // Return success to indicate whether the operation was successful
+  }
+
+  Future<bool> _editColor() async {
     final List<String> color = Provider.of<GoalColor>(context, listen: false)
         .selectedGoalColor
         .values
-        .map((color) => colorToHex(color))
+        .map((color) => color.toString())
         .toList();
 
-    print(color);
+    List<int> secondGoalId =
+        Provider.of<SaveEditedDetailGoalIdModel>(context, listen: false)
+            .editedDetailGoalId
+            .values
+            .toList();
 
-    final success = await AddSecondGoalService.addSecondGoal(
-      mandalartId: mandalartId,
-      name: name,
+    final success = await EditGoalColorService.editGoalColor(
+      secondGoalId: secondGoalId,
       color: color,
     );
 
     return success; // Return success to indicate whether the operation was successful
   }
 
-  Future<bool> _addThirdGoal() async {
-    List<int> secondGoalId = [];
-    final mandalartId = Provider.of<SelectFinalGoalId>(context, listen: false)
-        .selectedFinalGoalId;
+  Future<bool> _editThirdGoal() async {
+    //제3목표 id 가져오기
 
-    final response =
-        await SecondGoalListService.secondGoalList(context, mandalartId);
-    if (response != null) {
-      for (var secondGoal in response.first["secondGoals"]) {
-        secondGoalId.add(secondGoal["id"]);
-      }
-    }
+    final third0id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[0]
+            .values
+            .toList();
 
-    print(secondGoalId);
+    final third1id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[1]
+            .values
+            .toList();
+
+    final third2id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[2]
+            .values
+            .toList();
+
+    final third3id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[3]
+            .values
+            .toList();
+
+    final third4id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[4]
+            .values
+            .toList();
+
+    final third5id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[5]
+            .values
+            .toList();
+
+    final third6id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[6]
+            .values
+            .toList();
+
+    final third7id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[7]
+            .values
+            .toList();
+
+    final third8id =
+        Provider.of<SaveEditedActionPlanIdModel>(context, listen: false)
+            .editedActionPlanId[8]
+            .values
+            .toList();
+
+    //제3목표 가져오기
 
     final third0 =
         Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
@@ -133,8 +172,16 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
             .values
             .toList();
 
-    final success = await AddThirdGoalService.addThirdGoal(
-      secondGoalId: secondGoalId,
+    final success = await EditThirdGoalService.editThirdGoal(
+      third0id: third0id,
+      third1id: third1id,
+      third2id: third2id,
+      third3id: third3id,
+      third4id: third4id,
+      third5id: third5id,
+      third6id: third6id,
+      third7id: third7id,
+      third8id: third8id,
       third0: third0,
       third1: third1,
       third2: third2,
@@ -222,11 +269,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                     // 팝업 닫기
                     Navigator.pop(context);
 
-                    // DP 메인 페이지로 이동
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const DPMain()),
-                    );
+                    // 이전 페이지로 이동
+                    Navigator.pop(context);
+
+                    Navigator.pop(context);
                   });
                 }, Icons.keyboard_arrow_left_rounded)
                     .customIconButton(),
@@ -234,41 +280,6 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                 Text(
                   '플랜 만들기',
                   style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const Spacer(),
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xff515151), // 첫 번째 색상
-                        borderRadius: BorderRadius.circular(1.0),
-                      ),
-                      width: 8,
-                      height: 8,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xff515151), // 첫 번째 색상
-                        borderRadius: BorderRadius.circular(1.0),
-                      ),
-                      width: 8,
-                      height: 8,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xffD9D9D9), // 첫 번째 색상
-                        borderRadius: BorderRadius.circular(1.0),
-                      ),
-                      width: 8,
-                      height: 8,
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -280,23 +291,14 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
             child: Column(
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 15),
-                        const Text(
-                          '나만의 스타일로 만다라트를 꾸며요.',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Center(
                           child: Container(
                             height: 290,
                             width: 290,
@@ -339,9 +341,7 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                               maxLines: 3,
                                               minFontSize: 6,
                                               overflow: TextOverflow.ellipsis,
-                                              context
-                                                  .watch<SelectFinalGoalModel>()
-                                                  .selectedFinalGoal,
+                                              widget.mandalart,
                                               style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 12,
@@ -402,10 +402,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Center(
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Center(
                           child: Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 15, horizontal: 15),
@@ -452,82 +452,68 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                 }),
                               )),
                         ),
-                        const SizedBox(height: 20),
-                      ],
-                    ),
+                      
+                      
+                    ],
                   ),
                 ),
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xff131313),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.0))),
-                        child: const Text(
-                          '이전',
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          // Execute _addSecondGoal and wait for the result
-                          final secondGoalSuccess = await _addSecondGoal();
-
-                          // If _addSecondGoal was successful, update the created goals and proceed to _addThirdGoal
-                          if (secondGoalSuccess) {
-                            // Update the created goal using provider
-                            context
-                                .read<SaveMandalartCreatedGoal>()
-                                .updateMandalartCreatedGoal(
-                                    "${widget.mainGoalId}");
-
-                            // Ensure that the update is completed before moving to next goal
-                            final thirdGoalSuccess = await _addThirdGoal();
-
-                            // If both goals are added successfully, navigate to DPMain
-                            if (thirdGoalSuccess) {
-                              for (int i = 0; i < 9; i++) {
-                                context
-                                    .read<SaveInputtedDetailGoalModel>()
-                                    .updateDetailGoal(i.toString(), "");
-                              }
-
-                              for (int i = 0; i < 9; i++) {
-                                context.read<GoalColor>().updateGoalColor(
-                                    i.toString(), const Color(0xff929292));
-                              }
-
-                              for (int i = 0; i < 9; i++) {
-                                for (int j = 0; j < 9; j++) {
-                                  context
-                                      .read<SaveInputtedActionPlanModel>()
-                                      .updateActionPlan(i, j.toString(), "");
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Button(
+                              Colors.black,
+                              Colors.white,
+                              '이전',
+                              () {
+                                Navigator.pop(context);
+                              },
+                            ).button(),
+                            Button(Colors.black, Colors.white, '완료', () async {
+                              // Execute _addSecondGoal and wait for the result
+                              final secondGoalSuccess = await _editSecondGoal();
+                  
+                              // If _addSecondGoal was successful, proceed to _addThirdGoal
+                              /*if (secondGoalSuccess) {
+                              final thirdGoalSuccess = await _editThirdGoal();*/
+                  
+                              if (secondGoalSuccess) {
+                                print('제2목표 저장 성공');
+                                final goalColorSuccess = await _editColor();
+                  
+                                if (goalColorSuccess) {
+                                  final thirdGoalSuccess = await _editThirdGoal();
+                  
+                                  // If both are successful, navigate to DPlistPage
+                                  if (thirdGoalSuccess) {
+                                    print('제3목표 저장 성공');
+                                    for (int i = 0; i < 9; i++) {
+                                      context
+                                          .read<SaveInputtedDetailGoalModel>()
+                                          .updateDetailGoal(i.toString(), "");
+                                    }
+                  
+                                    for (int i = 0; i < 9; i++) {
+                                      context.read<GoalColor>().updateGoalColor(
+                                          i.toString(), const Color(0xff929292));
+                                    }
+                  
+                                    for (int i = 0; i < 9; i++) {
+                                      for (int j = 0; j < 9; j++) {
+                                        context
+                                            .read<SaveInputtedActionPlanModel>()
+                                            .updateActionPlan(i, j.toString(), "");
+                                      }
+                                    }
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const DPMain()),
+                                    );
+                                  }
                                 }
                               }
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const CompletePage()),
-                              );
-                            }
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: const Color(0xff131313),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0)),
-                        ),
-                        child: const Text(
-                          '완료',
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                      ),
-                    ]),
+                            }).button(),
+                          ]),
               ],
             )));
   }

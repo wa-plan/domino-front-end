@@ -1,14 +1,14 @@
 import 'dart:async';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 //color
-const backgroundColor = Color(0xff222222);
+const backgroundColor = Color(0xff262626);
 const mainRed = Color(0xffFF7A7A);
 const mainTextColor = Colors.white;
 const mainGold = Color(0xffF6C92B);
@@ -16,6 +16,7 @@ const mainGold = Color(0xffF6C92B);
 //padding
 const appBarPadding = EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 20);
 const fullPadding = EdgeInsets.fromLTRB(25.0, 10, 25.0, 20.0);
+
 
 //colorPalette
 Map<Color, Color> colorPalette = {
@@ -33,7 +34,6 @@ Map<Color, Color> colorPalette = {
   const Color(0xff11D1C2): const Color(0xffAAF4EF),
   Colors.transparent: const Color(0xff5C5C5C),
 };
-
 
 //Button
 class Button {
@@ -162,6 +162,14 @@ class DPMainGoal {
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(3),
           color: color,
+          boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+                    offset: const Offset(0, 0), // X, Y 위치 (0,0)
+                    blurRadius: 7, // 블러 7
+                    spreadRadius: 0, // 스프레드 0
+                  ),
+                ],
         ),
         child: Text(
             textAlign: TextAlign.center,
@@ -195,23 +203,18 @@ class DPInput3 {
           onChanged: onChangedFunction,
           textAlign: TextAlign.center,
           textInputAction: TextInputAction.newline,
-          maxLength: 20, 
+          maxLength: 15,
           maxLines: null,
           inputFormatters: [
-            LengthLimitingTextInputFormatter(20), // 최대 15글자로 제한
+            LengthLimitingTextInputFormatter(15), // 최대 15글자로 제한
           ],
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500
-          ),
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
           decoration: const InputDecoration(
-            border: InputBorder.none,
-            counterStyle: TextStyle(
-              height: 0.01,
-              fontSize: 10,
-              color: Color.fromARGB(255, 120, 120, 120)
-            )
-          ),
+              border: InputBorder.none,
+              counterStyle: TextStyle(
+                  height: 0.01,
+                  fontSize: 10,
+                  color: Color.fromARGB(255, 120, 120, 120))),
         ),
       ),
     );
@@ -240,24 +243,19 @@ class DPInput2 {
           controller: controller,
           onChanged: onChangedFunction,
           style: const TextStyle(
-            color: Colors.black,
-            fontSize: 13,
-            fontWeight: FontWeight.w500
-          ),
+              color: Colors.black, fontSize: 13, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
-          maxLength: 20, 
+          maxLength: 15,
           maxLines: null,
           inputFormatters: [
-            LengthLimitingTextInputFormatter(20), // 최대 15글자로 제한
+            LengthLimitingTextInputFormatter(15), // 최대 15글자로 제한
           ],
           decoration: const InputDecoration(
-            border: InputBorder.none,
-            counterStyle: TextStyle(
-              height: 0.01,
-              fontSize: 10,
-              color: Color.fromARGB(255, 104, 104, 104)
-            )
-          ),
+              border: InputBorder.none,
+              counterStyle: TextStyle(
+                  height: 0.01,
+                  fontSize: 10,
+                  color: Color.fromARGB(255, 104, 104, 104))),
         ),
       ),
     );
@@ -282,9 +280,7 @@ class DPGrid2 {
         borderRadius: BorderRadius.circular(3),
         color:
             secondGoals.isNotEmpty && secondGoals[hintNum]['secondGoal'] != ""
-                ? Color(int.parse(secondGoals[hintNum]['color']
-                    .replaceAll('Color(', '')
-                    .replaceAll(')', '')))
+                ? ColorTransform(secondGoals[hintNum]['color']).colorTransform()
                 : Colors.transparent,
         border: border,
       ),
@@ -333,8 +329,8 @@ class DPCreateGrid {
           maxFontSize: 10,
           overflow: TextOverflow.ellipsis,
           text,
-          style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w500),
+          style:
+              const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
         ),
       ),
@@ -559,20 +555,18 @@ class CustomTextField {
       maxLines: maxLines,
       style: const TextStyle(color: Colors.white, fontSize: 14),
       decoration: InputDecoration(
+        filled: true,
+        fillColor: const Color(0xff2A2A2A),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(6),
+        ),
         hintText: hintText,
-        contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+        contentPadding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
         hintStyle: const TextStyle(
-            color: Color.fromARGB(255, 113, 113, 113),
+            color: Color(0xffAAAAAA),
             fontSize: 13,
             fontWeight: FontWeight.w400),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(3),
-            borderSide: const BorderSide(
-                color: Color.fromARGB(255, 147, 147, 147), width: 0.5)),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(3),
-            borderSide: const BorderSide(
-                color: Color.fromARGB(255, 147, 147, 147), width: 0.5)),
         suffixIcon: controller.text.isNotEmpty
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.start, // 아이콘 상단 정렬
@@ -688,5 +682,96 @@ class Tag {
           text,
           style: const TextStyle(color: Color(0xff979797), fontSize: 11),
         ));
+  }
+}
+
+//Grid for Editing
+class DPGrid3_E {
+  final String text;
+  final Color? color;
+  final double maxFontSize;
+
+  const DPGrid3_E(this.text, this.color, this.maxFontSize);
+
+  Widget dpGrid3_E() {
+    return Container(
+      padding: const EdgeInsets.all(3),
+      margin: const EdgeInsets.all(1.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3),
+        color: color,
+      ),
+      child: Center(
+        child: AutoSizeText(
+            maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+            minFontSize: 6,
+            maxFontSize: maxFontSize, // 최소 글씨 크기
+            overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
+            text,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: backgroundColor,
+              fontWeight: FontWeight.w600,
+            )),
+      ),
+    );
+  }
+}
+
+//Grid for Editing
+class PageIndicator {
+  final List<Map<String, dynamic>> goals;
+  final PageController controller;
+
+  const PageIndicator(this.controller, this.goals);
+
+  Widget pageIndicator() {
+    return SmoothPageIndicator(
+      controller: controller,
+      count: goals.length,
+      effect: const ColorTransitionEffect(
+        dotHeight: 8.0,
+        dotWidth: 8.0,
+        activeDotColor: Color.fromARGB(255, 137, 137, 137),
+        dotColor: Colors.grey,
+      ),
+    );
+  }
+}
+
+//icon button
+class CustomIconButton {
+  final Function function;
+  final IconData icon;
+
+  const CustomIconButton(this.function, this.icon);
+
+  Widget customIconButton() {
+    return Container(
+      width: 35,
+      height: 24,
+      decoration: BoxDecoration(
+        color: const Color(0xff303030),
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+                    offset: const Offset(0, 0), // X, Y 위치 (0,0)
+                    blurRadius: 7, // 블러 7
+                    spreadRadius: 0, // 스프레드 0
+                  ),
+                ],
+      ),
+      child: GestureDetector(
+        onTap: () {
+          function(); // 함수 호출
+        },
+        child: Icon(
+          icon,
+          color: const Color(0xff646464),
+          size: 21,
+        ),
+      ),
+    );
   }
 }

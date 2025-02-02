@@ -19,22 +19,29 @@ class _Input1State extends State<Input1> {
   void initState() {
     super.initState();
 
-    // Save 모델에서 초기 값을 가져옴
-    final saveModel = context.read<SaveInputtedDetailGoalModel>();
+    // Test 모델에서 초기 값을 가져옴
+    final testModel = context.read<TestInputtedDetailGoalModel>();
 
-    // TextEditingController를 초기화하여 Save 모델의 값을 표시
+    // TextEditingController를 초기화하여 Test 모델의 값을 표시
     controller = TextEditingController(
-      text:
-          saveModel.inputtedDetailGoal['${widget.selectedDetailGoalId}'] ?? '',
+      text: testModel.testinputtedDetailGoal['${widget.selectedDetailGoalId}'] ?? '',
     );
 
-    // 위젯이 빌드를 완료한 후 Test 모델에 초기 값 반영
+    // 위젯이 빌드를 완료한 후 초기 값 반영
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<TestInputtedDetailGoalModel>().updateTestDetailGoal(
-            '${widget.selectedDetailGoalId}',
-            saveModel.inputtedDetailGoal['${widget.selectedDetailGoalId}'] ??
-                '',
-          );
+      testModel.updateTestDetailGoal(
+        '${widget.selectedDetailGoalId}',
+        testModel.testinputtedDetailGoal['${widget.selectedDetailGoalId}'] ?? '',
+      );
+    });
+
+    // TextEditingController에 listener 추가
+    controller.addListener(() {
+      // 입력값이 변경되면 Test 모델에 바로 저장
+      testModel.updateTestDetailGoal(
+        '${widget.selectedDetailGoalId}',
+        controller.text,
+      );
     });
   }
 
@@ -46,20 +53,21 @@ class _Input1State extends State<Input1> {
 
   @override
   Widget build(BuildContext context) {
+    final testModel = context.watch<TestInputtedDetailGoalModel>();
+
     return DPInput2(
-        context
-                    .watch<GoalColor>()
-                    .selectedGoalColor['${widget.selectedDetailGoalId}'] ==
-                Colors.transparent
-            ? const Color(0xff929292)
-            : context
-                .watch<GoalColor>()
-                .selectedGoalColor['${widget.selectedDetailGoalId}'],
-        controller, (value) {
-      context.read<TestInputtedDetailGoalModel>().updateTestDetailGoal(
-            '${widget.selectedDetailGoalId}',
-            value,
-          );
-    }).dpInput2();
+      testModel.testinputtedDetailGoal['${widget.selectedDetailGoalId}'] == null ||
+              testModel.testinputtedDetailGoal['${widget.selectedDetailGoalId}']!
+                  .isEmpty
+          ? const Color(0xff929292)
+          : context
+              .watch<GoalColor>()
+              .selectedGoalColor['${widget.selectedDetailGoalId}'],
+      controller,
+      (value) {
+        // 입력값 변경 시 콜백 (이미 controller.addListener에서 처리 중이므로 여기는 생략 가능)
+        testModel.updateTestDetailGoal('${widget.selectedDetailGoalId}', value);
+      },
+    ).dpInput2();
   }
 }
