@@ -25,6 +25,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   String firstColor = "0xff000000";
   bool showGrid = false; // 그리드 표시 여부를 결정하는 변수
   bool isLoading = true; // 로딩 상태 관리
+  String guide = "클릭해서 목표를 선택해 주세요.";
 
   @override
   void initState() {
@@ -96,20 +97,46 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
           padding: appBarPadding,
           child: Row(
             children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: Color(0xffD4D4D4),
-                  size: 17,
-                ),
-              ),
+              CustomIconButton(() {
+                Navigator.of(context).pop();
+              }, Icons.keyboard_arrow_left_rounded)
+                  .customIconButton(),
               const SizedBox(width: 10),
-              Text(
-                '플랜 만들기',
-                style: Theme.of(context).textTheme.titleLarge,
+              Text('플랜 만들기', style: Theme.of(context).textTheme.titleLarge),
+              const Spacer(),
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xffD9D9D9), // 첫 번째 색상
+                      borderRadius: BorderRadius.circular(1.0),
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xff515151), // 첫 번째 색상
+                      borderRadius: BorderRadius.circular(1.0),
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xff515151), // 첫 번째 색상
+                      borderRadius: BorderRadius.circular(1.0),
+                    ),
+                    width: 8,
+                    height: 8,
+                  ),
+                ],
               ),
             ],
           ),
@@ -121,12 +148,12 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            const SizedBox(height: 15),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   "어떤 목표를 이루고 싶나요?",
                   style: TextStyle(
                     color: Colors.white,
@@ -134,87 +161,51 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 4,
-                            ),
-                            const SizedBox(
-                              width: 14,
-                            ),
-                            // 첫 번째 색상
-                            Container(
-                              decoration: BoxDecoration(
-                                color: mainRed, // 첫 번째 색상
-                                borderRadius: BorderRadius.circular(2.0),
-                              ),
-                              width: 6,
-                              height: 13, // 첫 번째 높이 (6.0으로 고정)
-                            ),
-                            const SizedBox(
-                              width: 14,
-                            ),
-                            // 두 번째 색상
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 86, 86, 86), // 두 번째 색상
-                                borderRadius: BorderRadius.circular(2.0),
-                              ),
-                              width: 6,
-                              height: 18, // 두 번째 높이 (예: 10 추가)
-                            ),
-                            const SizedBox(
-                              width: 14,
-                            ),
-                            // 세 번째 색상
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 86, 86, 86),
-                                borderRadius: BorderRadius.circular(2.0),
-                              ),
-                              width: 6,
-                              height: 23, // 세 번째 높이 (예: 20 추가)
-                            ),
-                  ],
-                ),
-
               ],
             ),
             const SizedBox(height: 15),
             Container(
-              padding: const EdgeInsets.fromLTRB(13, 0, 13, 0),
-              height: 45,
+              padding: const EdgeInsets.fromLTRB(17, 0, 17, 0),
+              height: 50,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3),
-                shape: BoxShape.rectangle,
-                border: Border.all(
-                  color: const Color.fromARGB(255, 147, 147, 147),
-                  width: 0.5
-                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+                    offset: const Offset(0, 0), // X, Y 위치 (0,0)
+                    blurRadius: 7, // 블러 7
+                    spreadRadius: 0, // 스프레드 0
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(6),
+                color: const Color(0xff2A2A2A),
               ),
               child: isLoading // 로딩 상태에 따라 표시 변경
-                  ? const Center(child: CircularProgressIndicator(
-                    color: mainRed,
-                    strokeWidth: 4,
-                    backgroundColor: Color.fromARGB(255, 79, 79, 79),
-                    strokeCap: StrokeCap.round,
-                  ))
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                      color: mainRed,
+                      strokeWidth: 4,
+                      backgroundColor: Color.fromARGB(255, 79, 79, 79),
+                      strokeCap: StrokeCap.round,
+                    ))
                   : DropdownButton<String>(
                       value: isLoading || selectedGoalId.isEmpty
                           ? '0'
                           : selectedGoalId,
                       items: [
-                        {'id': '0', 'name': '목표를 선택해 주세요.'},
+                        {'id': '0', 'name': guide},
                         ...emptyMainGoals,
                       ].map<DropdownMenuItem<String>>((goal) {
                         final goalName = goal['name'] ?? 'Unknown Goal';
+                        final isGuideText = goalName == '클릭해서 목표를 선택해 주세요.';
                         return DropdownMenuItem<String>(
                           value: goal['id'].toString(),
                           child: Text(
                             goalName,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: isGuideText
+                                    ? const Color(0xff888888)
+                                    : Colors.white,
+                                fontWeight: FontWeight.w300),
                           ),
                         );
                       }).toList(),
@@ -230,7 +221,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
 
                           if (value != '0') {
                             final selectedGoal = [
-                              {'id': '0', 'name': '목표를 선택해 주세요.'},
+                              {'id': '0', 'name': '클릭해서 목표를 선택해 주세요.'},
                               ...emptyMainGoals
                             ].firstWhere(
                               (goal) => goal['id'].toString() == value,
@@ -245,12 +236,16 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
 
                             await _fetchSecondGoals(selectedGoalId);
                           }
-                        }
+                        } else {}
                       },
                       isExpanded: true,
-                      dropdownColor: const Color.fromARGB(255, 28, 28, 28),
+                      dropdownColor: const Color(0xff2A2A2A),
                       style: const TextStyle(color: Colors.white),
-                      iconEnabledColor: const Color.fromARGB(255, 147, 147, 147),
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down_rounded, // 원하는 아이콘으로 변경 가능
+                        color: Color(0xff888888),
+                        size: 22, // 아이콘 크기 조절
+                      ),
                       underline: Container(),
                       elevation: 0,
                       borderRadius: BorderRadius.circular(7),
@@ -279,9 +274,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(3),
                                 color: innerIndex == 4
-                                    ? Color(int.parse(firstColor
-                                        .replaceAll('Color(', '')
-                                        .replaceAll(')', '')))
+                                    ? ColorTransform(firstColor).colorTransform()
                                     : const Color(0xff929292),
                               ),
                               alignment: Alignment.center,
@@ -289,17 +282,17 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                               child: innerIndex == 4
                                   ? Center(
                                       child: AutoSizeText(
-              maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
-              minFontSize: 6,
-              maxFontSize: 13, // 최소 글씨 크기
-              overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
-              selectedGoalName,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: backgroundColor,
-                fontWeight: FontWeight.w600,
-              ))
-                                    )
+                                          maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+                                          minFontSize: 6,
+                                          maxFontSize: 13, // 최소 글씨 크기
+                                          overflow: TextOverflow
+                                              .ellipsis, // 내용이 너무 길 경우 생략 표시
+                                          selectedGoalName,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            color: backgroundColor,
+                                            fontWeight: FontWeight.w600,
+                                          )))
                                   : const Text(""),
                             );
                           }),
@@ -312,41 +305,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                 ),
               )
             else
-              Container(
-                height: 400,
-                decoration: BoxDecoration(
-                  color: const Color(0xff2A2A2A),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/img/Dominho_mono.png',
-                            height: 100,
-                          ),
-                          const SizedBox(width: 15)
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        '두근두근\n어떤 목표를 이뤄볼까?',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 146, 146, 146),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            const SizedBox(height: 40),
+              const Expanded(child: SizedBox.shrink()),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

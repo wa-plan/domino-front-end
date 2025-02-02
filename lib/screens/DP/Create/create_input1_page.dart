@@ -1,7 +1,9 @@
+import 'package:domino/screens/DP/Create/create99_page.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/Create/DP_input2.dart';
+import 'package:domino/widgets/DP/Create/Description.dart';
+import 'package:domino/widgets/DP/Create/Description2.dart';
 import 'package:domino/widgets/DP/ai_popup.dart';
-import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -9,10 +11,10 @@ import 'package:domino/apis/services/openai_services.dart';
 
 class DPcreateInput1Page extends StatefulWidget {
   final String firstColor;
-  const DPcreateInput1Page({
-    super.key,
-    required this.firstColor,
-  });
+  final String? mainGoalId;
+
+  const DPcreateInput1Page(
+      {super.key, required this.firstColor, required this.mainGoalId});
 
   @override
   State<DPcreateInput1Page> createState() => _DPcreateInput1Page();
@@ -72,6 +74,8 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
     await showDialog(
       context: context,
       builder: (BuildContext context) => AIPopup(
+        firstColor: widget.firstColor,
+        mainGoalId: widget.mainGoalId,
         subgoals: _subGoals,
         onRefresh: () async {
           await _fetchSubGoals();
@@ -85,251 +89,165 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          titleSpacing: 0.0,
-          title: Padding(
-            padding: appBarPadding,
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    PopupDialog.show(
-                        context,
-                        '지금 나가면,\n작성한 내용이 사라져!',
-                        true, // cancel
-                        false, // delete
-                        false, // signout
-                        true, //success
-                        onCancel: () {
-                      // 취소 버튼을 눌렀을 때 실행할 코드
-                      Navigator.pop(context);
-                    }, onSuccess: () async {
-                      for (int i = 0; i < 9; i++) {
-                        context
-                            .read<SaveInputtedDetailGoalModel>()
-                            .updateDetailGoal(i.toString(), "");
-                      }
-
-                      for (int i = 0; i < 9; i++) {
-                        context
-                            .read<TestInputtedDetailGoalModel>()
-                            .updateTestDetailGoal(i.toString(), "");
-                      }
-
-                      for (int i = 0; i < 9; i++) {
-                        context.read<GoalColor>().updateGoalColor(
-                            i.toString(), const Color(0xff929292));
-                      }
-
-                      for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 9; j++) {
-                          context
-                              .read<SaveInputtedActionPlanModel>()
-                              .updateActionPlan(i, j.toString(), "");
-                        }
-                      }
-
-                      for (int i = 0; i < 9; i++) {
-                        for (int j = 0; j < 9; j++) {
-                          context
-                              .read<TestInputtedActionPlanModel>()
-                              .updateTestActionPlan(i, j.toString(), "");
-                        }
-                      }
-
-                      // 팝업 닫기
-                      Navigator.pop(context);
-
-                      // 이전 페이지로 이동
-                      Navigator.pop(context);
-
-                      Navigator.pop(context);
-                    });
-                  },
-                  child: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Color(0xffD4D4D4),
-                    size: 17,
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        titleSpacing: 0.0,
+        title: Padding(
+          padding: appBarPadding,
+          child: Row(
+            children: [
+              CustomIconButton(() {
+                context.read<TestInputtedDetailGoalModel>().resetDetailGoals();
+                Navigator.pop(context);
+              }, Icons.keyboard_arrow_left_rounded)
+                  .customIconButton(),
+              const SizedBox(width: 10),
+              Text(
+                '플랜 만들기',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () async {
+                  setState(() {
+                    int howMany = Provider.of<TestInputtedDetailGoalModel>(
+                            context,
+                            listen: false)
+                        .countEmptyKeys();
+                    print(howMany);
+                    _isLoading = true; // 로딩 시작
+                  });
+                  await _fetchSubGoals();
+                  setState(() {
+                    _isLoading = false; // 로딩 종료
+                  });
+                  _showAIPopup(context);
+                  //_aiPopup(context, _subGoals);
+                },
+                style: TextButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+                  backgroundColor: const Color(0xff303030),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(35),
                   ),
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  '플랜 만들기',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ],
-            ),
-          ),
-          backgroundColor: backgroundColor,
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-              padding: fullPadding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "목표를 이루기 위한 \n작은 계획들을 세워봐요.",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          setState(() {
-                            int howMany =
-                                Provider.of<TestInputtedDetailGoalModel>(
-                                        context,
-                                        listen: false)
-                                    .countEmptyKeys();
-                            print(howMany);
-                            _isLoading = true; // 로딩 시작
-                          });
-                          await _fetchSubGoals();
-                          setState(() {
-                            _isLoading = false; // 로딩 종료
-                          });
-                          _showAIPopup(context);
-                          //_aiPopup(context, _subGoals);
-                        },
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 9, horizontal: 16),
-                          backgroundColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                child: _isLoading
+                    ? const CircularProgressIndicator() // 로딩 중일 때 로딩 인디케이터 표시
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset('assets/img/AIIcon.png', height: 15),
+                          const SizedBox(width: 5),
+                          const Text(
+                            'Ask AI',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                        child: _isLoading
-                            ? const CircularProgressIndicator() // 로딩 중일 때 로딩 인디케이터 표시
-                            : Ink(
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Colors.blueAccent,
-                                      Colors.purpleAccent
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.circular(30), // 원형 모서리
-                                ),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 9, horizontal: 16),
-                                  child: const Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.lightbulb_outline, // AI 아이콘
-                                        color: Colors.white,
-                                        size: 24,
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        'AI 추천',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                        ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  DPMainGoal(
-                          context
-                              .watch<SelectFinalGoalModel>()
-                              .selectedFinalGoal,
-                          Color(int.parse(widget.firstColor
-                              .replaceAll('Color(', '')
-                              .replaceAll(')', ''))))
-                      .dpMainGoal(),
-                  const SizedBox(
-                    height: 45,
-                  ),
-                  Column(
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: backgroundColor,
+      ),
+      body: Padding(
+          padding: fullPadding,
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Center(
-                          child: SizedBox(
-                              height: 300,
-                              width: 260,
-                              child: GridView(
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3,
-                                          crossAxisSpacing: 5,
-                                          mainAxisSpacing: 5),
-                                  children: [
-                                    const Input1(selectedDetailGoalId: 0),
-                                    const Input1(selectedDetailGoalId: 1),
-                                    const Input1(selectedDetailGoalId: 2),
-                                    const Input1(selectedDetailGoalId: 3),
-                                    Container(
-                                      width: 80,
-                                      margin: const EdgeInsets.all(1.0),
-                                      padding: const EdgeInsets.all(7.0),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(3),
-                                        color: Color(int.parse(widget.firstColor
-                                            .replaceAll('Color(', '')
-                                            .replaceAll(')', ''))),
-                                      ),
-                                      child: Center(
-                                          child: Text(
-                                        context
-                                            .watch<SelectFinalGoalModel>()
-                                            .selectedFinalGoal,
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.center,
-                                      )),
-                                    ),
-                                    const Input1(selectedDetailGoalId: 5),
-                                    const Input1(selectedDetailGoalId: 6),
-                                    const Input1(selectedDetailGoalId: 7),
-                                    const Input1(selectedDetailGoalId: 8),
-                                  ]))),
-                      const SizedBox(
-                        height: 35,
+                      const SizedBox(height: 15),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "최종 목표를 이루기 위한 세부 목표에요.",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
-                      const Center(
-                          child: Text(
-                        '모든 칸을 다 채우지 않아도 괜찮아요:)',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 158, 158, 158),
-                            fontWeight: FontWeight.w300,
-                            fontSize: 13),
-                      )),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      DPMainGoal(
+                              context.watch<SelectFinalGoalModel>().selectedFinalGoal,
+                              ColorTransform(widget.firstColor).colorTransform())
+                          .dpMainGoal(),
                       const SizedBox(
                         height: 20,
                       ),
+                      Column(
+                        children: [
+                          Center(
+                              child: SizedBox(
+                                  height: 300,
+                                  width: 260,
+                                  child: GridView(
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              crossAxisSpacing: 5,
+                                              mainAxisSpacing: 5),
+                                      children: [
+                                        const Input1(selectedDetailGoalId: 0),
+                                        const Input1(selectedDetailGoalId: 1),
+                                        const Input1(selectedDetailGoalId: 2),
+                                        const Input1(selectedDetailGoalId: 3),
+                                        Container(
+                                          width: 80,
+                                          margin: const EdgeInsets.all(1.0),
+                                          padding: const EdgeInsets.all(7.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(3),
+                                            color: ColorTransform(widget.firstColor)
+                                                .colorTransform(),
+                                          ),
+                                          child: Center(
+                                              child: Text(
+                                            context
+                                                .watch<SelectFinalGoalModel>()
+                                                .selectedFinalGoal,
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold),
+                                            textAlign: TextAlign.center,
+                                          )),
+                                        ),
+                                        const Input1(selectedDetailGoalId: 5),
+                                        const Input1(selectedDetailGoalId: 6),
+                                        const Input1(selectedDetailGoalId: 7),
+                                        const Input1(selectedDetailGoalId: 8),
+                                      ]))),
+                          Description2(widget.firstColor).description2(),
+                           const SizedBox(
+                          height: 20,
+                        ),
+                          
+                        ],
+                      ),
+                      
                     ],
                   ),
-                  const SizedBox(
-                    height: 47,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                ),
+              ),
+              const SizedBox(
+                          height: 10,
+                        ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                         Button(
                           Colors.black,
                           Colors.white,
@@ -339,31 +257,39 @@ class _DPcreateInput1Page extends State<DPcreateInput1Page> {
                             context
                                 .read<TestInputtedDetailGoalModel>()
                                 .resetDetailGoals();
-                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DPcreate99Page(
+                                        firstColor: widget.firstColor,
+                                        mainGoalId: widget.mainGoalId,
+                                      )),
+                            );
                           },
                         ).button(),
                         Button(Colors.black, Colors.white, '저장', () {
                           // 현재 context를 통해 두 모델에 접근
-                          final testModel =
-                              context.read<TestInputtedDetailGoalModel>();
-                          final saveModel =
-                              context.read<SaveInputtedDetailGoalModel>();
-                          print(
-                              'Test Model: ${testModel.testinputtedDetailGoal}');
+                          final testModel = context.read<TestInputtedDetailGoalModel>();
+                          final saveModel = context.read<SaveInputtedDetailGoalModel>();
+                          print('Test Model: ${testModel.testinputtedDetailGoal}');
                           // TestInputtedDetailGoalModel의 데이터를 SaveInputtedDetailGoalModel로 복사
-                          testModel.testinputtedDetailGoal
-                              .forEach((key, value) {
-                            saveModel.updateDetailGoal(
-                                key, value); // Save 모델에 값 저장
+                          testModel.testinputtedDetailGoal.forEach((key, value) {
+                            saveModel.updateDetailGoal(key, value); // Save 모델에 값 저장
                           });
-                          print(
-                              'Updated Save Model: ${saveModel.inputtedDetailGoal}');
-
-                          Navigator.pop(context);
+                          print('Updated Save Model: ${saveModel.inputtedDetailGoal}');
+                  
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DPcreate99Page(
+                                      firstColor: widget.firstColor,
+                                      mainGoalId: widget.mainGoalId,
+                                    )),
+                          );
                         }).button()
                       ])
-                ],
-              )),
-        ));
+            ],
+          )),
+    );
   }
 }

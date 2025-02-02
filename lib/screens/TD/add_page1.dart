@@ -24,7 +24,7 @@ class _AddPage1State extends State<AddPage1> {
   int thirdGoalId = 0;
   List<Map<String, dynamic>> emptyMainGoals = [];
   String firstColor = '0xff000000';
-  
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +51,9 @@ class _AddPage1State extends State<AddPage1> {
               data[0]['secondGoals'] as List<Map<String, dynamic>>?;
 
           // Only add the goal if secondGoals is not null and not empty
-          if (secondGoals != null && secondGoals.isNotEmpty && secondGoals != "") {
+          if (secondGoals != null &&
+              secondGoals.isNotEmpty &&
+              secondGoals != "") {
             filteredGoals.add(goal);
           } else {
             // secondGoals가 비어있을 경우 mandalartId와 name을 emptySecondGoals 리스트에 추가
@@ -66,30 +68,29 @@ class _AddPage1State extends State<AddPage1> {
 
       setState(() {
         mainGoals = filteredGoals;
-        emptyMainGoals = emptySecondGoals; 
+        emptyMainGoals = emptySecondGoals;
       });
     }
   }
 
-  Future<List<Map<String, dynamic>>?> _fetchSecondGoals(String mandalartId) async {
-  // Fetch the result from the SecondGoalListService
-  List<Map<String, dynamic>>? result = await SecondGoalListService.secondGoalList(context, mandalartId);
+  Future<List<Map<String, dynamic>>?> _fetchSecondGoals(
+      String mandalartId) async {
+    // Fetch the result from the SecondGoalListService
+    List<Map<String, dynamic>>? result =
+        await SecondGoalListService.secondGoalList(context, mandalartId);
 
-  // Check if the result is not null and contains data
-  if (result != null && result.isNotEmpty) {
-    setState(() {
-      secondGoals = result[0]['secondGoals']; // Update the secondGoals state variable
-      firstColor = result[0]['color'];
-    });
+    // Check if the result is not null and contains data
+    if (result != null && result.isNotEmpty) {
+      setState(() {
+        secondGoals =
+            result[0]['secondGoals']; // Update the secondGoals state variable
+        firstColor = result[0]['color'];
+      });
+    }
+
+    // Return the result (this allows you to use the result wherever you call this function)
+    return result;
   }
-
-  // Return the result (this allows you to use the result wherever you call this function)
-  return result;
-}
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +162,6 @@ class _AddPage1State extends State<AddPage1> {
                       } else if (snapshot.hasData) {
                         // createdGoals에 있는 목표만 필터링
                         List<Map<String, dynamic>> goals = mainGoals;
-                           
 
                         // 기본 옵션을 시작으로 추가
                         List<Map<String, dynamic>> options = [
@@ -257,8 +257,10 @@ class _AddPage1State extends State<AddPage1> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 //취소버튼
-                Button(Colors.black, Colors.white, '취소',
-                    () { context.read<SelectAPModel>().selectAP("플랜선택없음", null); Navigator.pop(context);}).button(),
+                Button(Colors.black, Colors.white, '취소', () {
+                  context.read<SelectAPModel>().selectAP("플랜선택없음", null);
+                  Navigator.pop(context);
+                }).button(),
 
                 //다음버튼
                 Button(Colors.black, Colors.white, '다음', () {

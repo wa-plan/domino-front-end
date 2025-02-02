@@ -122,13 +122,6 @@ class AddSecondGoalService {
         //print('서버 응답 본문: ${response.body}');
 
         if (response.statusCode == 200 || response.statusCode == 201) {
-          Fluttertoast.showToast(
-            msg: '목표가 성공적으로 저장되었습니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-          );
         } else {
           Fluttertoast.showToast(
             msg: '목표 생성 실패: ${response.body}',
@@ -313,13 +306,6 @@ class AddThirdGoalService {
           print('서버 응답 본문: ${response.body}');
 
           if (response.statusCode == 200 || response.statusCode == 201) {
-            Fluttertoast.showToast(
-              msg: '목표가 성공적으로 저장되었습니다.',
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              backgroundColor: Colors.black,
-              textColor: Colors.white,
-            );
           } else {
             Fluttertoast.showToast(
               msg: '목표 생성 실패: ${response.body}',
@@ -714,7 +700,7 @@ class MainGoalDetailService {
       return null;
     }
 
-    final url = Uri.parse('$baseUrl/api/goal');
+    final url = Uri.parse('http://13.124.78.26:8080/api/goal');
 
     try {
       final response = await http.get(
