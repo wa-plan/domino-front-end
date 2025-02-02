@@ -58,7 +58,7 @@ class Colorbox extends StatelessWidget {
                 final isValueEmpty = values == null || values.isEmpty;
                 final backgroundColor2 = isValueEmpty
                     ? const Color(0xff262626)
-                    : colorPalette[color1] ?? const Color(0xff262626);
+                    : colorPalette[color1] ?? backgroundColor;
 
                 return Container(
                   decoration: BoxDecoration(

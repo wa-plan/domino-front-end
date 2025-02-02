@@ -109,7 +109,16 @@ class TestInputtedDetailGoalModel with ChangeNotifier {
   int countEmptyKeys() {
     return _testinputtedDetailGoal.values.where((value) => value == "").length;
   }
+
+   /// 비어있는 값 (empty string)을 가진 key들의 리스트 반환
+  List<String> getEmptyKeys() {
+    return _testinputtedDetailGoal.entries
+        .where((entry) => entry.value == "")
+        .map((entry) => entry.key)
+        .toList();
+  }
 }
+
 
 class SaveInputtedActionPlanModel with ChangeNotifier {
   final List<Map<String, String>> _inputtedActionPlan = List.generate(9, (_) {
@@ -152,8 +161,7 @@ class SaveInputtedActionPlanModel with ChangeNotifier {
 }
 
 class TestInputtedActionPlanModel with ChangeNotifier {
-  final List<Map<String, String>> _testinputtedActionPlan =
-      List.generate(9, (_) {
+  final List<Map<String, String>> _testinputtedActionPlan = List.generate(9, (_) {
     return {
       '0': '',
       '1': '',
@@ -180,14 +188,35 @@ class TestInputtedActionPlanModel with ChangeNotifier {
     }
   }
 
-  // 초기화 메서드 추가
+  // 초기화 메서드
   void resetActionPlans() {
     for (int i = 0; i < _testinputtedActionPlan.length; i++) {
       _testinputtedActionPlan[i].updateAll((key, value) => '');
     }
     notifyListeners();
   }
+
+  // ""인 value 값을 가진 key의 개수를 세는 함수
+  int countEmptyValues(int index) {
+    if (index >= 0 && index < _testinputtedActionPlan.length) {
+      return _testinputtedActionPlan[index].values.where((value) => value.isEmpty).length;
+    }
+    return 0; // 유효하지 않은 인덱스인 경우 0 반환
+  }
+
+  // ""인 value 값을 가진 key를 저장하는 함수
+  List<String> getEmptyValueKeys(int index) {
+    if (index >= 0 && index < _testinputtedActionPlan.length) {
+      return _testinputtedActionPlan[index].entries
+          .where((entry) => entry.value.isEmpty)
+          .map((entry) => entry.key)
+          .toList();
+    }
+    return []; // 유효하지 않은 인덱스인 경우 빈 리스트 반환
+  }
 }
+
+
 
 class SelectDetailGoal with ChangeNotifier {
   String _selectedDetailGoal = "";
@@ -276,18 +305,21 @@ class SaveEditedActionPlanIdModel with ChangeNotifier {
   }
 }
 
+
 class SaveMandalartCreatedGoal with ChangeNotifier {
   final List<String> _mandalartCreatedGoal = [];
 
   List<String> get mandalartCreatedGoal => _mandalartCreatedGoal;
 
   void updateMandalartCreatedGoal(String goalId) {
-    _mandalartCreatedGoal.add(goalId);
-    notifyListeners();
+    _mandalartCreatedGoal.add(goalId);  
+    notifyListeners();  
   }
 
   void removeGoal(String goalId) {
     _mandalartCreatedGoal.remove(goalId);
     notifyListeners();
   }
+
 }
+

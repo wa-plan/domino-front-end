@@ -51,6 +51,7 @@ class Smallgridwithdata extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => DPcreateInput2Page(
+            mainGoalId: goalId.toString(),
             firstColor: firstColor,
           ),
         ),

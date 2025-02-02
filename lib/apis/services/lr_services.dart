@@ -147,7 +147,7 @@ class ChangePasswordService {
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
         Fluttertoast.showToast(
-          msg: '비밀번호가 성공적으로 변경되었습니다.',
+          msg: '새 비밀번호가 이메일로 전송되었습니다.',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           backgroundColor: Colors.green,
@@ -265,8 +265,8 @@ class IdFindService {
       print('서버 응답: ${response.body}');
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        final responseData = jsonDecode(response.body);
-        return responseData.toString(); // Adjust based on your API response
+        //final responseData = jsonDecode(response.body);
+        return response.body; // Adjust based on your API response
       } else {
         Fluttertoast.showToast(
           msg: '사용자 ID를 찾을 수 없습니다.',

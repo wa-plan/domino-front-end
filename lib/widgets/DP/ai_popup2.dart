@@ -1,81 +1,75 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/provider/DP/model.dart';
-import 'package:domino/screens/DP/Create/create_input1_page.dart';
-import 'package:domino/styles.dart';
+import 'package:domino/screens/DP/Create/create_input2_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart'; // FlutterToast import 추가
 
-class AIPopup extends StatefulWidget {
+class AIPopup2 extends StatefulWidget {
   final List<String> subgoals;
   final VoidCallback onRefresh;
   final String firstColor;
   final String? mainGoalId;
+  final int selectedDetailGoal;
 
-  const AIPopup(
-      {super.key,
-      required this.subgoals,
-      required this.onRefresh,
-      required this.firstColor,
-      required this.mainGoalId});
+  const AIPopup2({super.key, required this.selectedDetailGoal,  required this.subgoals, required this.onRefresh, required this.firstColor, required this.mainGoalId});
 
   @override
-  _AIPopupState createState() => _AIPopupState();
+  _AIPopupState2 createState() => _AIPopupState2();
 }
 
-class _AIPopupState extends State<AIPopup> {
+class _AIPopupState2 extends State<AIPopup2> {
   List<String> selectedGoals = [];
   late int howMany;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    howMany = context.watch<TestInputtedDetailGoalModel>().countEmptyKeys() - 1;
+    howMany = Provider.of<TestInputtedActionPlanModel>(context, listen: false).countEmptyValues(widget.selectedDetailGoal)-1;
   }
 
   void _handleApply() {
-    if (selectedGoals.length > howMany) {
-      Fluttertoast.showToast(
-        msg: "초과한 선택입니다. $howMany개만 선택할 수 있습니다.",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-    } else {
-      // Provider를 listen: false로 호출하여 비어있는 key 리스트를 가져오고, key '4'는 제외
-      final model =
-          Provider.of<TestInputtedDetailGoalModel>(context, listen: false);
-      List<String> emptyKeys =
-          model.getEmptyKeys().where((key) => key != '4').toList();
+  if (selectedGoals.length > howMany) {
+    Fluttertoast.showToast(
+      msg: "초과한 선택입니다. $howMany개만 선택할 수 있습니다.",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+    );
+  } else {
+    // Provider를 listen: false로 호출하여 비어있는 key 리스트를 가져오고, key '4'는 제외
+    final model = Provider.of<TestInputtedActionPlanModel>(context, listen: false);
+    List<String> emptyKeys = model.getEmptyValueKeys(widget.selectedDetailGoal).where((key) => key != '4').toList();
 
-      // 선택된 목표를 비어있는 key에 저장
-      for (int i = 0; i < selectedGoals.length; i++) {
-        if (i < emptyKeys.length) {
-          model.updateTestDetailGoal(emptyKeys[i], selectedGoals[i]);
-        } else {
-          // 비어있는 key가 부족할 경우 경고를 표시하고 중단
-          Fluttertoast.showToast(
-            msg: "목표를 저장할 공간이 부족합니다.",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-          );
-          break;
-        }
+    // 선택된 목표를 비어있는 key에 저장
+    for (int i = 0; i < selectedGoals.length; i++) {
+      if (i < emptyKeys.length) {
+        model.updateTestActionPlan(widget.selectedDetailGoal, emptyKeys[i], selectedGoals[i]);
+      } else {
+        // 비어있는 key가 부족할 경우 경고를 표시하고 중단
+        Fluttertoast.showToast(
+          msg: "목표를 저장할 공간이 부족합니다.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        break;
       }
-
-      // 모든 작업이 완료되면 팝업 닫기
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DPcreateInput1Page(
-              firstColor: widget.firstColor, mainGoalId: widget.mainGoalId),
-        ),
-      );
     }
+
+    // 모든 작업이 완료되면 팝업 닫기
+    Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>  DPcreateInput2Page(firstColor: widget.firstColor,
+                                    mainGoalId: widget.mainGoalId),),
+                              );
   }
+}
+
+
 
   void _toggleGoal(String goal) {
     setState(() {
@@ -104,7 +98,7 @@ class _AIPopupState extends State<AIPopup> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
+               Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset('assets/img/AIIcon.png', height: 15),
@@ -157,20 +151,17 @@ class _AIPopupState extends State<AIPopup> {
                       children: [
                         AICard(
                           goal: widget.subgoals[0],
-                          isSelected:
-                              selectedGoals.contains(widget.subgoals[0]),
+                          isSelected: selectedGoals.contains(widget.subgoals[0]),
                           onTap: _toggleGoal,
                         ),
                         AICard(
                           goal: widget.subgoals[1],
-                          isSelected:
-                              selectedGoals.contains(widget.subgoals[1]),
+                          isSelected: selectedGoals.contains(widget.subgoals[1]),
                           onTap: _toggleGoal,
                         ),
                         AICard(
                           goal: widget.subgoals[2],
-                          isSelected:
-                              selectedGoals.contains(widget.subgoals[2]),
+                          isSelected: selectedGoals.contains(widget.subgoals[2]),
                           onTap: _toggleGoal,
                         ),
                       ],
@@ -180,20 +171,17 @@ class _AIPopupState extends State<AIPopup> {
                       children: [
                         AICard(
                           goal: widget.subgoals[3],
-                          isSelected:
-                              selectedGoals.contains(widget.subgoals[3]),
+                          isSelected: selectedGoals.contains(widget.subgoals[3]),
                           onTap: _toggleGoal,
                         ),
                         AICard(
                           goal: widget.subgoals[4],
-                          isSelected:
-                              selectedGoals.contains(widget.subgoals[4]),
+                          isSelected: selectedGoals.contains(widget.subgoals[4]),
                           onTap: _toggleGoal,
                         ),
                         AICard(
                           goal: widget.subgoals[5],
-                          isSelected:
-                              selectedGoals.contains(widget.subgoals[5]),
+                          isSelected: selectedGoals.contains(widget.subgoals[5]),
                           onTap: _toggleGoal,
                         ),
                       ],
@@ -210,7 +198,7 @@ class _AIPopupState extends State<AIPopup> {
                         color: Color(0xFF5E5E5E),
                         size: 20,
                       ),
-                      SizedBox(width: 5),
+                      SizedBox(width: 10),
                       Text(
                         '클릭하여 새로고침',
                         style:
@@ -251,6 +239,8 @@ class _AIPopupState extends State<AIPopup> {
     );
   }
 }
+
+
 
 class AICard extends StatefulWidget {
   final String goal;
@@ -308,8 +298,11 @@ class AICardState extends State<AICard> {
               ),
             ),
           ),
+          
         ],
       ),
     );
   }
 }
+
+

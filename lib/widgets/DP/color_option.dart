@@ -7,7 +7,8 @@ class ColorOption extends StatelessWidget {
   final Color colorCode;
 
   const ColorOption(
-      {super.key, required this.selectIndex, required this.colorCode});
+      {super.key, required this.selectIndex, required this.colorCode,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +16,13 @@ class ColorOption extends StatelessWidget {
         onTap: () {
           context.read<GoalColor>().updateGoalColor('$selectIndex', colorCode);
         },
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3), color: colorCode),
-        ));
+        child: 
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3), color: colorCode),
+            ),
+      
+      
+        );
   }
 }

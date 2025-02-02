@@ -16,55 +16,52 @@ class MandalartGrid extends StatelessWidget {
       required this.firstColor});
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        height: 250,
-        width: 250,
-        child: GridView(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3),
-          children: List.generate(9, (j) {
-            if (j == 4) {
-              // Middle 3x3 Grid
-              return SizedBox(
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 0.5,
-                  mainAxisSpacing: 0.5,
-                  children: [
-                    for (int i = 0; i < 9; i++)
-                      if (i == 4)
-                      //First Goal Grid
-                        DPGrid1(mandalart,
-                                ColorTransform(firstColor).colorTransform(), 8)
-                            .dpGrid1()
-                      else
-                      //Second Goal Grid
-                        DPGrid2(i, mandalart, secondGoals, 8, null).dpGrid2()
-                  ],
-                ),
-              );
-            } else {
-              // Other 3x3 Grids
-              return SizedBox(
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 0.5,
-                  mainAxisSpacing: 0.5,
-                  children: List.generate(9, (i) {
-                    if (i == 4) {
-                      //Second Goal Grid
-                      return DPGrid2(j, mandalart, secondGoals, 8, null).dpGrid2();
-                    } else {
-                      //Third Goal Grid
-                      return DPGrid3(j, i, mandalart, secondGoals, 8, null)
-                          .dpGrid3();
-                    }
-                  }),
-                ),
-              );
-            }
-          }),
-        ));
-  }
+Widget build(BuildContext context) {
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      return GridView(
+        shrinkWrap: true, // GridView will be wrapped in the available space
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3),
+        children: List.generate(9, (j) {
+          if (j == 4) {
+            return SizedBox(
+              child: GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 3,
+                crossAxisSpacing: 0.5,
+                mainAxisSpacing: 0.5,
+                children: [
+                  for (int i = 0; i < 9; i++)
+                    if (i == 4)
+                      DPGrid1(mandalart, ColorTransform(firstColor).colorTransform(), 8).dpGrid1()
+                    else
+                      DPGrid2(i, mandalart, secondGoals, 8, null).dpGrid2()
+                ],
+              ),
+            );
+          } else {
+            return SizedBox(
+              child: GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 3,
+                crossAxisSpacing: 0.5,
+                mainAxisSpacing: 0.5,
+                children: List.generate(9, (i) {
+                  if (i == 4) {
+                    return DPGrid2(j, mandalart, secondGoals, 8, null).dpGrid2();
+                  } else {
+                    return DPGrid3(j, i, mandalart, secondGoals, 8, null).dpGrid3();
+                  }
+                }),
+              ),
+            );
+          }
+        }),
+      );
+    },
+  );
+}
+
 }

@@ -96,7 +96,7 @@ class _GoalCardState extends State<GoalCard> {
         padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
         color: Colors.transparent,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(

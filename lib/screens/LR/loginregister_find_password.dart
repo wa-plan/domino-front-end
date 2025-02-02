@@ -28,6 +28,7 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
+      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hintText,
         contentPadding: const EdgeInsets.all(10.0),
@@ -137,6 +138,33 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
+                        '전화번호',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(
+                        height: 35,
+                        width: 240,
+                        child: _buildTextFormField(
+                          hintText: '전화번호를 입력해 주세요.',
+                          controller: _phoneController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return '전화번호를 입력해 주세요.';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
                         'Email',
                         style: TextStyle(
                             color: Colors.white,
@@ -165,7 +193,7 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
                     children: [
                       Text(
                         _responseId,
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.red),
                       ),
                       const SizedBox(width: 20),
                       Button(Colors.black, Colors.white, '찾기', _idFind)
