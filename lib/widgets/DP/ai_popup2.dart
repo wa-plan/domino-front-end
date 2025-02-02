@@ -92,37 +92,56 @@ class _AIPopupState2 extends State<AIPopup2> {
         child: Container(
           padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
           decoration: const BoxDecoration(
-              color: Color(0xFFe0cbff),
+              color: Color(0xFF303030),
               borderRadius: BorderRadius.all(Radius.circular(5))),
           child: Column(children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
+               Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                        height: 20,
-                        child: Image.asset('assets/img/AI_icon.png')),
-                    const SizedBox(width: 10),
+                    Image.asset('assets/img/AIIcon.png', height: 15),
+                    const SizedBox(width: 5),
                     const Text(
-                      'AI 세부목표 추천',
+                      'Ask AI',
                       style: TextStyle(
-                          color: Color(0xFF4d00bb),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700),
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: const Icon(
-                    Icons.close,
-                    color: Color(0xFF4d00bb),
-                    size: 17,
+                Container(
+                  width: 32,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 53, 53, 53),
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+                        offset: const Offset(0, 0), // X, Y 위치 (0,0)
+                        blurRadius: 7, // 블러 7
+                        spreadRadius: 0, // 스프레드 0
+                      ),
+                    ],
                   ),
-                ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Icon(
+                      Icons.close,
+                      color: Color(0xff646464),
+                      size: 17,
+                    ),
+                  ),
+                )
               ],
             ),
+            const SizedBox(height: 10),
             Column(
               children: [
                 Column(
@@ -176,13 +195,14 @@ class _AIPopupState2 extends State<AIPopup2> {
                     children: [
                       Icon(
                         Icons.refresh,
-                        color: Color(0xFFCFADFF),
+                        color: Color(0xFF5E5E5E),
                         size: 20,
                       ),
                       SizedBox(width: 10),
                       Text(
-                        '새로고침하기',
-                        style: TextStyle(color: Color(0xFFCFADFF)),
+                        '클릭하여 새로고침',
+                        style:
+                            TextStyle(color: Color(0xFF5E5E5E), fontSize: 13),
                       ),
                     ],
                   ),
@@ -198,14 +218,17 @@ class _AIPopupState2 extends State<AIPopup2> {
                   onPressed: _handleApply,
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    backgroundColor: const Color(0xFF4D00BB),
+                    backgroundColor: const Color(0xFF8D3FFF),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0),
                     ),
                   ),
                   child: const Text(
                     '지금 바로 적용하기',
-                    style: TextStyle(color: Color(0xFFede0ff)),
+                    style: TextStyle(
+                        color: Color(0xFFede0ff),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -255,9 +278,8 @@ class AICardState extends State<AICard> {
               padding: const EdgeInsets.all(5.0),
               decoration: BoxDecoration(
                 color: widget.isSelected
-                    ? const Color(0xFF4d00bb)
-                    : const Color(0xFFe0cbff),
-                border: Border.all(color: const Color(0xFFCFADFF)),
+                    ? const Color(0xFFD3D3D3)
+                    : const Color(0xFF282828),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: AutoSizeText(
@@ -269,24 +291,14 @@ class AICardState extends State<AICard> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: widget.isSelected
-                      ? const Color(0xFFEDE0FF)
-                      : const Color(0xFF4D00BB),
+                      ? const Color(0xFF303030)
+                      : Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
           ),
-          Positioned(
-            top: 11,
-            right: 11,
-            child: Icon(
-              widget.isSelected
-                  ? Icons.circle
-                  : Icons.circle_outlined, // 테두리가 있는 체크 아이콘
-              color: const Color(0xFFCFADFF), // 체크 부분 색상
-              size: 18, // 아이콘 크기
-            ),
-          ),
+          
         ],
       ),
     );

@@ -99,51 +99,51 @@ class _DPMainState extends State<DPMain> {
         backgroundColor: backgroundColor,
       ),
       bottomNavigationBar: const NavBar(),
-      body: Padding(
-        padding: fullPadding,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                //만다라트 추가 버튼
-                CustomIconButton(() {
-                  //기존 Create 기능에 저장된 secondGoal 초기화
-                  for (int i = 0; i < 9; i++) {
-                    context
-                        .read<SaveInputtedDetailGoalModel>()
-                        .updateDetailGoal("$i", "");
-                  }
-                  //color 초기화
-                  for (int i = 0; i < 9; i++) {
-                    context
-                        .read<GoalColor>()
-                        .updateGoalColor("$i", const Color(0xff929292));
-                  }
-                  //thirdGoal 초기화
-                  for (int i = 0; i < 9; i++) {
-                    for (int j = 0; j < 9; j++) {
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: fullPadding,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  //만다라트 추가 버튼
+                  CustomIconButton(() {
+                    //기존 Create 기능에 저장된 secondGoal 초기화
+                    for (int i = 0; i < 9; i++) {
                       context
-                          .read<SaveInputtedActionPlanModel>()
-                          .updateActionPlan(i, "$j", "");
+                          .read<SaveInputtedDetailGoalModel>()
+                          .updateDetailGoal("$i", "");
                     }
-                  }
+                    //color 초기화
+                    for (int i = 0; i < 9; i++) {
+                      context
+                          .read<GoalColor>()
+                          .updateGoalColor("$i", const Color(0xff929292));
+                    }
+                    //thirdGoal 초기화
+                    for (int i = 0; i < 9; i++) {
+                      for (int j = 0; j < 9; j++) {
+                        context
+                            .read<SaveInputtedActionPlanModel>()
+                            .updateActionPlan(i, "$j", "");
+                      }
+                    }
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DPcreateSelectPage(
-                        emptyMainGoals: emptyMainGoals,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DPcreateSelectPage(
+                          emptyMainGoals: emptyMainGoals,
+                        ),
                       ),
-                    ),
-                  );
-                }, Icons.add)
-                    .customIconButton(),
-              ],
-            ),
-            const SizedBox(height: 25),
-            SizedBox(
-              child: mainGoals.isEmpty
+                    );
+                  }, Icons.add)
+                      .customIconButton(),
+                ],
+              ),
+              const SizedBox(height: 10),
+              mainGoals.isEmpty
                   ? Container(
                       height: 300,
                       decoration: BoxDecoration(
@@ -154,16 +154,16 @@ class _DPMainState extends State<DPMain> {
                         children: [
                           // 텍스트: 좌측 상단 정렬
                           Positioned(
-                            top: 35, // 텍스트의 상단 여백
-                            left: 35, // 텍스트의 좌측 여백
+                            top: 30, // 텍스트의 상단 여백
+                            left: 30, // 텍스트의 좌측 여백
                             child: Text(
-                              '아직 플랜이 없어요.\n목표를 이루려면 플랜은 필수!',
+                              '아직 플랜이 없어요.\n목표를 이루려면\n철저한 계획은 필수!',
                               style: TextStyle(
-                                color: Color(0xff6C6C6C),
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.0345,
-                                fontWeight: FontWeight.w600,
-                              ),
+                                  color: const Color(0xff464646),
+                                  fontSize:
+                                      MediaQuery.of(context).size.width * 0.04,
+                                  fontWeight: FontWeight.w700,
+                                  height: 1.7),
                             ),
                           ),
                           // 이미지: 우측 하단 정렬
@@ -178,100 +178,148 @@ class _DPMainState extends State<DPMain> {
                         ],
                       ),
                     )
-                  : PageView.builder(
-                      controller: _pageController,
-                      itemCount: mainGoals.length,
-                      itemBuilder: (context, index) {
-                        final goal = mainGoals[index];
-                        final mandalartId = goal['id'].toString();
+                  : SizedBox(
+                      height: 800,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        itemCount: mainGoals.length,
+                        itemBuilder: (context, index) {
+                          final goal = mainGoals[index];
+                          final mandalartId = goal['id'].toString();
 
-                        return FutureBuilder<List<Map<String, dynamic>>?>(
-                          future: _fetchSecondGoals(mandalartId),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return const Center(
-                                child: Text(
-                                  '데이터를 불러오는 데 실패했습니다.',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              );
-                            } else if (!snapshot.hasData ||
-                                snapshot.data!.isEmpty) {
-                              return const Center(
-                                child: Text(
-                                  '목표가 없습니다.',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              );
-                            } else {
-                              final data = snapshot.data!;
-                              final firstColor = data[0]['color'];
-                              final mandalart = data[0]['mandalart'];
-                              final secondGoals = data[0]['secondGoals']
-                                  as List<Map<String, dynamic>>?;
-
-                              if (secondGoals == null || secondGoals.isEmpty) {
-                                return const SizedBox.shrink();
-                              }
-
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DPdetailPage(
-                                        mandalart: mandalart,
-                                        secondGoals: secondGoals,
-                                        mandalartId: int.parse(mandalartId),
-                                        firstColor: firstColor,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(5),
+                          return FutureBuilder<List<Map<String, dynamic>>?>(
+                            future: _fetchSecondGoals(mandalartId),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return const Center(
+                                  child: Text(
+                                    '데이터를 불러오는 데 실패했습니다.',
+                                    style: TextStyle(color: Colors.white),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(height: 15),
-                                      Text(
-                                        mandalart,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
+                                );
+                              } else if (!snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
+                                return const Center(
+                                  child: Text(
+                                    '목표가 없습니다.',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              } else {
+                                final data = snapshot.data!;
+                                final firstColor = data[0]['color'];
+                                final mandalart = data[0]['mandalart'];
+                                final secondGoals = data[0]['secondGoals']
+                                    as List<Map<String, dynamic>>?;
+
+                                if (secondGoals == null ||
+                                    secondGoals.isEmpty) {
+                                  return const SizedBox.shrink();
+                                }
+
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DPdetailPage(
+                                          mandalart: mandalart,
+                                          secondGoals: secondGoals,
+                                          mandalartId: int.parse(mandalartId),
+                                          firstColor: firstColor,
                                         ),
                                       ),
-                                      const SizedBox(height: 30),
-                                      MandalartGrid(
-                                        mandalart: mandalart,
-                                        firstColor: firstColor,
-                                        secondGoals: secondGoals,
-                                        mandalartId: int.parse(mandalartId),
-                                      ),
-                                    ],
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 15),
+                                        Container(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 7, 0, 7),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xff2B2B2B),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          width: double.infinity,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                width: 7,
+                                                height: 18,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      ColorTransform(firstColor).colorTransform(),
+                                                  borderRadius:
+                                                      BorderRadius.circular(1),
+                                                ),
+                                              ),
+                                              Text(
+                                                mandalart,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 7,
+                                                height: 18,
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      Colors.transparent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(1),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Container(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              40, 20, 40, 40),
+                                          decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: MandalartGrid(
+                                            mandalart: mandalart,
+                                            firstColor: firstColor,
+                                            secondGoals: secondGoals,
+                                            mandalartId: int.parse(mandalartId),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
-                          },
-                        );
-                      },
+                                );
+                              }
+                            },
+                          );
+                        },
+                      ),
                     ),
-            ),
-            const SizedBox(height: 40),
-            if (mainGoals.length != 1)
-              PageIndicator(_pageController, mainGoals).pageIndicator(),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 40),
+              if (mainGoals.length != 1)
+                PageIndicator(_pageController, mainGoals).pageIndicator(),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

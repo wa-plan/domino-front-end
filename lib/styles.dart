@@ -17,6 +17,7 @@ const mainGold = Color(0xffF6C92B);
 const appBarPadding = EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 20);
 const fullPadding = EdgeInsets.fromLTRB(25.0, 10, 25.0, 20.0);
 
+
 //colorPalette
 Map<Color, Color> colorPalette = {
   const Color(0xffFF7A7A): const Color(0xffFFC2C2),
@@ -161,6 +162,14 @@ class DPMainGoal {
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(3),
           color: color,
+          boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+                    offset: const Offset(0, 0), // X, Y 위치 (0,0)
+                    blurRadius: 7, // 블러 7
+                    spreadRadius: 0, // 스프레드 0
+                  ),
+                ],
         ),
         child: Text(
             textAlign: TextAlign.center,
@@ -194,10 +203,10 @@ class DPInput3 {
           onChanged: onChangedFunction,
           textAlign: TextAlign.center,
           textInputAction: TextInputAction.newline,
-          maxLength: 20,
+          maxLength: 15,
           maxLines: null,
           inputFormatters: [
-            LengthLimitingTextInputFormatter(20), // 최대 15글자로 제한
+            LengthLimitingTextInputFormatter(15), // 최대 15글자로 제한
           ],
           style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
           decoration: const InputDecoration(
@@ -236,10 +245,10 @@ class DPInput2 {
           style: const TextStyle(
               color: Colors.black, fontSize: 13, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
-          maxLength: 20,
+          maxLength: 15,
           maxLines: null,
           inputFormatters: [
-            LengthLimitingTextInputFormatter(20), // 최대 15글자로 제한
+            LengthLimitingTextInputFormatter(15), // 최대 15글자로 제한
           ],
           decoration: const InputDecoration(
               border: InputBorder.none,
@@ -744,6 +753,14 @@ class CustomIconButton {
       decoration: BoxDecoration(
         color: const Color(0xff303030),
         borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+                    offset: const Offset(0, 0), // X, Y 위치 (0,0)
+                    blurRadius: 7, // 블러 7
+                    spreadRadius: 0, // 스프레드 0
+                  ),
+                ],
       ),
       child: GestureDetector(
         onTap: () {
@@ -751,8 +768,8 @@ class CustomIconButton {
         },
         child: Icon(
           icon,
-          color: Color(0xff646464),
-          size: 19,
+          color: const Color(0xff646464),
+          size: 21,
         ),
       ),
     );

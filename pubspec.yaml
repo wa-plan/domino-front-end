@@ -88,6 +88,10 @@ flutter:
     - assets/img/AI_icon.png
     - assets/img/splash(2).png
     - assets/img/newBG.png
+    - assets/img/AIIcon.png
+    - assets/img/Complete.png
+    - assets/img/confetti.png
+    - assets/img/tr_1.png
 
   fonts:
     - family: Pretendard

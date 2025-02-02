@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/provider/DP/model.dart';
 import 'package:domino/screens/DP/Create/create_input1_page.dart';
+import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart'; // FlutterToast import 추가
@@ -11,7 +12,12 @@ class AIPopup extends StatefulWidget {
   final String firstColor;
   final String? mainGoalId;
 
-  const AIPopup({super.key, required this.subgoals, required this.onRefresh, required this.firstColor, required this.mainGoalId});
+  const AIPopup(
+      {super.key,
+      required this.subgoals,
+      required this.onRefresh,
+      required this.firstColor,
+      required this.mainGoalId});
 
   @override
   _AIPopupState createState() => _AIPopupState();
@@ -28,47 +34,48 @@ class _AIPopupState extends State<AIPopup> {
   }
 
   void _handleApply() {
-  if (selectedGoals.length > howMany) {
-    Fluttertoast.showToast(
-      msg: "초과한 선택입니다. $howMany개만 선택할 수 있습니다.",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-    );
-  } else {
-    // Provider를 listen: false로 호출하여 비어있는 key 리스트를 가져오고, key '4'는 제외
-    final model = Provider.of<TestInputtedDetailGoalModel>(context, listen: false);
-    List<String> emptyKeys = model.getEmptyKeys().where((key) => key != '4').toList();
+    if (selectedGoals.length > howMany) {
+      Fluttertoast.showToast(
+        msg: "초과한 선택입니다. $howMany개만 선택할 수 있습니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    } else {
+      // Provider를 listen: false로 호출하여 비어있는 key 리스트를 가져오고, key '4'는 제외
+      final model =
+          Provider.of<TestInputtedDetailGoalModel>(context, listen: false);
+      List<String> emptyKeys =
+          model.getEmptyKeys().where((key) => key != '4').toList();
 
-    // 선택된 목표를 비어있는 key에 저장
-    for (int i = 0; i < selectedGoals.length; i++) {
-      if (i < emptyKeys.length) {
-        model.updateTestDetailGoal(emptyKeys[i], selectedGoals[i]);
-      } else {
-        // 비어있는 key가 부족할 경우 경고를 표시하고 중단
-        Fluttertoast.showToast(
-          msg: "목표를 저장할 공간이 부족합니다.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
-        break;
+      // 선택된 목표를 비어있는 key에 저장
+      for (int i = 0; i < selectedGoals.length; i++) {
+        if (i < emptyKeys.length) {
+          model.updateTestDetailGoal(emptyKeys[i], selectedGoals[i]);
+        } else {
+          // 비어있는 key가 부족할 경우 경고를 표시하고 중단
+          Fluttertoast.showToast(
+            msg: "목표를 저장할 공간이 부족합니다.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+          );
+          break;
+        }
       }
+
+      // 모든 작업이 완료되면 팝업 닫기
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DPcreateInput1Page(
+              firstColor: widget.firstColor, mainGoalId: widget.mainGoalId),
+        ),
+      );
     }
-
-    // 모든 작업이 완료되면 팝업 닫기
-    Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>  DPcreateInput1Page(firstColor: widget.firstColor,
-                                    mainGoalId: widget.mainGoalId),),
-                              );
   }
-}
-
-
 
   void _toggleGoal(String goal) {
     setState(() {
@@ -91,37 +98,56 @@ class _AIPopupState extends State<AIPopup> {
         child: Container(
           padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
           decoration: const BoxDecoration(
-              color: Color(0xFFe0cbff),
+              color: Color(0xFF303030),
               borderRadius: BorderRadius.all(Radius.circular(5))),
           child: Column(children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                        height: 20,
-                        child: Image.asset('assets/img/AI_icon.png')),
-                    const SizedBox(width: 10),
+                    Image.asset('assets/img/AIIcon.png', height: 15),
+                    const SizedBox(width: 5),
                     const Text(
-                      'AI 세부목표 추천',
+                      'Ask AI',
                       style: TextStyle(
-                          color: Color(0xFF4d00bb),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700),
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: const Icon(
-                    Icons.close,
-                    color: Color(0xFF4d00bb),
-                    size: 17,
+                Container(
+                  width: 32,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 53, 53, 53),
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+                        offset: const Offset(0, 0), // X, Y 위치 (0,0)
+                        blurRadius: 7, // 블러 7
+                        spreadRadius: 0, // 스프레드 0
+                      ),
+                    ],
                   ),
-                ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Icon(
+                      Icons.close,
+                      color: Color(0xff646464),
+                      size: 17,
+                    ),
+                  ),
+                )
               ],
             ),
+            const SizedBox(height: 10),
             Column(
               children: [
                 Column(
@@ -131,17 +157,20 @@ class _AIPopupState extends State<AIPopup> {
                       children: [
                         AICard(
                           goal: widget.subgoals[0],
-                          isSelected: selectedGoals.contains(widget.subgoals[0]),
+                          isSelected:
+                              selectedGoals.contains(widget.subgoals[0]),
                           onTap: _toggleGoal,
                         ),
                         AICard(
                           goal: widget.subgoals[1],
-                          isSelected: selectedGoals.contains(widget.subgoals[1]),
+                          isSelected:
+                              selectedGoals.contains(widget.subgoals[1]),
                           onTap: _toggleGoal,
                         ),
                         AICard(
                           goal: widget.subgoals[2],
-                          isSelected: selectedGoals.contains(widget.subgoals[2]),
+                          isSelected:
+                              selectedGoals.contains(widget.subgoals[2]),
                           onTap: _toggleGoal,
                         ),
                       ],
@@ -151,17 +180,20 @@ class _AIPopupState extends State<AIPopup> {
                       children: [
                         AICard(
                           goal: widget.subgoals[3],
-                          isSelected: selectedGoals.contains(widget.subgoals[3]),
+                          isSelected:
+                              selectedGoals.contains(widget.subgoals[3]),
                           onTap: _toggleGoal,
                         ),
                         AICard(
                           goal: widget.subgoals[4],
-                          isSelected: selectedGoals.contains(widget.subgoals[4]),
+                          isSelected:
+                              selectedGoals.contains(widget.subgoals[4]),
                           onTap: _toggleGoal,
                         ),
                         AICard(
                           goal: widget.subgoals[5],
-                          isSelected: selectedGoals.contains(widget.subgoals[5]),
+                          isSelected:
+                              selectedGoals.contains(widget.subgoals[5]),
                           onTap: _toggleGoal,
                         ),
                       ],
@@ -175,13 +207,14 @@ class _AIPopupState extends State<AIPopup> {
                     children: [
                       Icon(
                         Icons.refresh,
-                        color: Color(0xFFCFADFF),
+                        color: Color(0xFF5E5E5E),
                         size: 20,
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: 5),
                       Text(
-                        '새로고침하기',
-                        style: TextStyle(color: Color(0xFFCFADFF)),
+                        '클릭하여 새로고침',
+                        style:
+                            TextStyle(color: Color(0xFF5E5E5E), fontSize: 13),
                       ),
                     ],
                   ),
@@ -197,14 +230,17 @@ class _AIPopupState extends State<AIPopup> {
                   onPressed: _handleApply,
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    backgroundColor: const Color(0xFF4D00BB),
+                    backgroundColor: const Color(0xFF8D3FFF),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0),
                     ),
                   ),
                   child: const Text(
                     '지금 바로 적용하기',
-                    style: TextStyle(color: Color(0xFFede0ff)),
+                    style: TextStyle(
+                        color: Color(0xFFede0ff),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -215,8 +251,6 @@ class _AIPopupState extends State<AIPopup> {
     );
   }
 }
-
-
 
 class AICard extends StatefulWidget {
   final String goal;
@@ -254,9 +288,8 @@ class AICardState extends State<AICard> {
               padding: const EdgeInsets.all(5.0),
               decoration: BoxDecoration(
                 color: widget.isSelected
-                    ? const Color(0xFF4d00bb)
-                    : const Color(0xFFe0cbff),
-                border: Border.all(color: const Color(0xFFCFADFF)),
+                    ? const Color(0xFFD3D3D3)
+                    : const Color(0xFF282828),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: AutoSizeText(
@@ -268,22 +301,11 @@ class AICardState extends State<AICard> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: widget.isSelected
-                      ? const Color(0xFFEDE0FF)
-                      : const Color(0xFF4D00BB),
+                      ? const Color(0xFF303030)
+                      : Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-            ),
-          ),
-          Positioned(
-            top: 11,
-            right: 11,
-            child: Icon(
-              widget.isSelected
-                  ? Icons.circle
-                  : Icons.circle_outlined, // 테두리가 있는 체크 아이콘
-              color: const Color(0xFFCFADFF), // 체크 부분 색상
-              size: 18, // 아이콘 크기
             ),
           ),
         ],
@@ -291,5 +313,3 @@ class AICardState extends State<AICard> {
     );
   }
 }
-
-

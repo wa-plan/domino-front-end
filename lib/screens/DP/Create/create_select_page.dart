@@ -25,7 +25,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
   String firstColor = "0xff000000";
   bool showGrid = false; // 그리드 표시 여부를 결정하는 변수
   bool isLoading = true; // 로딩 상태 관리
-  String guide = "목표를 선택해 주세요.";
+  String guide = "클릭해서 목표를 선택해 주세요.";
 
   @override
   void initState() {
@@ -99,16 +99,16 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
             children: [
               CustomIconButton(() {
                 Navigator.of(context).pop();
-              }, Icons.arrow_back_rounded)
+              }, Icons.keyboard_arrow_left_rounded)
                   .customIconButton(),
               const SizedBox(width: 10),
               Text('플랜 만들기', style: Theme.of(context).textTheme.titleLarge),
-              Spacer(),
+              const Spacer(),
               Row(
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xffD9D9D9), // 첫 번째 색상
+                      color: const Color(0xffD9D9D9), // 첫 번째 색상
                       borderRadius: BorderRadius.circular(1.0),
                     ),
                     width: 8,
@@ -119,7 +119,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xff515151), // 첫 번째 색상
+                      color: const Color(0xff515151), // 첫 번째 색상
                       borderRadius: BorderRadius.circular(1.0),
                     ),
                     width: 8,
@@ -130,7 +130,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color(0xff515151), // 첫 번째 색상
+                      color: const Color(0xff515151), // 첫 번째 색상
                       borderRadius: BorderRadius.circular(1.0),
                     ),
                     width: 8,
@@ -148,12 +148,12 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 15),
-            Row(
+            const SizedBox(height: 15),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   "어떤 목표를 이루고 싶나요?",
                   style: TextStyle(
                     color: Colors.white,
@@ -165,11 +165,19 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
             ),
             const SizedBox(height: 15),
             Container(
-              padding: const EdgeInsets.fromLTRB(13, 0, 13, 0),
+              padding: const EdgeInsets.fromLTRB(17, 0, 17, 0),
               height: 50,
               decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+                    offset: const Offset(0, 0), // X, Y 위치 (0,0)
+                    blurRadius: 7, // 블러 7
+                    spreadRadius: 0, // 스프레드 0
+                  ),
+                ],
                 borderRadius: BorderRadius.circular(6),
-                color: Color(0xff2A2A2A),
+                color: const Color(0xff2A2A2A),
               ),
               child: isLoading // 로딩 상태에 따라 표시 변경
                   ? const Center(
@@ -188,11 +196,16 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                         ...emptyMainGoals,
                       ].map<DropdownMenuItem<String>>((goal) {
                         final goalName = goal['name'] ?? 'Unknown Goal';
+                        final isGuideText = goalName == '클릭해서 목표를 선택해 주세요.';
                         return DropdownMenuItem<String>(
                           value: goal['id'].toString(),
                           child: Text(
                             goalName,
-                            style: const TextStyle(color: Colors.white),
+                            style: TextStyle(
+                                color: isGuideText
+                                    ? const Color(0xff888888)
+                                    : Colors.white,
+                                fontWeight: FontWeight.w300),
                           ),
                         );
                       }).toList(),
@@ -208,7 +221,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
 
                           if (value != '0') {
                             final selectedGoal = [
-                              {'id': '0', 'name': '목표를 선택해 주세요.'},
+                              {'id': '0', 'name': '클릭해서 목표를 선택해 주세요.'},
                               ...emptyMainGoals
                             ].firstWhere(
                               (goal) => goal['id'].toString() == value,
@@ -226,10 +239,13 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                         } else {}
                       },
                       isExpanded: true,
-                      dropdownColor: const Color.fromARGB(255, 28, 28, 28),
+                      dropdownColor: const Color(0xff2A2A2A),
                       style: const TextStyle(color: Colors.white),
-                      iconEnabledColor:
-                          const Color.fromARGB(255, 147, 147, 147),
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down_rounded, // 원하는 아이콘으로 변경 가능
+                        color: Color(0xff888888),
+                        size: 22, // 아이콘 크기 조절
+                      ),
                       underline: Container(),
                       elevation: 0,
                       borderRadius: BorderRadius.circular(7),
@@ -258,9 +274,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(3),
                                 color: innerIndex == 4
-                                    ? Color(int.parse(firstColor
-                                        .replaceAll('Color(', '')
-                                        .replaceAll(')', '')))
+                                    ? ColorTransform(firstColor).colorTransform()
                                     : const Color(0xff929292),
                               ),
                               alignment: Alignment.center,
@@ -291,8 +305,7 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                 ),
               )
             else
-              SizedBox.shrink(),
-            Spacer(),
+              const Expanded(child: SizedBox.shrink()),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
