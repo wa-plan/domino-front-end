@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:domino/screens/LR/register.dart';
 import 'package:domino/apis/services/lr_services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,7 +30,15 @@ class _LoginScreenState extends State<LoginScreen> {
           context, MaterialPageRoute(builder: (context) => const TdMain()));
     }
   }*/
-  _asyncMethod() async {
+  Future<void> _asyncMethod() async {
+    // 먼저 저장된 토큰이 있는지 확인
+    final String? authToken = await storage.read(key: "token");
+
+    if (authToken == null || authToken.isEmpty) {
+      print("로그인 토큰이 없습니다. 자동 로그인 불가능.");
+      return; // 토큰이 없으면 자동 로그인하지 않음
+    }
+
     // 저장된 로그인 정보 읽기
     final String? storedUserInfo = await storage.read(key: "login");
 
@@ -58,11 +67,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // userId와 password가 모두 있으면 로그인 처리
       if (userId != null && password != null) {
-        _loginService.login(context, userId, password);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const TdMain()),
-        );
+        bool isSuccess = await _loginService.login(context, userId, password);
+
+        if (isSuccess) {
+          // 로그인 성공 시에만 이동
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const TdMain()),
+            );
+          }
+        } else {
+          print("자동 로그인 실패: 로그인 정보를 확인하세요.");
+        }
       } else {
         print("로그인 정보가 불완전합니다.");
       }
@@ -71,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _login() {
+  void _login() async {
     final userId = _idcontroller.text;
     final password = _pwcontroller.text;
 
@@ -86,7 +103,31 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    _loginService.login(context, userId, password);
+    bool isSuccess = await _loginService.login(context, userId, password);
+    if (isSuccess) {
+      // 로그인 성공 시 화면 전환
+      final String? accessToken = await storage.read(key: "token");
+      if (accessToken == null || accessToken.isEmpty) {
+        await storage.write(
+            key: "token",
+            value: "your_generated_token_here"); // 실제 토큰을 받아와 저장해야 함
+      }
+
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const TdMain()),
+        );
+      }
+    } else {
+      Fluttertoast.showToast(
+        msg: "로그인에 실패했습니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
   }
 
   @override
@@ -285,13 +326,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                           "id ${_idcontroller.text} password ${_pwcontroller.text}",
                                     );
                                     _login();
-
-                                    // LogOutPage로 화면 이동
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const TdMain()),
-                                    );
                                   },
                                 ).button()
                               ]),

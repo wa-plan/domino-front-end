@@ -12,7 +12,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 String? baseUrl = dotenv.env['BASE_URL'];
 
 class LoginService {
-  Future<void> login(
+  Future<bool> login(
       BuildContext context, String userId, String password) async {
     final url = Uri.parse('$baseUrl/api/auth/login');
 
@@ -49,12 +49,13 @@ class LoginService {
                 icon: Icons.check_circle, // 아이콘
               ).message(context);*/
 
-              Navigator.pushReplacement(
+              /*Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const TdMain(),
                 ),
-              );
+              );*/
+              return true;
             }
           } else {
             if (context.mounted) {
@@ -67,6 +68,7 @@ class LoginService {
               );
             }
           }
+          return false;
         } else {
           if (context.mounted) {
             Fluttertoast.showToast(
@@ -78,6 +80,7 @@ class LoginService {
             );
           }
         }
+        return false;
       } else {
         if (context.mounted) {
           Message(
@@ -88,6 +91,7 @@ class LoginService {
             icon: Icons.block, // 아이콘
           ).message(context);
         }
+        return false;
       }
     } catch (e) {
       if (context.mounted) {
@@ -99,6 +103,7 @@ class LoginService {
           textColor: Colors.white,
         );
       }
+      return false;
     }
   }
 }

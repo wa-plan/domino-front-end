@@ -23,7 +23,9 @@ class _MyGoalState extends State<MyGoal> {
   final String message = "";
   String nickname = '';
   String description = '';
-  String selectedImage = "assets/img/profile_smp4.png";
+  String? profile;
+  String selectedImage = "";
+  String defaultImage = 'assets/img/profile_smp4.png'; // 기본 이미지 경로
 
   late PageController _pageController; // PageController 추가
   int successNum = 0;
@@ -48,6 +50,7 @@ class _MyGoalState extends State<MyGoal> {
       setState(() {
         nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
         description = data['description'] ?? '프로필 편집을 통해 \n자신을 표현해주세요.';
+        profile = data['profile'];
       });
     }
   }
@@ -271,7 +274,11 @@ class _MyGoalState extends State<MyGoal> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image: AssetImage(selectedImage),
+                              image: profile != null
+                                  ? NetworkImage(
+                                      profile!) // `profile` 값이 있으면 네트워크 이미지
+                                  : AssetImage(defaultImage)
+                                      as ImageProvider, // 없으면 기본 이미지
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -323,8 +330,8 @@ class _MyGoalState extends State<MyGoal> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ProfileEdit(
-                              selectedImage: selectedImage,
-                            ),
+                                selectedImage: selectedImage,
+                                profileImage: profile!),
                           ),
                         );
                       },

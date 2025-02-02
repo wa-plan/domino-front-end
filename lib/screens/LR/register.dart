@@ -20,12 +20,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _pwController = TextEditingController();
   final _checkpwController = TextEditingController();
 
-  bool _isPhoneVerified = false; // 상태 변수 추가
-
   @override
   void initState() {
     super.initState();
-    _isPhoneVerified = false;
   }
 
   @override
@@ -186,6 +183,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           return null;
                                         }, false, 1)
                                             .textField(),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 15.0),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Phone',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            height: 35,
+                                            width: 257,
+                                            child: CustomTextField(
+                                                    '전화번호를 입력해 주세요.',
+                                                    _phoneController, (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return '올바른 전화번호를 입력해 주세요.';
+                                              }
+                                              return null;
+                                            }, false, 1)
+                                                .textField(),
+                                          ),
+                                          const SizedBox(width: 10.0),
+                                        ],
                                       ),
                                     ],
                                   ),
