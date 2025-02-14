@@ -230,7 +230,7 @@ class _SettingsMainState extends State<SettingsMain> {
                   context,
                   MaterialPageRoute(
                     //builder: (context) => const ContactUs(),
-                    builder: (context) => const HomeScreen(),
+                    builder: (context) => const ContactUs(),
                   ),
                 );
               },

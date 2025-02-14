@@ -171,7 +171,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Question(number: '1', question: '어떤 목표인가요?'),
+                      const Question(question: '어떤 목표인가요?'),
                       const Tag(Color.fromARGB(255, 59, 59, 59),
                               Colors.transparent, '필수')
                           .tag()
@@ -196,8 +196,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Question(
-                          number: '2', question: '언제까지 목표를 이루고 싶나요?'),
+                      const Question(question: '언제까지 목표를 이루고 싶나요?'),
                       const Tag(Color.fromARGB(255, 59, 59, 59),
                               Colors.transparent, '필수')
                           .tag()
@@ -209,21 +208,17 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                     children: [
                       Container(
                         alignment: Alignment.centerLeft,
-                        width: 280,
+                        width: 350,
                         height: 40,
                         padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(3),
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 147, 147, 147),
-                            width: 0.5,
-                          ),
-                        ),
+                            borderRadius: BorderRadius.circular(3),
+                            color: const Color(0xff2A2A2A)),
                         child: Text(
                           _selectedDate != null
                               ? DateFormat('yyyy년 MM월 dd일')
                                   .format(_selectedDate!) // 선택된 날짜 포맷팅
-                              : '달력을 열어 날짜를 선택해주세요.', // null인 경우 출력
+                              : '클릭해서 날짜를 선택해 주세요.', // null인 경우 출력
                           style: TextStyle(
                             color: _selectedDate != null
                                 ? Colors.white
@@ -253,7 +248,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                   ),
                   const SizedBox(height: 13),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Checkbox(
                         checkColor: backgroundColor,
@@ -272,21 +267,19 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                           });
                         },
                       ),
+                      const SizedBox(width: 5),
                       const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          SizedBox(
-                            height: 10,
-                          ),
                           Text(
                             "확실하지 않아요",
                             style: TextStyle(color: Colors.white),
                           ),
                           SizedBox(height: 5),
                           Text(
-                            '그럼 오늘부터 날짜를 세어나갈게요\n예시 : D + 1',
+                            '그럼 오늘부터 날짜를 세어나갈게요.',
                             style: TextStyle(
-                                color: mainRed,
+                                color: Color(0xff909090),
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400),
                           ),
@@ -302,7 +295,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Question(number: '3', question: '목표에 대해서 더 알려주세요.'),
+                  const Question(question: '목표에 대해서 더 알려주세요.'),
                   const SizedBox(height: 13),
                   SizedBox(
                       height: 80,
@@ -321,7 +314,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Question(number: '4', question: '목표를 보여주는 사진이 있나요?'),
+                  const Question(question: '목표를 보여주는 사진이 있나요?'),
                   const SizedBox(height: 13),
                   Row(
                     children: [
@@ -400,7 +393,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Question(number: '5', question: '목표를 색깔로 표현해주세요.'),
+                      const Question(question: '목표를 색깔로 표현해주세요.'),
                       const Tag(Color.fromARGB(255, 59, 59, 59),
                               Colors.transparent, '필수')
                           .tag()
@@ -410,7 +403,7 @@ class _MyGoalAddState extends State<MyGoalAdd> {
                     height: 13,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ColorOption2(
                         colorCode: const Color(0xffFF7A7A),

@@ -5,9 +5,9 @@ buildscript {
     }
     dependencies {
         // 최신 AGP 버전으로 업데이트
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        classpath "com.android.tools.build:gradle:8.2.0"
         // Kotlin 버전을 최신으로 설정
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.1"  
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22"
     }
 }
 allprojects {

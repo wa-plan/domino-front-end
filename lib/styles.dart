@@ -17,7 +17,6 @@ const mainGold = Color(0xffF6C92B);
 const appBarPadding = EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 20);
 const fullPadding = EdgeInsets.fromLTRB(25.0, 10, 25.0, 20.0);
 
-
 //colorPalette
 Map<Color, Color> colorPalette = {
   const Color(0xffFF7A7A): const Color(0xffFFC2C2),
@@ -163,13 +162,13 @@ class DPMainGoal {
           borderRadius: BorderRadius.circular(3),
           color: color,
           boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
-                    offset: const Offset(0, 0), // X, Y 위치 (0,0)
-                    blurRadius: 7, // 블러 7
-                    spreadRadius: 0, // 스프레드 0
-                  ),
-                ],
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+              offset: const Offset(0, 0), // X, Y 위치 (0,0)
+              blurRadius: 7, // 블러 7
+              spreadRadius: 0, // 스프레드 0
+            ),
+          ],
         ),
         child: Text(
             textAlign: TextAlign.center,
@@ -595,12 +594,10 @@ class CustomTextField {
 }
 
 class Question extends StatelessWidget {
-  final String number;
   final String question;
 
   const Question({
     super.key,
-    required this.number,
     required this.question,
   });
 
@@ -608,12 +605,6 @@ class Question extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(number,
-            style: const TextStyle(
-                color: mainRed, fontWeight: FontWeight.w800, fontSize: 14)),
-        const SizedBox(
-          width: 8,
-        ),
         Text(question,
             style: const TextStyle(
                 color: Colors.white,
@@ -640,20 +631,23 @@ class ColorOption2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: colorCode,
-          borderRadius: BorderRadius.circular(6),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: colorCode,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: isSelected
+              ? const Icon(
+                  Icons.check,
+                  color: Colors.black,
+                  size: 24,
+                )
+              : null,
         ),
-        child: isSelected
-            ? const Icon(
-                Icons.check,
-                color: Colors.black,
-                size: 24,
-              )
-            : null,
       ),
     );
   }
@@ -754,13 +748,13 @@ class CustomIconButton {
         color: const Color(0xff303030),
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
-                    offset: const Offset(0, 0), // X, Y 위치 (0,0)
-                    blurRadius: 7, // 블러 7
-                    spreadRadius: 0, // 스프레드 0
-                  ),
-                ],
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
+            offset: const Offset(0, 0), // X, Y 위치 (0,0)
+            blurRadius: 7, // 블러 7
+            spreadRadius: 0, // 스프레드 0
+          ),
+        ],
       ),
       child: GestureDetector(
         onTap: () {

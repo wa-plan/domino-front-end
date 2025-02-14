@@ -19,11 +19,11 @@ class PieChart extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
-      ..strokeWidth = 38.0
+      ..strokeWidth = 50.0
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.butt;
 
-    double radius = size.width * 0.8;
+    double radius = size.width * 1.1;
     Offset center = Offset(size.width / 2, size.height / 2);
     double startAngle = -pi / 2;
 
@@ -31,7 +31,7 @@ class PieChart extends CustomPainter {
     if (successPercentage == 0 &&
         inProgressPercentage == 0 &&
         failPercentage == 0) {
-      paint.color = Colors.black;
+      paint.color = const Color(0xff1D1D1D);
       canvas.drawArc(Rect.fromCircle(center: center, radius: radius), 0, 2 * pi,
           false, paint);
       drawText(canvas, size, "달성률\n  0%");
@@ -62,7 +62,7 @@ class PieChart extends CustomPainter {
     // 3. 실패율 아크 그리기
     startAngle += inProgressArcAngle;
     double failArcAngle = 2 * pi * (failPercentage / 100);
-    paint.color = Colors.black;
+    paint.color = const Color(0xff1D1D1D);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         failArcAngle, false, paint);
 
@@ -71,24 +71,38 @@ class PieChart extends CustomPainter {
   }
 
   void drawText(Canvas canvas, Size size, String text) {
-    double fontSize = getFontSize(size, text);
+    double labelFontSize = getFontSize(size, text) * 1.0; // ✅ "달성률" 크기 (기본값)
+    double percentageFontSize =
+        getFontSize(size, text) * 1.4; // ✅ successPercentage% 크기
 
-    // 텍스트 스타일 적용
-    TextSpan sp = TextSpan(
-      style: const TextStyle(
-        fontSize: 13,
+    // 텍스트 스타일 적용 (달성률 - 작은 글씨)
+    TextSpan labelSpan = TextSpan(
+      style: TextStyle(
+        fontSize: labelFontSize, // ✅ "달성률" 작은 크기
         fontWeight: FontWeight.w500,
         color: Colors.white,
-        height: 1.5, // 줄 간격 조정
+        height: 2.0,
       ),
-      text: text,
+      text: "달성률\n", // ✅ 개행 추가
+    );
+
+    // 텍스트 스타일 적용 (퍼센트 - 큰 글씨)
+    TextSpan percentageSpan = TextSpan(
+      style: TextStyle(
+        fontSize: percentageFontSize, // ✅ successPercentage% 큰 크기
+        fontWeight: FontWeight.w600, // ✅ 더 강조
+        color: Colors.white,
+      ),
+      text: text.split("\n")[1], // ✅ "달성률\n 90%" 에서 90%만 가져오기
     );
 
     TextPainter tp = TextPainter(
-      text: sp,
+      text:
+          TextSpan(children: [labelSpan, percentageSpan]), // ✅ 두 개의 TextSpan 추가
       textDirection: TextDirection.ltr,
-      textAlign: TextAlign.center, // 텍스트 정렬
+      textAlign: TextAlign.center, // ✅ 중앙 정렬
     );
+
     tp.layout();
 
     // 텍스트 중앙 정렬
