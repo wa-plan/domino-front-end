@@ -35,7 +35,6 @@ class _ProfileEditState extends State<ProfileEdit> {
   String? profile;
   final List<String> _imageFiles = [];
 
-
   final ImagePicker _picker = ImagePicker();
 
   /// 📌 **카메라로 사진 촬영 및 업로드**
@@ -142,30 +141,37 @@ class _ProfileEditState extends State<ProfileEdit> {
         withData: kIsWeb, // 웹에서는 true, 모바일에서는 false
       );
 
-      if (result != null) {
-        // 파일 업로드 서비스 호출
-        String uploadedUrl = await UploadFileService.uploadFiles(result.files);
-
-        if (uploadedUrl.isNotEmpty) {
-          print('업로드된 파일 URL: $uploadedUrl');
-          setState(() {
-            _imageFiles.add(uploadedUrl); // URL을 _imageFiles에 추가
-          });
-          print('_imageFiles=$_imageFiles');
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProfileEdit(
-                  selectedImage: "",
-                  profileImage: uploadedUrl,
-                  cameraImage: ""),
-            ),
-          );
-
-        } else {
-          print('파일 업로드 실패');
-        }
+      if (result == null || result.files.isEmpty) {
+        print('파일 선택이 취소됨.');
+        return; // 파일을 선택하지 않았으면 함수 종료
       }
+      String uploadedUrl = await UploadFileService.uploadFiles(result.files);
+
+      if (uploadedUrl.isEmpty) {
+        print('파일 업로드 실패');
+        Fluttertoast.showToast(
+          msg: '파일 업로드에 실패했습니다. 다시 시도해주세요.',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        return; // 업로드가 실패했으므로 함수 종료
+      }
+
+      setState(() {
+        _imageFiles.add(uploadedUrl); // URL을 _imageFiles에 추가
+      });
+
+      print('_imageFiles=$_imageFiles');
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileEdit(
+              selectedImage: "", profileImage: uploadedUrl, cameraImage: ""),
+        ),
+      );
     } catch (e) {
       print('이미지 선택 오류: $e');
       Fluttertoast.showToast(
@@ -203,7 +209,6 @@ class _ProfileEditState extends State<ProfileEdit> {
             _imageFiles.clear();
             _imageFiles.add(uploadedUrl); // 업로드된 URL을 _imageFiles에 추가
             print('_imageFiles=$_imageFiles');
-
           });
         } else {
           print('selectedImage 업로드 실패');
@@ -220,6 +225,30 @@ class _ProfileEditState extends State<ProfileEdit> {
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
+    }
+  }
+
+  ImageProvider getImageProvider(
+      String? profile, String? selectedImage, String? cameraImage) {
+    // 1️⃣ 우선순위에 따라 사용할 이미지 선택
+    String? imageToShow = profile?.isNotEmpty == true
+        ? profile
+        : (selectedImage?.isNotEmpty == true ? selectedImage : cameraImage);
+
+    // 2️⃣ 기본 이미지 처리
+    if (imageToShow == null || imageToShow.isEmpty) {
+      return AssetImage(defaultImage);
+    }
+
+    // 3️⃣ 네트워크 이미지인지 확인 후 반환
+    if (imageToShow.startsWith('http')) {
+      return NetworkImage(imageToShow);
+    } else if (imageToShow.startsWith('file://')) {
+      // 로컬 파일은 FileImage로 변환
+      return FileImage(File(imageToShow.replaceFirst('file://', '')));
+    } else {
+      // Asset 이미지 사용 (경로 확인 필요)
+      return AssetImage(imageToShow);
     }
   }
 
@@ -258,7 +287,6 @@ class _ProfileEditState extends State<ProfileEdit> {
     print('selectedImage=${widget.selectedImage}');
     print('cameraImage=${widget.cameraImage}');
     print('profileImage=${widget.profileImage}');
-
   }
 
   @override
@@ -345,7 +373,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                               ),
                               child: CircleAvatar(
                                 radius: imageSize / 2.4,
-
                                 backgroundImage: (() {
                                   // 값이 있는 이미지 찾기
                                   String? imageToShow = profile != ""
@@ -361,7 +388,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       : AssetImage(imageToShow)
                                           as ImageProvider; // 로컬 asset 이미지 (selectedImage)
                                 })(),
-
                                 backgroundColor: Colors.transparent,
                               ),
                             ),
@@ -391,9 +417,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     const Question(question: '닉네임을 만들어봐요'),
-
                     const SizedBox(height: 10),
                     SizedBox(
                         height: 40,
@@ -401,9 +425,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                 _nicknamecontroller, (value) => null, false, 1)
                             .textField()),
                     const SizedBox(height: 40),
-
                     const Question(question: '당신은 어떤 사람인가요?'),
-
                     const SizedBox(height: 10),
                     SizedBox(
                         height: 80,
@@ -433,7 +455,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                   Button(Colors.black, Colors.white, '완료', () async {
                     await _uploadSelectedImage(); // 🔹 이미지 업로드 완료까지 대기
                     if (_imageFiles.isNotEmpty) {
-
                       print('_imageFiles=$_imageFiles');
 
                       // 🔹 업로드된 이미지가 존재하는지 확인
@@ -462,13 +483,11 @@ class _ProfileEditState extends State<ProfileEdit> {
                         );
                       }
                     } else {
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MyGoal(),
                         ),
-
                       );
                     }
                   }).button()
@@ -501,9 +520,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                 const Text(
                   '어디서 사진을 가져올까요?',
                   style: TextStyle(
-
                     color: Colors.white,
-
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                   ),
@@ -515,14 +532,12 @@ class _ProfileEditState extends State<ProfileEdit> {
                 ),
                 const SizedBox(height: 10),
                 GestureDetector(
-
                   onTap: () async {
                     Navigator.pop(context);
                     setState(() {
                       _imageFiles.clear();
                     });
                     await _takePhoto();
-
                   },
                   child: Container(
                     padding: const EdgeInsets.all(7),
@@ -587,10 +602,8 @@ class _ProfileEditState extends State<ProfileEdit> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProfileSampleGallery(
-
                             selectedImage: widget.selectedImage,
                             profileImage: widget.profileImage),
-
                       ),
                     );
                   },

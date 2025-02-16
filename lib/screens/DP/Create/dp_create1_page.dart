@@ -1,11 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/apis/services/mg_services.dart';
-import 'package:domino/screens/DP/Create/create99_page.dart';
+import 'package:domino/screens/DP/Create/dp_create2_page.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
-import 'package:domino/widgets/DP/Create/DP_dropdown_mandalart.dart';
 import 'package:domino/apis/services/dp_services.dart';
 
 class DPcreateSelectPage extends StatefulWidget {
@@ -88,31 +87,40 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         titleSpacing: 0.0,
         title: Padding(
-          padding: appBarPadding,
+          padding: currentWidth < 600
+              ? const EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 20)
+              : const EdgeInsets.fromLTRB(25.0, 40, 25.0, 20),
           child: Row(
             children: [
               CustomIconButton(() {
                 Navigator.of(context).pop();
-              }, Icons.keyboard_arrow_left_rounded)
+              }, Icons.keyboard_arrow_left_rounded, currentWidth)
                   .customIconButton(),
-              const SizedBox(width: 10),
-              Text('플랜 만들기', style: Theme.of(context).textTheme.titleLarge),
+              SizedBox(width: currentWidth < 600 ? 10 : 14),
+              Text('플랜 만들기',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: currentWidth < 600 ? 17 : 27,
+                      fontWeight: FontWeight.w600)),
               const Spacer(),
               Row(
                 children: [
                   Container(
                     decoration: BoxDecoration(
                       color: const Color(0xffD9D9D9), // 첫 번째 색상
-                      borderRadius: BorderRadius.circular(1.0),
+                      borderRadius:
+                          BorderRadius.circular(currentWidth < 600 ? 2 : 3),
                     ),
-                    width: 8,
-                    height: 8,
+                    width: currentWidth < 600 ? 8 : 12,
+                    height: currentWidth < 600 ? 8 : 12,
                   ),
                   const SizedBox(
                     width: 8,
@@ -120,10 +128,11 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                   Container(
                     decoration: BoxDecoration(
                       color: const Color(0xff515151), // 첫 번째 색상
-                      borderRadius: BorderRadius.circular(1.0),
+                      borderRadius:
+                          BorderRadius.circular(currentWidth < 600 ? 2 : 3),
                     ),
-                    width: 8,
-                    height: 8,
+                    width: currentWidth < 600 ? 8 : 12,
+                    height: currentWidth < 600 ? 8 : 12,
                   ),
                   const SizedBox(
                     width: 8,
@@ -131,10 +140,11 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                   Container(
                     decoration: BoxDecoration(
                       color: const Color(0xff515151), // 첫 번째 색상
-                      borderRadius: BorderRadius.circular(1.0),
+                      borderRadius:
+                          BorderRadius.circular(currentWidth < 600 ? 2 : 3),
                     ),
-                    width: 8,
-                    height: 8,
+                    width: currentWidth < 600 ? 8 : 12,
+                    height: currentWidth < 600 ? 8 : 12,
                   ),
                 ],
               ),
@@ -148,8 +158,8 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 15),
-            const Row(
+            SizedBox(height: currentWidth < 600 ? 15 : 25),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -157,16 +167,16 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                   "어떤 목표를 이루고 싶나요?",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: currentWidth < 600 ? 16 : 19,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 15),
+            SizedBox(height: currentWidth < 600 ? 15 : 25),
             Container(
               padding: const EdgeInsets.fromLTRB(17, 0, 17, 0),
-              height: 50,
+              height: currentWidth < 600 ? 40 : 53,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -205,7 +215,8 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                                 color: isGuideText
                                     ? const Color(0xff888888)
                                     : Colors.white,
-                                fontWeight: FontWeight.w300),
+                                fontWeight: FontWeight.w300,
+                                fontSize: currentWidth < 600 ? 13 : 17),
                           ),
                         );
                       }).toList(),
@@ -241,98 +252,78 @@ class _DPcreateSelectPageState extends State<DPcreateSelectPage> {
                       isExpanded: true,
                       dropdownColor: const Color(0xff2A2A2A),
                       style: const TextStyle(color: Colors.white),
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.keyboard_arrow_down_rounded, // 원하는 아이콘으로 변경 가능
-                        color: Color(0xff888888),
-                        size: 22, // 아이콘 크기 조절
+                        color: const Color(0xff888888),
+                        size: currentWidth < 600 ? 22 : 25, // 아이콘 크기 조절
                       ),
                       underline: Container(),
                       elevation: 0,
                       borderRadius: BorderRadius.circular(7),
                     ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: currentWidth < 600 ? 70 : 130),
             if (showGrid)
-              Expanded(
-                child: GridView(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 1,
-                    mainAxisSpacing: 1,
-                  ),
-                  children: List.generate(9, (index) {
-                    if (index == 4) {
-                      return SizedBox(
-                        width: 100,
-                        child: GridView.count(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 1,
-                          mainAxisSpacing: 1,
-                          children: List.generate(9, (innerIndex) {
-                            return Container(
-                              padding: const EdgeInsets.all(3),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3),
-                                color: innerIndex == 4
-                                    ? ColorTransform(firstColor).colorTransform()
-                                    : const Color(0xff929292),
-                              ),
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.all(1.0),
-                              child: innerIndex == 4
-                                  ? Center(
-                                      child: AutoSizeText(
-                                          maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
-                                          minFontSize: 6,
-                                          maxFontSize: 13, // 최소 글씨 크기
-                                          overflow: TextOverflow
-                                              .ellipsis, // 내용이 너무 길 경우 생략 표시
-                                          selectedGoalName,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            color: backgroundColor,
-                                            fontWeight: FontWeight.w600,
-                                          )))
-                                  : const Text(""),
-                            );
-                          }),
-                        ),
-                      );
-                    } else {
-                      return const Smallgrid();
-                    }
-                  }),
-                ),
+              Center(
+                child: Container(
+                  height: currentHeight*0.2,
+                  width: currentHeight*0.2,
+                    padding:  EdgeInsets.all(currentWidth < 600 ? 3 : 5),
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(currentWidth < 600 ? 3 : 6),
+                        color: ColorTransform(firstColor).colorTransform()),
+                    alignment: Alignment.center,
+                    child: Center(
+                        child: AutoSizeText(
+                            maxLines: 3, // 최대 줄 수 (필요에 따라 변경 가능)
+                            minFontSize: currentWidth < 600 ? 6 : 10,
+                            maxFontSize: currentWidth < 600 ? 13 : 20, 
+                            overflow: TextOverflow.ellipsis, // 내용이 너무 길 경우 생략 표시
+                            selectedGoalName,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: backgroundColor,
+                              fontWeight: FontWeight.w600,
+                            )))),
               )
             else
               const Expanded(child: SizedBox.shrink()),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Button(Colors.black, Colors.white, '취소', () {
-                  Navigator.pop(context);
-                }).button(),
-                Button(Colors.black, Colors.white, '다음', () {
-                  if (selectedGoalName != '') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DPcreate99Page(
-                            mainGoalId: selectedGoalId, firstColor: firstColor),
-                      ),
-                    );
-                  } else {
-                    Message('목표를 선택해 주세요.', const Color(0xffFF6767),
-                            const Color(0xff412C2C),
-                            borderColor: const Color(0xffFF6767),
-                            icon: Icons.priority_high)
-                        .message(context);
-                  }
-                }).button(),
-              ],
-            ),
+            
           ],
         ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: currentWidth < 600
+              ? const EdgeInsets.fromLTRB(25.0, 0, 25, 20)
+              : const EdgeInsets.fromLTRB(25.0, 0, 25, 20),
+        child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  NewButton(Colors.black, Colors.white, '취소', () {
+                    Navigator.pop(context);
+                  }, currentWidth)
+                      .newButton(),
+                  NewButton(Colors.black, Colors.white, '다음', () {
+                    if (selectedGoalName != '') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DPcreate99Page(
+                              mainGoalId: selectedGoalId, firstColor: firstColor),
+                        ),
+                      );
+                    } else {
+                      Message('목표를 선택해 주세요.', const Color(0xffFF6767),
+                              const Color(0xff412C2C),
+                              borderColor: const Color(0xffFF6767),
+                              icon: Icons.priority_high)
+                          .message(context);
+                    }
+                  }, currentWidth)
+                      .newButton(),
+                ],
+              ),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/provider/DP/model.dart';
-import 'package:domino/screens/DP/Create/create_input2_page.dart';
+import 'package:domino/screens/DP/Create/dp_create4_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart'; // FlutterToast import 추가

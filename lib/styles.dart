@@ -17,7 +17,6 @@ const mainGold = Color(0xffF6C92B);
 const appBarPadding = EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 20);
 const fullPadding = EdgeInsets.fromLTRB(25.0, 10, 25.0, 20.0);
 
-
 //colorPalette
 Map<Color, Color> colorPalette = {
   const Color(0xffFF7A7A): const Color(0xffFFC2C2),
@@ -34,6 +33,47 @@ Map<Color, Color> colorPalette = {
   const Color(0xff11D1C2): const Color(0xffAAF4EF),
   Colors.transparent: const Color(0xff5C5C5C),
 };
+
+//DP_create_titleText
+class DPTitleText {
+  final String text;
+  final double currentWidth;
+
+  DPTitleText(this.text, this.currentWidth);
+
+  Widget dPTitleText() {
+    return Text(text,
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: currentWidth < 600 ? 17 : 27,
+            fontWeight: FontWeight.w600));
+  }
+}
+
+//DP_create_guideText
+class DPGuideText {
+  final String text;
+  final double currentWidth;
+
+  DPGuideText(this.text, this.currentWidth);
+
+  Widget dPGuideText() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: currentWidth < 600 ? 15 : 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+}
 
 //Button
 class Button {
@@ -59,6 +99,39 @@ class Button {
         style: TextStyle(
           color: textColor,
           fontSize: 14,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}
+
+//Button
+class NewButton {
+  final Color buttonColor;
+  final Color textColor;
+  final String text;
+  final Function function;
+  final double currentWidth;
+
+  NewButton(this.buttonColor, this.textColor, this.text, this.function,
+      this.currentWidth);
+
+  Widget newButton() {
+    return TextButton(
+      onPressed: () => function(),
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        backgroundColor: buttonColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: textColor,
+          fontSize: currentWidth < 600 ? 14 : 17,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -150,12 +223,14 @@ class Message {
 class DPMainGoal {
   final String text;
   final Color color;
+  final double currentHeight;
+  final double currentWidth;
 
-  DPMainGoal(this.text, this.color);
+  DPMainGoal(this.text, this.color, this.currentHeight, this.currentWidth);
 
   Widget dpMainGoal() {
     return Container(
-        height: 43,
+        height: currentHeight * 0.05,
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
@@ -163,7 +238,6 @@ class DPMainGoal {
           borderRadius: BorderRadius.circular(3),
           color: color,
           boxShadow: [
-
             BoxShadow(
               color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
               offset: const Offset(0, 0), // X, Y 위치 (0,0)
@@ -171,14 +245,13 @@ class DPMainGoal {
               spreadRadius: 0, // 스프레드 0
             ),
           ],
-
         ),
         child: Text(
             textAlign: TextAlign.center,
             text,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.black,
-              fontSize: 13,
+              fontSize: currentWidth < 600 ? 11 : 15,
               fontWeight: FontWeight.bold,
             )));
   }
@@ -597,12 +670,10 @@ class CustomTextField {
 }
 
 class Question extends StatelessWidget {
-
   final String question;
 
   const Question({
     super.key,
-
     required this.question,
   });
 
@@ -636,25 +707,20 @@ class ColorOption2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: colorCode,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: isSelected
-              ? const Icon(
-                  Icons.check,
-                  color: Colors.black,
-                  size: 24,
-                )
-              : null,
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          color: colorCode,
+          borderRadius: BorderRadius.circular(6),
         ),
-
+        child: isSelected
+            ? const Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 24,
+              )
+            : null,
       ),
     );
   }
@@ -733,7 +799,7 @@ class PageIndicator {
       effect: const ColorTransitionEffect(
         dotHeight: 8.0,
         dotWidth: 8.0,
-        activeDotColor: Color.fromARGB(255, 137, 137, 137),
+        activeDotColor: Colors.white,
         dotColor: Colors.grey,
       ),
     );
@@ -744,18 +810,18 @@ class PageIndicator {
 class CustomIconButton {
   final Function function;
   final IconData icon;
+  final double currentWidth;
 
-  const CustomIconButton(this.function, this.icon);
+  const CustomIconButton(this.function, this.icon, this.currentWidth);
 
   Widget customIconButton() {
     return Container(
-      width: 35,
-      height: 24,
+      width: currentWidth < 600 ? 35 : 50,
+      height: currentWidth < 600 ? 24 : 35,
       decoration: BoxDecoration(
         color: const Color(0xff303030),
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
-
           BoxShadow(
             color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
             offset: const Offset(0, 0), // X, Y 위치 (0,0)
@@ -763,7 +829,6 @@ class CustomIconButton {
             spreadRadius: 0, // 스프레드 0
           ),
         ],
-
       ),
       child: GestureDetector(
         onTap: () {
@@ -772,7 +837,7 @@ class CustomIconButton {
         child: Icon(
           icon,
           color: const Color(0xff646464),
-          size: 21,
+          size: currentWidth < 600 ? 21 : 30,
         ),
       ),
     );

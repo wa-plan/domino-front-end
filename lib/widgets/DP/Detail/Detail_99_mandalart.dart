@@ -9,6 +9,7 @@ class MandalartGrid3 extends StatefulWidget {
   final String mandalart;
   final List<Map<String, dynamic>> secondGoals;
   final int mandalartId;
+  final double currentHeight;
 
   const MandalartGrid3({
     super.key,
@@ -16,6 +17,7 @@ class MandalartGrid3 extends StatefulWidget {
     required this.secondGoals,
     required this.mandalartId,
     required this.firstColor,
+    required this.currentHeight
   });
 
   @override
@@ -80,7 +82,10 @@ class _MandalartGrid3 extends State<MandalartGrid3> {
         minScale: 0.5, // Minimum zoom scale (50%)
         maxScale: 3.0, // Maximum zoom scale (300%)
       child: SizedBox(
+        width: widget.currentHeight*0.5,
         child: GridView.builder(
+          shrinkWrap: true, // GridView will be wrapped in the available space
+          physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
           ),

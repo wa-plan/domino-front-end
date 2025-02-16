@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:domino/apis/services/mg_services.dart';
 import 'package:domino/apis/services/td_services.dart';
 import 'package:domino/provider/DP/model.dart';
@@ -86,9 +88,6 @@ class _MyGoalState extends State<MyGoal> {
         failedIDs.sort((a, b) {
           return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
         });
-        /*inProgressIDs.sort((a, b) {
-          return int.parse(a["id"]!).compareTo(int.parse(b["id"]!));
-        });*/
 
         inProgressIDs.sort((a, b) {
           // BOOKMARK 상태 확인
@@ -204,12 +203,30 @@ class _MyGoalState extends State<MyGoal> {
     }
   }
 
+  ImageProvider _getImageProvider(String? imagePath) {
+    if (imagePath == null || imagePath.isEmpty) {
+      return AssetImage(defaultImage);
+    }
+
+    if (imagePath.startsWith('http')) {
+      // 서버에서 받은 URL이면 NetworkImage로 처리
+      return NetworkImage(imagePath);
+    } else if (imagePath.startsWith('file://')) {
+      // 로컬 파일이면 FileImage로 변환
+      return FileImage(File(imagePath.replaceFirst('file://', '')));
+    } else {
+      // assets 폴더에 있는 경우 AssetImage로 처리
+      return AssetImage(imagePath);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
     userInfo();
     userMandaIdInfo();
+    print('profile: $profile');
   }
 
   @override
@@ -265,9 +282,7 @@ class _MyGoalState extends State<MyGoal> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-
-                              image: NetworkImage(profile!),
-
+                              image: _getImageProvider(profile),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -278,12 +293,10 @@ class _MyGoalState extends State<MyGoal> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(nickname,
-
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize:
                                       MediaQuery.of(context).size.width * 0.035,
-
                                   fontWeight: FontWeight.w500)),
                           const SizedBox(height: 11),
                           Container(
@@ -295,13 +308,11 @@ class _MyGoalState extends State<MyGoal> {
                             ),
                             child: Text(
                               description,
-
                               style: TextStyle(
                                   height: 1.5,
                                   color: Colors.white,
                                   fontSize:
                                       MediaQuery.of(context).size.width * 0.03,
-
                                   fontWeight: FontWeight.w200),
                             ),
                           ),
@@ -325,11 +336,9 @@ class _MyGoalState extends State<MyGoal> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ProfileEdit(
-
                                 selectedImage: "",
                                 profileImage: profile ?? defaultImage,
                                 cameraImage: ""),
-
                           ),
                         );
                       },
@@ -381,7 +390,6 @@ class _MyGoalState extends State<MyGoal> {
               const SizedBox(height: 30),
               Column(
                 children: [
-
                   if (inProgressIDs.isEmpty)
                     Container(
                       height: 200, // 높이 조정 가능
@@ -481,7 +489,6 @@ class _MyGoalState extends State<MyGoal> {
                       ),
                     ),
                   ],
-
                   const SizedBox(height: 25),
                   Center(
                     child: SmoothPageIndicator(

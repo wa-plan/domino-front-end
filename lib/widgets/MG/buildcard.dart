@@ -73,6 +73,8 @@ class _GoalCardState extends State<GoalCard> {
     final colorValue =
         int.parse(widget.color.replaceAll('Color(', '').replaceAll(')', ''));
     int ddayParsed = int.parse(widget.dday);
+    double screenWidth = MediaQuery.of(context).size.width;
+    double imageSize = screenWidth * 0.14;
     final List<Color> colors = _getColorsByCondition(Color(colorValue));
 
     return GestureDetector(
@@ -164,41 +166,41 @@ class _GoalCardState extends State<GoalCard> {
                   )
                 else
                   SizedBox(
-                    width: 250,
-                    height: 85,
-                    child: CarouselSlider.builder(
+                    height: imageSize, // 이미지 높이 설정
+                    width: screenWidth * 0.8, // 가로 크기 제한 (화면의 80%)
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal, // 가로 스크롤 가능
                       itemCount:
-                          widget.photoList.length.clamp(1, 3), // 최대 3개로 제한
-                      itemBuilder: (context, index, realIndex) {
-                        final String imagePath =
-                            widget.photoList[index].toString(); // URL 가져오기
-
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Image.network(
-                            imagePath,
-                            fit: BoxFit.cover,
-                            width: 250,
-                            height: 85,
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Center(
-                                child: Text(
-                                  '이미지 로드 실패',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              );
-                            },
+                          widget.photoList.length.clamp(1, 3), // 최대 3개 제한
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8), // 둥근 모서리 적용
+                            child: Image.network(
+                              widget.photoList[index], // 이미지 URL
+                              width: imageSize, // 크기 조정
+                              height: imageSize,
+                              fit: BoxFit.cover, // 이미지가 꽉 차도록 설정
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: imageSize,
+                                  height: imageSize,
+                                  color: Colors.grey[300],
+                                  child: const Center(
+                                    child: Text(
+                                      '이미지 로드 실패',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         );
                       },
-                      options: CarouselOptions(
-                        height: 85,
-                        autoPlay: false,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 1.0,
-                        enlargeCenterPage: false,
-                        scrollPhysics: const NeverScrollableScrollPhysics(),
-                      ),
                     ),
                   ),
                 const SizedBox(height: 10),
@@ -224,7 +226,7 @@ class _GoalCardState extends State<GoalCard> {
                         ),
                       ],
                     ),
-                    const SizedBox(width: 41),
+                    const SizedBox(width: 5),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -292,7 +294,7 @@ class _GoalCardState extends State<GoalCard> {
                 ),
               ],
             ),
-            const SizedBox(width: 18),
+            const SizedBox(width: 15),
             Container(
               decoration: BoxDecoration(
                 color: Color(colorValue),

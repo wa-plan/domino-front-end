@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/provider/DP/model.dart';
-import 'package:domino/screens/DP/Create/create_input1_page.dart';
+import 'package:domino/screens/DP/Create/dp_create3_page.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

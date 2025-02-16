@@ -87,6 +87,8 @@ class _EditInput1PageState extends State<EditInput1Page> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
@@ -102,7 +104,7 @@ class _EditInput1PageState extends State<EditInput1Page> {
                       .read<TestInputtedDetailGoalModel>()
                       .resetDetailGoals();
                   Navigator.pop(context);
-                }, Icons.keyboard_arrow_left_rounded)
+                }, Icons.keyboard_arrow_left_rounded, currentWidth)
                     .customIconButton(),
                 const SizedBox(width: 10),
                 Text(
@@ -171,7 +173,7 @@ class _EditInput1PageState extends State<EditInput1Page> {
                       ),
                       DPMainGoal(
                                     widget.mandalart,
-                                    ColorTransform(widget.firstColor).colorTransform())
+                                    ColorTransform(widget.firstColor).colorTransform(), currentHeight, currentWidth)
                                 .dpMainGoal(),
                             const SizedBox(
                               height: 40,

@@ -25,6 +25,9 @@ class DPdetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.of(context).size.height;
+    List<int> secondGoalIds2 = [];
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -36,13 +39,10 @@ class DPdetailPage extends StatelessWidget {
             children: [
               CustomIconButton(() {
                 Navigator.of(context).pop();
-              }, Icons.keyboard_arrow_left_rounded)
+              }, Icons.keyboard_arrow_left_rounded, currentWidth)
                   .customIconButton(),
               const SizedBox(width: 10),
-              Text(
-                mandalart,
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+              DPTitleText(mandalart, currentWidth).dPTitleText()
             ],
           ),
         ),
@@ -55,23 +55,7 @@ class DPdetailPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  width: 35,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: const Color(0xff303030),
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
-                        offset: const Offset(0, 0), // X, Y 위치 (0,0)
-                        blurRadius: 7, // 블러 7
-                        spreadRadius: 0, // 스프레드 0
-                      ),
-                    ],
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
+                CustomIconButton(() {
                       for (int i = 0; i < 9; i++) {
                         context
                             .read<SaveInputtedDetailGoalModel>()
@@ -148,17 +132,12 @@ class DPdetailPage extends StatelessWidget {
                             mandalart: mandalart,
                             mandalartId: mandalartId,
                             firstColor: firstColor,
+                            secondGoalIds: secondGoalIds2,
                           ),
                         ),
                       ); // 함수 호출
-                    },
-                    child: const Icon(
-                      Icons.edit,
-                      color: Color(0xff646464),
-                      size: 18,
-                    ),
-                  ),
-                )
+                    }, Icons.edit, currentWidth)
+                        .customIconButton()
               ],
             ),
             const SizedBox(height: 20),
@@ -168,27 +147,26 @@ class DPdetailPage extends StatelessWidget {
                 color: const Color(0xff2B2B2B),
                 borderRadius: BorderRadius.circular(3),
               ),
-              height: 350,
-              width: 350,
               child: Center(
                 child: MandalartGrid3(
                   mandalart: mandalart,
                   secondGoals: secondGoals,
                   mandalartId: mandalartId,
                   firstColor: firstColor,
+                  currentHeight: currentHeight,
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            const Text(
+            SizedBox(height: currentWidth < 600 ? 20 : 23),
+             Text(
               "확대 및 클릭하여 자세히 볼 수 있어요.",
               style: TextStyle(
-                  color: Color(0xff717171),
-                  fontSize: 13,
+                  color: const Color(0xff717171),
+                  fontSize: currentWidth < 600 ? 12 : 15,
                   fontWeight: FontWeight.w300),
             ),
             const Spacer(),
-            Button(const Color.fromARGB(255, 133, 24, 17), Colors.white, '삭제',
+            NewButton(const Color.fromARGB(255, 133, 24, 17), Colors.white, '삭제',
                 () {
               // Create a list to store the second goal ids
               List<int> secondGoalIds = [];
@@ -240,7 +218,7 @@ class DPdetailPage extends StatelessWidget {
                   }
                 },
               );
-            }).button(),
+            }, currentWidth).newButton(),
           ],
         ),
       ),
