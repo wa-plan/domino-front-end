@@ -35,6 +35,7 @@ class _ProfileEditState extends State<ProfileEdit> {
   String? profile;
   final List<String> _imageFiles = [];
 
+
   final ImagePicker _picker = ImagePicker();
 
   /// 📌 **카메라로 사진 촬영 및 업로드**
@@ -160,6 +161,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                   cameraImage: ""),
             ),
           );
+
         } else {
           print('파일 업로드 실패');
         }
@@ -201,6 +203,7 @@ class _ProfileEditState extends State<ProfileEdit> {
             _imageFiles.clear();
             _imageFiles.add(uploadedUrl); // 업로드된 URL을 _imageFiles에 추가
             print('_imageFiles=$_imageFiles');
+
           });
         } else {
           print('selectedImage 업로드 실패');
@@ -255,6 +258,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     print('selectedImage=${widget.selectedImage}');
     print('cameraImage=${widget.cameraImage}');
     print('profileImage=${widget.profileImage}');
+
   }
 
   @override
@@ -341,6 +345,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                               ),
                               child: CircleAvatar(
                                 radius: imageSize / 2.4,
+
                                 backgroundImage: (() {
                                   // 값이 있는 이미지 찾기
                                   String? imageToShow = profile != ""
@@ -356,6 +361,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       : AssetImage(imageToShow)
                                           as ImageProvider; // 로컬 asset 이미지 (selectedImage)
                                 })(),
+
                                 backgroundColor: Colors.transparent,
                               ),
                             ),
@@ -385,7 +391,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
                     const Question(question: '닉네임을 만들어봐요'),
+
                     const SizedBox(height: 10),
                     SizedBox(
                         height: 40,
@@ -393,7 +401,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                                 _nicknamecontroller, (value) => null, false, 1)
                             .textField()),
                     const SizedBox(height: 40),
+
                     const Question(question: '당신은 어떤 사람인가요?'),
+
                     const SizedBox(height: 10),
                     SizedBox(
                         height: 80,
@@ -423,7 +433,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                   Button(Colors.black, Colors.white, '완료', () async {
                     await _uploadSelectedImage(); // 🔹 이미지 업로드 완료까지 대기
                     if (_imageFiles.isNotEmpty) {
+
                       print('_imageFiles=$_imageFiles');
+
                       // 🔹 업로드된 이미지가 존재하는지 확인
                       bool isEdited = await _editProfile(
                         _nicknamecontroller.text,
@@ -450,11 +462,13 @@ class _ProfileEditState extends State<ProfileEdit> {
                         );
                       }
                     } else {
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const MyGoal(),
                         ),
+
                       );
                     }
                   }).button()
@@ -487,7 +501,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                 const Text(
                   '어디서 사진을 가져올까요?',
                   style: TextStyle(
+
                     color: Colors.white,
+
                     fontSize: 13,
                     fontWeight: FontWeight.w400,
                   ),
@@ -499,12 +515,14 @@ class _ProfileEditState extends State<ProfileEdit> {
                 ),
                 const SizedBox(height: 10),
                 GestureDetector(
+
                   onTap: () async {
                     Navigator.pop(context);
                     setState(() {
                       _imageFiles.clear();
                     });
                     await _takePhoto();
+
                   },
                   child: Container(
                     padding: const EdgeInsets.all(7),
@@ -534,7 +552,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                 GestureDetector(
                   onTap: () {
                     _imageFiles.clear();
+
                     _pickImages();
+
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -567,8 +587,10 @@ class _ProfileEditState extends State<ProfileEdit> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProfileSampleGallery(
+
                             selectedImage: widget.selectedImage,
                             profileImage: widget.profileImage),
+
                       ),
                     );
                   },

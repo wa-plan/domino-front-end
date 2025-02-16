@@ -8,6 +8,7 @@ class ProfileSampleGallery extends StatefulWidget {
   const ProfileSampleGallery(
       {super.key, required this.selectedImage, required this.profileImage});
 
+
   @override
   ProfileSampleGalleryState createState() => ProfileSampleGalleryState();
 }
@@ -24,6 +25,7 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
     'assets/img/profile_smp8.png',
     'assets/img/profile_smp9.png',
   ];
+
   String defaultImage = 'assets/img/profile_smp4.png'; // 기본 이미지 경로
 
   late String _selectedImage;
@@ -33,9 +35,11 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
   void initState() {
     super.initState();
     _selectedImage = widget.selectedImage;
+
     _profileImage = widget.profileImage;
     print("selectedImage: $_selectedImage");
     print("profileImage: ${widget.profileImage}");
+
   }
 
   @override
@@ -96,6 +100,7 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
+
                       image: _selectedImage.isNotEmpty
                           ? (_selectedImage.startsWith("http") // 네트워크 이미지인지 확인
                               ? NetworkImage(_selectedImage) as ImageProvider
@@ -105,6 +110,7 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                                   ? NetworkImage(_profileImage) as ImageProvider
                                   : AssetImage(_profileImage) as ImageProvider)
                               : AssetImage(defaultImage)), // 기본 이미지
+
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -163,10 +169,12 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
+
                                       image: _imageUrls[index].isNotEmpty
                                           ? AssetImage(_imageUrls[index])
                                               as ImageProvider
                                           : AssetImage(defaultImage),
+
                                     ),
                                   ),
                                 ),
@@ -190,10 +198,12 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProfileEdit(
+
                           selectedImage: _selectedImage,
                           profileImage:
                               _selectedImage.isEmpty ? widget.profileImage : "",
                           cameraImage: ""),
+
                     ),
                   );
                 }).button()

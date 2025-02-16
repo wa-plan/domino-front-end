@@ -138,6 +138,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,6 +149,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
           titleSpacing: 0.0,
           title: Padding(
             padding: appBarPadding,
+
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -207,6 +209,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                     color: color,
                                     goalImage: goalImage)));
                       },
+
                       child: const Icon(
                         Icons.edit,
                         color: Color(0xff646464),
@@ -225,6 +228,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+
               Center(
                 child: Text(
                   name,
@@ -332,6 +336,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
               const SizedBox(
                 height: 15,
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -596,16 +601,19 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                 horizontal: 15.0, vertical: 7.0),
                             decoration: BoxDecoration(
                               color: const Color(0xff303030),
+
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
+
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
+
                                     const Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Text(
@@ -615,6 +623,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500),
                                       ),
+
                                     ),
                                     GestureDetector(
                                       onTap: () {
@@ -632,6 +641,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                     ),
                                   ],
                                 ),
+
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
@@ -658,6 +668,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                       ),
                                     ],
                                   ),
+
                                 ),
                               ],
                             ),

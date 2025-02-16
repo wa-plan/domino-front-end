@@ -448,6 +448,7 @@ void editDialog(BuildContext context, DateTime date, String title,
               color: Color.fromARGB(255, 26, 26, 26),
               borderRadius: BorderRadius.all(Radius.circular(5))),
           height: 180,
+
           width: 350,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -457,7 +458,9 @@ void editDialog(BuildContext context, DateTime date, String title,
                 children: [
                   Container(
                     width: 15,
+
                     height: 120,
+
                     decoration: BoxDecoration(
                       color: colorValue,
                       borderRadius: const BorderRadius.all(Radius.circular(3)),
@@ -467,6 +470,7 @@ void editDialog(BuildContext context, DateTime date, String title,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Text(
                         content,
                         style:

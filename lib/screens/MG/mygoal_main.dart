@@ -50,6 +50,7 @@ class _MyGoalState extends State<MyGoal> {
       setState(() {
         nickname = data['nickname'] ?? '당신은 어떤 사람인가요?';
         description = data['description'] ?? '프로필 편집을 통해 \n자신을 표현해주세요.';
+
         profile = data['profile'] ?? defaultImage;
       });
     }
@@ -264,7 +265,9 @@ class _MyGoalState extends State<MyGoal> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
+
                               image: NetworkImage(profile!),
+
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -275,10 +278,12 @@ class _MyGoalState extends State<MyGoal> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(nickname,
+
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize:
                                       MediaQuery.of(context).size.width * 0.035,
+
                                   fontWeight: FontWeight.w500)),
                           const SizedBox(height: 11),
                           Container(
@@ -290,11 +295,13 @@ class _MyGoalState extends State<MyGoal> {
                             ),
                             child: Text(
                               description,
+
                               style: TextStyle(
                                   height: 1.5,
                                   color: Colors.white,
                                   fontSize:
                                       MediaQuery.of(context).size.width * 0.03,
+
                                   fontWeight: FontWeight.w200),
                             ),
                           ),
@@ -318,9 +325,11 @@ class _MyGoalState extends State<MyGoal> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ProfileEdit(
+
                                 selectedImage: "",
                                 profileImage: profile ?? defaultImage,
                                 cameraImage: ""),
+
                           ),
                         );
                       },
@@ -372,6 +381,7 @@ class _MyGoalState extends State<MyGoal> {
               const SizedBox(height: 30),
               Column(
                 children: [
+
                   if (inProgressIDs.isEmpty)
                     Container(
                       height: 200, // 높이 조정 가능
@@ -471,6 +481,7 @@ class _MyGoalState extends State<MyGoal> {
                       ),
                     ),
                   ],
+
                   const SizedBox(height: 25),
                   Center(
                     child: SmoothPageIndicator(

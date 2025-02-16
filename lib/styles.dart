@@ -17,6 +17,7 @@ const mainGold = Color(0xffF6C92B);
 const appBarPadding = EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 20);
 const fullPadding = EdgeInsets.fromLTRB(25.0, 10, 25.0, 20.0);
 
+
 //colorPalette
 Map<Color, Color> colorPalette = {
   const Color(0xffFF7A7A): const Color(0xffFFC2C2),
@@ -162,6 +163,7 @@ class DPMainGoal {
           borderRadius: BorderRadius.circular(3),
           color: color,
           boxShadow: [
+
             BoxShadow(
               color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
               offset: const Offset(0, 0), // X, Y 위치 (0,0)
@@ -169,6 +171,7 @@ class DPMainGoal {
               spreadRadius: 0, // 스프레드 0
             ),
           ],
+
         ),
         child: Text(
             textAlign: TextAlign.center,
@@ -594,10 +597,12 @@ class CustomTextField {
 }
 
 class Question extends StatelessWidget {
+
   final String question;
 
   const Question({
     super.key,
+
     required this.question,
   });
 
@@ -631,6 +636,7 @@ class ColorOption2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Container(
@@ -648,6 +654,7 @@ class ColorOption2 extends StatelessWidget {
                 )
               : null,
         ),
+
       ),
     );
   }
@@ -748,6 +755,7 @@ class CustomIconButton {
         color: const Color(0xff303030),
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
+
           BoxShadow(
             color: Colors.black.withOpacity(0.05), // 검은색 10% 투명도
             offset: const Offset(0, 0), // X, Y 위치 (0,0)
@@ -755,6 +763,7 @@ class CustomIconButton {
             spreadRadius: 0, // 스프레드 0
           ),
         ],
+
       ),
       child: GestureDetector(
         onTap: () {

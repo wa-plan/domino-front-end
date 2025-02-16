@@ -19,11 +19,13 @@ class PieChart extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
+
       ..strokeWidth = 50.0
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.butt;
 
     double radius = size.width * 1.1;
+
     Offset center = Offset(size.width / 2, size.height / 2);
     double startAngle = -pi / 2;
 
@@ -31,6 +33,7 @@ class PieChart extends CustomPainter {
     if (successPercentage == 0 &&
         inProgressPercentage == 0 &&
         failPercentage == 0) {
+
       paint.color = const Color(0xff1D1D1D);
       canvas.drawArc(Rect.fromCircle(center: center, radius: radius), 0, 2 * pi,
           false, paint);
@@ -62,6 +65,7 @@ class PieChart extends CustomPainter {
     // 3. 실패율 아크 그리기
     startAngle += inProgressArcAngle;
     double failArcAngle = 2 * pi * (failPercentage / 100);
+
     paint.color = const Color(0xff1D1D1D);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle,
         failArcAngle, false, paint);

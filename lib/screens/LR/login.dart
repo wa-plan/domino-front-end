@@ -1,3 +1,4 @@
+
 import 'package:domino/screens/LR/loginregister_find_password.dart';
 import 'package:domino/screens/TD/td_main.dart';
 import 'package:domino/screens/TR/tr_1.dart';
@@ -22,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String userInfo = ""; //user의 정보를 저장하기 위한 변수
 
   final LoginService _loginService = LoginService();
+
 
   Future<void> _asyncMethod() async {
     // 먼저 저장된 토큰이 있는지 확인
@@ -137,13 +139,16 @@ class _LoginScreenState extends State<LoginScreen> {
       decoration: const BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
+
           image: AssetImage('assets/img/newBG.png'), // 배경 이미지
+
         ),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: Padding(
+
             padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,6 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           },
                           style: TextButton.styleFrom(
+
                             padding:
                                 const EdgeInsets.fromLTRB(15, 10.5, 15, 10.5),
                             backgroundColor: Colors.transparent,

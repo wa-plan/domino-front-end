@@ -39,58 +39,74 @@ class _TR_6State extends State<TR_6> {
                   color: Colors.white, // 이미지 위에 잘 보이도록 텍스트 색상 설정
                 ),
               ),
+
               const SizedBox(
                 height: 15,
               ),
               Container(
                 padding: const EdgeInsets.all(20),
+
                 decoration: BoxDecoration(
                   color: const Color(0xffFF6767),
                   borderRadius: BorderRadius.circular(3),
                 ),
+
                 child: const Text(
+
                   '뿌듯한 학교생활하기',
                   style: TextStyle(color: Colors.black, fontSize: 15),
                 ),
               ),
+
               const SizedBox(
                 height: 15,
               ),
               Container(
                 padding: const EdgeInsets.all(20),
+
                 decoration: BoxDecoration(
                   color: const Color(0xffFCFF62),
                   borderRadius: BorderRadius.circular(3),
                 ),
+
                 child: const Text(
+
                   '스펙왕 되기',
                   style: TextStyle(color: Colors.black, fontSize: 15),
                 ),
               ),
+
               const SizedBox(
                 height: 15,
               ),
               Container(
                 padding: const EdgeInsets.all(20),
+
                 decoration: BoxDecoration(
                   color: const Color(0xff72FF5B),
                   borderRadius: BorderRadius.circular(3),
                 ),
+
                 child: const Text(
+
                   '"도닦기" 동아리/학회',
                   style: TextStyle(color: Colors.black, fontSize: 15),
                 ),
               ),
+
               const SizedBox(
                 height: 15,
               ),
               Container(
                 padding: const EdgeInsets.all(20),
+
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(3),
                 ),
+
                 child: const Text(
+
                   '동아리 지원요강 확인하기',
                   style: TextStyle(color: Colors.black, fontSize: 15),
                 ),

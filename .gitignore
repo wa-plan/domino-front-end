@@ -42,8 +42,12 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+
 # Gradle 관련 파일 제외
 android/gradle-*
 android/gradle-wrapper.jar
 android/gradle-*.zip
 android/**/kotlin-compiler-embeddable-*.jar
+
+.env
+
