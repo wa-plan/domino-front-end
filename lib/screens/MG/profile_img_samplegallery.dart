@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 
 class ProfileSampleGallery extends StatefulWidget {
   final String selectedImage;
-  const ProfileSampleGallery({super.key, required this.selectedImage});
+  final String profileImage;
+  const ProfileSampleGallery(
+      {super.key, required this.selectedImage, required this.profileImage});
+
 
   @override
   ProfileSampleGalleryState createState() => ProfileSampleGalleryState();
@@ -23,12 +26,20 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
     'assets/img/profile_smp9.png',
   ];
 
+  String defaultImage = 'assets/img/profile_smp4.png'; // 기본 이미지 경로
+
   late String _selectedImage;
+  late String _profileImage;
 
   @override
   void initState() {
     super.initState();
     _selectedImage = widget.selectedImage;
+
+    _profileImage = widget.profileImage;
+    print("selectedImage: $_selectedImage");
+    print("profileImage: ${widget.profileImage}");
+
   }
 
   @override
@@ -89,7 +100,17 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage(_selectedImage), // 선택된 이미지를 표시
+
+                      image: _selectedImage.isNotEmpty
+                          ? (_selectedImage.startsWith("http") // 네트워크 이미지인지 확인
+                              ? NetworkImage(_selectedImage) as ImageProvider
+                              : AssetImage(_selectedImage) as ImageProvider)
+                          : (_profileImage.isNotEmpty
+                              ? (_profileImage.startsWith("http")
+                                  ? NetworkImage(_profileImage) as ImageProvider
+                                  : AssetImage(_profileImage) as ImageProvider)
+                              : AssetImage(defaultImage)), // 기본 이미지
+
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -148,7 +169,12 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: AssetImage(_imageUrls[index]),
+
+                                      image: _imageUrls[index].isNotEmpty
+                                          ? AssetImage(_imageUrls[index])
+                                              as ImageProvider
+                                          : AssetImage(defaultImage),
+
                                     ),
                                   ),
                                 ),
@@ -172,9 +198,12 @@ class ProfileSampleGalleryState extends State<ProfileSampleGallery> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProfileEdit(
-                        selectedImage: _selectedImage,
-                        profileImage: "",
-                      ),
+
+                          selectedImage: _selectedImage,
+                          profileImage:
+                              _selectedImage.isEmpty ? widget.profileImage : "",
+                          cameraImage: ""),
+
                     ),
                   );
                 }).button()
