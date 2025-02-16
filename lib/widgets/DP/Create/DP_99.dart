@@ -2,7 +2,7 @@ import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
-import 'package:domino/screens/DP/Create/create_input2_page.dart';
+import 'package:domino/screens/DP/Create/dp_create4_page.dart';
 
 class Smallgridwithdata extends StatelessWidget {
   final int goalId;

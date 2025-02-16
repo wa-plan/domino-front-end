@@ -27,6 +27,7 @@ class _EditInput2PageState extends State<EditInput2Page> {
   List<String> _subGoals = [];
   bool _isLoading = false;
   String goal = "";
+  
 
   @override
   void didChangeDependencies() {
@@ -95,6 +96,8 @@ class _EditInput2PageState extends State<EditInput2Page> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.of(context).size.height;
     // selectedDetailGoal을 안전하게 파싱
     final selectedDetailGoalString =
         context.watch<SelectDetailGoal>().selectedDetailGoal;
@@ -113,7 +116,7 @@ class _EditInput2PageState extends State<EditInput2Page> {
               CustomIconButton(() {
                 context.read<TestInputtedActionPlanModel>().resetActionPlans();
                 Navigator.pop(context);
-              }, Icons.keyboard_arrow_left_rounded)
+              }, Icons.keyboard_arrow_left_rounded, currentWidth)
                   .customIconButton(),
               const SizedBox(width: 10),
               Text(
@@ -174,7 +177,7 @@ class _EditInput2PageState extends State<EditInput2Page> {
                         height: 15,
                       ),
                     DPMainGoal(widget.mandalart,
-                            ColorTransform(widget.firstColor).colorTransform())
+                            ColorTransform(widget.firstColor).colorTransform(), currentHeight, currentWidth)
                         .dpMainGoal(),
                     const SizedBox(height: 40),
                     Center(

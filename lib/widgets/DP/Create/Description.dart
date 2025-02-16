@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class Description {
   final String color;
+  final double currentWidth;
 
-  Description(this.color);
+  Description(this.color, this.currentWidth);
 
   Widget description() {
     return ClipRRect(
@@ -18,11 +19,11 @@ class Description {
         collapsedIconColor: const Color(0xffAAAAAA),
         shape: const Border(
       ),
-        title:  const Text(
+        title: Text(
           '만다라트 작성 꿀팁',
           style: TextStyle(
-            color: Color(0xffAAAAAA),
-            fontSize: 14,
+            color: const Color(0xffAAAAAA),
+            fontSize: currentWidth < 600 ? 13 : 19,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -30,105 +31,105 @@ class Description {
           Row(
             children: [
               Container(
-                height: 15,
-                width: 15,
+                height: currentWidth < 600 ? 14 : 18,
+                width: currentWidth < 600 ? 14 : 18,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(2),
                     color: ColorTransform(color).colorTransform()),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 13 : 18,
               ),
-              const Text(
+              Text(
                 '제1목표 ',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
-                '이루고자 하는 최종목표에요',
+              Text(
+                currentWidth < 600 ? '이루고자 하는 최종목표':'이루고자 하는 최종목표에요.',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: currentWidth < 600 ? 10 : 16,
                   fontWeight: FontWeight.w300,
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          SizedBox(
+                height: currentWidth < 600 ? 15 : 18,
+              ),
           Row(
             children: [
               Container(
-                height: 15,
-                width: 15,
+                height: currentWidth < 600 ? 14 : 18,
+                width: currentWidth < 600 ? 14 : 18,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
                   color: const Color(0xff929292),
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 13 : 18,
               ),
-              const Text(
+               Text(
                 '제2목표',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
-                '최종 목표를 이루기 위한 세부목표에요',
+               Text(
+                currentWidth < 600 ? '최종목표를 위한 세부목표':'최종목표를 위한 세부목표에요.',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: currentWidth < 600 ? 10 : 16,
                   fontWeight: FontWeight.w300,
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          SizedBox(
+                height: currentWidth < 600 ? 15 : 18,
+              ),
           Row(
             children: [
               Container(
-                height: 15,
-                width: 15,
+                height: currentWidth < 600 ? 14 : 18,
+                width: currentWidth < 600 ? 14 : 18,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
                   color: const Color(0xff5C5C5C),
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 13 : 18,
               ),
-              const Text(
+               Text(
                 '제3목표',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
-                '세부목표를 위한 구체적인 계획이에요',
+               Text(
+                currentWidth < 600 ? '세부목표를 위한 실행계획' : '세부목표를 위한 구체적인 계획이에요.',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: currentWidth < 600 ? 10 : 16,
                   fontWeight: FontWeight.w300,
                 ),
               ),

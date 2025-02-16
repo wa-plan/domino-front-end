@@ -215,6 +215,7 @@ class _MyGoalState extends State<MyGoal> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -299,7 +300,7 @@ class _MyGoalState extends State<MyGoal> {
                         ),
                       ),
                     );
-                  }, Icons.edit)
+                  }, Icons.edit, currentWidth)
                       .customIconButton(),
                 ],
               ),

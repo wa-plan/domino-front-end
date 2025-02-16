@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:domino/screens/LR/loginregister_find_password.dart';
 import 'package:domino/screens/TD/td_main.dart';
-import 'package:domino/screens/TR/tr_1.dart';
+import 'package:domino/screens/Tutorial/tutorial1_page.dart';
 import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:domino/screens/LR/register.dart';
@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (await storage.read(key: "token") != null) {
       if (!mounted) return;
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const TR_1()));
+          context, MaterialPageRoute(builder: (context) => const Tutorial1()));
     }
   }
 

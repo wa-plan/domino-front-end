@@ -27,6 +27,8 @@ class Edit99Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
@@ -89,7 +91,7 @@ class Edit99Page extends StatelessWidget {
 
                     Navigator.pop(context);
                   });
-                }, Icons.keyboard_arrow_left_rounded)
+                }, Icons.keyboard_arrow_left_rounded, currentWidth)
                     .customIconButton(),
                 const SizedBox(width: 10),
                 Text(
@@ -111,7 +113,7 @@ class Edit99Page extends StatelessWidget {
                 ),
                 //제1목표 박스
                 DPMainGoal(
-                        mandalart, ColorTransform(firstColor).colorTransform())
+                        mandalart, ColorTransform(firstColor).colorTransform(), currentHeight, currentWidth)
                     .dpMainGoal(),
 
                 const SizedBox(

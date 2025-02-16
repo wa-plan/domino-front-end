@@ -5,6 +5,7 @@ class Smallgrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
     return SizedBox(
         width: 100,
         child: GridView.count(
@@ -15,7 +16,7 @@ class Smallgrid extends StatelessWidget {
               return Container(
                 margin: const EdgeInsets.all(1.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3),
+                  borderRadius: BorderRadius.circular(currentWidth < 600 ? 3 : 6),
                   color: index == 4
                       ? const Color(0xff929292)
                       : const Color(0xff5C5C5C),
