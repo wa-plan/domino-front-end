@@ -66,7 +66,7 @@ class _LoginregisterFindPasswordState extends State<LoginregisterFindPassword> {
               Text(
                 '아이디/비밀번호 찾기',
                 style: TextStyle(
-                    fontSize: currentWidth < 600 ? 20 : 24,
+                    fontSize: currentWidth < 600 ? 18 : 22,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
