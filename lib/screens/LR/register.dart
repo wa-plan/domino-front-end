@@ -74,7 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Text(
                 '계정생성',
                 style: TextStyle(
-                    fontSize: currentWidth < 600 ? 20 : 24,
+                    fontSize: currentWidth < 600 ? 18 : 22,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
