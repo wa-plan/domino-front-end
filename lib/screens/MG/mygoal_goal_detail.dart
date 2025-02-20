@@ -113,9 +113,6 @@ class MyGoalDetailState extends State<MyGoalDetail> {
     super.initState();
     String mandalartId = widget.id;
     color = widget.color;
-    //final colorValue =
-    //    int.parse(color.replaceAll('Color(', '').replaceAll(')', ''));
-    //print('colorValue=$colorValue');
     name = widget.name;
     dday = widget.dday;
     status = widget.status;
@@ -141,6 +138,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width; // 한 번만 가져오기
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -499,7 +497,7 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: 210,
+                            width: size * 0.4,
                             height: 130,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 15.0, vertical: 7.0),
@@ -593,9 +591,9 @@ class MyGoalDetailState extends State<MyGoalDetail> {
                                   ),
                                 ]),
                           ),
-                          const SizedBox(width: 30),
+                          SizedBox(width: size * 0.05),
                           Container(
-                            width: 210,
+                            width: size * 0.4,
                             height: 130,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 15.0, vertical: 7.0),

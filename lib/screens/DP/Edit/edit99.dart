@@ -15,16 +15,20 @@ class Edit99Page extends StatelessWidget {
   final String mandalart;
   final int mandalartId;
   final String firstColor;
+  final List<int> secondGoalIds;
 
-  const Edit99Page({
-    super.key,
-    required this.mandalart,
-    required this.mandalartId,
-    required this.firstColor,
-  });
+  const Edit99Page(
+      {super.key,
+      required this.mandalart,
+      required this.mandalartId,
+      required this.firstColor,
+      required this.secondGoalIds
+     });
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         backgroundColor: backgroundColor,
         appBar: AppBar(
@@ -87,7 +91,7 @@ class Edit99Page extends StatelessWidget {
 
                     Navigator.pop(context);
                   });
-                }, Icons.keyboard_arrow_left_rounded)
+                }, Icons.keyboard_arrow_left_rounded, currentWidth)
                     .customIconButton(),
                 const SizedBox(width: 10),
                 Text(
@@ -109,7 +113,7 @@ class Edit99Page extends StatelessWidget {
                 ),
                 //제1목표 박스
                 DPMainGoal(
-                        mandalart, ColorTransform(firstColor).colorTransform())
+                        mandalart, ColorTransform(firstColor).colorTransform(), currentHeight, currentWidth)
                     .dpMainGoal(),
 
                 const SizedBox(
@@ -268,6 +272,9 @@ class Edit99Page extends StatelessWidget {
                           );
                         },
                       ).button(),
+
+                     
+                      
                       Button(Colors.black, Colors.white, '다음', () {
                         // isAllEmpty 검사를 실행
                         final isAllEmpty = context

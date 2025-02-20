@@ -198,6 +198,7 @@ class EditColorPageState extends State<EditColorPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
     List<Color> colors = [
       const Color(0xffFF7A7A),
       const Color(0xffFFB82D),
@@ -274,7 +275,7 @@ class EditColorPageState extends State<EditColorPage> {
 
                     Navigator.pop(context);
                   });
-                }, Icons.keyboard_arrow_left_rounded)
+                }, Icons.keyboard_arrow_left_rounded, currentWidth)
                     .customIconButton(),
                 const SizedBox(width: 10),
                 Text(

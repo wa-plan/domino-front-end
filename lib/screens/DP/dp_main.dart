@@ -3,7 +3,7 @@ import 'package:domino/provider/DP/model.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/DP_main_mandalart.dart';
 import 'package:flutter/material.dart';
-import 'package:domino/screens/DP/Create/create_select_page.dart';
+import 'package:domino/screens/DP/Create/dp_create1_page.dart';
 import 'package:domino/widgets/nav_bar.dart';
 import 'package:domino/apis/services/dp_services.dart';
 import 'package:domino/screens/DP/Detail/detail_9x9_page.dart';
@@ -87,6 +87,9 @@ class _DPMainState extends State<DPMain> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -94,7 +97,7 @@ class _DPMainState extends State<DPMain> {
         titleSpacing: 0.0,
         title: Padding(
           padding: appBarPadding,
-          child: Text('도미노 플랜', style: Theme.of(context).textTheme.titleLarge),
+          child: DPTitleText('도미노 플랜', currentWidth).dPTitleText(),
         ),
         backgroundColor: backgroundColor,
       ),
@@ -138,14 +141,14 @@ class _DPMainState extends State<DPMain> {
                         ),
                       ),
                     );
-                  }, Icons.add)
+                  }, Icons.add, currentWidth)
                       .customIconButton(),
                 ],
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: currentWidth < 600 ? 10 : 15),
               mainGoals.isEmpty
                   ? Container(
-                      height: 300,
+                      height: currentWidth < 600 ? 300 : 400,
                       decoration: BoxDecoration(
                         color: const Color(0xff2D2D2D),
                         borderRadius: BorderRadius.circular(8),
@@ -154,14 +157,13 @@ class _DPMainState extends State<DPMain> {
                         children: [
                           // 텍스트: 좌측 상단 정렬
                           Positioned(
-                            top: 30, // 텍스트의 상단 여백
-                            left: 30, // 텍스트의 좌측 여백
+                            top: 25, // 텍스트의 상단 여백
+                            left: 25, // 텍스트의 좌측 여백
                             child: Text(
                               '아직 플랜이 없어요.\n목표를 이루려면\n철저한 계획은 필수!',
                               style: TextStyle(
                                   color: const Color(0xff464646),
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.04,
+                                  fontSize: currentWidth < 600 ? 15 : 20,
                                   fontWeight: FontWeight.w700,
                                   height: 1.7),
                             ),
@@ -170,9 +172,13 @@ class _DPMainState extends State<DPMain> {
                           Positioned(
                             bottom: 0, // 이미지의 하단 여백
                             right: 0, // 이미지의 우측 여백
-                            child: Image.asset(
-                              'assets/img/emptyDominho.png',
-                              height: 230, // 이미지 크기 유지
+                            child: Opacity(
+                              opacity: 0.2,
+                              child: Image.asset(
+                                'assets/img/emptyDominho.png',
+                                height: currentWidth < 600 ? 190 : 300,
+                                // 이미지 크기 유지
+                              ),
                             ),
                           ),
                         ],
@@ -235,14 +241,7 @@ class _DPMainState extends State<DPMain> {
                                       ),
                                     );
                                   },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Column(
+                                  child: Column(
                                       children: [
                                         const SizedBox(height: 15),
                                         Container(
@@ -254,38 +253,14 @@ class _DPMainState extends State<DPMain> {
                                                 BorderRadius.circular(5),
                                           ),
                                           width: double.infinity,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                width: 7,
-                                                height: 18,
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      ColorTransform(firstColor).colorTransform(),
-                                                  borderRadius:
-                                                      BorderRadius.circular(1),
-                                                ),
-                                              ),
-                                              Text(
-                                                mandalart,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              Container(
-                                                width: 7,
-                                                height: 18,
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      Colors.transparent,
-                                                  borderRadius:
-                                                      BorderRadius.circular(1),
-                                                ),
-                                              ),
-                                            ],
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            mandalart,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: currentWidth < 600 ? 12 : 17,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -302,11 +277,12 @@ class _DPMainState extends State<DPMain> {
                                             firstColor: firstColor,
                                             secondGoals: secondGoals,
                                             mandalartId: int.parse(mandalartId),
+                                            currentHeight: currentHeight,
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  
                                 );
                               }
                             },

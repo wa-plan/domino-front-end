@@ -2,9 +2,11 @@ import 'package:domino/styles.dart';
 import 'package:flutter/material.dart';
 
 class Description2 {
-  final String color;
+ final String color;
+  final double currentWidth;
 
-  Description2(this.color);
+  Description2(this.color, this.currentWidth);
+
 
   Widget description2() {
     return ClipRRect(
@@ -18,11 +20,11 @@ class Description2 {
         collapsedIconColor: const Color(0xffAAAAAA),
         shape: const Border(
       ),
-        title:  const Text(
+        title:  Text(
           'SMART 기법을 참고해보세요.',
           style: TextStyle(
-            color: Color(0xffAAAAAA),
-            fontSize: 14,
+            color: const Color(0xffAAAAAA),
+            fontSize: currentWidth < 600 ? 13 : 19,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -33,36 +35,36 @@ class Description2 {
                 'S',
                 style: TextStyle(
                   color: ColorTransform(color).colorTransform(),
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
+               Text(
                 'Specific ',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
+               Text(
                 '명확하고 구체적인 목표',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: currentWidth < 600 ? 10 : 16,
                   fontWeight: FontWeight.w300,
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
+           SizedBox(
+            height: currentWidth < 600 ? 15 : 18,
           ),
            Row(
             children: [
@@ -70,36 +72,36 @@ class Description2 {
                 'M',
                 style: TextStyle(
                   color: ColorTransform(color).colorTransform(),
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
+               Text(
                 'Measurable',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
-                '정량화되고 측정 가능한 목표',
+               Text(
+                '측정 가능한 목표',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: currentWidth < 600 ? 10 : 16,
                   fontWeight: FontWeight.w300,
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
+           SizedBox(
+            height: currentWidth < 600 ? 15 : 18,
           ),
            Row(
             children: [
@@ -107,37 +109,37 @@ class Description2 {
                 'A',
                 style: TextStyle(
                   color: ColorTransform(color).colorTransform(),
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
+               Text(
                 'Attainable',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
+               Text(
                 '달성 가능한 목표',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: currentWidth < 600 ? 10 : 16,
                   fontWeight: FontWeight.w300,
                 ),
               ),
               
             ],
           ),
-          const SizedBox(
-            height: 10,
+           SizedBox(
+            height: currentWidth < 600 ? 15 : 18,
           ),
            Row(
             children: [
@@ -145,37 +147,37 @@ class Description2 {
                 'R',
                 style: TextStyle(
                   color: ColorTransform(color).colorTransform(),
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
+               Text(
                 'Realistic',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
+               Text(
                 '현실적인 목표',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: currentWidth < 600 ? 10 : 16,
                   fontWeight: FontWeight.w300,
                 ),
               ),
               
             ],
           ),
-          const SizedBox(
-            height: 10,
+           SizedBox(
+            height: currentWidth < 600 ? 15 : 18,
           ),
            Row(
             children: [
@@ -183,29 +185,29 @@ class Description2 {
                 'T',
                 style: TextStyle(
                   color: ColorTransform(color).colorTransform(),
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
+               Text(
                 'Timely',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: currentWidth < 600 ? 12 : 17,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: currentWidth < 600 ? 14 : 18,
               ),
-              const Text(
+               Text(
                 '마감기한이 있는 목표',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 12,
+                  fontSize: currentWidth < 600 ? 10 : 16,
                   fontWeight: FontWeight.w300,
                 ),
               ),

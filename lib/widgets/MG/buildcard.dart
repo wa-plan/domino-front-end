@@ -73,7 +73,10 @@ class _GoalCardState extends State<GoalCard> {
     final colorValue =
         int.parse(widget.color.replaceAll('Color(', '').replaceAll(')', ''));
     int ddayParsed = int.parse(widget.dday);
+    double screenWidth = MediaQuery.of(context).size.width;
+    double imageSize = screenWidth * 0.14;
     final List<Color> colors = _getColorsByCondition(Color(colorValue));
+    final currentWidth = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: () {
@@ -93,7 +96,7 @@ class _GoalCardState extends State<GoalCard> {
         );
       },
       child: Container(
-        padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+        padding: const EdgeInsets.all(10),
         color: Colors.transparent,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -117,9 +120,9 @@ class _GoalCardState extends State<GoalCard> {
                     const SizedBox(width: 5),
                     Text(
                       widget.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: currentWidth < 600 ? 14 : 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -137,9 +140,9 @@ class _GoalCardState extends State<GoalCard> {
                         ddayParsed < 0
                             ? 'D+${ddayParsed * -1}'
                             : 'D-$ddayParsed',
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 194, 194, 194),
-                          fontSize: 11,
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 194, 194, 194),
+                          fontSize: currentWidth < 600 ? 11 : 13,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -153,8 +156,8 @@ class _GoalCardState extends State<GoalCard> {
                       color: const Color(0xff303030),
                       borderRadius: BorderRadius.circular(3.0),
                     ),
-                    width: 250,
-                    height: 85,
+                    width: currentWidth < 600 ? 200 : 400,
+                    height: currentWidth < 600 ? 80 : 160,
                     child: const Center(
                       child: Text(
                         '이미지를 추가해 주세요',
@@ -164,76 +167,77 @@ class _GoalCardState extends State<GoalCard> {
                   )
                 else
                   SizedBox(
-                    width: 250,
-                    height: 85,
-                    child: CarouselSlider.builder(
+                    height: imageSize, // 이미지 높이 설정
+                    width: screenWidth * 0.8, // 가로 크기 제한 (화면의 80%)
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal, // 가로 스크롤 가능
                       itemCount:
-                          widget.photoList.length.clamp(1, 3), // 최대 3개로 제한
-                      itemBuilder: (context, index, realIndex) {
-                        final String imagePath =
-                            widget.photoList[index].toString(); // URL 가져오기
-
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Image.network(
-                            imagePath,
-                            fit: BoxFit.cover,
-                            width: 250,
-                            height: 85,
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Center(
-                                child: Text(
-                                  '이미지 로드 실패',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                              );
-                            },
+                          widget.photoList.length.clamp(1, 3), // 최대 3개 제한
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8), // 둥근 모서리 적용
+                            child: Image.network(
+                              widget.photoList[index], // 이미지 URL
+                              width: imageSize, // 크기 조정
+                              height: imageSize,
+                              fit: BoxFit.cover, // 이미지가 꽉 차도록 설정
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: imageSize,
+                                  height: imageSize,
+                                  color: Colors.grey[300],
+                                  child: const Center(
+                                    child: Text(
+                                      '이미지 로드 실패',
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         );
                       },
-                      options: CarouselOptions(
-                        height: 85,
-                        autoPlay: false,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 1.0,
-                        enlargeCenterPage: false,
-                        scrollPhysics: const NeverScrollableScrollPhysics(),
-                      ),
                     ),
                   ),
                 const SizedBox(height: 10),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const SizedBox(width: 16),
                     Column(
                       children: [
-                        const Text(
+                        Text(
                           '나의 도미노',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
-                              fontSize: 12),
+                              fontSize: currentWidth < 600 ? 12 : 16),
                         ),
                         Text(
                           '${widget.successNum}개',
-                          style: const TextStyle(
-                            color: Color(0xffFCFF62),
+                          style: TextStyle(
+                            color: const Color(0xffFCFF62),
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                            fontSize: currentWidth < 600 ? 16 : 20,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(width: 41),
+                    SizedBox(width: currentWidth < 600 ? 5 : 20),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const CircleAvatar(
+                        CircleAvatar(
                           backgroundColor: Colors.white,
-                          radius: 6,
+                          radius: currentWidth < 600 ? 6 : 10,
                         ),
-                        const SizedBox(
-                          width: 18,
+                        SizedBox(
+                          width: currentWidth < 600 ? 18 : 22,
                         ),
                         // 첫 번째 색상
                         Container(
@@ -241,11 +245,12 @@ class _GoalCardState extends State<GoalCard> {
                             color: colors[0], // 첫 번째 색상
                             borderRadius: BorderRadius.circular(2.0),
                           ),
-                          width: 13,
-                          height: 6.0, // 첫 번째 높이 (6.0으로 고정)
+                          width: currentWidth < 600 ? 13 : 17, //13
+                          height:
+                              currentWidth < 600 ? 6 : 12, // 첫 번째 높이 (6.0으로 고정)
                         ),
-                        const SizedBox(
-                          width: 18,
+                        SizedBox(
+                          width: currentWidth < 600 ? 18 : 22,
                         ),
                         // 두 번째 색상
                         Container(
@@ -255,8 +260,8 @@ class _GoalCardState extends State<GoalCard> {
                                 : Colors.transparent, // 두 번째 색상
                             borderRadius: BorderRadius.circular(2.0),
                           ),
-                          width: 13,
-                          height: 16.0, // 두 번째 높이 (예: 10 추가)
+                          width: currentWidth < 600 ? 13 : 17,
+                          height: currentWidth < 600 ? 16 : 22, //16
                         ),
                         const SizedBox(
                           width: 18,
@@ -269,8 +274,10 @@ class _GoalCardState extends State<GoalCard> {
                                 : Colors.transparent, // 세 번째 색상
                             borderRadius: BorderRadius.circular(2.0),
                           ),
-                          width: 13,
-                          height: 26.0, // 세 번째 높이 (예: 20 추가)
+                          width: currentWidth < 600 ? 13 : 17,
+                          height: currentWidth < 600
+                              ? 26
+                              : 36, // 세 번째 높이 (예: 20 추가)
                         ),
                         const SizedBox(
                           width: 18,
@@ -283,8 +290,10 @@ class _GoalCardState extends State<GoalCard> {
                                 : Colors.transparent, // 네 번째 색상
                             borderRadius: BorderRadius.circular(2.0),
                           ),
-                          width: 13,
-                          height: 36.0, // 네 번째 높이 (예: 30 추가)
+                          width: currentWidth < 600 ? 13 : 17,
+                          height: currentWidth < 600
+                              ? 36
+                              : 46, // 네 번째 높이 (예: 30 추가)
                         ),
                       ],
                     )
@@ -292,7 +301,7 @@ class _GoalCardState extends State<GoalCard> {
                 ),
               ],
             ),
-            const SizedBox(width: 18),
+            const SizedBox(width: 15),
             Container(
               decoration: BoxDecoration(
                 color: Color(colorValue),

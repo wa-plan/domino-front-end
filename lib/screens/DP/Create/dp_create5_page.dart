@@ -1,13 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:domino/apis/services/dp_services.dart';
-import 'package:domino/screens/DP/Create/complete_page.dart';
+import 'package:domino/screens/DP/Create/dp_create6_page.dart';
 import 'package:domino/screens/DP/dp_main.dart';
 import 'package:domino/styles.dart';
 import 'package:domino/widgets/DP/color_Grid23.dart';
 import 'package:domino/widgets/DP/color_Grid2.dart';
 import 'package:domino/widgets/popup.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:domino/provider/DP/model.dart';
 
@@ -28,24 +27,6 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
   int selectIndex = 0;
   int selectColorIndex = -1;
   bool isDetailGoalEmpty = false; // 상태 추가
-  Map colorPalette = {
-    const Color(0xffFF7A7A): const Color(0xffFFC2C2),
-    const Color(0xffFFB82D): const Color(0xffFFD19B),
-    const Color(0xffFCFF62): const Color(0xffFEFFCD),
-    const Color(0xff72FF5B): const Color(0xffC1FFB7),
-    const Color(0xff5DD8FF): const Color(0xff94E5FF),
-    const Color(0xff929292): const Color(0xffC4C4C4),
-    const Color(0xffFF5794): const Color(0xffFF8EB7),
-    const Color(0xffAE7CFF): const Color(0xffD0B4FF),
-    const Color(0xffC77B7F): const Color(0xffEBB6B9),
-    const Color(0xff009255): const Color(0xff6DE1B0),
-    const Color(0xff3184FF): const Color(0xff8CBAFF),
-    const Color(0xff11D1C2): const Color(0xffAAF4EF),
-  };
-
-  String colorToHex(Color color) {
-    return '#${color.value.toRadixString(16).padLeft(8, '0')}';
-  }
 
   Future<bool> _addSecondGoal() async {
     final mandalartId = Provider.of<SelectFinalGoalId>(context, listen: false)
@@ -58,10 +39,8 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
     final List<String> color = Provider.of<GoalColor>(context, listen: false)
         .selectedGoalColor
         .values
-        .map((color) => colorToHex(color))
+        .map((color) => color.toString())
         .toList();
-
-    print(color);
 
     final success = await AddSecondGoalService.addSecondGoal(
       mandalartId: mandalartId,
@@ -84,8 +63,6 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
         secondGoalId.add(secondGoal["id"]);
       }
     }
-
-    print(secondGoalId);
 
     final third0 =
         Provider.of<SaveInputtedActionPlanModel>(context, listen: false)
@@ -151,6 +128,8 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight = MediaQuery.of(context).size.height;
     List<Color> colors = [
       const Color(0xffFF7A7A),
       const Color(0xffFFB82D),
@@ -224,38 +203,25 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
 
                     // DP 메인 페이지로 이동
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const DPMain()),
-                    );
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const DPMain()),
+                              );
                   });
-                }, Icons.keyboard_arrow_left_rounded)
+                }, Icons.keyboard_arrow_left_rounded, currentWidth)
                     .customIconButton(),
                 const SizedBox(width: 10),
-                Text(
-                  '플랜 만들기',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+                DPTitleText('플랜 만들기', currentWidth).dPTitleText(),
                 const Spacer(),
                 Row(
                   children: [
                     Container(
                       decoration: BoxDecoration(
                         color: const Color(0xff515151), // 첫 번째 색상
-                        borderRadius: BorderRadius.circular(1.0),
+                        borderRadius: BorderRadius.circular(currentWidth < 600 ? 2 : 3),
                       ),
-                      width: 8,
-                      height: 8,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xff515151), // 첫 번째 색상
-                        borderRadius: BorderRadius.circular(1.0),
-                      ),
-                      width: 8,
-                      height: 8,
+                      width: currentWidth < 600 ? 7 : 11,
+                      height: currentWidth < 600 ? 7 : 11,
                     ),
                     const SizedBox(
                       width: 8,
@@ -263,10 +229,21 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                     Container(
                       decoration: BoxDecoration(
                         color: const Color(0xffD9D9D9), // 첫 번째 색상
-                        borderRadius: BorderRadius.circular(1.0),
+                        borderRadius: BorderRadius.circular(currentWidth < 600 ? 2 : 3),
                       ),
+                      width: currentWidth < 600 ? 7 : 11,
+                      height: currentWidth < 600 ? 7 : 11,
+                    ),
+                    const SizedBox(
                       width: 8,
-                      height: 8,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xff515151), // 첫 번째 색상
+                        borderRadius: BorderRadius.circular(currentWidth < 600 ? 2 : 3),
+                      ),
+                      width: currentWidth < 600 ? 7 : 11,
+                      height: currentWidth < 600 ? 7 : 11,
                     ),
                   ],
                 ),
@@ -284,22 +261,14 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 15),
-                        const Text(
-                          '나만의 스타일로 만다라트를 꾸며요.',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
+                        SizedBox(height: currentWidth < 600 ? 15 : 20),
+                    DPGuideText('나만의 스타일로 만다라트를 꾸며요.', currentWidth)
+                        .dPGuideText(),
+                    SizedBox(height: currentWidth < 600 ? 14 : 20),
+                        
                         Center(
                           child: Container(
-                            height: 290,
-                            width: 290,
+                            width: currentHeight*0.4,
                             padding: const EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 20),
                             decoration: BoxDecoration(
@@ -307,6 +276,9 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                               borderRadius: BorderRadius.circular(3),
                             ),
                             child: GridView(
+                              shrinkWrap: true, // GridView를 자식으로 설정
+                              physics:
+                                  const NeverScrollableScrollPhysics(), 
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
@@ -412,14 +384,14 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(3),
                                   color: const Color(0xff2A2A2A)),
-                              height: 130,
-                              width: 350,
+                              height: currentWidth < 600 ? 100 : 150,
+                              width: currentWidth < 600 ? 400 : 410,
                               child: GridView(
                                 gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                     SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 6,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
+                                  crossAxisSpacing: currentWidth < 600 ? 20 : 23,
+                                  mainAxisSpacing: currentWidth < 600 ? 20 : 23,
                                 ),
                                 children: List.generate(colors.length, (index) {
                                   return GestureDetector(
@@ -441,10 +413,10 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                                           ),
                                         ),
                                         if (selectColorIndex == index + 1)
-                                          const Icon(
+                                           Icon(
                                             Icons.check_circle_rounded,
-                                            color: Color(0xff303030),
-                                            size: 22,
+                                            color: const Color(0xff303030),
+                                            size: currentWidth < 600 ? 20 : 22,
                                           ),
                                       ],
                                     ),
@@ -460,21 +432,13 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TextButton(
-                        onPressed: () {
+                      NewButton(Colors.black, Colors.white, '이전',
+                        () {
                           Navigator.pop(context);
-                        },
-                        style: TextButton.styleFrom(
-                            backgroundColor: const Color(0xff131313),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.0))),
-                        child: const Text(
-                          '이전',
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () async {
+                        }, currentWidth 
+                      ).newButton(),
+                      NewButton(Colors.black, Colors.white, '완료',
+                        () async {
                           // Execute _addSecondGoal and wait for the result
                           final secondGoalSuccess = await _addSecondGoal();
 
@@ -516,17 +480,9 @@ class DPcreateColorPageState extends State<DPcreateColorPage> {
                               );
                             }
                           }
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: const Color(0xff131313),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0)),
-                        ),
-                        child: const Text(
-                          '완료',
-                          style: TextStyle(color: Colors.white, fontSize: 15),
-                        ),
-                      ),
+                        }, currentWidth
+                        
+                      ).newButton(),
                     ]),
               ],
             )));
