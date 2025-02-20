@@ -237,6 +237,8 @@ class _MyGoalState extends State<MyGoal> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -247,7 +249,11 @@ class _MyGoalState extends State<MyGoal> {
           padding: appBarPadding,
           child: Text(
             '나의 목표',
-            style: Theme.of(context).textTheme.titleLarge,
+            //style: Theme.of(context).textTheme.titleLarge,
+            style: TextStyle(
+                fontSize: currentWidth < 600 ? 20 : 24,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
           ),
         ),
         backgroundColor: backgroundColor,
@@ -267,8 +273,8 @@ class _MyGoalState extends State<MyGoal> {
                     children: [
                       Container(
                         padding: const EdgeInsets.all(5),
-                        width: 95 / 1.2, // CircleAvatar의 전체 크기
-                        height: 95 / 1.2,
+                        width: 80, // CircleAvatar의 전체 크기
+                        height: 80,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
@@ -277,8 +283,8 @@ class _MyGoalState extends State<MyGoal> {
                           ),
                         ),
                         child: Container(
-                          width: 95,
-                          height: 95,
+                          width: 80,
+                          height: 80,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
@@ -288,20 +294,19 @@ class _MyGoalState extends State<MyGoal> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 20),
+                      SizedBox(width: currentWidth < 600 ? 12 : 14),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(nickname,
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.035,
+                                  fontSize: currentWidth < 600 ? 12 : 14,
                                   fontWeight: FontWeight.w500)),
                           const SizedBox(height: 11),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 15.0, vertical: 7.0),
+                                horizontal: 5.0, vertical: 5.0),
                             decoration: BoxDecoration(
                               color: const Color(0xff303030),
                               borderRadius: BorderRadius.circular(8),
@@ -311,8 +316,7 @@ class _MyGoalState extends State<MyGoal> {
                               style: TextStyle(
                                   height: 1.5,
                                   color: Colors.white,
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.03,
+                                  fontSize: currentWidth < 600 ? 10 : 12,
                                   fontWeight: FontWeight.w200),
                             ),
                           ),
@@ -322,8 +326,8 @@ class _MyGoalState extends State<MyGoal> {
                   ),
                   const Spacer(),
                   Container(
-                    width: 40,
-                    height: 27,
+                    width: 33,
+                    height: 25,
                     decoration: BoxDecoration(
                       color: const Color(0xff303030),
                       borderRadius: BorderRadius.circular(25),
@@ -345,7 +349,7 @@ class _MyGoalState extends State<MyGoal> {
                       child: const Icon(
                         Icons.edit,
                         color: Color.fromARGB(255, 106, 106, 106),
-                        size: 17,
+                        size: 15,
                       ),
                     ),
                   ),
@@ -387,29 +391,33 @@ class _MyGoalState extends State<MyGoal> {
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
+              SizedBox(
+                height: currentWidth < 600 ? 30 : 35,
+              ),
               Column(
                 children: [
                   if (inProgressIDs.isEmpty)
                     Container(
-                      height: 200, // 높이 조정 가능
+                      height: currentWidth < 600 ? 200 : 220, // 높이 조정 가능
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: const Color(0xff2A2A2A),
                         borderRadius: BorderRadius.circular(20), // 모서리 둥글게
                       ),
-                      child: const Text(
+                      child: Text(
                         "새로운 목표를 세워볼까요?",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: currentWidth < 600 ? 14 : 16,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xffAAAAAA),
+                          color: const Color(0xffAAAAAA),
                         ),
                       ),
                     )
                   else ...[
                     SizedBox(
-                      height: 175,
+                      height: currentWidth < 600
+                          ? currentWidth * 0.6
+                          : currentWidth * 0.4,
                       child: PageView.builder(
                         controller: _pageController,
                         itemCount: inProgressIDs.length,
